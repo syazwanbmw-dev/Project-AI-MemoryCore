@@ -1,0 +1,9 @@
+{
+  "name": "lucy-skills",
+  "version": "1.0.0",
+  "description": "Lucy's skill plugin system — auto-triggered abilities for AI companion growth",
+  "author": {
+    "name": "master",
+    "email": ""
+  }
+}

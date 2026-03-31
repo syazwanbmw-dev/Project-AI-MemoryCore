@@ -1,0 +1,16 @@
+{
+  "name": "lucy-local",
+  "description": "Lucy's local skill plugins for Claude Code",
+  "owner": {
+    "name": "master",
+    "email": ""
+  },
+  "plugins": [
+    {
+      "name": "lucy-skills",
+      "source": "./lucy-skills",
+      "description": "Lucy's skill plugin system — auto-triggered abilities for AI companion growth",
+      "version": "1.2.0"
+    }
+  ]
+}
