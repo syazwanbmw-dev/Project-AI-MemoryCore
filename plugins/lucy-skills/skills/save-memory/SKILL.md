@@ -32,11 +32,19 @@ Then execute the protocol below.
 - [ ] Paparkan ringkasan apa yang disimpan
 - [ ] Sahkan semua fail berjaya dikemaskini
 
+### Step 4: Auto-Commit & Push ke GitHub
+- [ ] `cd` ke direktori memory (`C:\Users\user\Documents\code\memory`)
+- [ ] Run `git add` untuk fail yang dikemaskini sahaja (bukan `git add -A`)
+- [ ] Commit dengan message ringkas: `Memory update: [nama fail yang diubah]`
+- [ ] Push ke `master` branch: `git push origin master`
+- [ ] Confirm push berjaya
+
 ## Mandatory Rules
 
 1. Hanya simpan maklumat yang benar-benar penting — bukan setiap detail perbualan
 2. Jaga kandungan sedia ada — tambah atau kemaskini, jangan overwrite tanpa sebab
 3. Beritahu master apa yang disimpan selepas selesai
+4. Setiap kali memory disimpan, WAJIB auto-commit dan push ke GitHub — tiada memory update tanpa backup
 
 ## Edge Cases
 
