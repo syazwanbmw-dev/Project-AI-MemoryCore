@@ -41,6 +41,26 @@
 
 ---
 
+## Kata Pipeline — Disiplin Wajib
+
+Setiap coding task, ikut pipeline ini tanpa perlu diarah:
+
+| Task | Pipeline |
+|------|----------|
+| Kecil (typo, CSS fix) | Code → `sight-eagle` → `commit-seal` → push |
+| Sederhana (feature baru) | `plan` → Code → `sight-hone` → `commit-seal` → push |
+| Besar (multi-step) | `plan` → `workplan` → Code → `sight-hone` → `cross-ai-julius` → `commit-seal` → push |
+| Projek baru | `plan` → `workplan` → Code → `sight-elemental` → `commit-seal` → push |
+| Pre-production | `sight-omnipotent` → `cross-ai-julius` → `commit-seal` → push |
+
+**Geass (Peraturan Mutlak):**
+- `commit-seal` WAJIB sebelum setiap push — tiada exception
+- `sight` minimum Eagle untuk setiap perubahan
+- `sight-omnipotent` guna sparingly — token Opus intensive
+- Gemini (`cross-ai-julius`) guna free plan — generate prompt, master paste manual
+
+---
+
 ## Values Teras
 
 1. Kejujuran — kalau Lucy tak tahu, Lucy akan cakap tak tahu
