@@ -3,39 +3,35 @@
 
 ## Session RAM Status
 **Current Session**: Completed
-**Last Activity**: 2026-03-31
-**Session Focus**: Lucy Awaken — memory backup, Kata pipeline, NFR
-**Context State**: Session ended clean, diary saved
+**Last Activity**: 2026-04-02
+**Session Focus**: sistem-olahraga-sekolah — giliran padang, security fix, panduan pengguna
+**Context State**: Session ended clean, pending task noted
 
 ## 💭 Working Memory (RAM)
 
 ### Active Context
-- **Current Topic**: Pembangunan projek ADNI (sistem markah pertandingan keagamaan)
-- **Immediate Goals**: Selesaikan Task 8 — upload logo + setup Wrangler secrets + deploy
-- **Recent Progress**: Task 1-7 selesai, kod dah push ke test branch
+- **Current Topic**: sistem-olahraga-sekolah — baiki dan update panduan pengguna
+- **Immediate Goals**: Sambung semula untuk baiki dan update panduan-pengguna.html
+- **Recent Progress**: Panduan pengguna dah live di navbar, screenshots auto-jana via Playwright, tapi kandungan masih perlu dibaiki/dikemaskini
 - **Next Steps**:
-  1. Master upload logo-kpm.png dan logo-gil.png ke `public/images/`
-  2. Jalankan `wrangler secret put` untuk 4 secrets (test environment)
-  3. Jalankan `wrangler secret put` untuk production environment
-  4. Commit logo dan push
-  5. Test di test URL
-  6. Merge ke main untuk production deploy
+  1. Buka `docs/panduan-pengguna.html` dan `docs/panduan-pengguna.md`
+  2. Semak kandungan — mungkin ada langkah yang tak tepat, outdated, atau perlu tambah info baru
+  3. Update screenshots kalau ada UI yang berubah (run `npx playwright test --project=chromium`)
+  4. Sync `public/docs/` dan `public/screenshots/` selepas update
+  5. Commit dan push ke test → test → merge ke main
 
 ### Session Recap (For AI Restart)
-- **Previous Session Summary**: Bina sistem ADNI dari scratch — brainstorm, design spec, GitHub setup, 7 dari 8 tasks selesai
-- **Where We Left Off**: Task 8 — tinggal upload logo + setup secrets + final deploy
+- **Previous Session Summary**: Sesi panjang — siapkan fitur giliran padang, security fix jantina validation, dropdown Panduan dalam navbar, panduan pengguna dengan screenshots
+- **Where We Left Off**: Panduan pengguna live di production. Master minta baiki dan update panduan bila sambung nanti.
 - **Important Context**:
-  - Projek: `C:\Users\user\Documents\code\adni`
-  - GitHub: `https://github.com/syazwanbmw-dev/adni.git`
+  - Projek: `C:\Users\user\Documents\code\sistem-olahraga-sekolah`
+  - Production URL: `atletik.celikguru.my`
   - Branch kerja: `test` (push ke test, merge ke main untuk production)
-  - Stack: Hono.js + Cloudflare Workers + Google Sheets API v4 + Vanilla HTML/JS + Tailwind CDN
-  - Database: Google Sheets (2 sheets: Peserta, Tetapan)
-  - Secrets tersimpan dalam `.dev.vars` (local) dan akan dimasukkan via `wrangler secret put`
-  - Plan ada di: `docs/superpowers/plans/2026-03-30-adni-implementation.md`
-  - Design spec: `docs/superpowers/specs/2026-03-30-adni-design.md`
-  - Latest commit: `59eb2d6` (redirect index ke dashboard)
-  - 5 Acara: Seni Khat (L/P), Tilawah Al-Quran (L/P), Hafazan (L/P), Da'ie Cilik (L/P), Nasyid (Berkumpulan)
-- **User's Current State**: Rehat — akan sambung nanti
+  - Panduan ada di: `docs/panduan-pengguna.html` + `docs/panduan-pengguna.md`
+  - Carta alir ada di: `docs/carta-alir.html`
+  - Screenshots ada di: `public/screenshots/` (auto-jana via Playwright)
+  - Panduan accessible dari navbar: **Panduan ▼** → Carta Alir Kerja / Panduan Pengguna
+  - GitHub Actions deploy.yml dah fix — direct push ke main pun auto-deploy production
 
 ## 🔄 Session Lifecycle
 *How this RAM-like memory works*
