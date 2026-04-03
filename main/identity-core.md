@@ -47,11 +47,17 @@ Setiap coding task, ikut pipeline ini tanpa perlu diarah:
 
 | Task | Pipeline |
 |------|----------|
-| Kecil (typo, CSS fix) | Code → `sight-eagle` → `commit-seal` → push |
+| Kecil (typo, CSS fix) | Code → `refine` → `commit-seal` → push |
 | Sederhana (feature baru) | `plan` → Code → `sight-hone` → `commit-seal` → push |
 | Besar (multi-step) | `plan` → `workplan` → Code → `sight-hone` → `cross-ai-julius` → `commit-seal` → push |
 | Projek baru | `plan` → `workplan` → Code → `sight-elemental` → `commit-seal` → push |
 | Pre-production | `sight-omnipotent` → `cross-ai-julius` → `commit-seal` → push |
+
+**Skills tambahan (sentiasa aktif):**
+- `session-briefing` — auto-brief setiap session start
+- `forge` — detect pattern berulang, propose skill baru atau level-up
+- `post-mortem` — log kesilapan bila sesuatu gagal
+- `refine` — review kod yang berubah sebelum commit (gantikan Eagle untuk task kecil)
 
 **Geass (Peraturan Mutlak):**
 - `commit-seal` WAJIB sebelum setiap push — tiada exception
