@@ -3,35 +3,31 @@
 
 ## Session RAM Status
 **Current Session**: Completed
-**Last Activity**: 2026-04-02
-**Session Focus**: sistem-olahraga-sekolah — giliran padang, security fix, panduan pengguna
-**Context State**: Session ended clean, pending task noted
+**Last Activity**: 2026-04-07
+**Session Focus**: Lucy skill improvement — install sight-hunt (狩猟の目)
+**Context State**: Session ended clean, skill live di GitHub
 
 ## 💭 Working Memory (RAM)
 
 ### Active Context
-- **Current Topic**: sistem-olahraga-sekolah — baiki dan update panduan pengguna
-- **Immediate Goals**: Sambung semula untuk baiki dan update panduan-pengguna.html
-- **Recent Progress**: Panduan pengguna dah live di navbar, screenshots auto-jana via Playwright, tapi kandungan masih perlu dibaiki/dikemaskini
+- **Current Topic**: Lucy ecosystem — skill development
+- **Immediate Goals**: Monitor Threads untuk Code Geass skill dari orang yang sama
+- **Recent Progress**: sight-hunt skill berjaya dibina dan pushed ke GitHub (commit 22e5771)
 - **Next Steps**:
-  1. Buka `docs/panduan-pengguna.html` dan `docs/panduan-pengguna.md`
-  2. Semak kandungan — mungkin ada langkah yang tak tepat, outdated, atau perlu tambah info baru
-  3. Update screenshots kalau ada UI yang berubah (run `npx playwright test --project=chromium`)
-  4. Sync `public/docs/` dan `public/screenshots/` selepas update
-  5. Commit dan push ke test → test → merge ke main
+  1. Kalau Code Geass skill drop di Threads — adapt masuk Lucy
+  2. Boleh sambung sistem-olahraga-sekolah (panduan pengguna pending update)
+  3. Atau explore skill improvements lain
 
 ### Session Recap (For AI Restart)
-- **Previous Session Summary**: Sesi panjang — siapkan fitur giliran padang, security fix jantina validation, dropdown Panduan dalam navbar, panduan pengguna dengan screenshots
-- **Where We Left Off**: Panduan pengguna live di production. Master minta baiki dan update panduan bila sambung nanti.
+- **Previous Session Summary**: Sesi skill improvement — adapt sight-hunt (狩猟の目) dari orang yang post kat Threads. Bina skill baru + level-up 4 skills sedia ada.
+- **Where We Left Off**: sight-hunt live. Master tunggu Code Geass skill dari orang yang sama (follow kat Threads). Master pergi tidur.
 - **Important Context**:
-  - Projek: `C:\Users\user\Documents\code\sistem-olahraga-sekolah`
-  - Production URL: `atletik.celikguru.my`
-  - Branch kerja: `test` (push ke test, merge ke main untuk production)
-  - Panduan ada di: `docs/panduan-pengguna.html` + `docs/panduan-pengguna.md`
-  - Carta alir ada di: `docs/carta-alir.html`
-  - Screenshots ada di: `public/screenshots/` (auto-jana via Playwright)
-  - Panduan accessible dari navbar: **Panduan ▼** → Carta Alir Kerja / Panduan Pengguna
-  - GitHub Actions deploy.yml dah fix — direct push ke main pun auto-deploy production
+  - sight-hunt: `/hunt [target]` — proactive bug hunter, Axo pre-scout + report draft
+  - Axo Lv.2: Task 5 (Hunt Pre-scout) + Task 6 (Hunt Report Draft)
+  - Kata Lv.2: Hunt dalam Sight table + pipeline options
+  - Forge Lv.2: Auto-trigger conditions untuk Hunt
+  - GitHub: https://github.com/syazwanbmw-dev/Project-AI-MemoryCore (commit 22e5771)
+  - sistem-olahraga-sekolah masih pending: panduan-pengguna.html perlu dibaiki
 
 ## 🔄 Session Lifecycle
 *How this RAM-like memory works*
