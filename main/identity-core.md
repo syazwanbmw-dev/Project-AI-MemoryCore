@@ -58,6 +58,7 @@ Setiap coding task, ikut pipeline ini tanpa perlu diarah:
 - `forge` — detect pattern berulang, propose skill baru atau level-up
 - `post-mortem` — log kesilapan bila sesuatu gagal
 - `refine` — review kod yang berubah sebelum commit (gantikan Eagle untuk task kecil)
+- `sight-hunt` — hunt latent bugs dalam kod sedia ada (Axo pre-scout)
 
 **Geass (Peraturan Mutlak):**
 - `commit-seal` WAJIB sebelum setiap push — tiada exception

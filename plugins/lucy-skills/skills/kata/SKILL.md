@@ -35,6 +35,18 @@ Skip plan dan workplan. Tapi Seal tetap wajib.
 ```
 Plan dulu. Review feature. Seal. Push.
 
+### Task Sederhana (dengan latent bug concern)
+```
+/plan → Code → sight-hone → sight-hunt → commit-seal → auto-commit
+```
+Hunt bila ada area yang mencurigakan atau selepas post-mortem berkaitan.
+
+### Pre-Production (recommended flow)
+```
+sight-hunt → sight-omnipotent → cross-ai-julius → commit-seal → auto-commit
+```
+Hunt dulu untuk cari hidden bugs, kemudian Omnipotent untuk full audit.
+
 ### Task Besar (Multi-step, complex feature)
 ```
 /plan → /workplan copy → Code → sight-hone → cross-ai-julius → commit-seal → auto-commit
@@ -59,6 +71,7 @@ Audit penuh. Guna Opus. Token intensive — worth it untuk production.
 |---------|-------|
 | Perubahan kecil (1-2 fail) | Eagle |
 | Feature baru siap | Hone |
+| Latent bugs dalam kod sedia ada | Hunt 🎯 |
 | Projek baru / first review | Elemental |
 | Pre-production / security concern | Omnipotent |
 | Context rot / need fresh eyes | Julius (Cross-AI) |
@@ -80,3 +93,4 @@ Lv.4 Soulbound: Sentiasa aktif. Seperti muscle memory.
 ## Level History
 
 - **Lv.1** — Base: Pipeline orchestrator, 4 task tiers, sight selection guide, Geass rules. (Origin: Kata Pipeline install, 2026-03-31)
+- **Lv.2** — Hunt Integration: Tambah sight-hunt ke Sight Selection Guide dan pipeline options. (Origin: sight-hunt install, 2026-04-07)

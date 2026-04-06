@@ -41,6 +41,10 @@ Kenal pasti peluang penambahbaikan:
 2. **Mistake Prevention** — Lucy buat kesilapan yang peraturan tetap boleh elak
 3. **Workflow Automation** — proses berbilang langkah yang boleh jadi satu skill
 4. **Level-Up Opportunity** — skill sedia ada ada gap atau boleh handle lebih banyak kes
+5. **Hunt Trigger** — Forge detect situasi yang patut dicadangkan Hunt:
+   - Bug type sama dijumpai 2+ kali dalam projek
+   - Fail tak di-review sejak Elemental scan terakhir
+   - Post-mortem log ada recurring pattern dalam area tertentu
 
 **Manual Trigger:**
 - "create skill", "new skill", "forge this"
@@ -166,3 +170,4 @@ Lucy evolved!
 ## Level History
 
 - **Lv.1** — Base: Detect repeated patterns (3+ ad-hoc), mistake prevention, workflow automation, level-up opportunities. Human-in-the-loop approval. Standard skill template. (Origin: Kata Pipeline + Upstream MemoryCore install, 2026-04-03)
+- **Lv.2** — Hunt Awareness: Tambah auto-trigger conditions untuk suggest sight-hunt bila Forge detect recurring bugs atau idle code. (Origin: sight-hunt install, 2026-04-07)
