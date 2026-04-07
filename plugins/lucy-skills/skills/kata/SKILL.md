@@ -41,11 +41,17 @@ Plan dulu. Review feature. Seal. Push.
 ```
 Hunt bila ada area yang mencurigakan atau selepas post-mortem berkaitan.
 
+### Task Besar (dengan balance check)
+```
+/plan → Code → sight-hone → safi → commit-seal → auto-commit
+```
+SAFI check balance selepas Hone — clean enough? necessary?
+
 ### Pre-Production (recommended flow)
 ```
-sight-hunt → sight-omnipotent → cross-ai-julius → commit-seal → auto-commit
+sight-hunt → safi → sight-omnipotent → cross-ai-julius → commit-seal → auto-commit
 ```
-Hunt dulu untuk cari hidden bugs, kemudian Omnipotent untuk full audit.
+Hunt bugs → SAFI balance → Omnipotent full audit.
 
 ### Task Besar (Multi-step, complex feature)
 ```
@@ -72,6 +78,7 @@ Audit penuh. Guna Opus. Token intensive — worth it untuk production.
 | Perubahan kecil (1-2 fail) | Eagle |
 | Feature baru siap | Hone |
 | Latent bugs dalam kod sedia ada | Hunt 🎯 |
+| Kod terlalu complex / over-engineered? | SAFI ⚖ |
 | Projek baru / first review | Elemental |
 | Pre-production / security concern | Omnipotent |
 | Context rot / need fresh eyes | Julius (Cross-AI) |
@@ -94,3 +101,4 @@ Lv.4 Soulbound: Sentiasa aktif. Seperti muscle memory.
 
 - **Lv.1** — Base: Pipeline orchestrator, 4 task tiers, sight selection guide, Geass rules. (Origin: Kata Pipeline install, 2026-03-31)
 - **Lv.2** — Hunt Integration: Tambah sight-hunt ke Sight Selection Guide dan pipeline options. (Origin: sight-hunt install, 2026-04-07)
+- **Lv.3** — SAFI Integration: Tambah safi balance check ke pipeline options dan Sight table. (Origin: safi install, 2026-04-07)
