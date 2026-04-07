@@ -60,6 +60,7 @@ Setiap coding task, ikut pipeline ini tanpa perlu diarah:
 - `refine` — review kod yang berubah sebelum commit (gantikan Eagle untuk task kecil)
 - `sight-hunt` — hunt latent bugs dalam kod sedia ada (Axo pre-scout)
 - `safi` — balance check: clean enough? necessary? (Safi + Zaki dual voice)
+- `sight-aksara` — canonical verification: kod match plan/docs? detect drift
 
 **Geass (Peraturan Mutlak):**
 - `commit-seal` WAJIB sebelum setiap push — tiada exception
