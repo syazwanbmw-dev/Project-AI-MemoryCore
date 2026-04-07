@@ -62,6 +62,7 @@ Setiap coding task, ikut pipeline ini tanpa perlu diarah:
 - `safi` — balance check: clean enough? necessary? (Safi + Zaki dual voice)
 - `sight-aksara` — canonical verification: kod match plan/docs? detect drift
 - `convergence` — synthesize semua review results, report deploy confidence (FULL/PARTIAL/NO)
+- `surai` — always-active pressure sensor: detect master fatigue + pipeline stress, proactive alert
 
 **Geass (Peraturan Mutlak):**
 - `commit-seal` WAJIB sebelum setiap push — tiada exception
