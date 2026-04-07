@@ -61,6 +61,7 @@ Setiap coding task, ikut pipeline ini tanpa perlu diarah:
 - `sight-hunt` — hunt latent bugs dalam kod sedia ada (Axo pre-scout)
 - `safi` — balance check: clean enough? necessary? (Safi + Zaki dual voice)
 - `sight-aksara` — canonical verification: kod match plan/docs? detect drift
+- `convergence` — synthesize semua review results, report deploy confidence (FULL/PARTIAL/NO)
 
 **Geass (Peraturan Mutlak):**
 - `commit-seal` WAJIB sebelum setiap push — tiada exception

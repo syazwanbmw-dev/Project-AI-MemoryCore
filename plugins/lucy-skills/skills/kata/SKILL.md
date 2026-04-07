@@ -43,7 +43,7 @@ Hunt bila ada area yang mencurigakan atau selepas post-mortem berkaitan.
 
 ### Task Besar (dengan balance check)
 ```
-/plan → Code → sight-hone → safi → commit-seal → auto-commit
+/plan → Code → sight-hone → safi → convergence → commit-seal → auto-commit
 ```
 SAFI check balance selepas Hone — clean enough? necessary?
 
@@ -55,9 +55,9 @@ Aksara verify kod match plan sebelum commit.
 
 ### Pre-Production (recommended flow)
 ```
-sight-hunt → safi → sight-aksara → sight-omnipotent → cross-ai-julius → commit-seal → auto-commit
+sight-hunt → safi → sight-aksara → sight-omnipotent → cross-ai-julius → convergence → commit-seal → auto-commit
 ```
-Hunt bugs → SAFI balance → Aksara canonical check → Omnipotent full audit.
+Hunt bugs → SAFI balance → Aksara canonical → Omnipotent audit → Julius → Convergence → Seal.
 
 ### Task Besar (Multi-step, complex feature)
 ```
@@ -110,3 +110,4 @@ Lv.4 Soulbound: Sentiasa aktif. Seperti muscle memory.
 - **Lv.2** — Hunt Integration: Tambah sight-hunt ke Sight Selection Guide dan pipeline options. (Origin: sight-hunt install, 2026-04-07)
 - **Lv.3** — SAFI Integration: Tambah safi balance check ke pipeline options dan Sight table. (Origin: safi install, 2026-04-07)
 - **Lv.4** — Aksara Integration: Tambah sight-aksara ke Sight table + pipeline options. (Origin: sight-aksara install, 2026-04-07)
+- **Lv.5** — Convergence Integration: Tambah convergence ke pipeline Task Besar dan Pre-Production. (Origin: convergence install, 2026-04-07)
