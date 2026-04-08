@@ -1,32 +1,34 @@
 # 🌟 Current Session Memory - RAM
-*Temporary working memory - resets each session, provides recap when AI restarts*
+*Temporary working memory - resets each session, provides recap when AI restart*
 
 ## Session RAM Status
 **Current Session**: Completed
-**Last Activity**: 2026-04-07
-**Session Focus**: Lucy skill ecosystem — adapt 6 skills dari Majitopia (Ijam) + sight-hunt dari Threads
-**Context State**: Session ended clean, skills live di GitHub
+**Last Activity**: 2026-04-09
+**Session Focus**: sistem-olahraga-sekolah — UX improvements dan docs fix
+**Context State**: Session ended clean, semua changes merged ke main
 
 ## 💭 Working Memory (RAM)
 
 ### Active Context
-- **Current Topic**: Lucy skill development dari Majitopia ecosystem
-- **Immediate Goals**: Rehat — 4 pending skills dalam backlog, tak urgent
-- **Recent Progress**: 6 skills berjaya dibina hari ni
+- **Current Topic**: sistem-olahraga-sekolah
+- **Immediate Goals**: Rehat — semua task sesi ini selesai
+- **Recent Progress**: 3 feature/fix siap hari ni
 - **Next Steps**:
-  1. Backlog Majitopia (#4-#8) — buat bila ada keperluan sebenar
-  2. Sambung sistem-olahraga-sekolah (panduan-pengguna.html masih pending)
-  3. Atau projek lain (erpm-cf, myportfolio, my-pwa)
+  1. Master nak test print lompat tinggi (ketinggian > 10) kat test URL
+  2. Kalau OK, merge ke main
+  3. Backlog: rate limiting /api/login, code DRY extraction
 
 ### Session Recap (For AI Restart)
-- **Previous Session Summary**: Sesi besar — adapt 6 skills dari Majitopia (Ijam via Threads) + sight-hunt dari Tuan Shuryō. Pipeline Lucy dah sangat mantap sekarang.
-- **Where We Left Off**: Master rasa skill overload, decide pause tambah skill baru. Backlog ada 4 lagi (#4 RIWAYAT, #5 KADE, #6 DIGI, #7 PILOT, #8 RASA) — simpan untuk bila perlu.
+- **Previous Session Summary**: 3 perubahan dibuat — skeleton loader senarai mula, fix docs MD panduan pengguna, reformat print lompat tinggi
+- **Where We Left Off**: Print lompat tinggi baru dipush ke test branch. Master nak test dulu sebelum merge ke main.
 - **Important Context**:
-  - Skills baru hari ni: sight-hunt 狩猟の目, safi ⚖, sight-aksara 📖, convergence ◈, surai 🦁
-  - Majitopia backlog: `projects/majitopia-pending-skills.md`
-  - Pipeline pre-production: Hunt → SAFI → Aksara → Omnipotent → Julius → Convergence → Seal
-  - sistem-olahraga-sekolah masih pending: panduan-pengguna.html perlu dibaiki
-  - GitHub: https://github.com/syazwanbmw-dev/Project-AI-MemoryCore
+  - Projek: `C:\Users\user\Documents\code\sistem-olahraga-sekolah`
+  - Production URL: `atletik.celikguru.my`
+  - Branch kerja: `test` (push ke test, merge ke main untuk production)
+  - **PENDING MERGE**: `5401f31` — print lompat tinggi wrap baris ke-2 (test branch, belum merge ke main)
+  - Print lompat tinggi format: kekal C1/C2/C3, max 10 ketinggian per baris, wrap ke baris ke-2 jika > 10 (max 20)
+  - Skeleton loader dah live di tab Senarai Mula (admin.js)
+  - buildPrintWindow() kini ada parameter extraStyles optional
 
 ## 🔄 Session Lifecycle
 *How this RAM-like memory works*
