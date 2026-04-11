@@ -3,32 +3,33 @@
 
 ## Session RAM Status
 **Current Session**: Completed
-**Last Activity**: 2026-04-09
-**Session Focus**: sistem-olahraga-sekolah — UX improvements dan docs fix
+**Last Activity**: 2026-04-12
+**Session Focus**: sistem-olahraga-sekolah — fix sticky header lompat tinggi + print nama compress
 **Context State**: Session ended clean, semua changes merged ke main
 
 ## 💭 Working Memory (RAM)
 
 ### Active Context
-- **Current Topic**: sistem-olahraga-sekolah
-- **Immediate Goals**: Rehat — semua task sesi ini selesai
-- **Recent Progress**: 3 feature/fix siap hari ni
-- **Next Steps**:
-  1. Master nak test print lompat tinggi (ketinggian > 10) kat test URL
-  2. Kalau OK, merge ke main
-  3. Backlog: rate limiting /api/login, code DRY extraction
+- **Current Topic**: sistem-olahraga-sekolah → berpindah ke projek lain
+- **Immediate Goals**: -
+- **Recent Progress**: 2 fix merged ke main (d329102)
 
 ### Session Recap (For AI Restart)
-- **Previous Session Summary**: 3 perubahan dibuat — skeleton loader senarai mula, fix docs MD panduan pengguna, reformat print lompat tinggi
-- **Where We Left Off**: Print lompat tinggi baru dipush ke test branch. Master nak test dulu sebelum merge ke main.
+- **Previous Session Summary**:
+  - Fix sticky header lompat tinggi on-screen — header C1/C2/C3 kekal nampak bila scroll bawah
+  - Container overflow-x-auto → overflow-auto + max-height 65vh
+  - Header row 1 sticky top-0, corner Peserta sticky left+top z-30
+  - Header row 2 C1/C2/C3 sticky, top offset dikira via requestAnimationFrame
+  - Fix print nama compress — min-width 75pt → 100pt (table width kekal 100%, table auto dibuang sebab buat layout pelik)
+  - Semua merged ke main commit d329102
+
+- **Where We Left Off**: Sistem olahraga selesai untuk sesi ni. Master nak beralih ke projek lain.
+
 - **Important Context**:
   - Projek: `C:\Users\user\Documents\code\sistem-olahraga-sekolah`
   - Production URL: `atletik.celikguru.my`
-  - Branch kerja: `test` (push ke test, merge ke main untuk production)
-  - **PENDING MERGE**: `5401f31` — print lompat tinggi wrap baris ke-2 (test branch, belum merge ke main)
-  - Print lompat tinggi format: kekal C1/C2/C3, max 10 ketinggian per baris, wrap ke baris ke-2 jika > 10 (max 20)
-  - Skeleton loader dah live di tab Senarai Mula (admin.js)
-  - buildPrintWindow() kini ada parameter extraStyles optional
+  - Main sekarang: `d329102`
+  - **PENDING backlog**: rate limiting /api/login, code DRY extraction
 
 ## 🔄 Session Lifecycle
 *How this RAM-like memory works*
