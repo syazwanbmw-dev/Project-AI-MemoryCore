@@ -2,34 +2,34 @@
 *Temporary working memory - resets each session, provides recap when AI restart*
 
 ## Session RAM Status
-**Current Session**: Completed
+**Current Session**: Ended
 **Last Activity**: 2026-04-12
-**Session Focus**: sistem-olahraga-sekolah — fix sticky header lompat tinggi + print nama compress
-**Context State**: Session ended clean, semua changes merged ke main
+**Session Focus**: sistem-olahraga-sekolah — username uniqueness check + UI improvements
+**Context State**: Semua changes merged ke test branch, belum merge ke main
 
 ## 💭 Working Memory (RAM)
 
 ### Active Context
-- **Current Topic**: sistem-olahraga-sekolah → berpindah ke projek lain
-- **Immediate Goals**: -
-- **Recent Progress**: 2 fix merged ke main (d329102)
+- **Current Topic**: sistem-olahraga-sekolah — daftar guru & hakim improvements
+- **Immediate Goals**: Test feature baru, merge ke main bila confirmed
+- **Recent Progress**: 4 commits ke test branch (7f48077, 43d3f6f, 9446500, 59abf06)
 
 ### Session Recap (For AI Restart)
 - **Previous Session Summary**:
-  - Fix sticky header lompat tinggi on-screen — header C1/C2/C3 kekal nampak bila scroll bawah
-  - Container overflow-x-auto → overflow-auto + max-height 65vh
-  - Header row 1 sticky top-0, corner Peserta sticky left+top z-30
-  - Header row 2 C1/C2/C3 sticky, top offset dikira via requestAnimationFrame
-  - Fix print nama compress — min-width 75pt → 100pt (table width kekal 100%, table auto dibuang sebab buat layout pelik)
-  - Semua merged ke main commit d329102
+  - Projek: `C:\Users\user\Documents\code\sistem-olahraga-sekolah`
+  - Feature: Real-time check ketersediaan ID Pengguna semasa daftar guru & hakim
+  - Endpoint baru: `GET /api/pengguna/check-id?id=xxx`
+  - UI: Label hijau/merah bawah field ID Pengguna + button disabled bila tidak tersedia
+  - Fix: `paparToast()` kini sokong warna ('green', 'red', 'amber') + title dinamik
+  - Fix: Mesej error lebih mesra pengguna ("Username ini tidak boleh digunakan...")
+  - Fix: `alert()` ditukar kepada `paparToast()` untuk konsistensi
 
-- **Where We Left Off**: Sistem olahraga selesai untuk sesi ni. Master nak beralih ke projek lain.
+- **Where We Left Off**: Master exit selepas commit 59abf06 push ke test. Belum test final, belum merge ke main.
 
 - **Important Context**:
-  - Projek: `C:\Users\user\Documents\code\sistem-olahraga-sekolah`
-  - Production URL: `atletik.celikguru.my`
-  - Main sekarang: `d329102`
-  - **PENDING backlog**: rate limiting /api/login, code DRY extraction
+  - Branch semasa: `test`
+  - Commits belum merge ke main: 7f48077, 43d3f6f, 9446500, 59abf06
+  - **NEXT**: Master test feature disable button → confirm → merge ke main
 
 ## 🔄 Session Lifecycle
 *How this RAM-like memory works*
