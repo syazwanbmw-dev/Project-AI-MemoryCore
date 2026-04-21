@@ -2,34 +2,33 @@
 *Temporary working memory - resets each session, provides recap when AI restart*
 
 ## Session RAM Status
-**Current Session**: Ended
-**Last Activity**: 2026-04-12
-**Session Focus**: sistem-olahraga-sekolah — username uniqueness check + UI improvements
-**Context State**: Semua changes merged ke test branch, belum merge ke main
+**Current Session**: Active
+**Last Activity**: 2026-04-13
+**Session Focus**: erpm-v2 — plan SaaS baru (rekod prestasi murid)
+**Context State**: sistem-olahraga-sekolah production up-to-date ✅. Sesi ni fokus plan erpm-v2.
 
 ## 💭 Working Memory (RAM)
 
 ### Active Context
-- **Current Topic**: sistem-olahraga-sekolah — daftar guru & hakim improvements
-- **Immediate Goals**: Test feature baru, merge ke main bila confirmed
-- **Recent Progress**: 4 commits ke test branch (7f48077, 43d3f6f, 9446500, 59abf06)
+- **Current Topic**: erpm-v2 — SaaS rekod prestasi murid
+- **Immediate Goals**: Master baca plan, buat perubahan dalam MD kalau perlu, execute bila ready
+- **Recent Progress**: Plan penuh siap dan disimpan
 
 ### Session Recap (For AI Restart)
 - **Previous Session Summary**:
-  - Projek: `C:\Users\user\Documents\code\sistem-olahraga-sekolah`
-  - Feature: Real-time check ketersediaan ID Pengguna semasa daftar guru & hakim
-  - Endpoint baru: `GET /api/pengguna/check-id?id=xxx`
-  - UI: Label hijau/merah bawah field ID Pengguna + button disabled bila tidak tersedia
-  - Fix: `paparToast()` kini sokong warna ('green', 'red', 'amber') + title dinamik
-  - Fix: Mesej error lebih mesra pengguna ("Username ini tidak boleh digunakan...")
-  - Fix: `alert()` ditukar kepada `paparToast()` untuk konsistensi
+  - Brainstorm + design plan untuk projek baru `erpm-v2`
+  - Migrate sistem lama `my-pwa` (Supabase, tidak selamat) ke Cloudflare stack
+  - Keputusan utama: tenant per guru (bukan per sekolah), 2 roles (MASTER + GURU)
+  - Upload murid via XLSX (SheetJS), kurikulum hybrid (global + customize)
+  - 9 tables, standard columns: pengguna_id + timestamps + created_by
 
-- **Where We Left Off**: Master exit selepas commit 59abf06 push ke test. Belum test final, belum merge ke main.
+- **Where We Left Off**: Plan siap. Master nak baca dan fikir dulu sebelum execute.
 
 - **Important Context**:
-  - Branch semasa: `test`
-  - Commits belum merge ke main: 7f48077, 43d3f6f, 9446500, 59abf06
-  - **NEXT**: Master test feature disable button → confirm → merge ke main
+  - Plan: `C:\Users\user\Documents\code\memory\projects\erpm-v2-plan.md`
+  - Folder `erpm-v2` belum dibuat
+  - Source lama: `my-pwa/` (Supabase) + `erpm-cf/` (percubaan migrate lama)
+  - **NEXT**: Master review → update MD kalau ada perubahan → execute Fasa 1
 
 ## 🔄 Session Lifecycle
 *How this RAM-like memory works*
