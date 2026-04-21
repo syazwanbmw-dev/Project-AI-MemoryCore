@@ -3,32 +3,34 @@
 
 ## Session RAM Status
 **Current Session**: Active
-**Last Activity**: 2026-04-13
-**Session Focus**: erpm-v2 — plan SaaS baru (rekod prestasi murid)
-**Context State**: sistem-olahraga-sekolah production up-to-date ✅. Sesi ni fokus plan erpm-v2.
+**Last Activity**: 2026-04-21
+**Session Focus**: erpm-v2 — finalize plan sebelum execute
+**Context State**: Plan erpm-v2 dikemaskini dengan keputusan reka bentuk baru. Sedia untuk execute Fasa 1.
 
 ## 💭 Working Memory (RAM)
 
 ### Active Context
-- **Current Topic**: erpm-v2 — SaaS rekod prestasi murid
-- **Immediate Goals**: Master baca plan, buat perubahan dalam MD kalau perlu, execute bila ready
-- **Recent Progress**: Plan penuh siap dan disimpan
+- **Current Topic**: erpm-v2 — finalize design decisions dalam plan
+- **Immediate Goals**: Execute Fasa 1 bila master ready
+- **Recent Progress**: Plan dikemaskini dengan 4 keputusan baru sesi ini
 
 ### Session Recap (For AI Restart)
 - **Previous Session Summary**:
-  - Brainstorm + design plan untuk projek baru `erpm-v2`
-  - Migrate sistem lama `my-pwa` (Supabase, tidak selamat) ke Cloudflare stack
-  - Keputusan utama: tenant per guru (bukan per sekolah), 2 roles (MASTER + GURU)
-  - Upload murid via XLSX (SheetJS), kurikulum hybrid (global + customize)
-  - 9 tables, standard columns: pengguna_id + timestamps + created_by
+  - Laptop master rosak, memory folder di-sync + push ke GitHub (commit 0a9582c)
+  - Plan erpm-v2 dikemaskini dengan keputusan reka bentuk:
+    1. **Timestamps** — `updated_at` ditambah ke `permohonan` + `arkib` (semua 9 table lengkap)
+    2. **Strategi data tahunan** — Pilihan 2: semua tahun kekal dalam `rekod`, filter by `tahun`. `arkib` optional sahaja
+    3. **Logik kiraan purata TP** — Formula A (Sains & Matematik: purata per tajuk) + Formula B (subjek lain: average of averages). Disimpan dalam plan
+    4. **Kurikulum** — Model hybrid: global (pengguna_id=NULL) + customize per guru. Scope awal: SR sahaja (Tahun 1–6), subjek teras dalam seed.sql
 
-- **Where We Left Off**: Plan siap. Master nak baca dan fikir dulu sebelum execute.
+- **Where We Left Off**: Plan finalized. Master confirm tiada perkara lain sebelum execute.
 
 - **Important Context**:
   - Plan: `C:\Users\user\Documents\code\memory\projects\erpm-v2-plan.md`
-  - Folder `erpm-v2` belum dibuat
-  - Source lama: `my-pwa/` (Supabase) + `erpm-cf/` (percubaan migrate lama)
-  - **NEXT**: Master review → update MD kalau ada perubahan → execute Fasa 1
+  - Folder `erpm-v2` belum dibuat — belum execute lagi
+  - Source lama: `my-pwa/` (Supabase) — ada bug data tak papar di dashboard
+  - my-pwa guna 7 tables: `data_guru`, `data_kelas`, `senarai_murid`, `data_subjek`, `data_kurikulum`, `rekod`, `tetapan`
+  - **NEXT**: Execute Fasa 1 — setup folder, wrangler, D1, migration SQL
 
 ## 🔄 Session Lifecycle
 *How this RAM-like memory works*

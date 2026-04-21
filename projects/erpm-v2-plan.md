@@ -21,6 +21,71 @@ Migrate sistem eRPM dari Supabase (hardcoded credentials, plaintext password) ke
 
 ---
 
+## Strategi Kurikulum
+
+**Model: Hybrid — Global + Customize Per Guru**
+
+### Layer 1: Template Global (Master setup)
+- Master masukkan kurikulum SR (Sekolah Rendah) sahaja dulu — **Pilihan B**
+- `pengguna_id = NULL` → semua guru boleh guna
+- Master boleh tambah SM (Sekolah Menengah) kemudian bila user base berkembang
+- Guru **tidak boleh edit atau padam** template global
+
+### Layer 2: Customize Per Guru (Optional)
+- Guru boleh tambah SK/SP sendiri kalau ada keperluan tambahan
+- `pengguna_id = guru_id` → milik guru tu sahaja
+- Guru hanya boleh edit/padam rekod kurikulum milik sendiri
+
+### Cara API Pulang Data
+```
+GET /api/kurikulum?tahun=2026&subjek_id=3
+→ Pulangkan: global (pengguna_id IS NULL) + milik guru (pengguna_id = token.pengguna_id)
+→ Frontend gabungkan, tanda mana global mana custom
+```
+
+### Scope Kurikulum Global (Fasa 1)
+- Sekolah Rendah sahaja: Tahun 1–6
+- Subjek teras: BM, BI, Matematik, Sains, Pendidikan Islam, Pendidikan Moral
+- Disimpan dalam `seed.sql` — run sekali masa setup
+
+---
+
+## Logik Kiraan Purata TP
+
+Dua formula berbeza bergantung pada subjek. Logik ini kena ada dalam `dashboard.html` (frontend).
+
+### Formula A — Sains & Matematik
+- Unit kiraan: **Tajuk** (SK diabaikan — semua SK dalam Sains & Matematik adalah "UMUM")
+- Cara: Ambil TP unik per tajuk → purata semua tajuk
+- Kalau tajuk sama ada lebih dari satu rekod → **rekod terakhir menang** (overwrite)
+- Contoh: Tajuk A=4, Tajuk B=3, Tajuk C=5 → Purata = (4+3+5)/3 = **4.00**
+
+### Formula B — Subjek Lain (BM, BI, dll)
+- Unit kiraan: **SK dalam setiap Tajuk**
+- Cara: Kira purata SK per tajuk → purata semua tajuk (average of averages)
+- Contoh: Tajuk "Membaca" (SK1=4, SK2=5) → purata=4.5 | Tajuk "Menulis" (SK1=3) → purata=3.0 → Purata akhir = (4.5+3.0)/2 = **3.75**
+
+### Detect Formula
+```js
+const SUBJEK_KHAS = ["SAINS", "MATEMATIK"];
+let isSainsMath = SUBJEK_KHAS.some(k => namaSubjek.toUpperCase().includes(k));
+// true → Formula A | false → Formula B
+```
+
+---
+
+## Strategi Data Tahunan
+
+**Semua tahun kekal dalam table `rekod`** — tiada archive wajib.
+
+- Setiap rekod ada field `tahun` (contoh: `'2026'`, `'2027'`)
+- Setiap kelas ada `tahun` sendiri — murid Tahun 3 (2026) ≠ murid Tahun 4 (2027)
+- Dashboard filter by `tahun` — data tak clash walaupun murid sama
+- Table `arkib` wujud sebagai **optional cleanup** sahaja — guru/MASTER boleh archive tahun lama kalau nak "bersihkan" paparan, bukan wajib
+- Skala sistem kecil (per guru, ~30-40 murid) — table size bukan isu
+
+---
+
 ## Data Isolation
 
 **Isolation key: `pengguna_id`** (bukan sekolah_id)
@@ -65,6 +130,7 @@ CREATE TABLE IF NOT EXISTS permohonan (
   catatan      TEXT,                         -- sebab tolak (optional)
   diproses_at  TIMESTAMP,
   created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY(pengguna_id) REFERENCES pengguna(id)
 );
 
@@ -164,6 +230,7 @@ CREATE TABLE IF NOT EXISTS arkib (
   jenis        TEXT NOT NULL,    -- 'rekod'|'murid'|'kelas'
   data_json    TEXT NOT NULL,    -- snapshot data dalam JSON
   created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY(pengguna_id) REFERENCES pengguna(id)
 );
 ```
