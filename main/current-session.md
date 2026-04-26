@@ -3,43 +3,44 @@
 
 ## Session RAM Status
 **Current Session**: Active
-**Last Activity**: 2026-04-21
-**Session Focus**: erpm-v2 — finalize plan sebelum execute
-**Context State**: Plan erpm-v2 dikemaskini dengan keputusan reka bentuk baru. Sedia untuk execute Fasa 1.
+**Last Activity**: 2026-04-27
+**Session Focus**: mypwa-v2 — UX fixes (save notification + dashboard carta grid)
 
 ## 💭 Working Memory (RAM)
 
 ### Active Context
-- **Current Topic**: erpm-v2 — finalize design decisions dalam plan
-- **Immediate Goals**: Execute Fasa 1 bila master ready
-- **Recent Progress**: Plan dikemaskini dengan 4 keputusan baru sesi ini
+- **Current Topic**: mypwa-v2 — UX fixes live production
+- **Branch aktif**: `test` (dah merge ke main)
+- **Last commit**: `6fab29c` (test), `34e568b` (main)
+- **Production URL**: `erpm-sksalor.celikguru.my`
 
 ### Session Recap (For AI Restart)
-- **Previous Session Summary**:
-  - Laptop master rosak, memory folder di-sync + push ke GitHub (commit 0a9582c)
-  - Plan erpm-v2 dikemaskini dengan keputusan reka bentuk:
-    1. **Timestamps** — `updated_at` ditambah ke `permohonan` + `arkib` (semua 9 table lengkap)
-    2. **Strategi data tahunan** — Pilihan 2: semua tahun kekal dalam `rekod`, filter by `tahun`. `arkib` optional sahaja
-    3. **Logik kiraan purata TP** — Formula A (Sains & Matematik: purata per tajuk) + Formula B (subjek lain: average of averages). Disimpan dalam plan
-    4. **Kurikulum** — Model hybrid: global (pengguna_id=NULL) + customize per guru. Scope awal: SR sahaja (Tahun 1–6), subjek teras dalam seed.sql
 
-- **Where We Left Off**: Plan finalized. Master confirm tiada perkara lain sebelum execute.
+- **Save notification — overlay tengah skrin** ✅
+  - Sebelum: toast kecil di sudut kanan bawah, guru tak nampak
+  - Fix: overlay hijau tengah skrin (pattern sama macam logout confirm), auto-hilang 2 saat
+  - Files: `public/app.js` (showSaveNotify()), `public/app.css` (.save-notify-*), `public/ujian.html`
 
-- **Important Context**:
-  - Plan: `C:\Users\user\Documents\code\memory\projects\erpm-v2-plan.md`
-  - Folder `erpm-v2` belum dibuat — belum execute lagi
-  - Source lama: `my-pwa/` (Supabase) — ada bug data tak papar di dashboard
-  - my-pwa guna 7 tables: `data_guru`, `data_kelas`, `senarai_murid`, `data_subjek`, `data_kurikulum`, `rekod`, `tetapan`
-  - **NEXT**: Execute Fasa 1 — setup folder, wrangler, D1, migration SQL
+- **Dashboard Ujian Dalaman — grid carta layout** ✅
+  - Masalah asal: master tanya bar tak penuh → sebenarnya CARD yang sempit (3 kolum sempit)
+  - Fix sebenar: `setGridCols()` tukar dari `repeat(auto-fill,minmax(280px,1fr))` ke logik:
+    - 1 card → `1fr` (penuh)
+    - 2 card → `1fr 1fr`
+    - 3+ card → `repeat(3, 1fr)` (max 3 per baris, baris kedua bila 4+)
+  - File: `public/dashboard.html`
 
-## 🔄 Session Lifecycle
-*How this RAM-like memory works*
+- **Lesson learned**: Lucy silap diagnosis awal — ingat masalah bar rendering, tapi sebenarnya masalah card width. Fix yang betul cuma 1 baris dalam setGridCols.
 
-### Session Start
-- **New Session**: RAM cleared, fresh start
-- **AI Restart**: Load recap from previous session for continuity
+### Remaining / Next Steps
 
-### Session End
-- **Important Learning**: Save key insights to permanent files
-- **Temporary Context**: Keep brief recap for next restart
-- **RAM Reset**: Clear detailed working memory for next session
+| Task | Status | Notes |
+|------|--------|-------|
+| Audit Log implementation | ⏳ PENDING | Plan dah siap: docs/superpowers/plans/2026-04-25-audit-log.md |
+| Rate limiting `/api/login` | ⏳ BACKLOG | Dah ada (migration 014), tapi audit log belum |
+| sistem-olahraga: test arkib | ⏳ PENDING | Verify laporan arkib papar nama murid betul |
+| sistem-olahraga: merge ke main | ⏳ PENDING | Selepas confirm arkib OK |
+
+### Important Context
+- mypwa-v2 production DB: `0d2c2d33-0a87-46cc-9aa4-6df32ab4b23f`
+- showSaveNotify() dalam app.js — boleh guna semula untuk page lain
+- Audit Log plan ada 4 tasks — belum execute langsung
