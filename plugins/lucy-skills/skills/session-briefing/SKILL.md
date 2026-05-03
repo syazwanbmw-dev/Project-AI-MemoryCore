@@ -63,6 +63,16 @@ Next: [langkah seterusnya yang jelas]
 - Deliver sebelum proses permintaan pertama master
 - Kalau `current-session.md` kosong atau template sahaja → skip last session section
 
+## Companion Skills Integration
+
+Session Briefing bekerja bersama skills lain bila dipasang:
+
+| Skill | Integrasi |
+|-------|-----------|
+| **check-reminders** | Lv.2 — semak main/reminders.md, flag item urgent dalam brief |
+| **LRU Project Mgmt** | Lv.2 — flag projek yang lama idle (>7 hari) |
+| **Time Intelligence** | Lv.3 — adapt salam dan cadangan kerja ikut masa semasa |
+
 ## Edge Cases
 
 | Situasi | Tindakan |
@@ -71,7 +81,11 @@ Next: [langkah seterusnya yang jelas]
 | Tiada projek aktif | Skip bahagian projek |
 | Master cakap "skip brief" | Suppress brief untuk sesi ini, teruskan normal |
 | Master trigger manual "brief" | Deliver brief, kemudian tunggu arahan |
+| Reminder urgent wujud | Selitkan dalam brief secara semula jadi: "Sebelum mula — ada reminder: [X]" |
+| Projek idle >7 hari | Flag dalam brief: "⚠ [projek] — [N] hari idle" |
 
 ## Level History
 
 - **Lv.1** — Base: Auto-deliver brief di session start, recap + projek aktif + next steps. (Origin: Upstream MemoryCore install, 2026-04-03)
+- **Lv.2** — Companion Integration: Semak reminders.md untuk urgent items, flag projek idle, Companion Skills section.
+- **Lv.3** — Time-Aware: Adapt salam dan cadangan kerja ikut Time Intelligence (pagi/petang/malam).

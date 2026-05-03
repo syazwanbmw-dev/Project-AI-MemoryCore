@@ -95,7 +95,15 @@ Next Task: [deskripsi task seterusnya]
 ### Step 4: Resume Execute
 - [ ] Jalankan **Shared Execution Loop** dari item pending seterusnya
 
-## Shared Execution Loop
+## Command Dispatch
+
+| Command | Bila Guna | Output Pertama |
+|---------|-----------|----------------|
+| **copy plan** | Plan baru dari plan mode | "Copying plan to execution format..." |
+| **append plan** | Tambah tasks ke plan sedia ada | "Appending to existing plan..." |
+| **resume plan** | Sambung selepas context reset | "Resuming plan execution..." |
+
+## Shared Execution Loop (Lv.1 — Sequential)
 
 ```
 Untuk setiap [ ] todo item secara berurutan:
@@ -106,6 +114,24 @@ Untuk setiap [ ] todo item secara berurutan:
   5. Pergi ke [ ] item seterusnya
   6. Kalau [~] (blocked) → skip, teruskan ke seterusnya
 ```
+
+## Wave Execution (Lv.2 — Parallel Dependencies)
+
+Bila plan ada tasks yang boleh dibuat serentak (tiada dependency antara satu sama lain):
+
+```
+Wave 1: [Task A] + [Task B] + [Task C]  ← tiada dependency, boleh parallel
+        ↓ tunggu semua Wave 1 selesai
+Wave 2: [Task D]  ← bergantung pada A+B+C
+        ↓
+Wave 3: [Task E] + [Task F]
+```
+
+**Cara kenal pasti waves:**
+- Baca plan, kenal pasti dependency (e.g., "requires X", "after Y")
+- Kumpul tasks tanpa dependency dalam wave sama
+- Tasks yang bergantung → wave seterusnya
+- Setiap wave selesai → checkpoint save + commit batch
 
 ## Mandatory Rules
 
@@ -118,6 +144,14 @@ Untuk setiap [ ] todo item secara berurutan:
 7. **Skip blocked items** — mark `[~]`, flag kepada master, teruskan ke seterusnya.
 8. **Checkpoint setiap 5 items** — update plan file walaupun tengah-tengah execute.
 
+## Recovery Context
+
+Plan file direka bentuk sebagai **recovery mechanism**. Bila context reset berlaku:
+- Semua yang diperlukan untuk sambung kerja ADA dalam plan file
+- Architecture section restore technical context
+- `[x]`/`[ ]`/`[~]` status menunjukkan exactly di mana kita berhenti
+- Master hanya perlu cakap "resume plan" — Lucy baca plan, sambung dari sana
+
 ## Edge Cases
 
 | Situasi | Tindakan |
@@ -128,7 +162,10 @@ Untuk setiap [ ] todo item secara berurutan:
 | **Master cakap "stop"/"pause"** | Halt, save plan file, report progress |
 | **Plan melebihi line limit** | Archive `project-plan-YYYYMMDD.md`, cipta baru |
 | **Context reset semasa execute** | Master cakap "resume plan" untuk sambung |
+| **Tiada fail plan dalam source folder** | Report: "Tiada plan ditemui. Masuk plan mode dulu." |
+| **Beberapa plan files dalam folder** | Pilih yang paling baru diubah suai, tanya master confirm |
 
 ## Level History
 
 - **Lv.1** — Base: Tiga commands (copy/append/resume) + shared execution loop + per-todo commit chain + line rotation + recovery mechanism + checkpoint saves. (Origin: Fasa 4 install, 2026-03-27)
+- **Lv.2** — Wave Execution: Dependency-aware grouping, parallel task execution dengan wave barriers, Command Dispatch table, Recovery Context section.

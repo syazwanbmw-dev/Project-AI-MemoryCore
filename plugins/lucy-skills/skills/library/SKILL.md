@@ -98,6 +98,16 @@ When creating a NEW entry:
 | Colors, CSS, Tailwind | `theme` |
 | CI/CD, deployment, automation | `workflow` |
 
+## Decision Rules
+
+| Keadaan | Tindakan |
+|---------|----------|
+| Tiada match ditemui | CREATE NEW — entry baru dalam section yang sesuai |
+| Match ditemui, kandungan bertindih | UPDATE EXISTING — tambah ke entry sedia ada |
+| Match ditemui, kandungan berbeza | CREATE NEW — entry berasingan, cross-reference |
+| Entry wujud dalam section lain | REFERENCE ONLY — tunjuk kepada master |
+| Master nak section baru | Tanya konfirmasi, cipta section folder baru |
+
 ## Mandatory Rules
 
 1. **Always scan before save** — never create without checking first
@@ -107,6 +117,19 @@ When creating a NEW entry:
 5. **Wait for approval** — present findings, wait for master's decision before saving
 6. **Format-aware saves** — always load matching format template before creating new entry
 
+## Item Install Protocol (Lv.5)
+
+Bila master cakap "install item [nama]":
+
+1. **Scan** `library-items/` untuk katalog items tersedia
+2. **Cari** item yang match nama/keywords
+3. **Jika jumpa:**
+   - Semak sama ada entry serupa sudah ada dalam `library/`
+   - Jika tiada duplikat: copy ke section yang sesuai dalam `library/`
+   - Jika ada duplikat: tanya master nak merge atau skip
+   - Report: "Item installed: [nama] → library/[section]/[filename].md"
+4. **Jika tidak jumpa:** Report "Item tidak ditemui dalam katalog. Guna 'save library' untuk buat entry baru."
+
 ## Edge Cases
 
 | Situation | Behavior |
@@ -114,9 +137,15 @@ When creating a NEW entry:
 | **No library/ directory** | Warn: "Library not found. Run install protocol first." |
 | **Empty library** | Skip search, go straight to CREATE NEW |
 | **Format template missing** | Use generic markdown structure |
+| **Entry collision** | Tanya master: merge ke entry sedia ada atau cipta berasingan? |
+| **Kandungan cross-section** | Simpan dalam section utama, letak note cross-reference |
+| **Master nak section baru** | Confirm dahulu, cipta folder section baru |
+| **Item install: tidak jumpa** | Report dengan jelas, cadang "save library" sebaliknya |
+| **Item install: duplikat** | Bandingkan kandungan, tanya merge atau skip |
 
 ## Level History
 
 - **Lv.1** — Base: Dynamic scanning + keyword matching + deduplication prevention. (Origin: Fasa 2 install, 2026-03-26)
 - **Lv.2** — Project-Aware: Suitability assessment based on tech stack, domain, scale.
 - **Lv.4** — Format-Aware Save: Auto-determine section, load matching format template.
+- **Lv.5** — Item Install: Scan library-items/ katalog, install pre-made entries, handle duplicates.

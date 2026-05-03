@@ -43,7 +43,11 @@ When this skill activates, output:
   ```
 
 ### Step 3: Compose and Append Diary Entry
-- [ ] Get current timestamp
+- [ ] Get current timestamp menggunakan platform command:
+  - **PowerShell (Windows):** `Get-Date -Format "HH:mm"` / `Get-Date -Format "yyyy-MM-dd"`
+  - **Git Bash/Linux/macOS:** `date +"%H:%M"` / `date +"%Y-%m-%d"`
+  - **CMD:** `time /T` / `date /T`
+- [ ] Rujuk format entry dalam `daily-diary/daily-diary-protocol.md` jika wujud
 - [ ] Analyze current session for key content
 - [ ] Write structured entry:
   - Tarikh & masa
@@ -70,6 +74,9 @@ When this skill activates, output:
 | First entry of the day | Cipta fail baru + header + entri pertama |
 | Second+ entry same day | Append dengan separator `---` |
 | "review diary" command | Baca dan paparkan entri terkini dari current/ |
+| Tiada kandungan signifikan | Tulis nota ringkas: "Sesi pendek — [topik] dibincangkan" |
+| Folder daily-diary/ tidak wujud | Cipta `daily-diary/current/` dan `daily-diary/archived/` dahulu |
 
 ## Level History
 - **Lv.1** — Base: 4-step diary write dengan monthly archival, append-only, session memory update. (Origin: Fasa 2 install, 2026-03-26)
+- **Lv.2** — Platform Timestamp: Cross-platform timestamp commands, rujukan daily-diary-protocol.md, 2 edge cases baru.

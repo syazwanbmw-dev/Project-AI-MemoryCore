@@ -46,8 +46,9 @@ Then execute the commit protocol automatically.
 
 ### Step 2: Draft Commit Message
 
-Apply this format:
+Pilih format berdasarkan saiz dan status perubahan:
 
+**Standard Format** (feature baru, bug fix, refactor):
 ```
 [Achievement Title] - [Brief technical summary]
 
@@ -60,10 +61,22 @@ Apply this format:
 • [Additional context if relevant]
 ```
 
-- For trivial changes: one-liner tanpa sections
-- For incomplete work: prefix dengan `WIP:`
+**Minimal Format** (perubahan kecil/trivial — typo, CSS tweak, rename):
+```
+fix: [deskripsi ringkas dalam satu baris]
+```
+
+**WIP Format** (kerja tidak lengkap, mid-implementation):
+```
+WIP: [apa yang sedang dibuat] - [langkah seterusnya]
+```
+
+**Bila ada beberapa logical changes berbeza:**
+- Jangan campur dalam satu commit
+- Pisahkan kepada commit berasingan per logical group
 
 ### Step 3: Execute Commit
+- [ ] Run `git diff` (unstaged) DAN `git diff --staged` — semak kedua-duanya
 - [ ] Stage files by name: `git add [specific files]` — jangan `git add -A`
 - [ ] Warn if any sensitive files staged (.env, credentials, API keys)
 - [ ] Commit menggunakan HEREDOC format
@@ -108,12 +121,17 @@ After completing ANY task:
 | Situasi | Tindakan |
 |---------|----------|
 | **Tiada changes** | Report "Nothing to commit — working tree is clean" |
-| **Merge conflicts** | Warn master, jangan cuba commit |
+| **Merge conflicts** | Warn master, jangan cuba commit — resolve dulu |
 | **Sensitive files staged** | Block commit, senaraikan files, minta confirm |
 | **No git repository** | Inform: "No git repository found in this directory" |
+| **Large binary files** | Warn master sebelum stage — tanya sama ada patut dalam git |
+| **Beberapa logical changes berbeza** | Pisahkan kepada commit berasingan, jangan campur |
+| **Master cakap "undo last commit"** | Jalankan `git reset --soft HEAD~1` — kekalkan changes, buang commit |
+| **Unstaged changes tertinggal** | Selepas commit, report fail yang masih unstaged |
 
 ## Level History
 
 - **Lv.1** — Base: Analyze changes, draft structured commit dengan PERUBAHAN KOD + KONTEKS SESI sections. (Origin: Fasa 3 install, 2026-03-26)
 - **Lv.2** — Auto-Commit: Removed approval gate — analyze, draft, commit dalam satu flow.
 - **Lv.3** — Vigilant: Proactive post-task detection — auto-check git status selepas setiap task.
+- **Lv.4** — Format Flexible: Minimal format untuk trivial changes, WIP format untuk incomplete work, multi-commit untuk logical groups, semak staged + unstaged.

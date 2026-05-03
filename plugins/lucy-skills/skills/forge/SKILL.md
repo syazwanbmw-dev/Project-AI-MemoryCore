@@ -93,9 +93,43 @@ Draft ready — approve to forge?
 
 ### Step 5: Cipta atau Kemaskini
 
-**Untuk skill BARU:**
+**Untuk skill BARU — gunakan template ini:**
+
+```markdown
+---
+name: nama-skill
+description: "MUST/Auto-triggers bila [trigger phrases]. Senarai trigger."
+---
+
+# Nama Skill — Tagline
+*Satu baris deskripsi.*
+
+## Activation
+[Output pertama bila aktif]
+
+## Context Guard
+| Context | Status |
+|---------|--------|
+| **Trigger utama** | ACTIVE — protokol penuh |
+| **Trigger lain** | ACTIVE — ... |
+| **Keadaan tanpa context** | DORMANT |
+
+## Protokol
+[Steps...]
+
+## Mandatory Rules
+[Rules...]
+
+## Edge Cases
+| Situasi | Tindakan |
+|---------|----------|
+
+## Level History
+- **Lv.1** — Base: [capabilities]. (Origin: [momen], [tarikh])
+```
+
 1. Cipta folder skill: `plugins/lucy-skills/skills/[nama-skill]/`
-2. Tulis `SKILL.md` mengikut format standard skill Lucy
+2. Tulis `SKILL.md` menggunakan template di atas
 3. Sahkan fail berjaya dicipta
 
 **Untuk LEVEL-UP:**
@@ -157,6 +191,15 @@ Lucy evolved!
 | **Lv.3** | Proaktif | Auto-detection tanpa arahan |
 | **Lv.4** | Bersepadu | Sinergi dengan skill lain |
 | **Lv.5+** | Mahir | Kecerdasan konteks-sedar |
+
+## Sinergi dengan Skills Lain
+
+| Skill | Cara Forge Berinteraksi |
+|-------|------------------------|
+| **auto-commit** | Selepas forge selesai, trigger auto-commit untuk commit skill baru/dikemaskini |
+| **decision-log** | Log keputusan reka bentuk skill (kenapa approach X dipilih) |
+| **save-diary** | Rekodkan forge event dalam diari harian |
+| **mulahazah** | Cluster rules dari rules.md → cadangan Forge skill bila pattern cukup kuat |
 
 ## Edge Cases
 
