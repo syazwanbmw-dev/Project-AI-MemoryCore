@@ -30,21 +30,42 @@ lucy-skills/
 | Skill | Trigger | Fungsi |
 |-------|---------|--------|
 | `save-memory` | "save", "Lucy simpan" | Simpan maklumat ke fail memory |
-| `library` | "save library", "do we have" | Pengetahuan teknikal merentas projek |
+| `library` | "save library", "do we have", "install item" | Pengetahuan teknikal merentas projek |
 | `save-diary` | "save diary", "write diary" | Dokumentasi sesi harian |
 | `auto-commit` | "commit", "git commit", post-task | Structured git commits |
 | `work-plan` | "copy plan", "resume plan", "append plan" | Plan execution + recovery |
+| `session-briefing` | Auto session start, "brief" | Recap sesi lepas + projek aktif |
+| `check-reminders` | Auto session start, "ingatkan aku" | Persistent reminder cross-session |
+| `decision-log` | Auto (keputusan bukan-obvious), "log keputusan" | Log keputusan arkitek/teknikal |
+| `echo-recall` | "ingat tak", "pernah tak kita", "bila kita buat" | Cari diary sebelum jawab soalan masa lepas |
+| `mulahazah` | "/continuous-improvement", "apa yang Lucy pelajari" | Behavioral learning dari pattern master |
+| `forge` | Auto (pattern 3+ kali), "create skill", "level up" | Self-improvement + skill creation |
+| `post-mortem` | Auto (kegagalan), "post-mortem" | Log kesilapan dan pembelajaran |
+| `refine` | Auto sebelum commit (task kecil) | Review kod yang berubah |
+| `safi` | "safi", "balance check" | Clean enough? Necessary? |
+| `sight-eagle` | "eagle", "quick scan" | Scan kod cepat |
+| `sight-hone` | "hone", "review feature" | Review feature dalam konteks |
+| `sight-elemental` | "elemental", "deep scan" | Deep scan projek baru |
+| `sight-omnipotent` | "omnipotent", "full audit" | Audit penuh (sparingly) |
+| `sight-hunt` | "hunt", "latent bugs" | Hunt bugs tersembunyi |
+| `sight-aksara` | "aksara", "verify canonical" | Verify kod match plan/docs |
+| `convergence` | "convergence", "ready deploy?" | Synthesize review results |
+| `cross-ai-julius` | "julius", "gemini review" | Cross-AI second opinion |
+| `surai` | Always active | Pressure sensor: fatigue + pipeline stress |
+| `axo` | "Axo" | Axo companion mode |
+| `commit-seal` | Sebelum push | Final seal sebelum push |
+| `work-plan` | "copy plan", "resume plan" | Plan lifecycle management |
+| `save-diary` | "save diary" | Session diary documentation |
 
-## Built-in (dalam main-memory.md)
+## Built-in (dalam identity-core.md)
 
 | Sistem | Trigger | Fungsi |
 |--------|---------|--------|
-| Echo Memory Recall | "do you remember", "ingat tak" | Cari balik perbualan lama dalam diary |
-| LRU Projects | "load project", "new coding project" | Manage 4 projek aktif |
-| Time Intelligence | Auto (setiap sesi) | Greeting & behavior mengikut masa |
+| Time Intelligence | Auto setiap sesi | Greeting & behavior ikut masa (pagi/petang/malam) |
+| LRU Projects | "load project", "new coding project" | Manage projek aktif |
 
 ---
 
-**Version**: 1.2.0
-**Installed**: 2026-03-26
-**Skills**: 5 active + 3 built-in
+**Version**: 2.0.0
+**Updated**: 2026-05-03
+**Skills**: 26 active + 2 built-in
