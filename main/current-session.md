@@ -4,37 +4,35 @@
 ## Session RAM Status
 **Current Session**: Updated
 **Last Activity**: 2026-05-07
-**Session Focus**: mypwa-v2 — Sidebar Accordion + Active Tab Highlight
+**Session Focus**: mypwa-v2 — Active Tab Highlight SELESAI + Merge ke Main
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
 
-- **Sesi ini (2026-05-07 malam): Sidebar accordion + active tab** ✅
+- **Sesi 2026-05-07 malam → pagi: Active tab highlight SELESAI** ✅
 
-  1. **Sidebar Accordion** — RPM dan Ujian Dalaman jadi accordion group
-     - `app.js`: guruLinks baru (group + children), renderSidebar papar accordion HTML, toggleGroup()
-     - `app.css`: 8 class baru (.sidebar-group-header, .sidebar-arrow, .sidebar-group-body, .sidebar-sublink)
-     - sessionStorage persist open state — group tak collapse bila navigate
-     - Auto-expand group bila berada pada child page
-     - Latest commit test branch: `b213aa6`
+  1. **Root Cause Jumpa** — Cloudflare Workers strip `.html` dari URL
+     - `location.pathname` = `/profil` tapi `l.href` = `/profil.html` → tak pernah match
+     - Active class tak pernah di-apply dari awal — bukan CSS issue, JS comparison issue
+     - Fix: `normPath()` dalam `renderSidebar` — strip `.html` sebelum compare
+     - 3 tempat dipatch: regular links, group childActive, sublinks
 
-  2. **GitHub Actions CI fixed** — CLOUDFLARE_API_TOKEN dalam GitHub Secrets sudah direnew
-     - CI kini berjaya deploy ke staging (test branch → staging auto)
-     - Cache-bust ditambah: `/app.css?v=2` dalam semua HTML
+  2. **Design Sidebar Active Tab** — master pilih design B (sublink = pill, regular = bar)
+     - Regular link aktif: amber text + 5px bar kiri, tiada pill
+     - Sublink aktif: amber pill (flush kiri, rounded kanan) + 5px bar kiri
+     - CSS: `.sidebar-link.active` + `.sidebar-link.sidebar-sublink.active` (specificity trick)
+     - `.sidebar-group-header.active`: amber text + bar, tiada pill
 
-  3. **Active tab highlight** — WIP, belum selesai
-     - Root cause ditemui: inactive links `color: #fff` = sama dengan active → tiada contrast
-     - Fix: inactive links kini `color: rgba(255,255,255,0.7)` (muted), active = `#fff` + background fill + accent border
-     - Push ke test (b213aa6) tapi BELUM CONFIRMED working — user start fresh sebelum confirm
-     - User nak start fresh — perlu approach baru untuk active tab
+  3. **Merge ke Main** — semua sidebar work deployed ke production
+     - 17 commits dari test → main (accordion + active tab + design)
+     - Latest production commit: `ee432ea`
+     - app.css version: v=6
 
 ### Remaining / Next Steps
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Active tab highlight — confirm working | ⚠ PENDING | b213aa6 pushed ke test, belum confirmed. User nak start fresh. |
-| Sidebar accordion — deploy ke production | ⏳ PENDING | Tunggu confirm active tab dulu, baru merge ke main |
 | Cetak tab Laporan PAJSK | ⏳ BACKLOG | Hidden dulu, develop kemudian |
 | Compact mode Ujian Dalaman | ⏳ BACKLOG | Bar 28px, 6 kad belum muat satu halaman cetak |
 
@@ -45,17 +43,15 @@
 - Production folder Drive ID: `1eLfVA_N7C-E1C0BHRndmd85rmpmBljBS`
 - Apps Script URL: `https://script.google.com/macros/s/AKfycbwnaqfjz_KmW0UH9rSLXwzKICX-f1HJG7LzdZLDdvh05tI3QDrCGejfuWSZB8GLadiSaQ/exec`
 - Untuk set wrangler secrets: WAJIB guna Bash `printf 'nilai' | npx wrangler secret put KEY --env production`
-- Deploy production: `npx wrangler deploy --env production` (jangan auto-deploy tanpa confirm master)
-- test branch = staging auto-deploy via CI (GitHub Actions sudah fixed)
+- Deploy production: merge test → main (CI auto-deploy via GitHub Actions)
+- test branch = staging auto-deploy via CI
 
-### Sidebar Commits Summary (sesi ini)
+### Commits Sesi Ini (Active Tab Fix)
 | Commit | Perubahan |
 |--------|-----------|
-| `905d156` | feat: sidebar accordion RPM + Ujian Dalaman |
-| `c92b532` | fix: sessionStorage — group kekal open |
-| `c103813` | feat: group header active highlight (reverted) |
-| `468e967` | fix: revert — accent pada sub-link je |
-| `fc1d442` | feat: group header highlight balik |
-| `c9c7200` | fix: active tab — background fill + accent border |
-| `76cf1c2` | fix: cache-bust app.css?v=2 |
-| `b213aa6` | fix: inactive links muted untuk contrast |
+| `8c27cbe` | fix: active tab amber text (CSS attempt sebelum root cause jumpa) |
+| `bc83f84` | feat: amber pill indicator (CSS) |
+| `664ce3c` | debug: console.log pathname (diagnostic) |
+| `9ae4360` | fix: normPath() — root cause fix, buang debug log |
+| `dc5cae0` | feat: design B — pill sublink, bar regular |
+| `ee432ea` | fix: bar 5px (latest, live production) |
