@@ -3,48 +3,40 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-05-06
-**Session Focus**: mypwa-v2 — PAJSK Owner Controls (design + plan siap, belum implement)
+**Last Activity**: 2026-05-07
+**Session Focus**: mypwa-v2 — Sidebar Accordion + Active Tab Highlight
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
 
-- **PAJSK — Sesi lepas (2026-05-05): Full deploy ke production selesai** ✅
+- **Sesi ini (2026-05-07 malam): Sidebar accordion + active tab** ✅
 
-- **Sesi ini (2026-05-06): PAJSK Owner Controls — design & plan siap** ✅
+  1. **Sidebar Accordion** — RPM dan Ujian Dalaman jadi accordion group
+     - `app.js`: guruLinks baru (group + children), renderSidebar papar accordion HTML, toggleGroup()
+     - `app.css`: 8 class baru (.sidebar-group-header, .sidebar-arrow, .sidebar-group-body, .sidebar-sublink)
+     - sessionStorage persist open state — group tak collapse bila navigate
+     - Auto-expand group bila berada pada child page
+     - Latest commit test branch: `b213aa6`
 
-  3 features dirancang dalam satu package:
-  - **F1 — Owner-only controls**: Butang Edit/Padam hanya visible kepada guru yang masukkan rekod
-  - **F2 — Edit rekod**: PUT /api/pajsk/:id — ubah field teks + optional ganti PDF (tanpa re-upload wajib)
-  - **F3 — Simpan tanpa dokumen**: PDF optional masa tambah rekod, simpan drive_link = '' untuk upload kemudian
+  2. **GitHub Actions CI fixed** — CLOUDFLARE_API_TOKEN dalam GitHub Secrets sudah direnew
+     - CI kini berjaya deploy ke staging (test branch → staging auto)
+     - Cache-bust ditambah: `/app.css?v=2` dalam semua HTML
 
-  Design decisions:
-  - Owner row → Dokumen: "Buka PDF"/"⚠ Belum Upload" | Tindakan: [Edit][Padam]
-  - Bukan-owner row → Dokumen: "Buka PDF"/"Tiada fail" | Tindakan: kosong
-  - Guna localStorage `uid` untuk kenal pasti owner (tambah `id` dalam login response)
-  - Tiada migration — guna `drive_link = ''` sebagai sentinel "belum upload"
-  - KISS & DRY: `getCurrentUserId()` dalam app.js, reuse `openModal()` sedia ada, reuse `toBase64()` dalam pajsk.js
+  3. **Active tab highlight** — WIP, belum selesai
+     - Root cause ditemui: inactive links `color: #fff` = sama dengan active → tiada contrast
+     - Fix: inactive links kini `color: rgba(255,255,255,0.7)` (muted), active = `#fff` + background fill + accent border
+     - Push ke test (b213aa6) tapi BELUM CONFIRMED working — user start fresh sebelum confirm
+     - User nak start fresh — perlu approach baru untuk active tab
 
 ### Remaining / Next Steps
 
 | Task | Status | Notes |
 |------|--------|-------|
-| **PAJSK Owner Controls — implement** | ⏳ READY | Plan siap, belum implement. Guna plan di bawah |
-| Audit Log (migration 016) — merge ke main | ⏳ BACKLOG | Siap di staging, pending merge |
-| Rate limiting `/api/login` | ⏳ BACKLOG | Migration 014 ada, audit log dah siap |
+| Active tab highlight — confirm working | ⚠ PENDING | b213aa6 pushed ke test, belum confirmed. User nak start fresh. |
+| Sidebar accordion — deploy ke production | ⏳ PENDING | Tunggu confirm active tab dulu, baru merge ke main |
 | Cetak tab Laporan PAJSK | ⏳ BACKLOG | Hidden dulu, develop kemudian |
-
-### Plan & Spec
-
-- **Plan**: `docs/superpowers/plans/2026-05-06-pajsk-owner-controls.md`
-- **Spec**: `docs/superpowers/specs/2026-05-06-pajsk-owner-controls-design.md`
-
-Plan ada 4 tasks:
-1. Backend: login response tambah `id` + uid helper dalam app.js
-2. Backend: POST pajsk — buat file optional
-3. Backend: PUT /api/pajsk/:id (edit route baru)
-4. Frontend: pajsk.html — conditional buttons, `_allRekod` cache, edit modal
+| Compact mode Ujian Dalaman | ⏳ BACKLOG | Bar 28px, 6 kad belum muat satu halaman cetak |
 
 ### Important Context
 - mypwa-v2 production DB: `0d2c2d33-0a87-46cc-9aa4-6df32ab4b23f`
@@ -53,3 +45,17 @@ Plan ada 4 tasks:
 - Production folder Drive ID: `1eLfVA_N7C-E1C0BHRndmd85rmpmBljBS`
 - Apps Script URL: `https://script.google.com/macros/s/AKfycbwnaqfjz_KmW0UH9rSLXwzKICX-f1HJG7LzdZLDdvh05tI3QDrCGejfuWSZB8GLadiSaQ/exec`
 - Untuk set wrangler secrets: WAJIB guna Bash `printf 'nilai' | npx wrangler secret put KEY --env production`
+- Deploy production: `npx wrangler deploy --env production` (jangan auto-deploy tanpa confirm master)
+- test branch = staging auto-deploy via CI (GitHub Actions sudah fixed)
+
+### Sidebar Commits Summary (sesi ini)
+| Commit | Perubahan |
+|--------|-----------|
+| `905d156` | feat: sidebar accordion RPM + Ujian Dalaman |
+| `c92b532` | fix: sessionStorage — group kekal open |
+| `c103813` | feat: group header active highlight (reverted) |
+| `468e967` | fix: revert — accent pada sub-link je |
+| `fc1d442` | feat: group header highlight balik |
+| `c9c7200` | fix: active tab — background fill + accent border |
+| `76cf1c2` | fix: cache-bust app.css?v=2 |
+| `b213aa6` | fix: inactive links muted untuk contrast |
