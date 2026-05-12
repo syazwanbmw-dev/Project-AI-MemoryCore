@@ -3,34 +3,36 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-05-09
-**Session Focus**: mypwa-v2 — Bug fixes iPad + Features PAJSK
+**Last Activity**: 2026-05-12
+**Session Focus**: mypwa-v2 — Bug fixes + Feature Muat Turun Senarai Murid
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
 
-- **Sesi 2026-05-09 petang: Semua fixes + features SELESAI & merged ke main** ✅
+- **Sesi 2026-05-12 petang/malam: 2 bug fix + 1 feature baru, semua merged ke main** ✅
 
-  1. **iOS date input border & tinggi tak konsisten** (`app.css`) — `15fde25` → merged main ✅
-     - Tambah `input[type="date"].form-input { -webkit-appearance:none; appearance:none; }`
-     - Fix border invisible + height inconsistency pada iPad Safari
+  1. **Bug Fix: Normalize Paparan Jantina** (`admin.html`, `murid.js`) — merged main ✅
+     - DB ada data campuran: import lama simpan 'Perempuan', rekod manual simpan 'P'
+     - Tambah helper `normJantina()` dalam admin.html UTILS section
+     - Display badge normalize semua variasi → papar 'Lelaki'/'Perempuan' penuh
+     - Import bulk (frontend + backend) normalize ke 'L'/'P' sebelum simpan
+     - Commit: `485f94e`
 
-  2. **Kategori Sumbangan dalam PAJSK** (`pajsk.html`) — `d75df92` → merged main ✅
-     - Tambah option "Sumbangan" dalam dropdown form tambah, filter laporan, edit modal
-     - Badge warna ungu (`#ede9fe / #6d28d9`)
-
-  3. **Tab PAJSK dalam Admin Panel** (`admin.html`, `pajsk.js`) — merged main ⏳ (staging OK, belum merge)
-     - Backend: `DELETE /api/pajsk/by-sesi` — admin bulk delete by sesi
-     - Frontend: tab PAJSK, filter (sesi/kelas/kategori), table rekod, padam individual & by sesi
-     - Commits: `478a7c8` (feat), `a484f94` (fix api wrapping), `7d7dce7` (fix dropdown kelas), `1c388c3` (fix kolum kelas)
-     - Bug fixes: `r.data.data` bukan `r.data`, filter kelas Thn 4-6, nama_kelas tanpa tahun prefix
+  2. **Feature: Muat Turun Senarai Murid PDF** (`tetapan.html`, `app.css`) — merged main ✅
+     - Button hijau "Muat Turun" di sebelah "Padam" dalam tab Kelas Saya
+     - Tambah `btn-success` CSS class dalam app.css
+     - Modal pilih orientasi Portrait/Landscape
+     - PDF layout: header (logo 45px + nama sekolah + tagline), nama kelas, table (Bil/Nama/No.Kad/Jantina + 6 kolum kosong), footer stats (Lelaki/Perempuan/Jumlah)
+     - Jantina papar L/P (singkatan) dalam PDF
+     - Layout responsive ikut orientasi — portrait vs landscape ada saiz kolum berbeza
+     - Bug kritikal dijumpai via sight-hunt: `</script>` dalam template literal menutup outer script tag — init() tidak pernah dijalankan → loading spinner kekal. Fix: pindah ke `<body onload="...">`
+     - Commits: `f66e4bf`, `ee7d82a`, `eee0ebd`, `009300a`, `d68f5fa`, `44b7d46`, `a1f9238`, `58bc0e6`
 
 ### Remaining / Next Steps
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Merge tab PAJSK admin ke main | ⏳ PENDING | Staging OK, tunggu confirm |
 | Compact mode Ujian Dalaman | ⏳ BACKLOG | Bar 28px, 6 kad belum muat satu halaman cetak |
 | LinkedIn setup + dokumentasi journey | ⏳ PENDING | Untuk build portfolio & trust bagi training |
 
@@ -42,18 +44,18 @@
 - Untuk set wrangler secrets: WAJIB guna Bash `printf 'nilai' | npx wrangler secret put KEY --env production`
 - Deploy production: merge test → main (CI auto-deploy via GitHub Actions)
 - test branch = staging auto-deploy via CI
+- Apps Script perlu redeploy manual bila ada perubahan pada pajsk-upload.gs
+- PENTING: Jangan letak `</script>` dalam template literal JS yang berada dalam `<script>` block HTML — guna `<body onload>` atau split string
 
-### Commits Sesi Ini (2026-05-09)
+### Commits Sesi Ini (2026-05-12)
 | Commit | Perubahan | Status |
 |--------|-----------|--------|
-| `637dc7b` | fix: hero image first-load | merged main |
-| `7b4a5fb` | fix: edit PAJSK — PDF optional | merged main |
-| `f36b024` | fix: filter grid rekod RPM iPad | merged main |
-| `b38c429` | fix: input date overflow iPad (WebKit) | merged main |
-| `e44801a` | fix: tarikh input saiz tak konsisten | merged main |
-| `15fde25` | fix: date border & tinggi iOS Safari (-webkit-appearance) | merged main |
-| `d75df92` | feat: kategori Sumbangan dalam PAJSK | merged main |
-| `478a7c8` | feat: tab PAJSK dalam admin panel | test branch |
-| `a484f94` | fix: PAJSK admin api() response wrapping | test branch |
-| `7d7dce7` | fix: PAJSK admin dropdown kelas Thn 4-6 | test branch |
-| `1c388c3` | fix: PAJSK admin kolum kelas nama sahaja | test branch |
+| `485f94e` | fix: normalize paparan jantina murid dalam table admin | merged main |
+| `f66e4bf` | feat: Muat Turun Senarai Murid PDF dalam tab Kelas Saya | merged main |
+| `ee7d82a` | fix: buang </script> dalam template literal — init() tidak dipanggil | merged main |
+| `eee0ebd` | fix: kolum kosong 0.6cm, padding td 3px | merged main |
+| `009300a` | fix: kolum No. Kad 1.5cm | merged main |
+| `d68f5fa` | fix: kolum kosong portrait 0.6cm, landscape 2cm; Nama responsive | merged main |
+| `44b7d46` | fix: kolum Nama landscape 8cm | merged main |
+| `a1f9238` | fix: jantina L/P, kolum Jantina portrait 1cm, Nama portrait 5.5cm | merged main |
+| `58bc0e6` | fix: landscape margin 1cm, No. Kad landscape 2cm | merged main |
