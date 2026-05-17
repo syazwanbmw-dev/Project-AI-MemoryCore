@@ -4,7 +4,7 @@
 ## Session RAM Status
 **Current Session**: Updated
 **Last Activity**: 2026-05-17
-**Session Focus**: mypwa-v2 — PAJSK Bulk Import (implement + deploy)
+**Session Focus**: mypwa-v2 — PAJSK Bulk Import selesai, next: Auto Drive Folder per Sesi
 
 ## 💭 Working Memory (RAM)
 
@@ -12,21 +12,23 @@
 
 - **Sesi 2026-05-17 petang: PAJSK Bulk Import — implement + live production** ✅
 
-  1. **Execute plan** — 3 fail diubah: `src/routes/pajsk.js`, `public/pajsk.html`, `public/admin.html`
-  2. **Backend** `POST /api/pajsk/bulk` — D1 batch lookup murid + batch UPSERT, normalize kategori/peringkat/pencapaian case-insensitive
-  3. **Frontend** pajsk.html — button Import Pukal (muncul bila sesi dipilih), SheetJS parse, result modal, link Muat Turun Template
-  4. **Frontend** admin.html — sama, guna `cariPajskAdmin()` untuk refresh
-  5. **Bug fixes** dalam sesi ni:
-     - Lookup murid guna `nama_kelas` penuh ("6 DELIMA") bukan split tahun+kelas
-     - Button Import Pukal dipindah ke `#rImportWrap` berasingan (Hone catch)
-     - Normalize kategori/peringkat/pencapaian ikut canonical dropdown values
-  6. **Merge ke main** — live production `erpm-sksalor.celikguru.my`
+  1. Backend `POST /api/pajsk/bulk` — D1 batch lookup + UPSERT
+  2. Frontend pajsk.html + admin.html — button Import Pukal, SheetJS parse, result modal, template download
+  3. Bug fixes: lookup guna nama_kelas penuh ("6 DELIMA"), normalize kategori/peringkat/pencapaian case-insensitive
+  4. Merged ke main — live production `erpm-sksalor.celikguru.my`
+
+- **Next task dirancang: Auto Google Drive Folder per Sesi**
+  - Bila sesi baru dibuat → auto-create folder dalam Google Drive
+  - Sijil upload masuk ke folder sesi berkaitan
+  - Semua rekod sekarang TIADA fail diupload lagi
+  - Plan belum ditulis — tunggu sesi baru
 
 ### Remaining / Next Steps
 
 | Task | Status | Notes |
 |------|--------|-------|
 | PAJSK Bulk Import | ✅ LIVE | Merged main 2026-05-17 |
+| Auto Drive Folder per Sesi | ⏳ PLAN BELUM TULIS | Trigger: POST /api/sesi → createFolder AppScript → simpan drive_folder_id dalam sesi table |
 | Compact mode Ujian Dalaman | ⏳ BACKLOG | Bar 28px, 6 kad belum muat satu halaman |
 | LinkedIn setup + dokumentasi | ⏳ BACKLOG | |
 
@@ -36,4 +38,6 @@
 - Production URL: `erpm-sksalor.celikguru.my`
 - Staging URL: `https://mypwa-v2-staging.syazwan-skpp82.workers.dev`
 - nama_kelas dalam DB simpan nilai penuh: "6 DELIMA" (bukan "DELIMA" sahaja)
-- UPSERT logic: drive_link kosong dalam CSV tak padam link lama dalam DB
+- AppScript secrets: APPSCRIPT_URL + APPSCRIPT_SECRET (dalam wrangler secrets)
+- AppScript actions sedia ada: `upload`, `delete`
+- Semua rekod PAJSK sekarang tiada fail — tiada migration untuk data lama diperlukan
