@@ -3,12 +3,24 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-05-24
-**Session Focus**: mypwa-v2 — Jana Sijil LIVE production (bold print, PDF template, kotak cari 50%)
+**Last Activity**: 2026-05-31
+**Session Focus**: Lucy Memory System — Adapt save-topic skill dari upstream Kiyoraka PR#8 (Topic Diary System)
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
+
+- **Sesi 2026-05-31 petang: save-topic skill — Lucy Memory System** ✅
+
+  1. Semak upstream Kiyoraka/Project-AI-MemoryCore — jumpa 1 update baru (Topic Diary System, PR#8)
+  2. Brainstorm + design spec `save-topic` — skill standalone (Approach A)
+  3. Implement via Subagent-Driven Development — 5 tasks selesai:
+     - `topic-diary/index.md` dicipta
+     - `save-topic/SKILL.md` dicipta (110 baris, protokol penuh)
+     - Registered dalam `identity-core.md` (antara echo-recall + mulahazah)
+     - MEMORY.md + upstream plan dikemas kini
+  4. Skill count: 26 → **27 skills aktif**
+  5. Creative Systems (Image-Prompt + Song-Creation) — skip, Midjourney berbayar
 
 - **Sesi 2026-05-17 malam: Auto Drive Folder per Sesi — LIVE production** ✅
 
