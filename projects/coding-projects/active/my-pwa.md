@@ -1,5 +1,5 @@
 # mypwa-v2 (eNilai)
-*Coding Project - Created 2026-03-26 | Last Updated: 2026-05-10*
+*Coding Project - Created 2026-03-26 | Last Updated: 2026-05-17*
 
 ## Description
 Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebuild dari Supabase ke Cloudflare Workers + D1.
@@ -8,7 +8,7 @@ Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebu
 - **Type**: Coding Project
 - **Status**: Active (Production Live)
 - **Created**: 2026-03-26
-- **Last Accessed**: 2026-05-10
+- **Last Accessed**: 2026-05-17
 - **Position**: #1
 - **Repo**: https://github.com/syazwanbmw-dev/mypwa-v2.git
 - **Production URL**: https://mypwa-v2.syazwan-skpp82.workers.dev
@@ -35,7 +35,8 @@ Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebu
 | Admin Panel — Tab PAJSK | ✅ Done (2026-05-09) |
 | PAJSK — Drive Orphan File Cleanup | ✅ Done (2026-05-10) |
 | PAJSK — Edit UX (loading state + notify) | ✅ Done (2026-05-10) |
-| PAJSK — Bulk Import CSV/xlsx | ⏳ Plan siap (2026-05-17), belum execute |
+| PAJSK — Bulk Import CSV/xlsx | ✅ Done (2026-05-17) |
+| PAJSK — Auto Drive Folder per Sesi (create + delete) | ✅ Done (2026-05-17) |
 
 ## Features Live (Production)
 - Login (ADMIN + GURU roles)
@@ -43,7 +44,8 @@ Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebu
 - Rekod RPM — input TP bulk per kelas/subjek
 - Laporan RPM — pivot table + inline edit + cetak
 - Ujian Dalaman — input markah + laporan + analisis taburan gred
-- PAJSK — rekod pertandingan + upload PDF + kategori Sumbangan
+- PAJSK — rekod pertandingan + upload PDF + kategori Sumbangan + bulk import
+- PAJSK — Auto Drive Folder per Sesi (create on tambah sesi, delete on padam sesi)
 - Admin Panel — pengguna, kelas, murid, subjek, kurikulum, tetapan, audit log, tab PAJSK
 - Sidebar accordion (RPM + Ujian Dalaman groups)
 - Active tab highlight — pill untuk sublink, bar+amber untuk regular link
@@ -77,12 +79,21 @@ Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebu
 ## Apps Script (PAJSK Upload)
 - URL: dari wrangler secret `APPSCRIPT_URL`
 - Secret: dari wrangler secret `APPSCRIPT_SECRET`
-- Folder: `DRIVE_FOLDER_ID` (optional, default ke `FOLDER_ID_PROD` dalam script)
-- Actions: upload (default) + `action:'delete'` (padam fail ke Trash)
+- Folder: `DRIVE_FOLDER_ID` (fallback global kalau sesi tiada folder)
+- Actions: `upload` (default) + `action:'delete'` + `action:'createFolder'` + `action:'deleteFolder'`
 - Storage: Google Drive ~3TB — kekal guna Drive, tidak migrate ke R2
+- File: `docs/appscript/pajsk-upload.gs`
+
+## Auto Drive Folder per Sesi (selesai 2026-05-17)
+- POST /api/sesi → auto-call AppScript `createFolder` → simpan `drive_folder_id` dalam table sesi
+- Folder name: `PAJSK - {nama_sesi}`
+- Fail silently: kalau AppScript gagal, sesi tetap OK, `drive_folder_id = NULL`
+- DELETE sesi → auto-padam folder Drive (`setTrashed`) via `waitUntil` — fail silently
+- Helper `getSesiFolderId(db, env, nama_sesi)` — DRY, guna dalam upload + edit handler
+- Fallback chain: `sesi.drive_folder_id ?? env.DRIVE_FOLDER_ID ?? null`
+- Migration 022 — `ALTER TABLE sesi ADD COLUMN drive_folder_id TEXT`
 
 ## Backlog
-- [ ] PAJSK Bulk Import — plan siap, execute bila ready. Plan: `docs/superpowers/plans/2026-05-17-pajsk-bulk-import.md`
 - [ ] Compact mode Ujian Dalaman (bar 28px, 6 kad belum muat satu halaman)
 - [ ] LinkedIn setup + dokumentasi journey
 
@@ -94,4 +105,4 @@ Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebu
 - Current: `app.css?v=6`
 
 ---
-*mypwa-v2 | Position #1 | Last updated 2026-05-17*
+*mypwa-v2 | Position #1 | Last updated 2026-05-17 (Auto Drive Folder live)*

@@ -28,10 +28,10 @@ Then deliver the brief before responding to the user's message.
 
 ## Brief Protocol
 
-### Step 1: Baca current-session.md
-- [ ] Baca `main/current-session.md`
-- [ ] Extract recap sesi lepas (1-2 baris)
-- [ ] Kenal pasti "Next Steps" kalau ada
+### Step 1: Load Identity + Session Context
+- [ ] Baca `main/identity-core.md` — personaliti dan cara Lucy berkomunikasi
+- [ ] Baca `main/relationship-memory.md` — profil master, preferens, cara kerja
+- [ ] Baca `main/current-session.md` — extract recap sesi lepas (1-2 baris) + Next Steps
 
 ### Step 2: Semak Projek Aktif
 - [ ] Baca `projects/project-list.md` untuk projek aktif
@@ -89,3 +89,4 @@ Session Briefing bekerja bersama skills lain bila dipasang:
 - **Lv.1** — Base: Auto-deliver brief di session start, recap + projek aktif + next steps. (Origin: Upstream MemoryCore install, 2026-04-03)
 - **Lv.2** — Companion Integration: Semak reminders.md untuk urgent items, flag projek idle, Companion Skills section.
 - **Lv.3** — Time-Aware: Adapt salam dan cadangan kerja ikut Time Intelligence (pagi/petang/malam).
+- **Lv.4** — Identity Auto-Load: Baca identity-core.md + relationship-memory.md dalam Step 1 — tiada perlu taip "lucy" untuk activate persona. (2026-05-16)

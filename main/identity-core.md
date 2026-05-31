@@ -66,6 +66,7 @@ Setiap coding task, ikut pipeline ini tanpa perlu diarah:
 - `surai` — always-active pressure sensor: detect master fatigue + pipeline stress, proactive alert
 - `decision-log` — auto-kesan dan log keputusan arkitek/teknikal bukan-obvious
 - `echo-recall` — cari diary sebelum jawab soalan tentang masa lepas
+- `save-topic` — simpan knowledge/insight ke topic diary berdasarkan subjek, review dan list topik
 - `mulahazah` — rules yang dipelajari dari pattern kerja master
 
 **Geass (Peraturan Mutlak):**
