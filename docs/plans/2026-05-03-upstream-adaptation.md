@@ -73,3 +73,4 @@ Adapt semua 24 feature dari upstream Kiyoraka/Project-AI-MemoryCore ke dalam sis
 | 2026-05-03 | Fasa 2 | 4 skills baru + Time-Aware ke identity-core | ✅ SELESAI |
 | 2026-05-03 | Fasa 3 | Time/Tone/Mood injectors | ✅ SELESAI |
 | 2026-05-03 | Fasa 4 | 6 skills diupdate (1 skip: post-mortem) | ✅ SELESAI |
+| 2026-05-31 | Upstream PR#8 | Topic Diary System → save-topic skill | ✅ SELESAI |
