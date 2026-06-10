@@ -3,79 +3,43 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-05-31
-**Session Focus**: Lucy Memory System — Adapt save-topic skill dari upstream Kiyoraka PR#8 (Topic Diary System)
+**Last Activity**: 2026-06-10
+**Session Focus**: mypwa-v2 — bug fix kedudukan keseluruhan + feature auto-tutup ujian
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
 
+- **Sesi 2026-06-10 tengah hari: Bug fix kedudukan keseluruhan slip keputusan — LIVE production** ✅
+
+  1. **Bug 1** — `kiraRankingSlip` guna `purata` (average) sahaja untuk rank, tapi table guna `jumlah_A DESC + jumlah_markah DESC` → slip rank tidak konsisten dengan table KED
+  2. **Bug 2** — `totalKesel` kira semua murid semua tahun → sepatutnya rank dalam tahun yang sama sahaja (Tahun 5 vs Tahun 5 sahaja)
+  3. **Fix backend** (`ujian-markah.js`): tambah `k.tahun AS tahun_kelas` dalam SELECT laporan + `tahun: r.tahun_kelas` dalam muridMap
+  4. **Fix frontend** (`laporan-ujian.html`): ubah `kiraRankingSlip` — sort by `jumlah_A DESC + jumlah_markah DESC`, group `rankKesel` by `tahun` (bukan semua murid), pass `gredScale` ke function
+  5. Commits: `b82f7aa` (test) → `694c6a4` (main, production live)
+
+- **Sesi 2026-06-10 tengah hari: Feature Auto-Tutup Ujian — PLAN SIAP, belum implement** 📋
+
+  1. Admin set `tarikh_tutup DATE` per ujian — guru diblock dari input bila tarikh lepas
+  2. Lazy check (tiada cron) — check berlaku on-the-fly setiap request
+  3. "Buka Semula" = modal dengan tarikh baru ATAU kosong (buka tanpa had)
+  4. Spec: `docs/superpowers/specs/2026-06-10-ujian-auto-tutup-design.md`
+  5. Plan: `docs/superpowers/plans/2026-06-10-ujian-auto-tutup.md` — 5 tasks siap ditulis
+  6. **Belum execute** — master pilih execution mode (subagent atau inline) sebelum sesi ini berakhir
+
 - **Sesi 2026-05-31 petang: save-topic skill — Lucy Memory System** ✅
 
   1. Semak upstream Kiyoraka/Project-AI-MemoryCore — jumpa 1 update baru (Topic Diary System, PR#8)
   2. Brainstorm + design spec `save-topic` — skill standalone (Approach A)
-  3. Implement via Subagent-Driven Development — 5 tasks selesai:
-     - `topic-diary/index.md` dicipta
-     - `save-topic/SKILL.md` dicipta (110 baris, protokol penuh)
-     - Registered dalam `identity-core.md` (antara echo-recall + mulahazah)
-     - MEMORY.md + upstream plan dikemas kini
+  3. Implement via Subagent-Driven Development — 5 tasks selesai
   4. Skill count: 26 → **27 skills aktif**
-  5. Creative Systems (Image-Prompt + Song-Creation) — skip, Midjourney berbayar
-
-- **Sesi 2026-05-17 malam: Auto Drive Folder per Sesi — LIVE production** ✅
-
-  1. Migration 022 — `drive_folder_id TEXT` pada table sesi
-  2. `sesi.js` POST — auto-create Drive folder via AppScript (fail silently)
-  3. `pajsk.js` — DRY helper `getSesiFolderId()` + update upload & edit (null-safe `??`)
-  4. `sesi.js` DELETE — auto-padam folder Drive (`deleteFolder` + `waitUntil`)
-  5. AppScript — tambah `createFolder` + `deleteFolder` actions
-  6. Merged ke main — live production `erpm-sksalor.celikguru.my` (commit `c7a6186`)
-
-- **Sesi 2026-05-20 petang: PWA fix — manifest dinamik + icon eN — LIVE production** ✅
-
-  1. `GET /manifest.json` route dalam Worker — public, no auth, baca `hero_badge` dari D1
-  2. `name`/`short_name` = "eNilai" (fixed), `description` = hero_badge value (dinamik dari pillbox admin)
-  3. `public/manifest.json` DELETED — supaya Cloudflare routing fall-through ke Worker
-  4. `icon-192.png` + `icon-512.png` — regenerate dari `favicon.svg` eN menggunakan Playwright
-  5. `scripts/generate-icons.js` — skrip jana icon PNG dari SVG (Playwright)
-  6. Merged ke main — live production (commit `2a69cbb`)
-
-- **Sesi 2026-05-20 malam: Tab Dokumen — LIVE production** ✅
-
-  1. Migration 023 — `CREATE TABLE panduan (id, nama, url, created_at)` — applied staging
-  2. `src/routes/panduan.js` — GET paginated + POST/PUT/DELETE admin-only
-  3. `src/index.js` — mount `/api/panduan` routes
-  4. `public/panduan.html` — halaman guru, pagination 10/page, XSS-safe
-  5. `public/app.js` — tambah link Dokumen dalam guruLinks
-  6. `public/admin.html` — tab Dokumen, CRUD + pagination
-  7. Migration 023 applied production DB, deployed production (commit `0c35a8e`)
-
-- **Sesi 2026-05-24 pagi: Jana Sijil — LIVE production** ✅
-
-  1. `src/routes/murid.js` — tambah `GET /api/murid/search?q=` endpoint (LIKE search, JOIN kelas, LIMIT 20)
-  2. `public/sijil.html` — halaman Jana Sijil baru:
-     - Vue.js 2 CDN (reactive UI certificate generator)
-     - Upload template sijil (PNG/JPG/**PDF**) — PDF.js 3.11.174 render page 1 → canvas scale 2x → PNG data URL
-     - Tetapan medan teks: tab Nama/IC/Extra, slider X/Y/font size/warna
-     - Upload font custom (.ttf/.otf/.woff)
-     - Pratonton live dengan overlay teks pada template
-     - **2-kolum layout** pada desktop (≥992px) — setup kiri, pratonton sticky kanan
-     - Cari murid dari DB (autocomplete, debounce 300ms) — kotak cari **max-width: 50%**
-     - Import CSV + download contoh CSV
-     - Jana sijil → `window.print()` (auto detect landscape/portrait)
-     - Teks medan sijil **bold** semasa dicetak (`font-weight:bold` dalam `_overlay()`)
-  3. `public/app.js` — tambah `{ href: '/sijil.html', label: 'Jana Sijil' }` dalam guruLinks
-  4. Tiada migration DB — pure client-side certificate generator
-  5. Commits test: `9bf69e6` → `1a26d55` → `58edcae` → `5d110c2`
-  6. Merged ke main — deployed production (commit `d86e204`)
 
 ### Remaining / Next Steps
 
 | Task | Status | Notes |
 |------|--------|-------|
-| PWA manifest dinamik + icon eN | ✅ LIVE | Merged main 2026-05-20, commit 2a69cbb |
-| Tab Dokumen | ✅ LIVE | Migration 023 applied, deployed production (commit `0c35a8e`) |
-| Jana Sijil | ✅ LIVE | Merged main 2026-05-24, commit d86e204 |
+| Bug fix kedudukan keseluruhan | ✅ LIVE | Merged main 2026-06-10, commit `694c6a4` |
+| Auto-Tutup Ujian by Date | 📋 PLAN READY | Plan di `plans/2026-06-10-ujian-auto-tutup.md` — 5 tasks, belum execute |
 | Compact mode Ujian Dalaman | ⏳ BACKLOG | Bar 28px, 6 kad belum muat satu halaman |
 | LinkedIn setup + dokumentasi | ⏳ BACKLOG | |
 
@@ -84,8 +48,9 @@
 - Staging DB: `f87c8bbc-77a5-4d57-88d1-284195de437f`
 - Production URL: `erpm-sksalor.celikguru.my`
 - Staging URL: `https://mypwa-v2-staging.syazwan-skpp82.workers.dev`
-- Latest commit test branch: `5d110c2` (feat: sokong template sijil PDF)
-- Latest commit main branch: `d86e204` (merge: test -> main)
+- Latest commit test branch: `d5e9268` (docs: implementation plan auto-tutup ujian by date)
+- Latest commit main branch: `694c6a4` (merge: test -> main, bug fix kedudukan keseluruhan)
+- Next migration: `024_ujian_tarikh_tutup.sql` — ADD COLUMN tarikh_tutup TEXT pada table ujian
 - AppScript secrets: APPSCRIPT_URL + APPSCRIPT_SECRET (wrangler secrets)
 - AppScript file: `docs/appscript/pajsk-upload.gs` — 4 actions: upload, delete, createFolder, deleteFolder
 - PWA icon regenerate: jalankan `node scripts/generate-icons.js` setiap kali favicon.svg berubah
