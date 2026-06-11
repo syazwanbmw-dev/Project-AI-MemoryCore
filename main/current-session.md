@@ -3,43 +3,43 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-06-10
-**Session Focus**: mypwa-v2 — bug fix kedudukan keseluruhan + feature auto-tutup ujian
+**Last Activity**: 2026-06-11
+**Session Focus**: mypwa-v2 — Brainstorm + Design + Plan OMR Scanner feature
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
 
+- **Sesi 2026-06-11 pagi: OMR Scanner — Brainstorm + Spec + Plan** 🔄 PENDING EXECUTE
+
+  1. **Feature:** `omr.html` — pengimbas borang jawapan objektif (macam ZipGrade), pure frontend, tanpa DB
+  2. **Approach:** Custom lightweight OMR — template tetap 40 soalan (2 kolum × 20), kamera live, bilinear inverse mapping untuk detect bubble tanpa full image warp
+  3. **Flow:** Print borang → input kunci jawapan → scan kamera → papar `X / N betul`
+  4. **Spec:** `docs/superpowers/specs/2026-06-11-omr-scanner-design.md` — commit `07f37fd` (main)
+  5. **Plan:** `docs/superpowers/plans/2026-06-11-omr-scanner.md` — commit `c02af44` (main) — 6 tasks
+  6. **Status:** Plan siap, belum execute — master perlu pilih: Subagent-Driven atau Inline Execution
+
 - **Sesi 2026-06-10 tengah hari: Bug fix kedudukan keseluruhan slip keputusan — LIVE production** ✅
 
-  1. **Bug 1** — `kiraRankingSlip` guna `purata` (average) sahaja untuk rank, tapi table guna `jumlah_A DESC + jumlah_markah DESC` → slip rank tidak konsisten dengan table KED
-  2. **Bug 2** — `totalKesel` kira semua murid semua tahun → sepatutnya rank dalam tahun yang sama sahaja (Tahun 5 vs Tahun 5 sahaja)
-  3. **Fix backend** (`ujian-markah.js`): tambah `k.tahun AS tahun_kelas` dalam SELECT laporan + `tahun: r.tahun_kelas` dalam muridMap
-  4. **Fix frontend** (`laporan-ujian.html`): ubah `kiraRankingSlip` — sort by `jumlah_A DESC + jumlah_markah DESC`, group `rankKesel` by `tahun` (bukan semua murid), pass `gredScale` ke function
-  5. Commits: `b82f7aa` (test) → `694c6a4` (main, production live)
+  1. Fix `kiraRankingSlip` — sort by `jumlah_A DESC + jumlah_markah DESC`, group `rankKesel` by tahun
+  2. Fix `totalKesel` — rank dalam tahun yang sama sahaja
+  3. Commits: `b82f7aa` (test) → `694c6a4` (main, production live)
 
-- **Sesi 2026-06-10 tengah hari: Feature Auto-Tutup Ujian — PLAN SIAP, belum implement** 📋
+- **Sesi 2026-06-10 petang: Feature Auto-Tutup Ujian — LIVE PRODUCTION** ✅
 
-  1. Admin set `tarikh_tutup DATE` per ujian — guru diblock dari input bila tarikh lepas
-  2. Lazy check (tiada cron) — check berlaku on-the-fly setiap request
-  3. "Buka Semula" = modal dengan tarikh baru ATAU kosong (buka tanpa had)
-  4. Spec: `docs/superpowers/specs/2026-06-10-ujian-auto-tutup-design.md`
-  5. Plan: `docs/superpowers/plans/2026-06-10-ujian-auto-tutup.md` — 5 tasks siap ditulis
-  6. **Belum execute** — master pilih execution mode (subagent atau inline) sebelum sesi ini berakhir
+  1. Migration 024 — `ALTER TABLE ujian ADD COLUMN tarikh_tutup TEXT`
+  2. Merge test→main, push, deploy production: commit `dcc1cbe`, version `5be1df74`
+  3. Live URL: `erpm-sksalor.celikguru.my`
 
 - **Sesi 2026-05-31 petang: save-topic skill — Lucy Memory System** ✅
 
-  1. Semak upstream Kiyoraka/Project-AI-MemoryCore — jumpa 1 update baru (Topic Diary System, PR#8)
-  2. Brainstorm + design spec `save-topic` — skill standalone (Approach A)
-  3. Implement via Subagent-Driven Development — 5 tasks selesai
-  4. Skill count: 26 → **27 skills aktif**
+  1. Implement `save-topic` skill standalone — Skill count: 26 → **27 skills aktif**
 
 ### Remaining / Next Steps
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Bug fix kedudukan keseluruhan | ✅ LIVE | Merged main 2026-06-10, commit `694c6a4` |
-| Auto-Tutup Ujian by Date | 📋 PLAN READY | Plan di `plans/2026-06-10-ujian-auto-tutup.md` — 5 tasks, belum execute |
+| OMR Scanner — Execute plan | ⏳ NEXT | Plan: `2026-06-11-omr-scanner.md` — 6 tasks, pilih Subagent atau Inline |
 | Compact mode Ujian Dalaman | ⏳ BACKLOG | Bar 28px, 6 kad belum muat satu halaman |
 | LinkedIn setup + dokumentasi | ⏳ BACKLOG | |
 
@@ -48,10 +48,18 @@
 - Staging DB: `f87c8bbc-77a5-4d57-88d1-284195de437f`
 - Production URL: `erpm-sksalor.celikguru.my`
 - Staging URL: `https://mypwa-v2-staging.syazwan-skpp82.workers.dev`
-- Latest commit test branch: `d5e9268` (docs: implementation plan auto-tutup ujian by date)
-- Latest commit main branch: `694c6a4` (merge: test -> main, bug fix kedudukan keseluruhan)
-- Next migration: `024_ujian_tarikh_tutup.sql` — ADD COLUMN tarikh_tutup TEXT pada table ujian
+- Latest commit main branch: `c02af44` (docs: implementation plan OMR Scanner)
+- Latest commit test branch: `91b275f` (fix: admin.html — esc() pada tarikhTutup dalam onclick editUjian)
+- Migration 024 applied ke staging + production ✅
 - AppScript secrets: APPSCRIPT_URL + APPSCRIPT_SECRET (wrangler secrets)
-- AppScript file: `docs/appscript/pajsk-upload.gs` — 4 actions: upload, delete, createFolder, deleteFolder
 - PWA icon regenerate: jalankan `node scripts/generate-icons.js` setiap kali favicon.svg berubah
 - Jana Sijil: Vue.js 2 + PDF.js 3.11.174 CDN, tiada migration, auth via requireAuth() + renderSidebar()
+
+### OMR Scanner — Ringkasan Teknikal (untuk rujukan execute)
+- **Fail baru:** `public/omr.html` (inline CSS + JS)
+- **Fail disentuh:** `public/app.js` (tambah guruLinks sidebar)
+- **Tiada migration, tiada route baru**
+- **Koordinat normal:** NORM_W=600, NORM_H=800, 4 anchor di penjuru, bubble grid GRID_TOP=150
+- **Algorithm:** detectAnchors → bilinear inverse mapping → sampleBrightness → kiraMarkah
+- **Spec:** `docs/superpowers/specs/2026-06-11-omr-scanner-design.md`
+- **Plan:** `docs/superpowers/plans/2026-06-11-omr-scanner.md`
