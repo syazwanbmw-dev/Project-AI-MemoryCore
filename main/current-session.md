@@ -53,7 +53,7 @@
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Tukar password admin | ⚠ URGENT | Staging + production masih guna Admin@1234 |
+| Tukar password admin | ✅ SELESAI | Ditukar 2026-06-12 |
 | Compact mode Ujian Dalaman | ⏳ BACKLOG | Bar 28px, 6 kad belum muat satu halaman |
 | LinkedIn setup + dokumentasi | ⏳ BACKLOG | |
 
