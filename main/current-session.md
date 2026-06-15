@@ -4,7 +4,7 @@
 ## Session RAM Status
 **Current Session**: Updated
 **Last Activity**: 2026-06-15
-**Session Focus**: mypwa-v2 — OMR Scanner Bug Fixes (anchor detect + bubble reading) ⏳ DI TEST BRANCH, pending master test staging
+**Session Focus**: mypwa-v2 — OMR Scanner Bug Fixes (anchor + bubble + bingkai A4) ✅ LIVE PRODUCTION (merge main 7d1755c)
 
 ## 💭 Working Memory (RAM)
 
@@ -27,8 +27,13 @@
      - Punca: bila anchor atas keluar frame, algoritma pilih dot bubble sebagai anchor palsu → mapping rosak → markah salah tanpa amaran (bahaya untuk guru).
      - Fix: guard saiz seragam dalam `detectAnchors` — tolak kalau 4 anchor ratio saiz > 3.5 (_found = -2). Mesej baru: "Borang tak masuk penuh dalam bingkai."
 
+  4. **Bingkai panduan nisbah A4** (commit `4f5daf9`):
+     - Master perasan bingkai putus-putus terlalu panjang utk A4. Punca: `#guideBox` guna 80%x80% saiz video → nisbah ikut kamera.
+     - Fix: CSS `aspect-ratio:210/297` + center + max-width 90%. Visual sahaja, detection tetap scan seluruh frame.
+
   - **Pengajaran:** gejala sama ("markah salah") boleh ada 2 punca berbeza (geometri + threshold). Kumpul data brightness sebenar → buktikan punca, bukan teka.
-  - **Pending:** master nak test di staging (scan penuh + sengaja terpotong). Kalau OK → merge ke main.
+  - **Status:** SEMUA 3 fix dah merge main `7d1755c` → LIVE PRODUCTION. Anchor tak perlu dalam bingkai putus-putus (scan seluruh frame); bingkai = panduan zon selamat sahaja.
+  - **Detail penuh:** mypwa-v2/CLAUDE.md → section "OMR Scanner — Bug Fixes Detection (2026-06-15)".
 
 ### Session Recap (Lama)
 
