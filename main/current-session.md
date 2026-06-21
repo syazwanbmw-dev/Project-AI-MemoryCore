@@ -4,11 +4,23 @@
 ## Session RAM Status
 **Current Session**: Updated
 **Last Activity**: 2026-06-21
-**Session Focus**: mypwa-v2 — Tukar masa Log Audit ke format 24-jam ✅ LIVE PRODUCTION (merge main 0ff490a)
+**Session Focus**: sistem-olahraga — Plan reset password sekolah (superadmin) ✅ SPEC + PLAN SIAP, belum execute
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
+
+- **Sesi 2026-06-21 petang: sistem-olahraga — Plan Reset Password Sekolah** ⏳ SPEC + PLAN SIAP, BELUM EXECUTE
+
+  Master perasan superadmin TAK BOLEH reset password akaun sekolah (sub_admin) bila admin sekolah lupa password. Gap sebenar SaaS multi-tenant — satu-satunya jalan sekarang = padam sekolah (hilang data) atau edit SQL manual.
+
+  - **Keputusan reka bentuk (master pilih):** (1) superadmin taip password baru sendiri, (2) sub_admin sahaja, (3) dropdown senarai sub_admin (perlu endpoint GET).
+  - **Design:** 2 endpoint baru dalam `src/index.js` — `GET /api/superadmin/sekolah/sub-admin` + `PATCH /api/superadmin/admin/reset-password` (guard 3 lapis: id_pengguna + id_sekolah + peranan='sub_admin'; hash PBKDF2; validasi min 6 aksara). UI dalam modal "Urus Sekolah" sedia ada (dropdown + password + toggle 👁).
+  - **Prinsip:** KISS & DRY — guna corak sedia ada (`apiFetch`, `hashPassword`, `serverError`, `selectedTenantId`). Tiada migration/package baru.
+  - **Spec:** `docs/superpowers/specs/2026-06-21-reset-password-sekolah-design.md` (commit `fa51bd3`)
+  - **Plan:** `docs/superpowers/plans/2026-06-21-reset-password-sekolah.md` (commit `dfa545f`) — 5 task bite-sized.
+  - **NEXT:** master pilih cara execute (subagent-driven disyorkan / inline). Branch `test`.
+  - **Nota repo:** ujian E2E lawan staging (BASE_URL=staging worker, superadmin `dragon`/`f4994`), bukan localhost. Superadmin boleh ada >1 sub_admin per sekolah.
 
 - **Sesi 2026-06-21 tengah hari: Masa Log Audit → format 24-jam** ✅ LIVE PRODUCTION (merge main `0ff490a`)
 
