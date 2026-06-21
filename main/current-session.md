@@ -3,12 +3,35 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-06-15
-**Session Focus**: mypwa-v2 — OMR Scanner Bug Fixes (anchor + bubble + bingkai A4) ✅ LIVE PRODUCTION (merge main 7d1755c)
+**Last Activity**: 2026-06-21
+**Session Focus**: mypwa-v2 — Tukar masa Log Audit ke format 24-jam ✅ LIVE PRODUCTION (merge main 0ff490a)
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
+
+- **Sesi 2026-06-21 tengah hari: Masa Log Audit → format 24-jam** ✅ LIVE PRODUCTION (merge main `0ff490a`)
+
+  Sambungan dari fix timezone semalam. Master nak masa dipapar dalam sistem 24-jam (bukan PG/PTG).
+
+  - **Fix (`admin.html:1484`):** tambah `hour12:false` dalam options `toLocaleString`. Display-only — logik penukaran UTC→MYT (`replace(' ','T') + 'Z'`) kekal tak berubah.
+  - **Kesan:** `11:41 PG` → `11:41` · `4:45 PTG` → `16:45` · tengah malam → `00:xx`.
+  - **Pengajaran:** `toLocaleString('ms-MY', ...)` default 12-jam (PG/PTG). Untuk 24-jam guna `hour12:false`. Format paparan terasing dari logik pengiraan masa.
+  - Pipeline: Code → Playwright 8/8 PASS → commit-seal (wrangler dry-run CLEAN) → push test `e452827` → master confirm staging → merge main `0ff490a`.
+  - **Backlog dicadang:** audit tempat lain yang papar `created_at` — mungkin ada bug timezone/format serupa (BELUM buat).
+
+- **Sesi 2026-06-21 malam: Fix Masa Log Audit → MYT** ✅ LIVE PRODUCTION (merge main `230dfb0`)
+
+  Masalah: master perasan masa log masuk dalam Log Audit (admin.html) salah — tersasar 8 jam.
+
+  - **Punca:** SQLite `CURRENT_TIMESTAMP` simpan UTC format `"YYYY-MM-DD HH:MM:SS"` (guna space, tiada `Z`/penanda zon). String non-ISO macam ni ditafsir `new Date()` sebagai waktu TEMPATAN, bukan UTC. Jadi walaupun `toLocaleString` dah ada `timeZone:'Asia/Kuala_Lumpur'`, input ke `new Date()` dah salah sebelum penukaran zon — hasilnya papar nilai UTC mentah.
+  - **Fix (`admin.html:1484`):** `new Date(row.created_at.replace(' ', 'T') + 'Z')` — normalize ke ISO UTC dulu (`"2026-06-20T16:22:00Z"`), baru `toLocaleString` tukar +8 ke MYT betul.
+  - **Bukti:** 16:22 UTC → sebelum fix papar 04:22 PTG (salah), selepas fix papar 12:22 PG = 00:22 MYT (betul).
+  - **Display-only:** DB tak diubah, data audit lama terus betul, tiada migration.
+  - **Pengajaran:** `new Date()` pada string SQLite UTC (space-separated, tiada Z) = ditafsir local time. Sentiasa normalize ke ISO+`Z` sebelum tukar zon. Pattern ni mungkin ada di tempat lain yang papar `created_at` — patut audit masa depan.
+  - Commits: `acbb3ac` (test) → merge main `230dfb0`. Playwright 8/8 PASS, wrangler dry-run CLEAN.
+
+### Session Recap (Lama)
 
 - **Sesi 2026-06-14/15: OMR Scanner — 3 Bug Fixes** ⏳ TEST BRANCH (belum merge main)
 
@@ -80,8 +103,8 @@
 - Staging DB: `f87c8bbc-77a5-4d57-88d1-284195de437f`
 - Production URL: `erpm-sksalor.celikguru.my`
 - Staging URL: `https://mypwa-v2-staging.syazwan-skpp82.workers.dev`
-- Latest commit main: `ad1015e` (merge — iPad bug fixes live)
-- Latest commit test: `d1292b2` (comprehensive iOS sidebar fix)
+- Latest commit main: `0ff490a` (merge — Log Audit 24-jam live)
+- Latest commit test: `e452827` (Log Audit 24-jam)
 - Playwright test credentials: TEST_USER=test TEST_PASSWORD=test123
 - Migration 024 applied ke staging + production ✅
 - AppScript secrets: APPSCRIPT_URL + APPSCRIPT_SECRET (wrangler secrets)
