@@ -4,7 +4,7 @@
 ## Session RAM Status
 **Current Session**: Updated
 **Last Activity**: 2026-06-22
-**Session Focus**: mypwa-v2 — Drag susun kedudukan dokumen (Tab Dokumen) ✅ SEALED + PUSHED test (f9771e4), staging live. PENDING: master verify staging → merge main (+ apply migration 025 ke prod DB)
+**Session Focus**: mypwa-v2 — Drag susun kedudukan dokumen ✅ LIVE PRODUCTION (merge main 8a4cc86) + CI auto-deploy production FIXED
 
 ## 💭 Working Memory (RAM)
 
@@ -23,7 +23,9 @@
   - **Test:** `tests/dokumen.spec.js` baru (assert draggable + handle ≡ + #panduanAdminPg count 0). Suite penuh 9/9 PASS lawan staging (a11y flake ERR_NETWORK_CHANGED sekali, re-run hijau).
   - **Credentials staging admin:** `admin` / `fcoy4994` (sama dengan production).
   - **Spec:** `docs/superpowers/specs/2026-06-22-drag-susun-dokumen-design.md`. **Plan:** `docs/superpowers/plans/2026-06-22-drag-susun-dokumen.md`.
-  - **Commits test:** `6ad926e`→`f9771e4`. Latest test = `f9771e4` (sebelum: e452827).
+  - **Commits test:** `6ad926e`→`f9771e4`. Merge main = `a953d20` (feature) → `8a4cc86` (ci fix).
+  - **✅ DEPLOY PRODUCTION (master confirm browser):** migration 025 applied prod DB (`d1 execute`, 9 dokumen backfill 1-9). Merge main + deploy production manual (wrangler, Version b5a8e426). Feature DISAHKAN LIVE oleh master dalam browser (erpm-sksalor.celikguru.my). ⚠️ Mesin master tak boleh curl/Playwright ke worker semasa sesi (HTTP 000/SSL err — rangkaian local flapping); verify via wrangler API + browser master sahaja.
+  - **✅ CI FIX (penting — pengajaran):** GitHub Actions auto-deploy PRODUCTION gagal (staging OK). Punca: (1) secret `CLOUDFLARE_API_TOKEN` lama kurang permission **Zone: Workers Routes Edit + Zone Read** untuk `celikguru.my` — production ada custom route `erpm-sksalor.celikguru.my/*`, staging tiada route jadi tak terjejas; (2) `cloudflare/wrangler-action@v3` telan output error. **Fix:** master jana token baru guna template "Edit Cloudflare Workers" + include zone celikguru.my; tukar step production `deploy.yml` dari wrangler-action → `run: npx wrangler deploy --env production` (env CLOUDFLARE_API_TOKEN+ACCOUNT_ID) supaya error nampak penuh. Hasil: run main `8a4cc86` HIJAU. Push main akan datang auto-deploy production OK.
 
 - **Sesi 2026-06-21 petang: sistem-olahraga — EXECUTE Reset Password Sekolah** ✅ KOD SIAP, SEALED, DEPLOY STAGING(-test). PENDING master verify manual → merge main
 
