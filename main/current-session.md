@@ -3,14 +3,53 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-06-21
-**Session Focus**: sistem-olahraga — Plan reset password sekolah (superadmin) ✅ SPEC + PLAN SIAP, belum execute
+**Last Activity**: 2026-06-22
+**Session Focus**: mypwa-v2 — Drag susun kedudukan dokumen (Tab Dokumen) ✅ SEALED + PUSHED test (f9771e4), staging live. PENDING: master verify staging → merge main (+ apply migration 025 ke prod DB)
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
 
-- **Sesi 2026-06-21 petang: sistem-olahraga — Plan Reset Password Sekolah** ⏳ SPEC + PLAN SIAP, BELUM EXECUTE
+- **Sesi 2026-06-22 tengah hari: mypwa-v2 — Drag Susun Kedudukan Dokumen** ✅ SEALED, PUSHED test, staging live. PENDING master verify → merge main.
+
+  Master nak admin boleh drag-and-drop susun kedudukan dokumen dalam Tab Dokumen (admin sahaja); susunan terpakai untuk paparan guru. Pipeline Kata penuh (brainstorm→spec→plan→subagent-driven→sight-hone/review→commit-seal→push). KISS & DRY.
+
+  - **Konteks penting:** "Tab Dokumen" = table `panduan` (id, nama, url, created_at). Admin urus di `admin.html` tab "Dokumen", guru tengok di `panduan.html`. Fail/route kekal nama `panduan` (bukan `dokumen`).
+  - **Keputusan reka bentuk (master pilih):** (1) buang pagination di admin (senarai penuh, drag bebas), (2) drag-and-drop native HTML5 (desktop), (3) guru view kekal pagination — auto ikut susunan baru. Tiada audit log untuk reorder.
+  - **Migration 025** (`025_panduan_urutan.sql`): `ALTER TABLE panduan ADD COLUMN urutan INTEGER` + backfill correlated-COUNT ikut `nama ASC` (preserve paparan). ⚠️ Framework `migrations apply` GAGAL pada staging (024 tak tracked, duplicate column tarikh_tutup) → apply terus guna `d1 execute --file`. Sama isu akan berlaku utk production — apply 025 guna `d1 execute` masa merge main.
+  - **Backend** (`src/routes/panduan.js`): GET `ORDER BY urutan ASC, id ASC` + sokong `?all=1` (admin-gated, semua rekod tanpa LIMIT); POST set `urutan = MAX+1`; endpoint baru `PUT /api/panduan/urutan` (adminOnly, body `{ids:[]}`, validate Number.isInteger, `db.batch()`) — WAJIB daftar SEBELUM `PUT /:id`.
+  - **Frontend admin** (`public/admin.html`): buang pagination (#panduanAdminPg, _panduanPage), `loadPanduanAdmin()` no-arg guna `?all=1`, baris `draggable` + handle ≡, fungsi `initPanduanDrag/renumberPanduan/saveUrutanPanduan`. Guru `panduan.html` tiada perubahan.
+  - **Review (Opus) finding Important:** `?all=1` asalnya tak admin-gated → Lucy tambah guard `c.get('user').role !== 'ADMIN' → 403` (commit f9771e4). Minor (drag-luar-table tak persist, test smoke-only, whole-row draggable) — deferred, acceptable.
+  - **Test:** `tests/dokumen.spec.js` baru (assert draggable + handle ≡ + #panduanAdminPg count 0). Suite penuh 9/9 PASS lawan staging (a11y flake ERR_NETWORK_CHANGED sekali, re-run hijau).
+  - **Credentials staging admin:** `admin` / `fcoy4994` (sama dengan production).
+  - **Spec:** `docs/superpowers/specs/2026-06-22-drag-susun-dokumen-design.md`. **Plan:** `docs/superpowers/plans/2026-06-22-drag-susun-dokumen.md`.
+  - **Commits test:** `6ad926e`→`f9771e4`. Latest test = `f9771e4` (sebelum: e452827).
+
+- **Sesi 2026-06-21 petang: sistem-olahraga — EXECUTE Reset Password Sekolah** ✅ KOD SIAP, SEALED, DEPLOY STAGING(-test). PENDING master verify manual → merge main
+
+  Master pilih execute plan reset password sub_admin. Semua 5 task siap:
+  - **Backend** (`src/index.js` selepas line 2952): `GET /api/superadmin/sekolah/sub-admin` + `PATCH /api/superadmin/admin/reset-password`. Guard 3 lapis (id_pengguna+id_sekolah+peranan='sub_admin') dalam SELECT & UPDATE; validasi min 6 aksara (FE+BE); hash PBKDF2; GET tak dedah hash. Commit `1ccbe72`.
+  - **Frontend**: seksyen "Reset Password Sub Admin" dalam modal Urus (`superadmin.html`) + logik `muatSubAdmin`/handler reset+toggle 👁 (`superadmin.js`). ID sebenar: `#urus-pilih-subadmin`, `#urus-password-baharu`, `#btn-toggle-password`, `#btn-reset-password-subadmin`. Commit `3ae75be`.
+  - **Ujian**: test 16 ditambah dalam `tests/e2e.spec.js` (gitignored — lokal sahaja, TAK masuk repo). Guna `16` sebab `07` dah dipakai. Assertion utama = kewujudan elemen (deterministik).
+  - **Pipeline**: sight-hone CLEAR → commit-seal SEALED (17 ujian sedia ada PASS, wrangler dry-run clean) → push test `3ae75be`.
+  - **⚠️ PENEMUAN ENV (penting):** CI deploy push `test` → worker **`sistem-olahraga-sekolah-test`** (db `olahraga-test`). Kod baru DAH live di situ (marker disahkan). TAPI `BASE_URL` ujian + login `dragon`/`f4994` hanya jalan di worker **top-level** `sistem-olahraga-sekolah` (= production, db `olahraga-db`, domain `atletik.celikguru.my`). Db `olahraga-test` nampaknya tiada seed superadmin → ujian automatik & verify tak boleh jalan di `-test`. Ujian 16 'gagal' bukan sebab bug — sebab poll worker salah.
+  - **Staging -test URL:** https://sistem-olahraga-sekolah-test.syazwan-skpp82.workers.dev
+  - **✅ SEED + VERIFY (2026-06-21 petang lewat):** db `olahraga-test` tiada superadmin (sa_cred=0) → Lucy seed `superadmin_credentials` (id=1, username='dragon', password=hash PBKDF2 'f4994') via `wrangler d1 execute olahraga-test --remote`. Hash dijana guna Node webcrypto (params sama: salt 16B, 100000 iter, SHA-256, format `pbkdf2:salt:hash`). Login `-test` kini BERJAYA (peranan super_admin).
+  - **VERIFIKASI PENUH lawan -test:** (1) Test 16 Playwright PASS. (2) E2E API: GET sub-admin→reset→login password baru `success=True peranan=sub_admin` (sekolah aktif NBA3003). (3) Guard 404 disahkan utk id bukan sub_admin. Feature FUNCTIONAL end-to-end.
+  - **⚠️ DATA TEST DIUBAH semasa verify:** password 2 sub_admin di olahraga-test kini = `ujian123` → `nba3003` (NBA3003, aktif) & `xba3202` (XBA3203, tak aktif). Master boleh reset balik kalau perlu.
+  - **Cadangan Lucy:** BASE_URL ujian patut tuding ke worker `-test` (bukan top-level=production) untuk CI hygiene. Sekarang dikekalkan asal (top-level) — keputusan master. olahraga-test = 7 sekolah, 7 sub_admin.
+  - **✅ MERGE MAIN (master confirm):** merge test→main `8c5296c` (4 commit: spec, plan, backend, frontend). Push main → GitHub Actions deploy production. DISAHKAN LIVE: marker `urus-pilih-subadmin` ada di workers.dev + `atletik.celikguru.my`; endpoint GET+PATCH pulang 401 (terdaftar, perlu auth). FEATURE LIVE PRODUCTION.
+  - **Main commit baru:** `8c5296c` (lama: `1be6002`).
+  - **✅ SECURITY REVIEW + FIX (2026-06-21 petang, main `2ae8785`):** master minta semak credential hardcoded terdedah di frontend.
+    - Imbasan `public/`: TIADA API key/JWT/token pihak ketiga. Jumpa 1 isu: `superadmin.html:144` ada `value="123456"` (default password lemah untuk daftar sub_admin, nampak dalam page source).
+    - **Fix opsyen 1:** buang `value="123456"` + tambah `required minlength="6"` + placeholder; label "Kata Laluan Lalai"→"Awal" (commit `d295d6e`). Backend `POST /api/superadmin/admin` tambah validasi `kata_laluan.length<6 → 400` (commit `4ed2d97`) — sepadan endpoint reset.
+    - **JWT_SECRET semakan:** DISET betul di production DAN env test (wrangler secret list) — bersama SUPERADMIN_USERNAME/PASSWORD. Fallback 'sila-tukar-secret-ini' tak pernah dipakai. SELAMAT.
+    - **Disahkan LIVE production:** frontend 123456 hilang + minlength ada; backend password 5-aksara → HTTP 400. Merge main `2ae8785`.
+  - **✅ FOLLOW-UP (2026-06-21 petang): 2 housekeeping selesai:**
+    1. Password `nba3003` + `xba3202` (olahraga-test) di-standard ke `1234` (asal hashed, tak boleh pulih — guna konvensyen test projek). Login nba3003/1234 disahkan berjaya.
+    2. `BASE_URL` ujian tukar ke worker `-test` (`sistem-olahraga-sekolah-test...`) untuk CI hygiene — fail `tests/e2e.spec.js` gitignored (lokal sahaja). Suite penuh 18/18 PASS lawan -test → admin_dba1097/1234, gb/1234 semua wujud di olahraga-test. -test kini staging berfungsi.
+
+- **Sesi 2026-06-21 petang (awal): sistem-olahraga — Plan Reset Password Sekolah** ✅ SPEC + PLAN SIAP (kini DAH EXECUTE, lihat atas)
 
   Master perasan superadmin TAK BOLEH reset password akaun sekolah (sub_admin) bila admin sekolah lupa password. Gap sebenar SaaS multi-tenant — satu-satunya jalan sekarang = padam sekolah (hilang data) atau edit SQL manual.
 
