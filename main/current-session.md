@@ -3,12 +3,128 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-06-22
-**Session Focus**: mypwa-v2 — Drag susun kedudukan dokumen ✅ LIVE PRODUCTION (merge main 8a4cc86) + CI auto-deploy production FIXED
+**Last Activity**: 2026-06-25 (pagi, ~11:09)
+**Session Focus**: ✅ mypwa-v2 — Buang Kedudukan Kelas & Keseluruhan dari slip cetak individu ✅ LIVE PRODUCTION (merge main `4fd9ada`, 2026-06-25 pagi). erpm-sksalor.celikguru.my. test `08bfb08`.
+
+### 🆕 Sesi 2026-06-25 (pagi): mypwa-v2 — Buang Kedudukan dari Slip Cetak Individu ✅ LIVE PRODUCTION
+**Apa:** Master minta buang **Kedudukan Kelas** + **Kedudukan Keseluruhan** dari slip cetak keputusan individu murid. Ranking KEKAL dipapar dalam table pivot tab laporan — cuma "hide" dari slip cetak sahaja.
+- **Fail:** `public/laporan-ujian.html` — fungsi `buildSlipHTML()`. Buang 2 baris display (`<div>Kedudukan Kelas...`, `<div>Kedudukan Keseluruhan...`) dalam `.stats-section` (tinggal Purata Markah sahaja) + buang 2 pembolehubah yatim `rankKelasStr`/`rankKeselStr`. **1 fail, 4 baris dibuang, 0 backend, 0 migration.**
+- **KEKAL tak diusik:** fungsi `kiraRankingSlip()` — sebab ia masih kira `purata`. Objek `rank` masih ada field rankKelas/rankKesel tapi tak dipakai display (KISS, kos buang tinggi). Table pivot tab laporan render di fungsi berasingan → ranking di skrin tak terjejas.
+- **Pipeline (task kecil):** Code → refine (grep clean, tiada rujukan yatim) → commit-seal (wrangler dry-run BERSIH, 18 assets) → push test `08bfb08`.
+- **Deploy:** master confirm staging OK → merge test→main `--no-ff` (`fe77e63..4fd9ada`) → push main → GitHub Actions auto-deploy production. Frontend sahaja.
+- **Nota git:** ff-only gagal sebab main kumpul 22 merge commit "Merge branch 'test'" yang test tiada (test = branch linear, main = integrasi). Guna `--no-ff` ikut corak sejarah. Kandungan sebenar 1 fail/4 baris, merge auto tanpa konflik.
+
+### 🆕 Sesi 2026-06-25 (malam): sistem-olahraga — Slider Penilaian Hakim ⏳ STAGING, PENDING VERIFY
+**Apa:** Tukar input markah hakim (page penilaian) dari **5 butang toggle (1–5)** → **slider native 0–20** setiap kriteria (slide/drag, mesra-sentuh telefon). Markah penuh/kriteria 5 → 20 (jumlah max auto = bilangan kriteria × 20).
+- **Keputusan brainstorm (master pilih):** (1) granularity = nombor bulat 0–20 (`step=1`); (2) makna 0 = belum nilai, gate butang Hantar KEKAL (semua kriteria mesti > 0); (3) Pendekatan A = `<input type="range">` native (bukan custom drag); (4) tambah validasi julat backend.
+- **DRY (master minta):** konstan `MARKAH_PENUH = 20` dalam `hakim.js` = sumber tunggal frontend (skor max + slider markup). Backend `src/index.js` kekal literal `20` dgn komen cermin (tak kongsi merentas tier — kekal KISS).
+- **Fail disentuh:** `public/hakim.js` (slider render + event + reset, −31 baris lebih ringkas), `public/hakim.html` (CSS slider, buang CSS radio lama), `src/index.js` (validasi `POST /api/hakim/markah`). **0 migration, 0 package, 0 ubah skema.** Backend simpan total sahaja (`markah_penilaian.markah`).
+- **Backend validasi:** kira bilangan kriteria aktif dari DB → max = ×20; tolak markah bukan integer / null / <1 / > max / id_rumah kosong / pertandingan tiada kriteria. Server jadi sumber kebenaran julat (tutup jurang sedia ada).
+- **Pipeline:** brainstorm → spec → plan (+revise DRY) → subagent-driven (3 implementer + final whole-branch review). Final review: SPEC ✅ KUALITI Approved, 2 Important (id_rumah + markah<1) dah fix.
+- **Spec:** `docs/superpowers/specs/2026-06-25-slider-penilaian-hakim-design.md`. **Plan:** `docs/superpowers/plans/2026-06-25-slider-penilaian-hakim.md`.
+- **Commits test (push):** `236abda` (backend) → `474ba4f` (slider js) → `4e66a32` (css) → `7e7c66a` (fix) → `be8ccce` (filled track warna). Base sebelum kerja = `657ff9b` (docs). Branch `test`, BELUM merge main.
+- **🔨 FORGE (2026-06-25 pagi):** Rule **R2** ditambah dalam `~/.claude/mulahazah/rules.md` — guna `100dvh` (bukan `100vh`) untuk page full-height pada phone, susunan `height:100vh; 100dvh` (dvh menang). Origin: bug `100vh` muncul 2 kali (iPad sidebar mypwa-v2 + hakim.html butang Hantar). Diluluskan master manual. (rules.md = fail tempatan, bukan git, auto-load via mulahazah.)
+- **🆕 Fix#2 (2026-06-25 pagi):** master report butang Hantar tersorok di phone (terlalu ke bawah). Punca: `hakim.html` baris 76 `#main-app style="height:100dvh; height:100vh"` — `100vh` (terakhir) MENANG → container lebih tinggi dari viewport nampak, footer `absolute bottom-0` tersorok di sebalik toolbar browser. Fix: tukar susunan → `100vh; 100dvh` (100dvh menang, fallback 100vh). 1 baris, `public/hakim.html`. Sama pattern iPad bug memory (100vh≠visible). Push test `19ce4c7`. ⏳ master verify phone.
+- **🆕 Fix#1 (2026-06-25 pagi):** master report slider tak warnakan ruang 0→nilai. Punca: WebKit (Chrome/Safari/mobile) tiada filled track native (`::-moz-range-progress` Firefox-only). Fix: helper `warnaSlider()` dalam `hakim.js` set `linear-gradient` inline ikut `value/MARKAH_PENUH`, panggil di 4 tempat (render, input, reset-belum-pilih-rumah, resetBorang). 1 fail (`public/hakim.js`), 0 CSS. SEALED (wrangler dry-run CLEAN, node --check OK, Playwright skip=visual) → push test `be8ccce`. ⏳ master verify staging.
+- **Staging:** `https://sistem-olahraga-sekolah-test.syazwan-skpp82.workers.dev` (login hakim → page penilaian).
+- **⚠️ NEXT (esok 2026-06-25):** master test sendiri di staging (slider + hantar markah). Kalau OK → master bagi isyarat → Lucy merge test→main (auto-deploy production `atletik.celikguru.my`). Playwright TAK dijalankan (perlu sandbox-disabled + izin master).
+
+### 🏁 Ringkasan Akhir Sesi (2026-06-24 pagi)
+Feature **Cetak Markah dari Page Keputusan** (mypwa-v2) — siap, dipoles, teruji, live production.
+- **Apa:** butang Cetak dalam `ujian.html` → helaian A4 markah subjek (header sekolah + nama ujian/kelas/tahun, jadual Bil·Nama·Markah·Gred + ringkasan gred + purata/min/max). Boleh cetak ujian yang dah ditutup (mod baca-sahaja).
+- **Kos:** 1 fail frontend (`public/ujian.html`) + 1 test. **0 backend, 0 migration, 0 page baru.**
+- **Pengesahan:** self-review → wrangler dry-run → Playwright E2E suite **10/10 PASS** (mod sandbox-disabled, izin master) → master confirm browser + phone.
+- **Commits main:** `d5c0dd9` (feature + buang Markah Penuh) → `cdd4061` (UI polish: butang seragam navy + buang garis kelabu mobile).
+- **Memory baru:** `feedback_sandbox_mode.md` (mod khas guna izin dulu). Diary: 3 entri dalam `daily-diary/current/2026-06-24.md`.
+- **Status:** TIADA kerja tertunggak untuk feature ni. Backlog "Compact mode Ujian Dalaman" ✅ DISELESAIKAN (cara lain — preset zoom, bukan compact mode).
+
+**Tambahan (~11:31):** Backlog "Compact mode Ujian Dalaman" diselesaikan — bukan dengan compact mode, tapi **preset `zoom:0.88` + max 6 kad/halaman** dalam cetak analisis dashboard (`cetakSekyen` + `cetakAnalisis3`, helper `binaKadGrid`). Master test print preview OK → merge main `519bf0a`. LIVE PRODUCTION.
+
+**Tambahan (~11:40):** Cetak analisis dashboard — border card + label `.sub` + tagline `.hdr p` kelabu pucat (#e2e8f0/#64748b) → hitam `#1e293b` (seragam dgn nama sekolah/garis header). Master confirm print preview OK → merge main `fe77e63`. LIVE PRODUCTION. **Latest main = `fe77e63`.**
+
+**💡 Backlog dicadang Lucy (belum buat):** satu pass semakan page cetak lain (laporan-ujian slip, pajsk, laporan RPM) untuk teks/border pucat serupa — master belum putuskan.
+
+---
+
+### 🆕 PROJEK BARU (2026-06-24 petang): Chrome Extension — Import PAJSK → IDMe KPM ⏳ BRAINSTORM (belum execute)
+
+**Idea master:** Chrome extension untuk cikgu pindah data dari Tab PAJSK (eNilai/mypwa-v2) ke laman KPM `https://idme.moe.gov.my/login`. Alat produktiviti sah — cikgu pindah data sendiri (yg wajib hantar KPM) lebih pantas, akaun + data sendiri.
+
+**Keputusan brainstorm setakat ni (via soalan):**
+- **Q1 IDMe:** taip satu-satu (borang per murid/aktiviti), TIADA upload pukal → extension auto-isi justified.
+- **Q2 Cara isi:** SEPARA-AUTO — extension isi semua medan, CIKGU tekan Hantar sendiri (selamat + lembut ToS).
+- **Q3 Sumber data:** baca tab eNilai yg terbuka (tiada backend/token/CORS, guna sesi login sedia ada).
+- **Q4 Interaksi:** cikgu KLIK rekod dari panel extension → isi borang IDMe yg terbuka (bukan auto-padan murid).
+
+**Pendekatan dicadang (tunggu master pilih):**
+- **A ⭐ (Lucy syor):** MV3 Side Panel + eNilai PAJSK page tambah blok JSON tersembunyi (frontend sahaja) utk extension baca data bersih. 2 content script (baca eNilai + isi IDMe) + service worker. Kebal, kemas.
+- **B:** Panel terapung + korek (scrape) table eNilai. Tak sentuh eNilai tapi rapuh.
+
+**⚠️ Kebergantungan utama:** bahagian isi borang IDMe perlu PETA MEDAN (field mapping) — master kena bagi struktur borang IDMe (screenshot + inspect element), sebab Lucy tak boleh log masuk laman KPM. Bina berperingkat (config boleh-ubah).
+
+**✅ BRAINSTORM + SPEC + PLAN SELESAI (2026-06-24 petang):** Master pilih Pendekatan A + edaran 2 fasa (unpacked → Web Store Unlisted). Repo baru `C:\Users\user\Documents\code\idme-pajsk-ext` (git init, branch master). Spec commit `ca3abcc`, Plan commit `890821f`.
+- **Spec:** `idme-pajsk-ext/docs/superpowers/specs/2026-06-24-extension-pajsk-idme-design.md`
+- **Plan:** `idme-pajsk-ext/docs/superpowers/plans/2026-06-24-extension-pajsk-idme.md` — 8 task TDD.
+- **Bentuk data eNilai disahkan** (pajsk.html renderLaporan, `_lLastData.list`): rekod ada `nama_murid, nama_kelas, kategori, nama_aktiviti, peringkat, pencapaian, catatan, drive_link, nama_sesi`. Blok JSON `#pajsk-export` (Task 3) dalam mypwa-v2.
+- **Urutan:** Task 1,2,5 boleh mula serta-merta (tulen, tiada external); 3-4 perlu eNilai; 6 perlu 5 (uji lawan mock-idme.html); **Task 7 GATED** — master kena inspect borang IDMe sebenar bekal selector. Task 8 sedia Web Store.
+- **Ujian:** Node built-in `node --test` (TIADA npm package — hormat pantang). Fail `lib/*.js` dual-mode (content script + require).
+- **NEXT:** master pilih cara execute (subagent-driven / inline / work-plan). Boleh siapkan Task 1-6 tanpa tunggu IDMe.
 
 ## 💭 Working Memory (RAM)
 
 ### Session Recap (For AI Restart)
+
+- **Sesi 2026-06-24 pagi: mypwa-v2 — Cetak Markah dari Page Keputusan (REVISI penempatan)** ✅ SELESAI & LIVE PRODUCTION (main `cdd4061`), teruji E2E 10/10, master confirm browser + phone
+
+  Master revise plan "Cetak Markah Subjek" semalam. **Tukar penempatan:** buang idea page baru `markah-subjek.html` → letak butang **Cetak terus dalam `ujian.html` (page Keputusan)**.
+
+  - **Keputusan master (via revise):** (1) butang Cetak dalam ujian.html, bukan page baru; (2) skop = satu kelas+subjek dipapar (buang "Semua Kelas Saya"); (3) KENA boleh cetak ujian DITUTUP; (4) kandungan = jadual + ringkasan gred + purata/min/max; (5) header = logo+nama sekolah, nama ujian, kelas, tahun.
+  - **Penemuan teknikal:** `GET /ujian` (tanpa `?input=1`) DAH pulangkan semua ujian utk guru termasuk tutup (`src/routes/ujian.js:12-13` — where kosong). Jadi cuma tukar `/ujian?input=1`→`/ujian`. **0 baris backend, tiada migration, tiada page baru.**
+  - **Fail disentuh:** `public/ujian.html` (6 suntingan: endpoint, ujianMap, detect tutup, mod baca-sahaja `terapkanModTutup()`, butang #btnCetak, `cetakMarkah()`+`kiraGredCounts()`). BARU `tests/cetak-markah.spec.js`. Spec+plan dikemas (revisi). `.gitignore` tambah `.superpowers/`.
+  - **Mod baca-sahaja:** ujian tutup → input markah disable + Simpan disorok + nota 🔒, Cetak kekal aktif (markah tersimpan tetap boleh cetak). Elak guru Simpan ke ujian tutup (backend tolak 403).
+  - **Ringkasan gred + purata dikira CLIENT-SIDE** dari markahMap/tdMap guna appKiraGred() — tiada panggil /analisis (DRY, elak ownership-gate).
+  - **Pipeline:** Code → sight-hone(self) CLEAR → wrangler dry-run BERSIH → commit-seal → push test. Commit `0bcf380` (test). Push a7b6950→0bcf380.
+  - **⚠️ TAK DAPAT run Playwright:** sandbox Bash tiada network keluar (curl github.com pun code=000). Verify E2E TERTANGGUH — master kena uji di browser.
+  - **✅ MASTER VERIFY STAGING OK → MERGE MAIN:** master confirm staging OK (+ minta buang 'Markah Penuh: 100' dari baris sub cetak, commit `164dda3`). Merge test→main `d5c0dd9` (8a4cc86→d5c0dd9), push main → GitHub Actions auto-deploy production (frontend sahaja, tiada migration). Commits feature: 0bcf380 (cetak) + 164dda3 (buang markah penuh).
+  - **✅ MASTER CONFIRM PRODUCTION OK (2026-06-24 pagi):** ujian.html → Cetak berfungsi live di production. Diary disimpan (daily-diary/current/2026-06-24.md). E2E Playwright suite penuh 10/10 PASS (guna mod sandbox-disabled dgn izin master — lihat feedback_sandbox_mode.md).
+  - **✅ UI POLISH (2026-06-24 ~10:19):** master report 2 isu dari phone — (1) butang Cetak vs Simpan tak konsisten saiz/warna; (2) garis kelabu td tak align dalam kad mobile. Fix: Cetak btn-ghost→btn-primary (master pilih dua-dua navy solid saiz sama); mobile media query `#muridTable td{border-top:none}` (punca = global `td{border-top}` app.css:209 bocor ke layout flex card). Commit test `2ad3414` → master confirm phone OK → merge main `cdd4061`. LIVE PRODUCTION. FEATURE + POLISH SELESAI.
+
+- **Sesi 2026-06-23 petang/malam: mypwa-v2 — Cetak Markah Subjek Saya (SPEC + PLAN SIAP, BELUM execute)** ⏳ NEXT: execute esok
+
+  Seorang cikgu minta boleh cetak markah Ujian Dalaman yang direkod — **tapi subjek dia sahaja**. Page sedia ada `laporan-ujian.html` papar pivot SEMUA subjek, jadi cikgu tak boleh cetak helaian subjek dia seorang.
+
+  - **Keputusan reka bentuk (master pilih via brainstorm):**
+    1. Jenis = **Markah Ujian Dalaman** (markah nombor + gred), BUKAN RPM/TP.
+    2. Skop = boleh pilih **satu kelas** ATAU **semua kelas cikgu ajar**.
+    3. Isi helaian = **Bil · Nama · Markah · Gred** + **ringkasan gred** (bilangan per gred + purata/min/max). TIADA ranking, TIADA ruang tandatangan.
+    4. Penempatan = **page baru khas** `public/markah-subjek.html` (bukan ubah laporan-ujian.html).
+    5. "Semua Kelas Saya" = **page-break per kelas** (setiap kelas helaian berasingan + ringkasan sendiri, Bil mula semula 1).
+  - **Penemuan teknikal penting:** data DAH WUJUD lewat endpoint sedia ada — **tiada backend baru, tiada migration**:
+    - `/api/ujian-markah/jadual?ujian_id=` → kelas+subjek cikgu (kunci skop "subjek dia", tapis ikut jadual_guru)
+    - `/api/ujian-markah/murid?ujian_item_id=&kelas_id=` → murid+markah+is_td
+    - `/api/ujian-markah/analisis?ujian_id=&subjek_id=&kelas_id=` → counts per gred + gredScale + markah_penuh
+    - `appKiraGred()` (app.js shared) untuk gred; `/api/tetapan` untuk header cetak
+    - `GET /api/ujian` (tanpa `?input=1`) → guru nampak SEMUA ujian termasuk yang DITUTUP (boleh cetak markah lepas peperiksaan tamat)
+  - **Fail disentuh:** BARU `public/markah-subjek.html` + BARU `tests/markah-subjek.spec.js` + MODIFY `public/app.js` (1 link dalam guruLinks grup 'ujian').
+  - **Spec:** `docs/superpowers/specs/2026-06-23-markah-subjek-saya-design.md` (commit f6e6127)
+  - **Plan:** `docs/superpowers/plans/2026-06-23-markah-subjek-saya.md` (commit 95c48af) — 5 task bite-sized, kod konkrit penuh.
+  - **NEXT (ESOK 2026-06-24):** master pilih cara execute — **subagent-driven disyorkan** atau inline. Branch `test`.
+  - **Nota test:** page guru-only → test MESTI login GURU `TEST_USER=test TEST_PASSWORD=test123`. Bahagian render markah data-dependent → smoke test direka resilient (assert struktur + tiada JS error). Page perlu sampai staging dulu sebelum Playwright lawan staging sah (push test auto-deploy, atau guna `wrangler dev`).
+  - **Nota security (highlighted):** `/murid` & `/analisis` tiada ownership-gate (pre-existing, sama macam laporan-ujian.html). Page baru lebih ketat di UI. TAK diubah dalam kerja ni.
+  - **Commits test setakat ni (spec+plan sahaja, BELUM push):** 50441b7 (spec) → f6e6127 (spec perjelas) → 95c48af (plan). Kod BELUM ditulis.
+
+- **Sesi 2026-06-22 malam: Audit Memory Drift + Forge Rule R1 + Penjelasan erpm-v2** ✅ SELESAI (housekeeping, bukan kerja kod)
+
+  Master perasan session brief tunjuk status basi ("audit log belum execute" sedangkan dah live). Siasat → jumpa baris index MEMORY.md DRIFT dari realiti (kerja siap & merge main tanpa memo dikemaskini).
+
+  - **4 entry basi dibetulkan (semua disahkan via git):** (1) mypwa-v2 Audit Log Fasa 9 ✅ live main; (2) sistem-olahraga Arkib Tahunan ✅ live main (7 fasa, 76 is_arkib + 6 endpoint); (3) ADNI ✅ deploy main (main==test==db35628); (4) eRPM v2 — dijelaskan keliru folder.
+  - **Disahkan TEPAT (tak diusik):** BrightMe, celikguru vision, sistem asas olahraga.
+  - **Rule R1 di-forge** dalam `~/.claude/mulahazah/rules.md` (folder dicipta baru): verify status "pending/belum execute" dengan git SEBELUM percaya/papar dalam brief. Betulkan memo serta-merta bila jumpa drift.
+  - **erpm-v2 vs mypwa-v2 dijelaskan dalam memory:** mypwa-v2 = produk khas per-SEKOLAH (DIKEKALKAN, live, erpm-sksalor.celikguru.my). erpm-v2 = SaaS multi-tenant per-GURU (MASTER+GURU, self-register) — BELUM MULA (folder scaffolding sahaja, 1 commit, 0 fail kod, idle sejak 14 Apr). Plan: memory/projects/erpm-v2-plan.md.
+  - **⚠️ Security nota erpm-v2:** plan guna SHA-256 kosong — regresi vs PBKDF2 100k+salt projek lain. Bila execute, ikut PBKDF2.
+  - **Pengajaran teras:** memory ≠ realiti. Snapshot masa-lampau; status kerja berubah, memo tak auto-update.
+
+### Session Recap (Lama)
 
 - **Sesi 2026-06-22 tengah hari: mypwa-v2 — Drag Susun Kedudukan Dokumen** ✅ SEALED, PUSHED test, staging live. PENDING master verify → merge main.
 
@@ -148,7 +264,7 @@
 
 | Task | Status | Notes |
 |------|--------|-------|
-| Compact mode Ujian Dalaman | ⏳ BACKLOG | Bar 28px, 6 kad belum muat satu halaman |
+| Compact mode Ujian Dalaman | ✅ SELESAI (2026-06-24) | Diselesaikan cara lain: preset zoom:0.88 + max 6 kad/halaman (page-break) dalam cetak dashboard. Live main 519bf0a |
 | LinkedIn setup + dokumentasi | ⏳ BACKLOG | |
 
 ### Important Context
