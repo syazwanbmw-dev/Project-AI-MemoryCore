@@ -3,8 +3,19 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-06-26 (petang/malam, ~18:19)
-**Session Focus**: ✅ mypwa-v2 PELAWAT Drill-down Gred LIVE PRODUCTION (main `305b3e9`). Tab Analisis pelawat: klik gred dalam carta → modal senarai murid (nama, kelas, markah) ikut skop carta, susun kelas→markah rendah-tinggi (murid lemah dulu). Semua gred A-F+TD, kedua-dua mod (satu-subjek + Semua Subjek). Backend `/analisis` +`&detail=1` (pulang array murid, tanpa detail respons unchanged); frontend pelawat.html modal + helper esc(); smoke test. **0 migration, 0 route baru, 0 package.** Pipeline Kata penuh + subagent-driven 3 task + review opus ✅. ✅ MASTER SAHKAN PRODUCTION OK — drill-down berfungsi live erpm-sksalor.celikguru.my. TIADA kerja tertunggak.
+**Last Activity**: 2026-06-26 (petang/malam, ~19:17)
+**Session Focus**: ✅ mypwa-v2 PELAWAT — 2 perubahan kecil LIVE PRODUCTION (main `f44cfd4`). (1) Butang toggle detail card pelawat 'Sembunyi'→'Tutup'. (2) Progress bar ujian (pelawat + admin) kira **KELAS sebenar** yang lengkap (semua subjek × semua murid), bukan item/slot. **0 migration, 0 route, 0 package.** TIADA kerja tertunggak.
+
+### 🆕 Sesi 2026-06-26 (malam ~19:00): mypwa-v2 — Label 'Tutup' + Progress Bar Ikut Kelas Sebenar ✅ LIVE PRODUCTION (main `f44cfd4`)
+**Apa:** Dua perubahan pada paparan PELAWAT (sambung kerja drill-down petang tadi).
+- **Perubahan 1 — Label butang:** card ujian tab Progress, butang toggle detail 'Sembunyi'→'Tutup' (`pelawat.html` togglePelawatDetail). Komit awal `be1d69d`.
+- **Perubahan 2 — Progress bar kira kelas sebenar:** master report bar pening — kira ikut "item" (Tahun×Subjek) & 1 murid je dah dikira siap. Master pilih (via AskUserQuestion) kira ikut **kelas sebenar**, kelas lengkap = SEMUA subjek (item tahun itu) × SEMUA murid kelas tu bermarkah/TD.
+  - **PENTING (pengajaran):** mula-mula tersilap kira **slot subjek×kelas** (DIAGNOSTIK=12, padahal kelas cuma 3, item cuma 4). Master perasan "12 tu bukan kelas". Verify data sebenar DB → betulkan ke kelas sebenar. **Bukti > teka.**
+  - **SQL (`src/routes/ujian.js` query `/ujian`):** tambah `jumlah_kelas` (kelas ada murid yg tahunnya terlibat) + `kelas_lengkap` (`(bil_item_tahun × bil_murid) <= bil_markah_diisi`). Medan lama `item_diisi/jumlah_item` DIKEKALKAN (backward-compat).
+  - **Frontend:** `pelawat.html` + `admin.html` guna `kelas_lengkap/jumlah_kelas`, label "X / Y kelas lengkap", header admin "Progress Subjek"→"Progress Kelas". Detail view TAK diusik (master kata dah betul).
+- **Bonus fix test:** `pelawat.spec.js` semua gagal di login — bukan kod, app guna **clean URL `/pelawat`** tapi test tunggu `/pelawat.html`. Betulkan `waitForURL` ke regex `\/pelawat(\.html)?`. User pelawat staging = **PKP** (bukan 'pelawat'), creds via env var (lihat memory reference_mypwa_pelawat_test).
+- **Verify:** SQL diuji terus DB staging (6 & 3 kelas) + production (12 & 3, DIAGNOSTIK 100%). Playwright pelawat 5 passed/1 skip (sandbox-disabled, izin master). node --check OK.
+- **Commits test:** `be1d69d` (Tutup) → `298849a` (progress kelas + fix test) → `aa8b70b` (true-kelas SQL). **MERGE MAIN `f44cfd4`** (`305b3e9`..`f44cfd4`, --no-ff, 4 fail). Push main auto-deploy production. Tiada migration.
 
 ### 🆕 Sesi 2026-06-26 (petang/malam): mypwa-v2 PELAWAT — Drill-down Senarai Murid Mengikut Gred ✅ LIVE PRODUCTION
 **Masalah master:** dalam tab Analisis pelawat, carta cuma papar BILANGAN murid per gred — tak tahu SIAPA murid gagal (E/F), kelas mana, markah berapa.
@@ -306,9 +317,11 @@ Feature **Cetak Markah dari Page Keputusan** (mypwa-v2) — siap, dipoles, teruj
 - Staging DB: `f87c8bbc-77a5-4d57-88d1-284195de437f`
 - Production URL: `erpm-sksalor.celikguru.my`
 - Staging URL: `https://mypwa-v2-staging.syazwan-skpp82.workers.dev`
-- Latest commit main: `0ff490a` (merge — Log Audit 24-jam live)
-- Latest commit test: `e452827` (Log Audit 24-jam)
-- Playwright test credentials: TEST_USER=test TEST_PASSWORD=test123
+- Latest commit main: `f44cfd4` (merge — label Tutup + progress bar ikut kelas sebenar live)
+- Latest commit test: `aa8b70b` (true-kelas SQL)
+- Playwright test credentials (GURU): TEST_USER=test TEST_PASSWORD=test123
+- Playwright PELAWAT creds: user PKP (staging), creds via env PELAWAT_USER/PELAWAT_PASSWORD — lihat memory reference_mypwa_pelawat_test
+- App guna clean URL: pelawat mendarat `/pelawat` (bukan `/pelawat.html`)
 - Migration 024 applied ke staging + production ✅
 - AppScript secrets: APPSCRIPT_URL + APPSCRIPT_SECRET (wrangler secrets)
 - CSS version: app.css?v=6
