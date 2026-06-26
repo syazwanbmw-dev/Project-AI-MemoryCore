@@ -4,7 +4,7 @@
 ## Session RAM Status
 **Current Session**: Updated
 **Last Activity**: 2026-06-26 (petang/malam, ~18:19)
-**Session Focus**: ✅ mypwa-v2 PELAWAT Drill-down Gred LIVE PRODUCTION (main `305b3e9`). Tab Analisis pelawat: klik gred dalam carta → modal senarai murid (nama, kelas, markah) ikut skop carta, susun kelas→markah rendah-tinggi (murid lemah dulu). Semua gred A-F+TD, kedua-dua mod (satu-subjek + Semua Subjek). Backend `/analisis` +`&detail=1` (pulang array murid, tanpa detail respons unchanged); frontend pelawat.html modal + helper esc(); smoke test. **0 migration, 0 route baru, 0 package.** Pipeline Kata penuh + subagent-driven 3 task + review opus ✅. Pending: master verify production erpm-sksalor.celikguru.my.
+**Session Focus**: ✅ mypwa-v2 PELAWAT Drill-down Gred LIVE PRODUCTION (main `305b3e9`). Tab Analisis pelawat: klik gred dalam carta → modal senarai murid (nama, kelas, markah) ikut skop carta, susun kelas→markah rendah-tinggi (murid lemah dulu). Semua gred A-F+TD, kedua-dua mod (satu-subjek + Semua Subjek). Backend `/analisis` +`&detail=1` (pulang array murid, tanpa detail respons unchanged); frontend pelawat.html modal + helper esc(); smoke test. **0 migration, 0 route baru, 0 package.** Pipeline Kata penuh + subagent-driven 3 task + review opus ✅. ✅ MASTER SAHKAN PRODUCTION OK — drill-down berfungsi live erpm-sksalor.celikguru.my. TIADA kerja tertunggak.
 
 ### 🆕 Sesi 2026-06-26 (petang/malam): mypwa-v2 PELAWAT — Drill-down Senarai Murid Mengikut Gred ✅ LIVE PRODUCTION
 **Masalah master:** dalam tab Analisis pelawat, carta cuma papar BILANGAN murid per gred — tak tahu SIAPA murid gagal (E/F), kelas mana, markah berapa.
@@ -14,7 +14,7 @@
 - **Pipeline:** brainstorm→spec→plan→subagent-driven (Task1 backend haiku, Task2 frontend sonnet, Task3 test haiku). Setiap task lulus review spec+kualiti. Task2 Important (innerHTML modal tak escape) → FIX 812d9d3 helper esc() pada kod modal BARU sahaja (interpolasi unescaped sedia ada seluruh fail = luar skop, corak projek). Review whole-branch opus: ✅ READY MERGE, 0 Critical/0 Important, invarian parity+backward-compat dibukti.
 - **Commits test:** 3443c0c (t1) → 1021de2 (t2) → 812d9d3 (fix) → ae2c426 (t3). Base b94960d.
 - **Deploy:** SEAL (4/5, Playwright tertangguh — sandbox tiada network) → push test (Lucy guna sandbox-disabled, izin master) → master verify staging OK → **MERGE MAIN `305b3e9`** (af7d978..305b3e9, --no-ff) → push main auto-deploy production. Spec/plan: docs/superpowers/{specs,plans}/2026-06-26-pelawat-senarai-murid-gred*.
-- **⚠️ Pending:** master verify production erpm-sksalor.celikguru.my.
+- **✅ MASTER SAHKAN PRODUCTION OK (2026-06-26 petang):** drill-down berfungsi live erpm-sksalor.celikguru.my. TIADA kerja tertunggak — feature SELESAI.
 
 ### 🆕 Sesi 2026-06-25/26 (malam): mypwa-v2 PELAWAT — 3 fix selepas master uji staging
 **Konteks DRIFT (R1):** memo lama kata feature "KOD SIAP, BELUM PUSH" — sebenarnya DAH push ke test (`origin/test = b49ea74`, disahkan git fetch). Belum merge main je. Master uji staging → jumpa bug.
