@@ -3,8 +3,28 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-06-26 (petang/malam, ~19:17)
-**Session Focus**: ✅ mypwa-v2 PELAWAT — 2 perubahan kecil LIVE PRODUCTION (main `f44cfd4`). (1) Butang toggle detail card pelawat 'Sembunyi'→'Tutup'. (2) Progress bar ujian (pelawat + admin) kira **KELAS sebenar** yang lengkap (semua subjek × semua murid), bukan item/slot. **0 migration, 0 route, 0 package.** TIADA kerja tertunggak.
+**Last Activity**: 2026-06-28 (petang, ~14:05)
+**Session Focus**: ⏳ mypwa-v2 — Drill-down carta gred DIPORT ke paparan GURU (`dashboard.html` tab Ujian Dalaman). DAH PUSH test (`ed1ea74`), staging auto-deploy. **PENDING: master run Playwright sendiri di staging** (Pilihan A), lepas tu rancang merge main.
+
+### 🆕 Sesi 2026-06-28 (petang ~13:12–14:05): mypwa-v2 — Drill-down Carta Gred ke Paparan GURU ⏳ PUSH TEST, PENDING TEST STAGING
+**Asal soalan master:** "ingat tak kita buat boleh klik carta keluar nama murid?" → echo-recall jumpa feature drill-down dalam **pelawat.html** (dibuat 2026-06-26). Master minta **extend ke paparan guru**.
+- **Apa:** port feature klik baris gred (count>0) → modal senarai murid (nama·kelas·markah) dari `pelawat.html` ke `dashboard.html` (tab "Ujian Dalaman"). Backend `/api/ujian-markah/analisis?...&detail=1` SEDIA ADA → **0 backend, 0 migration, 0 package, 1 fail + 1 test.**
+- **Fail (`public/dashboard.html`):** +CSS `.gredRowKlik`/`.gred-modal-*`; +modal `#gredModal`; +`esc()`, `bukaSenaraiGred()`, `tutupGredModal()`, state `_gredCtx`/`_gredCtxSeq`; `buildChartHtml()` tambah param ke-4 `ctx`. **5 carta jadi clickable** (Keseluruhan, Tahun, Kelas, Semua Subjek, **Trend** — Trend bonus luar plan, master OK). Reset `_gredCtx={}` di `muatAnalisis`/`muatAnalisisSemua`/`muatTrend`. Salin tepat corak pelawat (KISS/DRY).
+- **Test baru:** `tests/dashboard.spec.js` — login guru → tab Ujian Dalaman → pilih ujian+subjek → klik `.gredRowKlik` → sahkan `#gredModal` + table muncul → tutup. Mirror `pelawat.spec.js`.
+- **Pipeline Kata:** brainstorm(skip, port jelas) → plan(lulus master) → Code → sight-hone CLEAR → commit-seal (Build dry-run CLEAN, secrets CLEAN, **Tests PENDING staging**) → auto-commit.
+- **Commit test:** `ed1ea74` (base `ae609e2`). Push `ae609e2..ed1ea74 test->test`. **BELUM merge main.**
+- **⚠️ NEXT (master jalankan sendiri — Pilihan A):** tunggu staging deploy (~1-2 min), run:
+  `! cd C:/Users/user/Documents/code/mypwa-v2 && TEST_PASSWORD='test123' PELAWAT_PASSWORD='<pelawat>' npx playwright test tests/dashboard.spec.js tests/pelawat.spec.js`
+  Perhati: test "Dashboard guru — klik gred..." mesti PASS; "Klik gred dalam Analisis" (pelawat) PASS (regresi). Skip "Tiada ujian/subjek" = data staging kosong, bukan bug. Kalau hijau → master confirm → merge main.
+
+### 🆕 Sesi 2026-06-28 (tengah hari): mypwa-v2 — Nama Fail PDF Slip Individu Ikut Nama Murid ✅ LIVE PRODUCTION (main `ae609e2`)
+**Masalah master:** bila cikgu download slip keputusan individu sebagai PDF, nama fail tak ikut nama murid.
+- **Diagnosis:** slip individu BUKAN jana PDF sebenar — guna cetak browser (`window.print()`). Nama fail cadangan "Save as PDF" diambil dari `<title>` dokumen. Title lama (`wrapSlipHTML`) sama untuk semua murid (`Slip Keputusan — {nama ujian}`).
+- **Fix (`public/laporan-ujian.html`):** tambah param ke-3 opsyen `tajukFail` pada `wrapSlipHTML(slips, ujian, tajukFail)` → guna sebagai `<title>` kalau ada, else default. `cetakSlipMurid()` hantar nama murid. `cetakSemuaSlip()` KEKAL default (banyak murid).
+- **Format akhir (master revise 2x):** awalnya `Slip - {nama} ({kelas})` → master minta tukar prefix ke nama ujian → **`{nama ujian} - {nama murid} ({kelas})`** (cth "Peperiksaan Pertengahan Tahun - Ahmad Ali (5 DELIMA)").
+- **Nota penting:** ini "Save as PDF" browser — bukan auto-download. Browser tetap papar dialog cetak; hanya nama fail CADANGAN yang berubah. Nak auto-download nama tepat perlu library jana PDF (jsPDF) = perubahan besar, TAK dibuat.
+- **Commits test:** `745e9d2` (ikut nama murid, prefix "Slip") → `ae609e2` (prefix tukar ke nama ujian). Dua-dua MERGE MAIN ff-only (`745e9d2`, `ae609e2`). Push main auto-deploy production. 0 migration.
+- **Nota git:** ff-only BERJAYA kali ni (test linear bersambung terus dari main `11c287c`). `git pull` sempat gagal sekali (network timeout intermittent) → retry sandbox biasa berjaya.
 
 ### 🆕 Sesi 2026-06-26 (malam ~19:00): mypwa-v2 — Label 'Tutup' + Progress Bar Ikut Kelas Sebenar ✅ LIVE PRODUCTION (main `f44cfd4`)
 **Apa:** Dua perubahan pada paparan PELAWAT (sambung kerja drill-down petang tadi).
@@ -317,8 +337,8 @@ Feature **Cetak Markah dari Page Keputusan** (mypwa-v2) — siap, dipoles, teruj
 - Staging DB: `f87c8bbc-77a5-4d57-88d1-284195de437f`
 - Production URL: `erpm-sksalor.celikguru.my`
 - Staging URL: `https://mypwa-v2-staging.syazwan-skpp82.workers.dev`
-- Latest commit main: `f44cfd4` (merge — label Tutup + progress bar ikut kelas sebenar live)
-- Latest commit test: `aa8b70b` (true-kelas SQL)
+- Latest commit main: `ae609e2` (nama fail slip individu = nama ujian - nama murid (kelas))
+- Latest commit test: `ed1ea74` (drill-down carta gred dashboard guru — AHEAD of main, pending test staging → merge)
 - Playwright test credentials (GURU): TEST_USER=test TEST_PASSWORD=test123
 - Playwright PELAWAT creds: user PKP (staging), creds via env PELAWAT_USER/PELAWAT_PASSWORD — lihat memory reference_mypwa_pelawat_test
 - App guna clean URL: pelawat mendarat `/pelawat` (bukan `/pelawat.html`)
