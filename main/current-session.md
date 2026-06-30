@@ -3,8 +3,33 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-06-28 (petang, ~14:05)
-**Session Focus**: ⏳ mypwa-v2 — Drill-down carta gred DIPORT ke paparan GURU (`dashboard.html` tab Ujian Dalaman). DAH PUSH test (`ed1ea74`), staging auto-deploy. **PENDING: master run Playwright sendiri di staging** (Pilihan A), lepas tu rancang merge main.
+**Last Activity**: 2026-06-30 (tengah hari, ~14:08)
+**Session Focus**: ⏳ mypwa-v2 — Feature BARU "Trend Markah Merentasi Ujian + ETR" — **BRAINSTORM + SPEC SIAP, BELUM EXECUTE**. Spec commit `26fb6d4` (branch test). NEXT: writing-plans → execute. Master cakap "simpan dulu".
+
+### 🆕 Sesi 2026-06-30 (tengah hari ~13:21–14:08): mypwa-v2 — Trend Markah + ETR ⏳ SPEC SIAP, BELUM EXECUTE
+**Idea master:** feature trend markah merentasi beberapa ujian, **per subjek per individu murid**, + masukkan **ETR** (sasaran).
+- **Keputusan brainstorm (master pilih):**
+  1. **ETR dikira AUTO** (bukan input manual) = **TOV + 15, maks 100**. Tiada jadual DB baru, tiada migration — kira on-the-fly.
+  2. **TOV = ujian PERTAMA** (kaedah headcount KPM standard, konsisten sepanjang tahun).
+  3. **Urutan ujian ikut `created_at`** (KISS, tiada migration). Trend = semua ujian dalam sesi sama yang kelas terlibat.
+  4. **Surface = page BARU** `public/trend.html`, **carian per KELAS** (bukan per murid satu-satu). Pengguna = **GURU + PELAWAT** (+ admin).
+  5. **Susun atur = grouped per MURID** (collapse macam tab PAJSK `murid-group-header`): baris = SUBJEK, kolum = TOV–ETR + setiap ujian (markah+gred) + Status (✅ Capai / ❌ -jurang). Master tunjuk screenshot PAJSK + lakaran sebagai rujukan.
+  6. **GURU nampak SEMUA subjek** (gaya kad laporan penuh, bukan tapis jadual_guru). ⚠️ Nota security: longgarkan akses GURU melebihi jadual_guru — master terima (markah bukan sulit antara staf, pelawat/dashboard pun dedah). Dokumen dalam spec.
+- **Reka bentuk:** 1 endpoint baru `GET /api/ujian-markah/trend?nama_sesi=&kelas_id=` (authMiddleware, baca-sahaja). Guna semula pattern join `ui.tahun = k.tahun` + `appKiraGred()`. Frontend `trend.html` + sidebar link (guru+pelawat) + `/trend` dlm PELAWAT_PAGES. Cetak termasuk v1. Test `tests/trend.spec.js`. **0 migration, 0 package.**
+- **Andaian (limitasi):** markah dianggap skala /100. Normalisasi markah_penuh berbeza = backlog.
+- **Status data model disahkan:** `ujian`(created_at,nama_sesi), `ujian_item`(tahun INT,subjek_id), `ujian_markah`(markah,is_td,tarikh), `ujian_gred`(per ujian). `kelas`(tahun TEXT, tahun_sesi INT). SQLite numeric affinity buat `k.tahun`='5' match `ui.tahun`=5.
+- **Spec:** `docs/superpowers/specs/2026-06-30-trend-markah-etr-design.md` commit `26fb6d4` (base `4b091c0`, branch test).
+- **NEXT:** master review spec → writing-plans → execute (subagent-driven/inline). Branch test.
+
+### 🆕 Sesi 2026-06-29 (malam ~00:45–04:57): mypwa-v2 — Cache Drill-down Gred (optimization) ✅ LIVE PRODUCTION (main `4b091c0`)
+**Asal soalan master:** "bila klik gred, jika 100 murid, berapa kali request?" → Lucy semak kod `bukaSenaraiGred()` (dashboard.html:756). Jawapan: 1 request/klik (server pulang SEMUA murid sekali gus via `detail=1`, frontend `.filter()` ikut gred). Tiada N+1. Master minta optimize.
+- **Masalah halus:** klik gred BERLAINAN pada carta SAMA fetch semula tiap kali walaupun `detail=1` dah pulang semua gred. 6 gred = 6 request data identik.
+- **Fix (`public/dashboard.html` `bukaSenaraiGred`, +9/-2):** cache response pada `ctx._cache`. Klik 1 → fetch & simpan; klik gred lain carta sama → guna cached, 0 request. **Auto-invalidate** sebab `_gredCtx={}` reset dalam muatAnalisis/Semua/Trend (baris 497/547/637) — tiada data basi, tiada logik invalidation manual. KISS.
+- **Refine CLEAR:** disahkan `ctxId` dikira sekali per carta (dashboard.html:727, luar `.map()`) → semua baris gred carta sama kongsi ctx object sama → kongsi cache. Carta lain (Keseluruhan/Tahun/Kelas/Trend) ctxId asing → cache asing, fetch sekali setiap satu.
+- **Behavior-preserving:** klik pertama tetap 1 fetch macam dulu; cuma klik ke-2+ pada carta sama yang berubah. Risiko regresi rendah.
+- **Seal:** Build CLEAN (wrangler dry-run, 19 files, D1 OK), Secrets CLEAN, Logic VERIFIED. Playwright Lucy tak run (sandbox tiada network) — feature asal dah disahkan master staging, perubahan ni frontend-only.
+- **Commit:** `4b091c0` (base `ed1ea74`). Push `ed1ea74..4b091c0 test->test`.
+- **✅ MERGE MAIN (master verify staging OK):** ff-only berjaya kali ni (test linear atas main — `ed1ea74`+`4b091c0` terus dari `ae609e2`). Merge `ae609e2..4b091c0 main->main`, push main → GitHub Actions auto-deploy production. Frontend-only, 0 migration. **Latest main = `4b091c0`.** Lucy balik branch test selepas merge. TIADA kerja tertunggak.
 
 ### 🆕 Sesi 2026-06-28 (petang ~13:12–14:05): mypwa-v2 — Drill-down Carta Gred ke Paparan GURU ⏳ PUSH TEST, PENDING TEST STAGING
 **Asal soalan master:** "ingat tak kita buat boleh klik carta keluar nama murid?" → echo-recall jumpa feature drill-down dalam **pelawat.html** (dibuat 2026-06-26). Master minta **extend ke paparan guru**.
@@ -337,8 +362,8 @@ Feature **Cetak Markah dari Page Keputusan** (mypwa-v2) — siap, dipoles, teruj
 - Staging DB: `f87c8bbc-77a5-4d57-88d1-284195de437f`
 - Production URL: `erpm-sksalor.celikguru.my`
 - Staging URL: `https://mypwa-v2-staging.syazwan-skpp82.workers.dev`
-- Latest commit main: `ae609e2` (nama fail slip individu = nama ujian - nama murid (kelas))
-- Latest commit test: `ed1ea74` (drill-down carta gred dashboard guru — AHEAD of main, pending test staging → merge)
+- Latest commit main: `4b091c0` (cache drill-down gred + drill-down carta gred GURU — LIVE production, ff-only merge dari test)
+- Latest commit test: `4b091c0` (sama dengan main — synced selepas merge)
 - Playwright test credentials (GURU): TEST_USER=test TEST_PASSWORD=test123
 - Playwright PELAWAT creds: user PKP (staging), creds via env PELAWAT_USER/PELAWAT_PASSWORD — lihat memory reference_mypwa_pelawat_test
 - App guna clean URL: pelawat mendarat `/pelawat` (bukan `/pelawat.html`)
