@@ -3,8 +3,23 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-06-30 (tengah hari, ~14:08)
-**Session Focus**: ⏳ mypwa-v2 — Feature BARU "Trend Markah Merentasi Ujian + ETR" — **BRAINSTORM + SPEC SIAP, BELUM EXECUTE**. Spec commit `26fb6d4` (branch test). NEXT: writing-plans → execute. Master cakap "simpan dulu".
+**Last Activity**: 2026-07-01 (tengah hari, ~13:59)
+**Session Focus**: ✅ mypwa-v2 — Feature "Trend Markah Merentasi Ujian + ETR" **SIAP & LIVE PRODUCTION** (main `f07d059`). Playwright PASS, merge main --no-ff. Pending: master verify production visual + GitHub Actions deploy hijau.
+
+### 🆕 Sesi 2026-07-01 (pagi–tengah hari): mypwa-v2 — Trend Markah + ETR ✅ LIVE PRODUCTION (main `f07d059`)
+**Sambung dari spec 30 Jun.** Execute penuh guna subagent-driven-development (4 task + review setiap satu + final opus review).
+- **Plan:** `docs/superpowers/plans/2026-07-01-trend-markah-etr.md` commit `49b8152`. Kod lengkap dalam plan (endpoint + trend.html + test).
+- **Task 1 (backend, haiku):** endpoint `GET /api/ujian-markah/trend` — `3f66dd7`. Review sonnet ✅ Approved 0C/0I. Guna `ui.tahun=k.tahun` affinity, TOV/ETR/status on-the-fly.
+- **Task 2 (trend.html, sonnet):** `6e37994`. Review sonnet Approved + 1 Important (logoUrl tak esc dlm cetak) + 1 Minor (is_td order path cetak) → FIX `a3d2b7a`.
+- **Task 3 (routing app.js, haiku):** `2cc99c0` — sidebar link "Trend Markah" (guru grup 'ujian' + pelawat) + `/trend` dlm PELAWAT_PAGES. Controller self-review (3-baris mekanikal).
+- **Task 4 (test, haiku):** `43e3c55` — `tests/trend.spec.js` smoke resilient (skip guard, assert errors===[]). Self-review.
+- **Final review (opus):** WITH FIXES, 0 Critical/0 security. 1 IMPORTANT: `ujian_list` tak ditapis ikut `kelas.tahun` → kolum kosong utk ujian tahun lain (projek namakan ujian per-tahun → AKAN muncul). → FIX `c1cf928` (EXISTS filter `ui.tahun=kelas.tahun` + susun murid `localeCompare`).
+- **Seal:** node --check ALL OK, wrangler dry-run CLEAN (192KiB), secrets clean.
+- **Playwright:** ✅ 1 passed 9.2s lawan staging (sandbox-disabled izin master, TEST_USER=test/test123) — tak skip, 0 ralat JS, jadual trend terbentuk.
+- **Deploy:** push test (`4b091c0..c1cf928`) → merge main `--no-ff` `f07d059` (6 fail, 1129+) → push main auto-deploy production. **0 migration.** Lucy balik branch test.
+- **PENDING master:** verify production `erpm-sksalor.celikguru.my/trend` (visual: kolum betul ikut tahun, cetak landscape, PELAWAT reachability) + confirm GitHub Actions deploy hijau.
+- **Backlog (review, belum buat):** normalisasi markah_penuh berbeza; ETR boleh-laras; carta garis per murid; eksport Excel.
+- **Pengajaran:** report file subagent (haiku) kerap TAK di-overwrite (kekal basi dari feature lama) — controller WAJIB nilai diff sebenar via git, bukan percaya report. Betul semua kali ni (commit subjek + diff disahkan sendiri).
 
 ### 🆕 Sesi 2026-06-30 (tengah hari ~13:21–14:08): mypwa-v2 — Trend Markah + ETR ⏳ SPEC SIAP, BELUM EXECUTE
 **Idea master:** feature trend markah merentasi beberapa ujian, **per subjek per individu murid**, + masukkan **ETR** (sasaran).
