@@ -3,8 +3,34 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-01 (tengah hari, ~13:59)
-**Session Focus**: ✅ mypwa-v2 — Feature "Trend Markah Merentasi Ujian + ETR" **SIAP & LIVE PRODUCTION** (main `f07d059`). Playwright PASS, merge main --no-ff. Pending: master verify production visual + GitHub Actions deploy hijau.
+**Last Activity**: 2026-07-02 (petang, ~13:44)
+**Session Focus**: ⏳ mypwa-v2 — **Ubah logik ETR** (feature Trend Markah). BRAINSTORM SEPARA SIAP, master minta "save dulu, sambung nanti". BELUM tulis spec, BELUM sentuh kod.
+
+### 🆕 Sesi 2026-07-02 (petang ~11:40–13:44): mypwa-v2 — Ubah Logik ETR (Trend Markah) ⏳ BRAINSTORM BELUM SELESAI
+**Permintaan master:** ubah logik penetapan ETR dalam feature Trend Markah (endpoint `GET /api/ujian-markah/trend`, `src/routes/ujian-markah.js` baris ~255-275; papar di `public/trend.html`).
+- **Logik LAMA (sedia ada, live):** `ETR = min(TOV + 15, 100)`. TOV = markah sah pertama. Status: `terkini >= etr` → ✅ Capai; else jurang = etr − terkini.
+- **Logik BARU yang master mahu** (berasaskan gred, bukan +15 tetap):
+  - Target minimum = gred C = 50 markah.
+  - Murid markah < 50 → ETR = 50 (sasar lulus C).
+  - Murid gred C → ETR masuk gred B; gred B → ETR masuk gred A; gred A → ETR = TOV + 10 (maks 100).
+- **Keputusan brainstorm setakat ni (master dah sahkan via AskUserQuestion):**
+  1. **Baseline = TOV (ujian PERTAMA)** — sasaran tetap sepanjang sesi, konsisten headcount KPM. (bukan markah terkini)
+  2. Mula-mula master pilih "nilai ETR = ambang bawah gred atas" + "ikut skala gred sebenar ujian (`ujian_gred`)".
+  3. Kes gred A: **ETR = TOV + 10, maks 100** (master tolak idea ETR=100 flat sbg tak logik; tolak juga tengah-julat sbb murid dah 90 takda ruang).
+- **⚠️ TWIST TERAKHIR (belum disahkan penuh):** master kata untuk gred C & B, **TAK NAK guna ambang gred** — sebab terlalu senang (murid C dapat 58, ambang B=60 cuma naik 2 markah). Master bagi contoh "murid gred C → ETR di markah permulaan gred B, cth 66".
+- **Tafsiran Lucy (PENDING master sahkan):** contoh 66 = murid C dengan TOV 56 → **56 + 10 = 66**. Maksudnya logik jadi SERAGAM: `TOV < 50 → ETR = 50; TOV ≥ 50 → ETR = min(TOV + 10, 100)`. Implikasi: **skala gred TAK diperlukan lagi untuk kira ETR** (cuma untuk papar badge gred). Ini bercanggah sikit dengan keputusan #2 (ikut skala) — perlu jelas dengan master.
+- **SOALAN TERBUKA belum dijawab master:**
+  1. Sahkan tafsiran "+10 seragam" (66 = TOV 56 + 10)?
+  2. Lantai bawah 50: tetap 50, atau bagi TOV+10 juga (cth TOV 45 → 55)?
+- **NEXT (sambung sesi depan):** selesaikan 2 soalan terbuka → bentang design final → tulis spec `docs/superpowers/specs/YYYY-MM-DD-etr-logik-baru-design.md` → writing-plans → execute. Task SEDERHANA (1 endpoint backend + mungkin sedikit trend.html). Kemungkinan 0 migration.
+- **Nota teknikal:** `appKiraGred(markah, gredScale)` dalam `app.js` — susun skala desc ikut markah_min, cari gred pertama markah≥markah_min. Gred = TEXT bebas (bukan tetap A/B/C). `ujian_list[].gredScale` per ujian dalam response trend.
+
+### 🆕 Sesi 2026-07-02 (pagi ~07:33–08:06): sistem-olahraga — Tambah Acara 50m Templat Balapan Ekspres ✅ LIVE PRODUCTION (main `66b7778`)
+**Permintaan master:** tambah acara `50m` dalam senarai template daftar acara ekspres.
+- **Lokasi:** `public/admin.js` — constant `PRESET_ACARA.Balapan` (baris ~2685). Ini data preset template sahaja (bukan DB) — admin klik guna template → acara masuk pertandingan. Tiada migration/backend.
+- **Perubahan:** tambah `{ nama: '50m', kuota: 2 }` di paling atas (sebelum `60m`) — 50m acara standard tahap 1 sekolah rendah, jadi posisi pertama (paling pendek). 1 baris, 1 insertion.
+- **Pipeline (task kecil):** node --check OK → commit `66b7778` → push test (`d6eb3d7..66b7778`) → master confirm → merge main **ff-only** (`90acc60..66b7778`, test linear atas main) → push main auto-deploy production. Lucy balik branch test.
+- **Nota:** merge turut bawa `d6eb3d7` (doc tanda slider hakim LIVE) yg dah sedia dalam test → CLAUDE.md status dikemaskini automatik. **PENDING master:** verify `atletik.celikguru.my` → admin → Templat Acara Standard → Balapan → 50m di atas.
 
 ### 🆕 Sesi 2026-07-01 (pagi–tengah hari): mypwa-v2 — Trend Markah + ETR ✅ LIVE PRODUCTION (main `f07d059`)
 **Sambung dari spec 30 Jun.** Execute penuh guna subagent-driven-development (4 task + review setiap satu + final opus review).
