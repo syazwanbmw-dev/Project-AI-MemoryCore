@@ -3,10 +3,44 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-02 (petang, ~13:44)
-**Session Focus**: ⏳ mypwa-v2 — **Ubah logik ETR** (feature Trend Markah). BRAINSTORM SEPARA SIAP, master minta "save dulu, sambung nanti". BELUM tulis spec, BELUM sentuh kod.
+**Last Activity**: 2026-07-04 (malam, ~01:53)
+**Session Focus**: ✅ mypwa-v2 — **Logik ETR Baru berasaskan gred (tab Trend Markah)** SELESAI & **DEPLOY PRODUCTION** (main `5afd2ff`). Subagent-driven 4 task + kolum TOV/ETR berasingan + label cetak dibuang. Playwright smoke PASS. 0 migration.
 
-### 🆕 Sesi 2026-07-02 (petang ~11:40–13:44): mypwa-v2 — Ubah Logik ETR (Trend Markah) ⏳ BRAINSTORM BELUM SELESAI
+### 🆕 Sesi 2026-07-04 (malam ~00:43–01:53): mypwa-v2 — Logik ETR Baru (Berasaskan Gred) ✅ LIVE PRODUCTION (main `5afd2ff`)
+**Sambung dari spec 2026-07-03.** Execute penuh guna subagent-driven-development + 2 follow-up UX dari master.
+- **Plan:** `docs/superpowers/plans/2026-07-04-etr-logik-baru-trend.md` (commit `5532c90`, pushed test).
+- **Deviasi spec (sengaja, testability):** `kiraETR` diekstrak ke `src/utils/etr.mjs` (ESM) bukan inline dalam ujian-markah.js — sebab package.json tiada `"type":"module"`, jadi `.mjs` satu-satunya cara `node --test` fungsi tulen tanpa pecahkan playwright.config.js (CommonJS). Folder src/utils sedia wujud.
+- **Task 1 (haiku):** `src/utils/etr.mjs` `kiraETR(tov,scale,cap)` + `tests/etr.unit.mjs` (node --test, .unit.mjs supaya Playwright abaikan). 9 baris proof-table lulus. Commit `ff57331`. Review sonnet ✅ Approved 0C/0I (hand-trace 9 baris).
+- **Task 2 (haiku):** endpoint `/trend` guna kiraETR, jejak `tovUid` (ujian sumber TOV) → skala+cap betul, tambah medan `aras`. Commit `375268d`. Review sonnet ✅ Approved.
+- **Task 3 (haiku):** trend.html papar "Tidak Menguasai" amber. Commit `59372a4`. Review sonnet ✅ Approved 0 isu.
+- **Task 4:** trend.spec.js sedia longgar — tiada kod baru.
+- **Final review (opus):** Ready=YES, 0C/0I. Nota confirm-before-ship: pass=50 tetap → kalau ujian sumber markah_penuh≠100 label TM tersilap. **Master sahkan semua ujian /100 → RESOLVED.** Minor test-comment dibaiki → `f1e28ce` (# pass 4).
+- **Logik kiraETR:** tov<40→50; 40≤tov<50→min(tov+15,cap); band bukan-tertinggi pisah=lo+round(⅔(hi−lo)), tov<pisah→nextMin else tov+tambahan (jarakDariAtas 1→+10, ≥2→+15); tertinggi tov≤lo+4→+10 else +5; fallback skala kosong→min(tov+15,cap).
+- **Follow-up 1 (master):** pecah kolum gabungan "TOV–ETR" → dua kolum berasingan TOV & ETR (desktop+cetak). Commit `7f71ee1`.
+- **Follow-up 2→3 (master):** label "Tidak Menguasai" dalam cetak buat kolum TOV tak konsisten (murid lain tiada label). Mula cuba block, master arah **BUANG terus dari cetak** → label KEKAL desktop sahaja. + fix smoke race (waitForFunction tunggu option populate). Commit `90aad7a`→`ef7f8e0`.
+- **Playwright smoke:** PASS 3.1s (sandbox-disabled izin master, TEST_USER=test/test123) — bukan skip, 0 ralat JS, 2 kolum terbentuk.
+- **Seal:** node --check OK, unit test # pass 4, wrangler dry-run CLEAN, secret bersih.
+- **Deploy:** push test → merge main `--no-ff` `5afd2ff` (7 fail, 605+) → push main auto-deploy production. Lucy balik test. **0 migration.**
+- **PENDING master:** verify production `erpm-sksalor.celikguru.my/trend` (ETR ikut logik baru, label TM desktop, cetak bersih 2 kolum) + confirm GitHub Actions hijau.
+- **Pengajaran:** (1) test smoke boleh SKIP senyap bila option dropdown async belum populate — waitForFunction tutup race, PASS jadi bukti sebenar; (2) label decorative dalam jadual cetak buat kolum tak konsisten — master prefer BUANG dari cetak daripada dandan style.
+
+### 🆕 Sesi 2026-07-03 (malam ~21:48–22:37): mypwa-v2 — Ubah Logik ETR (Trend Markah) ✅ BRAINSTORM SELESAI + SPEC SIAP [✅ EXECUTED 2026-07-04 — lihat entri di atas]
+**Sambung dari brainstorm 2026-07-02.** Master perhalusi logik ETR sepenuhnya → spec ditulis & committed. BELUM sentuh kod.
+- **Keputusan brainstorm FINAL (semua disahkan master via AskUserQuestion):**
+  1. Baseline = **TOV** (ujian pertama). **Dinamik** ikut skala gred admin (`ujian_gred`). Markah lulus = **50 (tetap)**.
+  2. **Corak tunggal** (Lucy jumpa — master setuju): setiap gred, murid di **bawah band** → sasar **naik satu gred** (ETR = markah mula gred atas); di **atas band** → **tambahan tetap** yang mengecil ikut gred.
+  3. **Titik pisah bawah/atas = ⅓ atas band** (dinamik): `pisah = lo + round(⅔×(hi−lo))`.
+  4. **Tambahan** ikut kedudukan dari gred tertinggi: tertinggi +10/+5, satu bawahnya +10, dua+ bawahnya +15. (Skala A/B/C → C=+15, B=+10, A=+10/+5, padan contoh master.)
+  5. **Bawah gred C (tov<50):** berperingkat — `tov<40 → ETR=50`; `40–49 → tov+15`. Semua sasar ≥ gred C.
+  6. **Gred tertinggi (A):** `tov ≤ lo+4 → tov+10`; selebihnya `tov+5`. Cap 100.
+  7. **Label:** murid bawah lulus = **"Tidak Menguasai"** (istilah PBD, BUKAN "gagal"/"belum lulus"). Gred D/E/F **kekal dipapar** (badge dari skala admin — `appKiraGred` sedia ada, 0 kerja tambahan).
+- **Jadual bukti 9 baris** dalam spec — padan tepat semua contoh master (35→50, 45→60, 55→66, 62→77, 70→82, 78→88, 84→94, 92→97, 98→100 cap).
+- **Kod sasaran:** `src/routes/ujian-markah.js` endpoint `/trend` — ganti baris **267** (`Math.min(tov+15,100)`) dgn helper baru `kiraETR(tov, scale, cap)`. Jejak `tovUjianId` supaya guna skala + `markah_penuh` ujian **sumber TOV**. Tambah medan `aras='Tidak Menguasai'` bila tov<50. Frontend `trend.html` papar aras + sasaran gred. **0 migration, 0 package.** Task SEDERHANA.
+- **Andaian didokumen:** lulus=50 tetap (gred teks bebas, tiada flag lulus — boleh jadi tetapan admin masa depan, YAGNI). Markah skala /markah_penuh. Fallback skala kosong → `min(tov+15,cap)`.
+- **Spec:** `docs/superpowers/specs/2026-07-03-etr-logik-baru-trend-design.md` commit `b138c5a` (branch test, **PUSHED** `c1cf928..b138c5a`, origin synced).
+- **NEXT (sambung sesi depan):** master review spec → kalau OK, `writing-plans` → execute (task sederhana).
+
+### 🆕 Sesi 2026-07-02 (petang ~11:40–13:44): mypwa-v2 — Ubah Logik ETR (Trend Markah) ⏳ BRAINSTORM BELUM SELESAI (SUPERSEDED oleh entri 2026-07-03 di atas)
 **Permintaan master:** ubah logik penetapan ETR dalam feature Trend Markah (endpoint `GET /api/ujian-markah/trend`, `src/routes/ujian-markah.js` baris ~255-275; papar di `public/trend.html`).
 - **Logik LAMA (sedia ada, live):** `ETR = min(TOV + 15, 100)`. TOV = markah sah pertama. Status: `terkini >= etr` → ✅ Capai; else jurang = etr − terkini.
 - **Logik BARU yang master mahu** (berasaskan gred, bukan +15 tetap):

@@ -58,4 +58,4 @@ _(akan diisi bila master share)_
 
 ## Catatan Penting
 
-_(akan diisi sepanjang perjalanan kita)_
+- **Konsistensi kolum jadual (terutama cetak):** master pentingkan kolum jadual kekal konsisten. Label decorative (cth "Tidak Menguasai") yang muncul hanya pada sesetengah baris buat kolum jadi tak sejajar/tak konsisten — master prefer **BUANG label itu dari paparan cetak** daripada cuba dandan style. Paparan skrin/desktop boleh kekal ada label. (Origin: feature Trend Markah ETR, 2026-07-04)
