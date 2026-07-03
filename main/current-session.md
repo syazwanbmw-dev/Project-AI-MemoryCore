@@ -4,7 +4,7 @@
 ## Session RAM Status
 **Current Session**: Updated
 **Last Activity**: 2026-07-04 (malam, ~01:53)
-**Session Focus**: ✅ mypwa-v2 — **Logik ETR Baru berasaskan gred (tab Trend Markah)** SELESAI & **DEPLOY PRODUCTION** (main `5afd2ff`). Subagent-driven 4 task + kolum TOV/ETR berasingan + label cetak dibuang. Playwright smoke PASS. 0 migration.
+**Session Focus**: ✅ mypwa-v2 — **Logik ETR Baru berasaskan gred (tab Trend Markah)** SELESAI, **DEPLOY PRODUCTION & DISAHKAN MASTER LIVE** (main `5afd2ff`, Actions hijau). Subagent-driven 4 task + kolum TOV/ETR berasingan + label cetak dibuang. Playwright smoke PASS. 0 migration. TIADA kerja tertunggak.
 
 ### 🆕 Sesi 2026-07-04 (malam ~00:43–01:53): mypwa-v2 — Logik ETR Baru (Berasaskan Gred) ✅ LIVE PRODUCTION (main `5afd2ff`)
 **Sambung dari spec 2026-07-03.** Execute penuh guna subagent-driven-development + 2 follow-up UX dari master.
@@ -21,7 +21,7 @@
 - **Playwright smoke:** PASS 3.1s (sandbox-disabled izin master, TEST_USER=test/test123) — bukan skip, 0 ralat JS, 2 kolum terbentuk.
 - **Seal:** node --check OK, unit test # pass 4, wrangler dry-run CLEAN, secret bersih.
 - **Deploy:** push test → merge main `--no-ff` `5afd2ff` (7 fail, 605+) → push main auto-deploy production. Lucy balik test. **0 migration.**
-- **PENDING master:** verify production `erpm-sksalor.celikguru.my/trend` (ETR ikut logik baru, label TM desktop, cetak bersih 2 kolum) + confirm GitHub Actions hijau.
+- **✅ MASTER SAHKAN PRODUCTION OK (2026-07-04 ~01:59):** `erpm-sksalor.celikguru.my/trend` berfungsi live, GitHub Actions deploy hijau. TIADA kerja tertunggak — feature SELESAI.
 - **Pengajaran:** (1) test smoke boleh SKIP senyap bila option dropdown async belum populate — waitForFunction tutup race, PASS jadi bukti sebenar; (2) label decorative dalam jadual cetak buat kolum tak konsisten — master prefer BUANG dari cetak daripada dandan style.
 
 ### 🆕 Sesi 2026-07-03 (malam ~21:48–22:37): mypwa-v2 — Ubah Logik ETR (Trend Markah) ✅ BRAINSTORM SELESAI + SPEC SIAP [✅ EXECUTED 2026-07-04 — lihat entri di atas]
