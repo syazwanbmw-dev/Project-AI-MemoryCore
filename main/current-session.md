@@ -3,8 +3,52 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-04 (malam, ~01:53)
-**Session Focus**: ✅ mypwa-v2 — **Logik ETR Baru berasaskan gred (tab Trend Markah)** SELESAI, **DEPLOY PRODUCTION & DISAHKAN MASTER LIVE** (main `5afd2ff`, Actions hijau). Subagent-driven 4 task + kolum TOV/ETR berasingan + label cetak dibuang. Playwright smoke PASS. 0 migration. TIADA kerja tertunggak.
+**Last Activity**: 2026-07-05 (malam, ~23:42)
+**Session Focus**: ✅ sistem-olahraga (tab Keputusan) — DUA kerja SELESAI & LIVE PRODUCTION: (1) **Bug panel balapan tersembul dalam acara padang** (kad LORONG muncul bawah acara lompat/lontar) — punca `removeHeatPanel()` buka balik panel-balapan walau laluan padang, fix +1 baris `panelBalapan.add('hidden')`, merge main `a7ca618`; (2) **Butang footer Keputusan konsisten di mobile** — Kira Kedudukan (Auto) melintang penuh atas, Cetak+Simpan 50/50 bawah (3 panel: padang/lompat/balapan), merge main `a449778`. Playwright 18/18 sepanjang jalan. TIADA kerja tertunggak.
+
+### 🆕 Sesi 2026-07-05 (malam ~22:41–23:42): sistem-olahraga — Fix Bug Panel Balapan Padang + Footer Butang Mobile ✅ DUA-DUA LIVE PRODUCTION
+**Konteks:** master report bug di tab Keputusan → Padang (screenshot Lontar Peluru).
+
+**Kerja 1 — Bug panel balapan tersembul dalam acara padang (`public/keputusan.js`):**
+- **Masalah:** bila pilih acara padang (lompat tinggi/lontar peluru/lompat jauh), kad LORONG (panel-balapan, ada radio Catatan Masa/Manual) tersembul di bawah kad padang yang betul.
+- **Punca (systematic-debugging):** `removeHeatPanel()` (baris 348-353) buat `panel-balapan.classList.remove('hidden')` TANPA syarat — direka untuk restore panel balapan lepas keluar mod Heat. Tapi ia dipanggil juga dalam laluan `if (isPadang)` (baris 240) → buka balik panel balapan walau konteks padang. `switchTab('padang')` dah sorok betul, tapi bila master PILIH acara dari dropdown, handler jalankan removeHeatPanel() → panel balapan muncul balik.
+- **Fix (+1 baris, di tempat panggilan bukan dalam fungsi):** `if (isPadang) { removeHeatPanel(); panelBalapan.classList.add('hidden'); ... }`. Selamat — laluan balapan tak disentuh (removeHeatPanel kekal buka panel balapan untuk konteks balapan).
+- **Deploy:** commit `fa07424` → push test → poll staging (node fetch) → Playwright 18/18 → master verify production OK → merge main `--no-ff` `a7ca618`.
+
+**Kerja 2 — Butang footer Keputusan konsisten di mobile (`public/keputusan.html`, 3 panel):**
+- **Masalah:** butang Kira Kedudukan (Auto) / Cetak / Simpan tak konsisten saiz di phone. Punca: padding melintang beza (px-6/px-5/px-8) + `flex justify-between` paksa satu baris sesak.
+- **Iterasi (master pandu via AskUserQuestion + feedback):**
+  1. Mula: `display:contents` pada wrapper Cetak/Simpan di mobile → semua butang jadi sibling `flex-1` sama lebar. Commit `26ab979`.
+  2. Master: "Kira masih besar" — punca `flex:1 1 0` + `min-width:auto` (item flex tak shrink bawah min-content teks panjang). Tambah `min-w-0` + kurang padding mobile `px-2 sm:px-6/5/8`. Commit `3afae4d`.
+  3. Master cadang layout lebih kemas: **Kira melintang penuh (w-full) atas, Cetak+Simpan 50/50 bawah**. Footer `flex flex-col sm:flex-row`, Kira `w-full sm:w-auto`, wrapper `flex gap-2 w-full sm:w-auto`, Cetak/Simpan kekal `flex-1 min-w-0`. Commit `9b18957`.
+- **Nota:** panel Balapan tiada Cetak → Auto Ranking penuh atas, Simpan penuh bawah.
+- **Deploy:** setiap commit push test → poll staging → master verify phone → akhirnya merge main `--no-ff` `a449778`.
+
+**Pengajaran teknikal:**
+- `flex-1` sahaja TAK cukup untuk butang sama lebar bila ada teks panjang — WAJIB tambah `min-w-0` (override `min-width:auto`) supaya item boleh shrink bawah min-content.
+- `display:contents` (Tailwind `contents`) = cara flatten wrapper div jadi anak-anaknya naik sibling flex parent (guna `contents sm:flex` untuk mobile-only flatten).
+- Playwright spec (`tests/e2e.spec.js`) — **fail lokal (gitignored `/tests/`)**, BASE_URL staging. Password sub_admin `admin_dba1097` betul = **`123456`** (spec sempat lapuk `1234` → betulkan lokal, tak masuk git). Superadmin `dragon`/`f4994`.
+- Verify guna node fetch (poll staging keputusan.js/html grep penanda baru) — browser extension + curl masih bermasalah, node fetch (TLS sendiri) berjaya. Playwright guna sandbox-disabled (izin master setiap kali).
+
+### 🆕 Sesi 2026-07-05 (malam ~20:49–22:36): sistem-olahraga — Fix Jantina Murid SK Salor + Kad Pemenang Mobile ✅ DUA-DUA LIVE PRODUCTION
+**Konteks:** master check jadual pendaftaran SK Salor (`id_sekolah=DBA1097`) → jumpa masalah data + UI.
+
+**Kerja 1 — Baiki jantina 231 murid (data fix D1 production):**
+- **Masalah:** master update senarai murid dulu tapi lupa isi jantina → SEMUA 467 murid tertag `L`. Rumah HIJAU pula dah daftar 70 pendaftaran acara (semua murid lelaki).
+- **Penemuan kritikal:** endpoint `POST /api/murid/csv` guna **`INSERT OR IGNORE`** (src/index.js ~906) — re-upload CSV **TAK update** murid sedia ada, cuma SKIP. Jadi fix mesti **UPDATE jantina in-place ikut `id_murid`** supaya FK `pendaftaran_acara`→`murid` (ON DELETE CASCADE) kekal utuh (bukan padam-insert yang tukar id_murid → orphan).
+- **CSV master:** `Downloads/templat_murid (1).csv`. Semakan silang jantina-CSV vs penanda nama (BIN→L, BINTI→P): mula ada silap (cth BIN tertag P), master betulkan → pusingan kedua **0 silap, 0 nama tanpa penanda**. 468 baris (237 L / 231 P).
+- **Reconciliation (nama+tahun+kelas):** 467 murid DB padan penuh CSV; **231 akan tukar L→P**; **0 murid TERDAFTAR yang jantina berubah** (semua 70 pendaftaran HIJAU = murid lelaki kekal L → tiada konflik); 1 murid CSV tiada di DB = **AHMAD FATHAN BIN MOHD LOKMAN** (master arah PADAM sebab dah pindah — dia memang tak wujud di DB, cuma dikeluarkan dari fail CSV).
+- **Backup dulu:** 70 pendaftaran HIJAU → `backup/pendaftaran_hijau_backup_20260705-210937.json` + `.sql` (INSERT restore).
+- **Apply:** `UPDATE murid SET jantina='P' ... WHERE id_murid IN (231 id)` → **231 rows written**. Sahkan: 236 L / 231 P (jumlah 467) + 70 pendaftaran valid, 0 orphan. Query guna `wrangler d1 execute olahraga-db --remote` (sandbox-disabled, izin master).
+- **Memory baru:** `reference_olahraga_csv_upload.md` (gotcha INSERT OR IGNORE + guna UPDATE by id_murid).
+
+**Kerja 2 — Papan skor: jadual Pemenang Terkini jadi kad bertindan di mobile:**
+- **Masalah:** di telefon, jadual "Pemenang Terkini" (`papan.html`) perlu scroll kiri-kanan untuk nampak kolum Kedudukan. Punca: `min-width:420px` pada jadual + kolum Ked. paling kanan.
+- **Pilihan master (AskUserQuestion):** **kad bertindan** — desktop kekal jadual, mobile (≤639px) tukar baris → kad (acara atas, nama+rumah bawah, badge Ked. sudut kanan atas).
+- **Pelaksanaan (CSS sahaja + kemas JS):** `public/papan.html` — tambah `id="winners-table"`, media query `@media (max-width:639px)` (thead disembunyi, tr/td jadi block, badge `position:absolute` kanan atas, benarkan nama panjang wrap elak overflow), buang kolum "Kelas" (header tersembunyi tapi td badan masih render → header/badan tak sejajar, colspan 4→3). `public/papan.js` — buang `<td>` kelas, colspan 4→3.
+- **⚠️ Isu ditangani:** sel Pemenang ada `white-space:nowrap` + nama panjang (cth "TUAN MUHAMMAD ADAM BIN...") → dalam kad boleh overflow → tambah `white-space:normal !important` di mobile.
+- **Deploy:** commit test `cb80632` → master verify telefon OK → merge main `--no-ff` `07d2491` → push main auto-deploy. **Verify production** guna node-fetch (curl tersekat TLS sesi ni): papan.js (tiada p.kelas, colspan 3) + papan.html (id winners-table, media query, badge absolute, tiada th Kelas, min-width:420px desktop kekal) — semua penanda baru ADA, lama TIADA. **LIVE.**
+- **Nota env:** browser extension (claude-in-chrome) **gagal attach** sepanjang sesi (`Cannot attach to this target`) + `file://` disekat → verifikasi visual guna browser tak dapat; ganti dengan node-fetch semak fail production. curl exit 35/code 000 (TLS/sandbox) — guna `node fetch` (TLS sendiri, macam git) berjaya.
 
 ### 🆕 Sesi 2026-07-04 (malam ~00:43–01:53): mypwa-v2 — Logik ETR Baru (Berasaskan Gred) ✅ LIVE PRODUCTION (main `5afd2ff`)
 **Sambung dari spec 2026-07-03.** Execute penuh guna subagent-driven-development + 2 follow-up UX dari master.
