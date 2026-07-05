@@ -3,8 +3,25 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-05 (malam, ~23:42)
-**Session Focus**: ✅ sistem-olahraga (tab Keputusan) — DUA kerja SELESAI & LIVE PRODUCTION: (1) **Bug panel balapan tersembul dalam acara padang** (kad LORONG muncul bawah acara lompat/lontar) — punca `removeHeatPanel()` buka balik panel-balapan walau laluan padang, fix +1 baris `panelBalapan.add('hidden')`, merge main `a7ca618`; (2) **Butang footer Keputusan konsisten di mobile** — Kira Kedudukan (Auto) melintang penuh atas, Cetak+Simpan 50/50 bawah (3 panel: padang/lompat/balapan), merge main `a449778`. Playwright 18/18 sepanjang jalan. TIADA kerja tertunggak.
+**Last Activity**: 2026-07-06 (awal pagi, ~03:05)
+**Session Focus**: ✅ sistem-olahraga (tab Keputusan) — SEMUA LIVE PRODUCTION. Sesi panjang (~22:41 5 Julai → 03:05 6 Julai): (1) fix bug panel balapan tersembul acara padang (main `a7ca618`); (2) footer butang konsisten mobile (main `a449778`); (3) **FEATURE: Kad Responsif tab Keputusan mobile Fasa 1** — key-in Padang+Balapan guna phone tanpa scroll kiri-kanan, jadual→kad menegak ≤639px, guna proses penuh brainstorm→spec→plan→subagent-driven (main `810c8b6`). Lompat Tinggi = Fasa 2 (backlog). TIADA kerja tertunggak.
+
+### 🆕 Sesi 2026-07-06 (awal pagi ~00:22–03:05): sistem-olahraga — Feature Kad Responsif Tab Keputusan Mobile (Fasa 1) ✅ LIVE PRODUCTION (main `810c8b6`)
+**Permintaan master:** master suka key-in rekod pemenang guna phone; nak daftar keputusan tanpa scroll kiri-kanan di tab Keputusan.
+- **Proses penuh (task sederhana):** brainstorming → spec → writing-plans → subagent-driven-development. Master pilih setiap keputusan via AskUserQuestion.
+- **Keputusan brainstorm:** (1) skop = ketiga-tiga acara, TAPI pecah fasa; (2) cara key-in = **senarai kad** (semua peserta, scroll atas-bawah) bukan satu-per-satu; (3) Pendekatan **A = CSS kad responsif** (guna semula corak `papan.html`, breakpoint ≤639px, desktop kekal) — bukan JS render kad (Pendekatan B ditolak, risiko pecah Kira/Simpan); (4) **Fasa 1 = Padang + Balapan** dulu, **Lompat Tinggi = Fasa 2** (matriks 2D peserta×ketinggian, perlu reka kad khas).
+- **Spec:** `docs/superpowers/specs/2026-07-05-keputusan-kad-mobile-design.md` (commit `b12308d`). **Plan:** `docs/superpowers/plans/2026-07-05-keputusan-kad-mobile.md` (commit `517978d`).
+- **Mekanisme:** tambah kelas kongsi `results-card` pada jadual (#table-padang, #table-balapan, jadual heat suntikan) + atribut `data-label`/`data-cell` pada `<td>` semasa render; satu blok `<style>` media query (≤639px) tukar `tr`→kad, `td`→blok berlabel, sorok thead. **Logik Kira/Simpan tak disentuh** (kelas input `.input-cuba-*`/`.input-masa-*`/`.input-manual-*` kekal).
+- **Subagent-driven:** Task 1 (haiku) kad Padang + CSS kongsi → commit `604b4af`, review sonnet Spec✅ Quality✅. Task 2 (haiku) kad Balapan biasa+heat → commit `4995ea8`, review sonnet ✅. Final whole-branch review (sonnet) = MERGE-READY 0 Critical/Important.
+- **Fix susulan (master verify phone):** badge Kedudukan `position:absolute` **bertindih nama panjang** di kad padang. Fix: buang absolute → Kedudukan jadi blok berlabel mengalir sebaris (guna rule `td[data-label]`), buang `padding-right` nama. Commit `5ccd2ad`.
+- **Deploy:** push test → poll staging (node fetch) → Playwright 18/18 → master verify phone OK → merge main `--no-ff` `810c8b6` → production disahkan live (node fetch grep penanda).
+- **Minor diterima master:** kad Balapan — nombor Lorong duduk baris sendiri atas nama (bukan sebaris macam mockup). Master OK. Boleh laras nanti kalau nak (kerja kecil).
+
+**Pengajaran teknikal:**
+- **Flexbox blockification:** `<td>` dengan inline `display:table-cell` (mod manual/heat) dalam `tr{display:flex}` → dikira `block` automatik (CSS Display L3), jadi CSS kad tak pecah. `display:none` kekal none. Tak perlu `!important` pada display.
+- **`position:absolute` badge atas teks flow = rapuh** bila teks panjang (padding reserve tak cukup). Lebih kukuh guna blok mengalir biasa.
+- **Corak kad responsif papan.html** = pattern standard master suka: thead sorok, tr→kad flex-wrap, td→blok, `td[data-label]::before{content:attr(data-label)}` untuk label dinamik.
+- Subagent-driven sesuai untuk task transkripsi kod (plan ada kod penuh) — haiku implementer + sonnet reviewer, murah & laju.
 
 ### 🆕 Sesi 2026-07-05 (malam ~22:41–23:42): sistem-olahraga — Fix Bug Panel Balapan Padang + Footer Butang Mobile ✅ DUA-DUA LIVE PRODUCTION
 **Konteks:** master report bug di tab Keputusan → Padang (screenshot Lontar Peluru).
