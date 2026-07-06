@@ -3,7 +3,32 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-06 (awal pagi, ~03:05)
+**Last Activity**: 2026-07-06 (tengah hari, ~13:06)
+
+### 🆕 Sesi 2026-07-06 (tengah hari ~12:00–13:06): mypwa-v2 — Ringkasan Analisa ETR (page Trend) ⏳ SPEC + PLAN SIAP, BELUM EXECUTE
+**Permintaan master:** buat **analisa untuk ETR** dalam page Trend. Selepas brainstorm penuh, skop dijelaskan: (1) **berapa ramai murid CAPAI ETR** + (2) **taburan gred sasaran** (berapa murid disasarkan ke setiap gred), per subjek.
+- **Keputusan brainstorm (semua master sahkan via AskUserQuestion):**
+  1. Metrik: bil capai ETR (status='capai' ÷ murid ada ETR) + taburan gred sasaran (petakan nilai ETR → gred).
+  2. Petakan gred **guna skala gred ujian sumber TOV**.
+  3. Surface = **seksyen dalam `trend.html`** (bukan page/tab baru). Audiens = guru+pelawat+admin (semua yang dah akses trend — tiada kawalan akses baru).
+  4. **Filter berubah:** Sesi + **Tahun**(wajib) + **Kelas**(opsyen, default "Semua Kelas"). *(Master mula pilih "kelas dipapar sahaja", lepas tu tukar ke Tahun+Kelas — subteks jadi "Pilih sesi dan tahun...".)*
+  5. **Semua Kelas** → Ringkasan ETR agregat seluruh tahun SAHAJA (sorok senarai murid). **Satu kelas** → Ringkasan + senarai murid sedia ada.
+  6. Bentuk paparan = **carta palang mendatar per subjek** (guna semula corak `buildChartHtml` dashboard). Cetak = sertakan ringkasan.
+- **Nota teknikal penting:** ETR sentiasa ≥ 50 (kiraETR sasar ≥ lulus) → taburan gred sasaran **takkan ada 'Tidak Menguasai'**. Frontend vanilla **tak boleh import `etr.mjs`** (tiada build step) → agregat dikira **server-side** (endpoint pulang array `ringkasan`), frontend render sahaja (DRY + boleh unit test).
+- **Reka bentuk backend:** `GET /trend` ubah `kelas_id`→`tahun`+`kelas_id`(opsyen); tambah `tovUid` per subjek; pulang `ringkasan`+`bilTiadaTov`; `kelas`→objek skop `{tahun,kelas_id,nama_kelas}`. **0 migration, 0 package.** Utiliti baru `gredBagi()` + `ringkasanETR()` dalam `src/utils/etr.mjs` (pure, unit-tested).
+- **Spec:** `docs/superpowers/specs/2026-07-06-analisa-etr-design.md` (commit `caeb50f`, push test). **Plan:** `docs/superpowers/plans/2026-07-06-analisa-etr.md` (5 task TDD, commit `f087d0a`, push test). Self-review plan ✅ (spec coverage, placeholder, type consistency).
+- **NEXT (sambung sesi depan):** master pilih cara execute (Subagent-Driven disyorkan / Inline) → laksana 5 task → sight-hone → commit-seal → push test → verify staging → merge main (tunggu confirm master untuk production). Task SEDERHANA.
+
+### 🆕 Sesi 2026-07-06 (pagi ~10:38–11:55): sistem-olahraga — Banner Amaran Tarikh Tutup Guru Rumah ✅ LIVE PRODUCTION (main `954b281`)
+**Masalah master:** bila admin set tarikh tutup masa depan, guru rumah tak nampak apa-apa di page pendaftaran — banner "tutup" sedia ada cuma muncul SELEPAS terlambat.
+- **Penemuan:** `pendaftaran.js` dah baca `t.tarikh_tutup_pendaftaran` dari `/sekolah/tetapan` + ada banner merah `#banner-pendaftaran-tutup` (muncul bila status=0 atau tarikh lepas). Jurang = tiada papar bila BUKA + tarikh masa depan. **Frontend sahaja**, data dah ada.
+- **Reka (master pilih via AskUserQuestion):** banner amber di slot atas sama (bukan baris kecil / bukan escalation merah). KISS.
+- **Perubahan:** `pendaftaran.html` +banner amber `#banner-pendaftaran-buka` (ikon jam, hidden default). `pendaftaran.js` +cabang `else if (t.tarikh_tutup_pendaftaran)` — papar "Pendaftaran akan ditutup pada [tarikh]" guna `toLocaleString('ms-MY',{dateStyle:'medium',timeStyle:'short'})` (sama format banner tutup, DRY). 18 baris, 0 backend/migration.
+- **Verify:** Playwright 4/4 PASS (fail lokal `tests/pendaftaran-banner.spec.js`, gitignored) — uji terpencil: seed localStorage lepas guard guru_rumah + mock semua `/api` (page.route), suntik tarikh senario (depan→amber, lepas→merah, tiada→takde, status=0→merah). Tak sentuh DB sebenar. + screenshot visual disahkan (`screenshots/banner-amber-guru-rumah.png`). Guna sandbox-disabled (master arah "run playwright").
+- **Deploy:** commit test `e6f3262` → verify staging (node fetch) → Playwright 4/4 → merge main `--no-ff` `954b281` → push main auto-deploy → production `atletik.celikguru.my` disahkan live (node fetch grep penanda). TIADA kerja tertunggak.
+- **Pengajaran:** page `pendaftaran.html` guard client-side WAJIB `peranan==='guru_rumah'` (redirect kalau tak) — untuk uji tanpa creds, seed localStorage + mock API (logik frontend terpencil, deterministik, tiada side-effect DB). Corak ni bagus untuk uji perubahan render frontend.
+
+### 🕐 Sesi terdahulu (2026-07-06 awal pagi, ~03:05)
 **Session Focus**: ✅ sistem-olahraga (tab Keputusan) — SEMUA LIVE PRODUCTION. Sesi panjang (~22:41 5 Julai → 03:05 6 Julai): (1) fix bug panel balapan tersembul acara padang (main `a7ca618`); (2) footer butang konsisten mobile (main `a449778`); (3) **FEATURE: Kad Responsif tab Keputusan mobile Fasa 1** — key-in Padang+Balapan guna phone tanpa scroll kiri-kanan, jadual→kad menegak ≤639px, guna proses penuh brainstorm→spec→plan→subagent-driven (main `810c8b6`). Lompat Tinggi = Fasa 2 (backlog). TIADA kerja tertunggak.
 
 ### 🆕 Sesi 2026-07-06 (awal pagi ~00:22–03:05): sistem-olahraga — Feature Kad Responsif Tab Keputusan Mobile (Fasa 1) ✅ LIVE PRODUCTION (main `810c8b6`)
