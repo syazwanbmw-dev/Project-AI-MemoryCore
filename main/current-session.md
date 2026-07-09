@@ -3,7 +3,126 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-06 (tengah hari, ~13:06)
+**Last Activity**: 2026-07-09 (tengah hari, ~13:37)
+
+### 🆕 Sesi 2026-07-09 (tengah hari ~11:28–13:37): sistem-olahraga — 3 Fix Pasca-Kejohanan ⏳ SPEC + PLAN SIAP, BELUM EXECUTE
+**Konteks:** Kejohanan sebenar SK SALOR dah selesai (semak production `olahraga-db`: semua 56 acara lengkap keputusan, keputusan==daftar). Master kenal pasti 3 penambahbaikan. Brainstorm penuh → spec → writing-plans (belum execute).
+- **3 keputusan reka bentuk (semua master sahkan):**
+  1. **DQ butang setiap baris** — balapan (masa+manual+heat) & padang (Lompat Jauh/Lontar Peluru). BUKAN Lompat Tinggi (kekal NH). Relay 4x100m = DQ seluruh pasukan rumah (satu baris). Padang: 0.0m cubaan gagal KEKAL (prestasi), DQ = override berasingan (batal peserta). Tiada kotak sebab. **Penemuan penting:** DQ separa dah wujud — balapan mod masa boleh taip "DQ" (parseMasa), simpanHeat + save final dah kendali badge 'DQ' via pushKeputusan. Backend penuh sokong (kedudukan=0→markah 0). Gap: butang jelas + skip ranking + laluan padang (kira/save/populate) + mod manual.
+  2. **Dropdown checkbox pilih acara** (laporan) — WYSIWYG (tapis skrin + cetak), default semua ter-tick.
+  3. **Tandatangan "Disahkan oleh"** — muncul HANYA laporan lengkap (Semua Kategori + Semua jenis + semua acara ter-tick, ATAU butang Download Semua Laporan). **Punca bug:** CSS cetak paksa `#extra-sections` + `#print-tandatangan-semua` `display:block !important` tanpa syarat → keluar setiap cetakan. Fix: buang paksaan, gate guna kelas `laporan-lengkap`. + tambah "Semua Kategori" ke dropdown kategori.
+- **Skop:** frontend SAHAJA, 0 migration, 0 package, 0 backend. Fail: `public/keputusan.{html,js}`, `public/laporan.{html,js}`.
+- **SPEC:** `docs/superpowers/specs/2026-07-09-fix-dq-laporan-design.md` (commit `3a58a71`, test). **PLAN:** `docs/superpowers/plans/2026-07-09-fix-dq-laporan.md` (4 task, commit `8e8e7c0`, test). Self-review kedua-dua ✅. Belum push (Geass — commit-seal dulu).
+- **Butang DQ diletak DALAM sel Kedudukan sedia ada** (bukan kolum baru) — jaga konsistensi jadual. Guna satu penanda `tr.dataset.dq` + helper `setRowDQ(tr,on)` + event delegation global.
+- **4 task plan:** T1 butang DQ+toggle (keputusan.js) → T2 skip ranking + save/populate padang (keputusan.js) → T3 checkbox acara WYSIWYG (laporan) → T4 Semua Kategori + gating tandatangan (laporan). Titik sentuh + kod lengkap dalam plan.
+- **⚠️ NEXT (sambung):** master pilih cara execute (Subagent-Driven disyor / Inline) → laksana 4 task → sight-hone → commit-seal (Playwright izin sandbox) → push test → verify staging (butang DQ + cetak laporan visual) → tunggu confirm master → merge main `--no-ff` → production `atletik.celikguru.my`. Risiko diketahui: `repopulateHeatKeputusan` tak dibaca penuh (T2 Step 6 nota mirror setRowDQ jika perlu).
+- HEAD test = `8e8e7c0` (spec+plan sahaja, belum ada kod implementasi).
+
+### 🆕 Sesi 2026-07-07 (petang ~19:03–19:26): sistem-olahraga — Markah Berkumpulan ✅ DEPLOY MAIN — LIVE PRODUCTION (master sahkan visual OK)
+**Sambung dari pagi.** Master sahkan staging OK → arah deploy production.
+- **Migration production `olahraga-db`** (izin master + sandbox-disabled): `ALTER TABLE tetapan_markah ADD COLUMN jenis TEXT NOT NULL DEFAULT 'individu'`. Pre-check schema (belum ada jenis) → jalankan → verify: kolum masuk, **24 rekod → 'individu', 0 hilang** (padan test DB). Nota: 1 glitch 7403 transient cubaan pertama, retry berjaya (test DB read OK bukti token elok). DB `olahraga-db` id `5dd90565...`, ada dalam akaun sama edc032a2 (bukan isu akaun).
+- **Seal:** node --check src/index.js OK, wrangler dry-run CLEAN (178KiB).
+- **Merge `test`→`main` `--no-ff` = `ec9a098`** (12 commit: Spec+Plan+7 feature+doc limitasi+fix arkib+doc fixed). main dulu `5160d5b`. Push `5160d5b..ec9a098 main->main`.
+- **Deploy GitHub Actions SIAP** (poll node fetch, cubaan pertama 200): statistik-mata.js live (kiraMataStatistik), admin.js (berkumpulan), statistik.js + arkib-cetak.js origin ada kiraMataStatistik (**cache-buster perlu — edge cache serve versi lama pada URL kanonik; master hard-refresh Ctrl+F5 untuk nampak**).
+- **✅ MASTER SAHKAN PRODUCTION OK (~19:26):** `atletik.celikguru.my` visual betul (toggle simpan berasingan, KUTIPAN==JUMLAH, NILAI 2 baris, arkib cetak 2 baris). **FEATURE SELESAI, TIADA KERJA TERTUNGGAK.** Lucy balik branch test.
+- **Pengajaran:** (1) urutan deploy DB-schema-additive = migration DULU (masa kod lama live, kolum baru diabaikan = zero-downtime) → baru merge+push kod baru; (2) edge cache Cloudflare serve fail statik lama pada URL kanonik selepas deploy — verify origin guna `?cb=` cache-buster, `cf-cache: MISS` = origin fresh.
+
+--- (rekod pagi asal di bawah, status kini SELESAI) ---
+### 🆕 Sesi 2026-07-07 (pagi ~10:24–): sistem-olahraga — Markah Berkumpulan ✅ PUSHED TEST + STAGING LIVE [✅ DEPLOY PRODUCTION SELESAI — lihat entri petang di atas]
+**Sambung dari semalam.** Master pilih: (1) final review opus DULU → (2) push feature, fix arkib berasingan.
+- **Final review opus (whole-branch 22366a5..0de57fb):** 0 Critical, 1 Important, 3 Minor. Important = arkib relay KUTIPAN≠JUMLAH. **Lucy verify sendiri (receiving-code-review):** BETUL & PRE-EXISTING — arkib JUMLAH `SUM(markah_diperoleh)` tanpa dedup (`index.js:3153,:3166`) tapi relay simpan markah penuh setiap pelari (`:1893-1897`) → melambung ×bil pelari. `rumah_sukan.jumlah_markah` (live) deduped jadi live OK. Branch kita TAK burukkan (cuma 2× buat jurang nampak). Minor semua pre-accepted.
+- **Master keputusan:** push feature dulu, fix arkib = follow-up berasingan. Betulkan claim spec.
+- **Doc commit `10fd48a`:** nota limitasi arkib §5.3 dalam spec + backlog CLAUDE.md projek (fix: dedup SUM atas DISTINCT id_rumah,id_acara,kedudukan; AMARAN ubah angka arkib lampau).
+- **Seal (Geass):** Build CLEAN, Secrets CLEAN, syntax 5 fail OK, unit test 3/3, **Playwright chromium 22/22 PASS** (2× — sebelum & selepas push, sandbox-disabled izin master). SEALED.
+- **PUSH:** `22366a5..10fd48a test->test` (8 commit: 7 feature + 1 doc). GitHub Actions deploy staging SIAP (statistik-mata.js 200, penanda kiraMataStatistik ADA di statistik/admin/arkib-cetak). Migration test DB dah dibuat semalam.
+- **[KEMASKINI ~11:15] FIX ARKIB SIAP (master arah baiki sekarang, bukan tangguh):** master tanya sahkan "markah 20 = satu kumpulan bukan setiap peserta". Lucy trace kod: LIVE 100% betul (save dedup `rumahMarkahDone` + grid `SELECT DISTINCT` :1975 → 20 sekali per rumah). Cuma ARKIB salah. Master arah fix sekarang. **Fix `4b3d80d`:** 2 query arkib (`markah_rumah` ~3151, `statistik` ~3162) dibungkus subquery `SELECT DISTINCT (id_rumah,id_acara,kedudukan,markah_diperoleh)` sebelum SUM. **Validasi test DB (data langsung, izin sandbox):** BARU==`rumah_sukan.jumlah_markah` beza 0 utk 3 rumah (337/335/339), LAMA melambung ~57% (529/527/531). Doc commit `73c6a9b` (spec §5.3 tanda DIBAIKI + buang dari backlog). Seal ✅ (build clean, unit 3/3, Playwright 22/22 ×lagi). Push `10fd48a..73c6a9b test->test` (cubaan ke-2, timeout intermittent). Nota: test DB `n_arkib=0` → fix arkib TAK visible staging, bukti = validasi DB.
+- **HEAD test = `73c6a9b`.** main masih `5160d5b` (belum merge). Total 10 commit test belum merge main (7 feature + 1 doc limitasi + 1 fix arkib + 1 doc fixed).
+- **⚠️ NEXT:** master verify VISUAL staging (`sistem-olahraga-sekolah-test.syazwan-skpp82.workers.dev`, admin_dba1097/123456): (1) toggle Individu/Berkumpulan simpan berasingan; (2) Statistik KUTIPAN==JUMLAH tiap rumah; (3) NILAI PINGAT 2 baris; (4) arkib cetak 2 baris — TAPI arkib KUTIPAN≠JUMLAH untuk tahun relay = BUG LAMA diketahui, bukan baru. Master confirm → migration production `olahraga-db` (BELUM) → merge main `--no-ff` → push main auto-deploy → sahkan `atletik.celikguru.my`.
+
+
+### 🆕 Sesi 2026-07-07 (malam ~00:08–01:13): sistem-olahraga — Markah Berkumpulan ✅ 7 TASK EXECUTED (subagent-driven), ⏳ PENDING final review + deploy
+**Sambung dari spec+plan.** Master pilih **Subagent-Driven** → execute penuh 7 task. **Semua review bersih (spec ✅ + quality Approved, 0 Critical/0 Important setiap task).**
+- **HEAD = `0de57fb` (test branch, LOKAL — 7 commit kod BELUM PUSH).** Plan `22366a5` dah push. Working tree bersih.
+- **Commit setiap task:** T1 migration `984f98d` → T2 backend kira/simpan jenis+fallback `3ae654c` → T3 admin toggle `beebe1a` → T4 statistik/arkib +bilangan_peserta+jenis `a73673c` → T5 helper `kiraMataStatistik`+unit test `d7a64b6` → T6 statistik.js 2 baris NILAI+KUTIPAN reconcile `cd660c1` → T7 arkib-cetak.js sama `0de57fb`.
+- **Migration test DB SUDAH dijalankan** (`wrangler d1 execute olahraga-test --remote`, izin master): 24 rekod lama → `jenis='individu'`, 0 data hilang. **Production migration (`olahraga-db`) BELUM — tunggu confirm master.**
+- **T5 helper (risiko tertinggi) di-hand-trace reviewer:** reconcile 30 (johan ind 10 + relay 20), fallback, zero — semua betul. Unit test `# pass 3` (fail `tests/statistik-mata.unit.js` gitignored, tak commit — hanya `public/statistik-mata.js` di-commit).
+- **Ledger:** `.superpowers/sdd/progress.md` (semua task tanda complete + senarai Minor findings). Briefs/reports/diffs dalam `.superpowers/sdd/` (untracked).
+- **Minor findings terkumpul (untuk triage final review, tiada yg blocking):** jenis-drift bila bilangan_peserta diubah selepas simpan (pre-accepted, dlm limitasi spec); GET tetapan-markah interleave (frontend tapis, by design); admin.js load-race (tak mungkin) + gaya ??/|| + aria-pressed; schema.sql tak reflect kolum jenis (migration=source); magic number `>=4` bukan shared constant (konvensyen sedia ada).
+- **⚠️ NEXT (sambung esok — master arah berhenti sini):**
+  1. **Final whole-branch review (opus)** — dispatch DITOLAK master (stop). Diff dah sedia: `.superpowers/sdd/review-22366a5..0de57fb.diff` (7 commit, 35KB). Guna template `requesting-code-review/code-reviewer.md`. Base=`22366a5` Head=`0de57fb`.
+  2. Triage Minor → `commit-seal` (Geass) → **push test** (7 commit) → GitHub Actions deploy staging.
+  3. Verify staging: KUTIPAN MATA == JUMLAH MATA setiap rumah; admin toggle simpan ind+kump berasingan; 2 baris NILAI PINGAT; arkib cetak sama.
+  4. Master confirm staging → **jalankan migration production `olahraga-db`** → merge main `--no-ff` → push main auto-deploy → sahkan `atletik.celikguru.my`.
+- **Task SEDERHANA, guna proses penuh brainstorm→spec→plan→subagent-driven. BELUM sentuh production langsung.**
+
+
+### 🆕 Sesi 2026-07-06 (petang–malam ~21:02–23:34): sistem-olahraga — Susunan + Cetak Senarai Peserta & Senarai Mula ✅ SEMUA (6) LIVE PRODUCTION
+**Konteks:** master tambah baik paparan/cetak page guru rumah (pendaftaran) + fix bug + tambah baik cetak senarai mula acara padang (admin). 6 kerja, semua flow test→verify staging→merge main `--no-ff`. **main terkini = `5160d5b`.**
+
+**Kerja 1 — Susunan senarai (backend, `main f678ad7`):**
+- **Masalah:** master tanya "nama disusun ikut apa?" → semak backend: endpoint `GET /api/peserta` (`src/index.js` baris 1338) guna `ORDER BY pa.id_pendaftaran DESC` = ikut masa daftar (terbaru dulu), nampak rawak.
+- **Fix (1 baris, baris 1361):** tukar ke `ORDER BY k.nama_kategori ASC, a.nama_acara ASC, m.nama ASC` → berkumpul kemas kategori → acara → nama (A→Z). Konsisten dgn cetak + endpoint lain sistem. 0 migration, 0 frontend.
+- **Nota:** acara disusun sebagai TEKS (100m sebelum 60m) — perangai sedia ada seluruh sistem, master OK.
+- Commit test `fddbed0` → master verify staging → merge main `--no-ff` `f678ad7`.
+
+**Kerja 2 — Cetak 3 kategori satu halaman (frontend, `main 56863f2`):**
+- **Masalah:** cetak (`public/pendaftaran.js` fungsi `cetakPendaftaran`) pisah page ikut BILANGAN peserta (≤6→6 blok, ≤20→2 blok, >20→1 blok) → L1 L2 L3 berpecah antara page.
+- **Master pilih (AskUserQuestion):** 3 kategori satu page TETAP → page1 L1 L2 L3, page2 P1 P2 P3.
+- **Fix (baris ~553-580, -20 baris):** ganti logik bertingkat dgn `for` potong 3-3 (`PER_PAGE=3`, `entries.slice`). Bergantung pada Kerja 1 — data dah tersusun ikut kategori jadi potong 3-3 dapat kumpulan betul. Frontend-only, 0 backend.
+- Commit test `2020bb5` → master verify staging → merge main `--no-ff` `56863f2`.
+
+**Kerja 3 — Cetak: table kategori tak terpisah (frontend, `main b2e02fb`):**
+- Tambah `page-break-inside: avoid` pada `.blok` (style cetak `pendaftaran.js`) → table satu kategori tak terpotong tengah; kalau tak muat baki page, turun penuh ke page seterusnya. 1 CSS property.
+- Merge ni turut bawa commit doc `5f48767` (kemaskini CLAUDE.md projek main commit `90acc60`→`56863f2`). Commit test `b2393ee` → merge main `b2e02fb`.
+
+**Kerja 4 — FIX BUG: senarai mula padang ikut giliran (frontend, `main c15ccaf`):**
+- **Bug master:** tab Lorong (sub_admin) → acara padang → jana giliran rawak → simpan → cetak senarai mula, susunan TAK sama macam disimpan.
+- **Root cause (systematic-debugging):** aliran betul kecuali 1 langkah — giliran disimpan betul ke `lorong_pelepas` (INTEGER) via PATCH `/api/lorong`; backend `/api/peserta/acara/:id` pulang `ORDER BY lorong_pelepas ASC` (betul). TAPI `admin.js` SUSUN SEMULA padang ikut `nama_murid` (baris 1904 cetak satu acara + 2341 cetak batch) → buang susunan giliran. Komen kod sendiri: "padang & lompat bebas (ikut nama)".
+- **Fix:** cabang `else` (padang/lompat) tukar ke `(a.lorong||999)-(b.lorong||999) || nama` → susun ikut giliran, fallback nama utk belum diundi (NULL). 2 tempat, 3 baris. Bukti node: sort lama Ali(g2),Bakar(gnull),Cik(g3),Zaki(g1) ❌ → baru Zaki(g1),Ali(g2),Cik(g3),Bakar(gnull) ✅.
+- Commit test `1c2bfd4` → merge main `c15ccaf`.
+
+**Kerja 5 — Cetak senarai mula: 3 acara satu page + jadual tak terpisah (frontend, `main 97e3297`):**
+- Master nak cetak senarai mula admin (`cetakYangDipilih` dlm `admin.js`) ikut gaya cetak guru rumah. Unit di sini = ACARA (bukan kategori) — master sahkan "3 acara satu page" via AskUserQuestion.
+- **Fix:** buang logik `BIG_THRESHOLD` (max 2/page) → potong 3-3 (`PER_PAGE=3`). Tambah `page-break-inside:avoid` pada `.event-blok`. **Turunkan margin antara acara 30mm→8mm** (Lucy flag: 30mm buat 3 jarang muat) — master lulus. Frontend-only, -5 baris.
+- Commit test `d24aa3e` → merge main `97e3297`.
+
+**Kerja 6 — Cetak senarai mula: ulang header setiap page + ketatkan muat 100% (frontend, `main 5160d5b`):**
+- Master uji cetak padang: header (nama kejohanan/sekolah) cuma keluar page 1; 3 acara muat hanya bila set skala cetak 90% manual.
+- **Fix (`cetakYangDipilih` dlm `admin.js`):** suntik `.doc-header` ke DALAM setiap `.print-page` (dulu sekali je di luar, sebelum semua page) via const `headerHTML`. Ketatkan font 10pt→9pt (body/table/event-tajuk) + kurang jarak (doc-header margin 4mm→2mm, h1 12→11pt, h2 10.5→9.5pt, event-blok margin 8mm→6mm & padding 2→1.5mm, th/td padding 2px→1px) supaya 3 acara + header muat 100% tanpa set skala manual.
+- **Nota master:** "muat 100%" bergantung bilangan peserta setiap acara (acara ramai = jadual tinggi) — master OK, boleh laras lagi kalau ada acara tak muat.
+- Commit test `b56a147` → merge main `5160d5b`.
+
+**Nota keseluruhan:** semua kerja KISS, tiada tertunggak. Kerja 1 (susunan kategori) jadi asas Kerja 2 (potong-3). **Corak cetak standard sekarang: potong-3 blok/page + `page-break-inside:avoid` pada blok** (dipakai pendaftaran.js `.blok` + admin.js `.event-blok`). CLAUDE.md projek: main commit ditulis `56863f2` (Kerja 3), sebenarnya dah `5160d5b` — master arah **biarkan**, update sekali je bila ada perubahan lain. Untracked files (`.superpowers/`, `Project Resources/`, `docs/mockup/`, beberapa plan/spec, 1 screenshot) belum diputuskan. **Network push GitHub timeout intermittent** beberapa kali sesi ni — retry berjaya (isu diketahui).
+
+### 🆕 Sesi 2026-07-06 (tengah hari + malam ~23:37–23:54): sistem-olahraga — Markah Berbeza Acara Berkumpulan ✅ BRAINSTORM SELESAI + SPEC SIAP (belum execute)
+**[KEMASKINI malam 23:54]** Sambung brainstorm dari tengah hari. Bahagian 2 diputuskan + spec penuh ditulis.
+- **Bahagian 2 — master pilih BUAT TEPAT (ikut jenis):** KUTIPAN MATA kira ikut jenis setiap acara (guna `bilangan_peserta` dlm grid) → reconcile penuh dgn JUMLAH MATA. NILAI PINGAT jadi 2 baris (Individu + Berkumpulan). BILANGAN PINGAT & JUMLAH MATA kekal.
+- **KISS+DRY (master ingatkan):** 2 set sahaja (heuristik `bilangan_peserta>=4`, tiada medan jenis DB baru). Helper baru `public/statistik-mata.js` `kiraMataStatistik()` dikongsi `statistik.js` + `arkib-cetak.js` (elak salin logik renderStatistik yg identik).
+- **Fallback penting (dari spec self-review):** kalau set berkumpulan kosong (guru belum set) → guna set INDIVIDU, dipakai DI KIRA (elak relay dapat 0 markah = regresi) DAN DI PAPARAN (markahKump default markahInd, kekal reconcile). Lihat spec §4.4a.
+- **Titik sentuh kod disahkan (grep):** tetapan_markah — GET `index.js:249`, POST `:266` (id individu `{sek}-pos-{ked}` kekal, berkumpulan `{sek}-berkumpulan-pos-{ked}`), kira final `:1844` (isBerkumpulan dah wujud `:1747`), statistik ringkasan markah `:1941`, statistik/grid `:1955` (+bilangan_peserta), arkib legend `:3175`, reset DELETE `:2870` (tak ubah). Admin borang `admin.html:371` input m1-m8, `admin.js:955` muat + `:978` submit.
+- **SPEC:** `docs/superpowers/specs/2026-07-06-markah-berkumpulan-design.md` (commit `4a06692`, push test). Self-review ✅ (fallback ditambah).
+- **NEXT:** master review spec → kalau OK, `writing-plans` → execute (task SEDERHANA). BELUM sentuh kod implementasi.
+
+--- (rekod asal tengah hari di bawah) ---
+### 🆕 Sesi 2026-07-06 (tengah hari ~13:09–14:43): sistem-olahraga — Markah Berbeza Acara Berkumpulan ⏳ BRAINSTORM SEPARUH JALAN [✅ SELESAI — lihat kemaskini di atas]
+**Permintaan master:** acara berkumpulan (relay) patut ada markah pemenang BERBEZA dari acara individu. Sekarang guna satu set sahaja.
+- **Penemuan keadaan semasa (penting):**
+  - Konfig markah pemenang disimpan dalam jadual DB `tetapan_markah` (id_tetapan PK=`{id_sekolah}-pos-{kedudukan}`, kolum: id_sekolah, kedudukan, markah). Per sekolah (multi-tenant), `ON DELETE CASCADE`.
+  - Admin set via `public/admin.html:371` borang "Konfigurasi Sistem Pemarkahan", input `m1`–`m8`. **Default HTML: 10/8/6/5/4/3/2/1** (Johan→ke-8). `admin.js:955` muatTurun + `:978` submit → `POST /api/tetapan-markah`.
+  - API: `GET/POST /api/tetapan-markah` (`src/index.js:248`, POST guard `checkRole('sub_admin')`, upsert `ON CONFLICT`).
+  - **"Berkumpulan" TIADA medan jenis sebenar** — dikesan via heuristik `bilangan_peserta >= 4` (`isBerkumpulan`, dipakai seluruh sistem: had pendaftaran, kiraan). `jenis_acara` dalam DB = 'Balapan'/'Padang' (bukan individu/kumpulan).
+  - **Pengiraan markah** (`src/index.js` blok final heat=0, ~1842-1898): bina `mapMarkah[kedudukan]=markah` dari tetapan_markah, `markah_diperoleh = mapMarkah[k.kedudukan] || 0`, tambah ke `rumah_sukan.jumlah_markah`. Relay guna `Set rumahMarkahDone` supaya markah dikira SEKALI per rumah+kedudukan (tak double). **TAPI nilai markah sama untuk individu & berkumpulan** — itu jurangnya.
+  - Guna markah juga di: `index.js:1844` (kira+tolak-lama), `:1940` (statistik/ringkasan legend), `:3175` (arkib legend). Paparan: `statistik.js` + `arkib-cetak.js renderStatistik` (baris NILAI PINGAT, KUTIPAN MATA guna markahMap).
+- **KEPUTUSAN BRAINSTORM setakat ni (master sahkan via AskUserQuestion):**
+  1. **Skop = Individu vs Berkumpulan** (2 set sahaja, bukan Balapan/Padang/Relay atau per-acara). KISS.
+  2. **UI = satu borang dengan TOGGLE/tab** Individu↔Berkumpulan, kedua-dua kekal 8 kedudukan.
+  3. **Default markah berkumpulan = 2× individu → 20/16/12/10/8/6/4/2.**
+- **REKA BENTUK Bahagian 1 (master LULUS):**
+  - Definisi berkumpulan kekal `bilangan_peserta >= 4` (elak refactor besar, tiada medan jenis baru).
+  - Migration: `ALTER TABLE tetapan_markah ADD COLUMN jenis TEXT NOT NULL DEFAULT 'individu';` (semua rekod lama auto 'individu', selamat, tak sentuh PK). ID: individu kekal `{id_sekolah}-pos-{kedudukan}`, berkumpulan `{id_sekolah}-berkumpulan-pos-{kedudukan}`.
+  - Kira keputusan: `jenisMarkah = isBerkumpulan ? 'berkumpulan' : 'individu'` → SELECT ... WHERE id_sekolah=? AND jenis=?. Logik tolak-lama guna set sama (konsisten, tak tersilap).
+- **Bahagian 2 (BELUM DIPUTUSKAN — master minta clarify, belum jawab):** Jadual Statistik/Arkib ada baris NILAI PINGAT + KUTIPAN MATA yang kira `bilangan × markahMap[kedudukan]`. Pingat dikumpul ikut KEDUDUKAN sahaja (tak tahu jenis) → KUTIPAN MATA jadi TAK TEPAT untuk relay (cth HIJAU Johan relay 20 + Johan individu 10 → papar 2×10=20, sebenar 30). JUMLAH MATA (dari rumah_sukan.jumlah_markah) SENTIASA betul. 3 pilihan dicadang: (A) buat tepat—hantar jenis dalam grid, kira per-acara; (B) terima anggaran KISS + nota; (C) buang baris KUTIPAN. **Master reject soalan, minta clarify dulu — belum bagi input.**
+- **NEXT (sambung sesi depan):** clarify + putuskan Bahagian 2 → siapkan reka bentuk penuh → tulis spec `docs/superpowers/specs/2026-07-06-markah-berkumpulan-design.md` → spec self-review → master review → writing-plans → execute. Task SEDERHANA (1 migration + backend kira + admin.html/js toggle + mungkin statistik display). BELUM sentuh kod langsung.
 
 ### 🆕 Sesi 2026-07-06 (tengah hari ~12:00–13:06): mypwa-v2 — Ringkasan Analisa ETR (page Trend) ⏳ SPEC + PLAN SIAP, BELUM EXECUTE
 **Permintaan master:** buat **analisa untuk ETR** dalam page Trend. Selepas brainstorm penuh, skop dijelaskan: (1) **berapa ramai murid CAPAI ETR** + (2) **taburan gred sasaran** (berapa murid disasarkan ke setiap gred), per subjek.
