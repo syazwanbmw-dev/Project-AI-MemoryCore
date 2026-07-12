@@ -3,9 +3,39 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-12 (petang ~20:37)
+**Last Activity**: 2026-07-13 (malam ~00:08–01:50)
 
-### 🆕 Sesi 2026-07-12 (petang ~20:00–20:37): sistem-olahraga — Fix Backend + Cetak Laporan ⏳ DI STAGING, TUNGGU MASTER TEST CETAK
+### 🆕 Sesi 2026-07-13 (malam ~00:08–01:50): sistem-olahraga — 2 Fix Cetak Laporan ✅ SEMUA LIVE PRODUCTION (main `b18056e`)
+**Master test cetak staging → jumpa bug header. Dua fix, dua merge, semua live. main == test == `b18056e`. TIADA kerja tertunggak.**
+
+**Kerja 1 — Header cetak jadi FOOTER (main `80eb96e` → doc `22162ac`):**
+- **Bug master:** cetakan biasa (Cari → Cetak), header berulang mendarat di BAWAH setiap muka surat, jadi footer — dan BERTINDIH baris terakhir jadual (lebih teruk dari yang master perasan).
+- **PUNCA SEBENAR (systematic-debugging + bukti PDF):** `#running-header` guna `position: fixed; top: -17mm` (Lucy sendiri tulis semalam). **Enjin cetak Chrome MENGULANG elemen fixed tiap muka surat (betul) TAPI MENGABAIKAN `top` dan meletakkannya di hujung BAWAH kawasan kandungan.** CSS-nya sah — diagnostik tunjuk position aktif, top dikira betul (-64px), tiada ancestor transform/filter/contain yang rampas containing block. Enjin cetak yang tak melayan.
+- **FIX:** kandungan laporan dibungkus shell `<table id="print-shell">`, header duduk dalam `<thead>`. **Chrome mengulang baris `<thead>` tiap muka surat secara automatik — ini SATU-SATUNYA mekanisme header-berulang yang boleh dipercayai dalam Chrome.** Hipotesis diuji dulu (bungkus DOM staging semula via page.evaluate, jana PDF, tengok) sebelum tulis fix sebenar.
+- **⚠️ BUG LUCY YANG HAMPIR LOLOS:** selektor shell mula-mula guna DESCENDANT (`#print-shell td`) → kena SEMUA sel jadual acara yang BERSARANG dalam shell → paparan SKRIN hancur total (semua sel jadi baris block bertindan). **SEMUA assertion masih LULUS** (lebar container OK, bilangan .acara-block OK) — hanya SCREENSHOT yang dedahkan. Fix: rantaian child (`#print-shell > tbody > tr > td`).
+- Named page `laporan-normal` (margin atas 24mm) DIBUANG — header kini dalam aliran kandungan, margin biasa 12mm memadai → satu lagi acara muat page 1 (4, dulu 3). 32 acara → 10 muka surat, kekal.
+- Merge ini turut bawa **guard backend payload kosong** yang tertunggak (commit `beec1b8` semalam) → backlog "BACKEND punca sebenar bug C2" kini DITUTUP.
+
+**Kerja 2 — Tandatangan Download Semua dapat muka surat kosong sendiri (main `87b507c` → doc `b18056e`):**
+- **Penemuan (contact sheet audit):** laluan Download Semua = 20 muka surat, page 20 = tandatangan "Disahkan oleh" SAHAJA (satu helai terbuang).
+- **Punca:** blok tandatangan di hujung dokumen, selepas `#seksyen-statistik-extra` yang guna named page `landscape-stat`. **Tukar orientasi @page MEMAKSA pemisah muka surat** → tandatangan terpelanting keluar. (Ini isu "I3" yang dicatat 2026-07-12 tapi tak pernah diverify visual — akhirnya disahkan.)
+- **Master pilih:** tandatangan duduk BAWAH jadual "Laporan Markah Akhir Rumah Sukan" (page 1, ada banyak ruang kosong) — itulah keputusan rasmi yang perlu disahkan.
+- **Fix:** blok yang SAMA dipakai cetakan biasa (di hujung laporan), jadi JS alihkan ke `#seksyen-markah-extra` dalam laluan Download Semua sahaja, pulangkan ke hujung `#laporan-main` semasa reset — elak salin markup jadi dua (DRY). 20 → 19 muka surat.
+- **Master pilih KEKAL (bukan bug):** `.kategori-section { page-break-after: always }` → setiap kategori mula page baru, 60-70% ruang kosong setiap satu (page 6-17). Opsyen "kategori mengalir bebas" boleh jimat 5-6 helai lagi — terbuka kalau master ubah fikiran.
+
+**🔑 PENGAJARAN BESAR (2 sesi berturut bug cetak lolos ke tangan master):**
+1. **Kira angka ≠ verify.** Spec cetak asal cuma KIRA bilangan muka surat → bug header lolos. Assertion Lucy untuk shell pun semua LULUS sambil paparan skrin hancur. **Untuk kerja cetak/visual: WAJIB jana PDF sebenar, render jadi imej, TENGOK.**
+2. **Cara render PDF jadi imej tanpa poppler (Windows):** Playwright `page.pdf({preferCSSPageSize: true})` → base64 → `page.addScriptTag` pdf.js CDN → render ke canvas → PNG → Lucy `Read` imej. Contact sheet (grid semua page) untuk imbas dokumen panjang sekali pandang.
+3. **`page.pdf({format:'A4'})` ABAIKAN margin `@page` CSS** — mesti guna `preferCSSPageSize: true` supaya setia dengan Ctrl+P sebenar master.
+4. **Corak ujian pra-push (SANGAT BERGUNA):** `page.route('**/laporan.html', r => r.fulfill({path:'public/laporan.html'}))` → sajikan fail LOKAL terhadap API staging sebenar. Uji perubahan frontend dengan data hidup SEBELUM push. Inilah yang tangkap bug selektor descendant sebelum sampai staging.
+5. Playwright auto-dismiss `confirm()` — handler `btn-download-semua` bermula dengan confirm, kena `page.on('dialog', d => d.accept())`.
+6. Stub `window.print = () => { throw }` → handler berhenti sebelum setTimeout reset → keadaan cetak kekal untuk jana PDF.
+
+**Spec cetak (tests/, gitignored):** `cetak-laporan.spec.js` (uji staging + GUARD punca sebenar: header mesti dalam `<thead>`, mesti BUKAN `fixed`), `cetak-verify-lokal.spec.js` (PDF pra-push + render PNG), `cetak-regresi-lokal.spec.js` (guard skrin + laluan DL Semua), `dl-semua-audit.spec.js` (contact sheet).
+**SEAL ✅ ×2:** syntax OK, wrangler dry-run CLEAN (178.63 KiB), Playwright 30/30, secrets clean. Production `atletik.celikguru.my` disahkan live (node fetch) selepas kedua-dua merge.
+
+--- (rekod sesi lepas) ---
+### Sesi 2026-07-12 (petang ~20:00–20:37): sistem-olahraga — Fix Backend + Cetak Laporan [✅ SEMUA DAH LIVE — lihat sesi 2026-07-13 di atas]
 **Sambung terus lepas 3 fix pasca-kejohanan live production.** Master arah: "fix backlog backend tu sekarang" + ubah cetak laporan. **HEAD test = `bbcb0a3` (pushed, staging live). main masih `b802c05` — BELUM merge.**
 - **Kerja 1 — Punca sebenar bug C2 DITUTUP** (`src/index.js`, `POST /api/keputusan` ~1751): guard `!Array.isArray(keputusan) || keputusan.length === 0 → 400` diletak di PALING ATAS handler, sebelum sebarang DELETE. Lindungi kedua-dua laluan (heat + final). Guard frontend (3 tapak POST) DIKEKALKAN = 2 lapis.
   - **BUKTI HIDUP:** POST payload kosong ke `acr-NBA3003-kat-p12-4x100m` (12 keputusan tersimpan) → 400 "Tiada keputusan dihantar" → **kira semula: 12 baris KEKAL UTUH**. Sebelum fix, 12 baris tu terpadam + markah rumah tertolak.
