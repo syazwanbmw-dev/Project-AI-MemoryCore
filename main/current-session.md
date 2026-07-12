@@ -3,8 +3,45 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-09 (tengah hari, ~13:37)
+**Last Activity**: 2026-07-12 (petang ~20:37)
 
+### 🆕 Sesi 2026-07-12 (petang ~20:00–20:37): sistem-olahraga — Fix Backend + Cetak Laporan ⏳ DI STAGING, TUNGGU MASTER TEST CETAK
+**Sambung terus lepas 3 fix pasca-kejohanan live production.** Master arah: "fix backlog backend tu sekarang" + ubah cetak laporan. **HEAD test = `bbcb0a3` (pushed, staging live). main masih `b802c05` — BELUM merge.**
+- **Kerja 1 — Punca sebenar bug C2 DITUTUP** (`src/index.js`, `POST /api/keputusan` ~1751): guard `!Array.isArray(keputusan) || keputusan.length === 0 → 400` diletak di PALING ATAS handler, sebelum sebarang DELETE. Lindungi kedua-dua laluan (heat + final). Guard frontend (3 tapak POST) DIKEKALKAN = 2 lapis.
+  - **BUKTI HIDUP:** POST payload kosong ke `acr-NBA3003-kat-p12-4x100m` (12 keputusan tersimpan) → 400 "Tiada keputusan dihantar" → **kira semula: 12 baris KEKAL UTUH**. Sebelum fix, 12 baris tu terpadam + markah rumah tertolak.
+  - Nota: cek lama `if (statements.length > 0)` (~1917) kini dead code tapi inert — biarkan.
+- **Kerja 2 — Cetak laporan muat maksimum** (`public/laporan.{js,html}`): master minta "muat seberapa banyak jadual dalam satu page tapi jangan pecahkan jadual, tak muat letak di page baru".
+  - `renderLaporan` tak lagi paksa 2 acara/page (`.page-wrapper` + `page-break-after:always` DIBUANG). Jadual mengalir bebas; `.acara-block { page-break-inside: avoid }` (sedia ada) pastikan tak pecah.
+  - **Header berulang:** `#running-header` `position:fixed` dalam margin atas `@page laporan-normal { margin: 24mm 10mm 12mm }`, `top:-17mm` → Chrome ulang tiap muka surat. Ganti `.page-repeat-header` suntikan per-wrapper (tak boleh lagi sebab JS tak tahu di mana page pecah). `#print-header` (header penuh page-1) disorok dlm cetakan biasa — maklumat sama dipadatkan ke running header (kejohanan / sekolah · tajuk · tarikh).
+  - `rh-title`/`rh-sub` **nowrap + ellipsis** (dari review): nama kejohanan panjang kalau wrap → header melimpah margin → bertindih jadual pertama.
+  - **BUKTI PDF SEBENAR (Playwright `page.pdf()` dari staging):** 32 acara → **10 muka surat** (3.2 acara/page). Dulu paksa 2/page = 16 muka surat. **Jimat 37% kertas.** Tinggi header 52px < bajet 64px.
+- **⚠️ BUG LUCY YANG DITANGKAP UJIAN (pengajaran penting):** Lucy mula-mula skop CSS cetak baru pada `body:not(.laporan-lengkap)`, ingat `laporan-lengkap` = penanda "Download Semua". **SALAH** — kelas itu juga masuk pada Cari BIASA yang kebetulan lengkap (ia penanda gating tandatangan). Akibat: cetakan biasa yang lengkap terlepas layout baru sepenuhnya. Fix commit `bbcb0a3`: guna penanda BERASINGAN `cetak-semua` (ditambah HANYA dalam handler btn-download-semua). **Kalau tak jana PDF sebenar, bug ni sampai ke tangan master.**
+- **SEAL ✅:** syntax OK, wrangler dry-run CLEAN (178.6 KiB), Playwright **26/26** chromium (termasuk spec cetak baru). Push `394212f..bbcb0a3 test->test`. Staging verified fresh.
+- **⏳ NEXT (master test dulu):** master buka staging → Laporan → Cari → **Cetak** → semak print preview: (1) jadual muat maksimum satu page? (2) ada jadual terpotong tengah? (patut TIADA) (3) header page 2/3 elok, tak bertindih jadual? **Master confirm → merge main `--no-ff` → production.**
+- **Spec ujian lokal (gitignored):** `tests/cetak-laporan.spec.js` (jana PDF + kira muka surat), `tests/dq-undo.spec.js` (undo DQ + gating + WYSIWYG). Guna sekolah **NBA3003 (nba3003/1234)** sebab DBA1097 dah diarkib penuh dalam test DB.
+
+### 🆕 Sesi 2026-07-12 (tengah hari–petang ~17:03–19:50): sistem-olahraga — 3 Fix Pasca-Kejohanan ✅ LIVE PRODUCTION (main `b802c05`)
+**Sambung dari checkpoint pagi.** Subagent-Driven. **main = `b802c05` (merge --no-ff), test = `394212f` (doc). Production `atletik.celikguru.my` disahkan live (node fetch, cf-cache MISS, semua penanda ADA). TIADA kerja tertunggak.** Ledger: `.superpowers/sdd/progress.md`.
+- **⚠️ SATU-SATUNYA BENDA BELUM DIVERIFY VISUAL (I3):** kedudukan blok tandatangan dalam **"Download Semua Laporan"** — ia dipindah keluar dari `#seksyen-markah-extra` jadi sibling selepas `#extra-sections`. Seksyen statistik guna named page `landscape-stat` → tukar named page PAKSA page break → tandatangan mungkin mendarat di page sendiri. Master arah merge tanpa semak. Kalau nampak pelik → kerja CSS kecil.
+- **PENGAJARAN BESAR:** review per-task semua "clean", tapi **final whole-branch review (opus) jumpa 2 CRITICAL** yang cuma nampak bila silang task + backend. Jangan skip final review walaupun setiap task dah lulus.
+- **Task 3 fix** `9e6db08` (WYSIWYG sentinel `__none__` + label "Tiada acara dipilih") → review clean → T3 complete.
+- **Task 4** `1b1eea0` (Semua Kategori + gating tandatangan via kelas `laporan-lengkap`) → review clean. Deviasi diluluskan: `semuaAcara` guna `!has('__none__') && size===length` (elak false-positive bila hanya 1 acara).
+- **⚠️ FINAL WHOLE-BRANCH REVIEW (opus) = READY:NO — 2 CRITICAL jumpa.** Lucy verify sendiri dalam kod, kedua-dua BETUL:
+  - **C1:** `setRowDQ(tr,false)` (undo DQ) blank span → save handler langkau baris `'-'` → backend **DELETE heat=0 SEBELUM insert** (index.js:1873) → **keputusan atlet TERPADAM + markah rumah ditolak**. Mod manual tiada recovery (dropdown beku).
+  - **C2:** payload kosong → backend tetap jalankan DELETE batch (:1876) sebelum semak `statements.length>0` (:1910) → **seluruh acara terpadam**, hakim nampak "Tiada keputusan dihantar" sahaja.
+  - **I1:** `kemasStatusLengkap` baca dropdown LIVE → tukar kategori tanpa klik Cari + toggle checkbox → tandatangan keluar atas laporan SEPARA.
+  - **I2:** unlock helper (3 tapak) buka semula input baris DQ.
+- **Fix `a208db8`** (satu fix subagent, frontend sahaja). **Master pilih:** (1) undo DQ = **PULIHKAN kedudukan automatik** (manual: repaint dari `<select>` + syncManualRanks/Lock; masa/padang: trigger semula `btn-kira*`); (2) guard C2 = **frontend sahaja** (3 tapak POST), bug backend → backlog.
+- **Re-review (opus) = READY:YES** — C1/C2/I1/I2 semua PASS, quality Approved, 0 Critical/Important baru.
+- **SEAL ✅:** syntax OK, wrangler dry-run CLEAN (178KiB), secrets clean, **Playwright 66/66 PASS** (chromium+firefox+webkit, izin sandbox master). Push `8c75fc4..a208db8 test->test`. Staging verified fresh (node fetch, `cf-cache: MISS`, semua penanda baru ADA).
+- **VERIFY STAGING E2E ✅ (Playwright, data hidup):** 3/3 PASS — (1) **C1: kedudukan "4" → klik DQ → klik undo → kembali "4"** (bukan '-'), bukti klik sebenar; (2) I1: tukar kategori tanpa klik Cari + toggle checkbox → `laporan-lengkap=false` (tandatangan TAK keluar atas laporan separa); (3) WYSIWYG: untick semua acara → 16 blok jadi 0, label "Tiada acara dipilih". **TIDAK klik Simpan** → 0 tulisan DB. Spec lokal `tests/dq-undo.spec.js` (gitignored).
+- **🔑 PENEMUAN TEST DB:** sekolah master **DBA1097 dalam `olahraga-test` DAH DIARKIB PENUH** (12 kategori `is_arkib=1`, **0 acara hidup**) → dropdown kategori KOSONG di staging, **bukan bug** (endpoint `/api/kategori` tapis `is_arkib`). Guna sekolah demo yang ada data hidup: **NBA3003 (nba3003/1234, 32 acara)** atau WBA2005 (53 acara). Master bagi kredensial NBA3003.
+- **Nota UI:** acara yang dah disimpan = TERKUNCI (butang DQ disabled) sampai klik **Edit** (`.btn-edit-balapan`/`.btn-edit-padang`) — reka bentuk sedia ada, elak tersilap ubah keputusan muktamad.
+- **MERGE:** master arah "merge" → `git merge test --no-ff` → main `b802c05` → push → GitHub Actions deploy → production verified live. CLAUDE.md projek dikemas (main commit + entri Selesai + backlog).
+- **BACKLOG dicatat (dalam CLAUDE.md projek):** backend DELETE-sebelum-validate (punca sebenar C2, `src/index.js` ~1876 + simpanHeat ~1756) — **guard frontend cuma tutup laluan, punca masih terbuka**; padang semua 0.00m → semua dapat kedudukan 1 (pre-existing); asimetri DQ-on tak re-rank tapi undo-DQ re-rank; dua mekanisme DQ (butang vs taip "DQ").
+- **Cara execute:** Subagent-Driven — implementer haiku/sonnet, reviewer sonnet, final review + re-review opus. Scripts `task-brief`/`review-package`.
+
+--- (rekod sesi lepas: SPEC + PLAN SIAP) ---
 ### 🆕 Sesi 2026-07-09 (tengah hari ~11:28–13:37): sistem-olahraga — 3 Fix Pasca-Kejohanan ⏳ SPEC + PLAN SIAP, BELUM EXECUTE
 **Konteks:** Kejohanan sebenar SK SALOR dah selesai (semak production `olahraga-db`: semua 56 acara lengkap keputusan, keputusan==daftar). Master kenal pasti 3 penambahbaikan. Brainstorm penuh → spec → writing-plans (belum execute).
 - **3 keputusan reka bentuk (semua master sahkan):**
