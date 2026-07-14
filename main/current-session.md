@@ -3,9 +3,54 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-14 (petang ~14:56–15:44)
+**Last Activity**: 2026-07-14 (petang ~16:04–17:25)
 
-### 🆕 Sesi 2026-07-14 (petang ~14:56–15:44): sistem-olahraga — VERIFY HARDENING + MERGE ✅ LIVE PRODUCTION (main `b6aff36`, doc `94d7149`)
+### 🆕 Sesi 2026-07-14 (petang ~16:04–17:25): sistem-olahraga — 🔴 BUG KEHILANGAN DATA: HAKIM SALING MENIMPA MARKAH ⏳ SPEC + PLAN SIAP, BELUM EXECUTE
+
+**Master report 2 bug; PUNCANYA SATU.** (1) Hakim pilih semula rumah → markah tak dipapar semula. (2) Laporan tunjuk PERBARISAN 96/97 sedangkan 5 hakim × 5 kriteria patut jauh lebih tinggi.
+
+**🔴 PUNCA — `markah_penilaian` TIADA DIMENSI HAKIM:**
+- PK = `(id_sekolah, id_kategori_penilaian, id_rumah)` (`schema.sql:183`) — **tiada `id_hakim`**. DB hanya benarkan SATU baris per rumah.
+- `POST /api/hakim/markah` (`index.js:1512`) guna `ON CONFLICT ... DO UPDATE SET markah = excluded.markah` → **setiap hakim MENIMPA hakim sebelumnya**.
+- `hakim.js:302` MEMANG hantar `id_hakim`, tapi backend (`index.js:1482`) cuma destructure 3 medan → **`id_hakim` dibuang terus, tak pernah disimpan**.
+- **BUKTI PRODUCTION (read-only, izin master):** `PERBARISAN | BIRU 96 | HIJAU 97 | KUNING 98 | MERAH 96` — **`bil_baris=1` SETIAP rumah** walaupun 5 hakim (sks1–sks4, pibg1) hantar. 96–98 = skor SEORANG hakim (5×20=maks 100). **Markah 4 hakim HILANG KEKAL — tak boleh dipulihkan.**
+- **Penemuan sampingan:** jadual sama simpan DUA jenis data — PERBARISAN (hakim, ada kriteria) DAN MERENTAS DESA 697–805 (sub_admin taip manual, tiada kriteria, tiada had). `hakim.js:130` tapis pertandingan tanpa kriteria. **Apa-apa fix TAK BOLEH rosakkan laluan manual ini.**
+
+**KEPUTUSAN MASTER:**
+| Perkara | Pilihan |
+|---|---|
+| Markah/kriteria | **10** (turun dari 20) → 1 hakim = 50, 5 hakim = 250 |
+| Agregat | **JUMLAH (SUM)**, bukan purata — sentiasa integer, tiada perpuluhan |
+| Hakim edit markah sendiri | **Ya** — papar semula, laras, hantar semula |
+| Data lama (96–98) | **Biar** — tiada migration data |
+
+Lucy mula syorkan PURATA (adil bila hakim tercicir), master pilih JUMLAH + turunkan skala ke 10 untuk elak perpuluhan. **Risiko diterima:** hakim tercicir = rumah rugi 50 markah. **Mitigasi (Task 6):** `GET /api/markah-penilaian` pulangkan `bil_hakim` supaya sub_admin NAMPAK "4/5 hakim" dan boleh betulkan sebelum umum keputusan.
+
+**REKA BENTUK — corak RAW + DERIVED:** jadual baru `markah_hakim` (PK 5-lajur, **granulariti PER-KRITERIA**), `markah_penilaian` kekal sebagai nilai TERBITAN (jumlah). → `laporan.js` **sifar perubahan** (ia cuma dapat nombor betul), laluan manual sub_admin **sifar perubahan**, **tiada rebuild jadual** production (SQLite tak boleh ALTER PK).
+
+**🔴 LUBANG YANG DITANGKAP SPEC SELF-REVIEW (Lucy hampir hantar spec yang tak selesaikan Bug 1!):** draf pertama simpan **jumlah** setiap hakim (45) sahaja. Frontend **TAK BOLEH** pulihkan 5 slider dari nombor 45. **Granulariti data mesti sepadan dengan apa yang UI perlu papar semula.**
+
+**🔴 2 LUBANG LAGI DITANGKAP OLEH SOALAN MASTER (bukan oleh Lucy):**
+1. *"Backend ada validate id_hakim tak?"* → Lucy trace → **`DELETE /api/pengguna/hakim/:id` akan tinggalkan `markah_hakim` ORPHAN.** Dan padam sahaja TAK CUKUP: `markah_penilaian` ialah nilai TERBITAN — mesti **KIRA SEMULA**, kalau tidak markah rumah kekal mengandungi sumbangan hakim yang dah tiada. **Peraturan am: setiap laluan yang padam data mentah MESTI kira semula nilai terbitannya.**
+2. *"Hakim sekolah1 tak tertukar dengan sekolah2 kan?"* → **TIDAK.** `pengguna.id_pengguna` = **PK SATU LAJUR** → username unik GLOBAL → `sks1` mustahil wujud di 2 sekolah (DB tolak). **Kontras `kategori` (PK KOMPOSIT)** yang bagi bug 84-vs-42. **TAPI `markah_hakim` yang kita cipta ialah PK KOMPOSIT** → tertakluk peraturan kunci penuh → **Guard rule #4 ditambah**.
+
+**SECURITY:**
+- **`id_hakim` MESTI dari JWT** (`c.get('id_pengguna')`, `index.js:149`), **BUKAN dari body**. `hakim.js:292` sekarang ambil dari **localStorage** → sesiapa boleh ubah & menyamar jadi hakim lain. **Prinsip: jangan validate input yang kau tak sepatutnya terima langsung.**
+- **`JWT_SECRET` disahkan SUDAH DISET** dalam production DAN test (`wrangler secret list`). Fallback `'sila-tukar-secret-ini'` (`index.js:2387`) tak pernah aktif. **Backlog:** ia patut CAMPAK ERROR, bukan senyap guna secret yang tertulis dalam repo.
+
+**KENAPA USERNAME MESTI UNIK GLOBAL (master tanya):** `POST /api/login` hanya terima `{username, password}` — **tiada konteks sekolah**. Carian = `WHERE id_pengguna = ?` (`index.js:2363`); `id_sekolah` datang **DARI baris yang dijumpai**, kemudian masuk JWT. **Keunikan diperlukan SEBELUM token wujud.** JWT bukan penyelesaian — JWT ialah HASIL. Untuk benarkan username berulang → `pengguna` jadi PK komposit = kelas bug `id_kategori` semula. **Status: kekal unik global** (master tiada preferens, Lucy pilih risiko terendah); konvensyen disyor `sks1-nba3003`. Dicatat CLAUDE.md projek.
+
+**PLAN 6 TASK** (`docs/superpowers/plans/2026-07-14-markah-hakim-per-hakim.md`):
+T1 migration `markah_hakim` → T2 **guard rule #4 + MUTATION TEST** (buktikan boleh GAGAL dulu) → T3 backend POST/GET (identiti JWT) → T4 cascade 5 laluan + **kira semula** → T5 `hakim.js` (skala 10, papar semula markah, "Kemas Kini Markah") → T6 `bil_hakim`.
+**Plan self-review tangkap 3 lubang:** (1) ujian bergantung akaun hakim yang mungkin TIADA — dan ujian padam-hakim akan **MEMUSNAHKAN akaun sebenar test DB** → kini cipta akaun pakai-buang `ujiA-<timestamp>` via API + `afterEach` padam; (2) tukar **pertandingan** (bukan rumah) sedangkan rumah terpilih → markah tak dimuat = Bug 1 masih hidup dalam laluan sempit; (3) ujian spec #4/#10/#14 tiada task.
+
+**COMMIT (semua di `test`, DOKUMEN SAHAJA — 0 kod implementasi):** `b8d159f` `5088204` `7df2493` (spec) → `710e3ef` (plan) → `d89c86d` (backlog SaaS + JWT_SECRET). **main masih `b6aff36`.**
+
+**⏭️ NEXT:** master pilih cara laksana — **Subagent-Driven (disyor)** atau Inline → execute 6 task → verify staging → **master confirm** → migration production `olahraga-db` → merge main `--no-ff`.
+⚠️ **JANGAN deploy production tanpa confirm master** (walaupun tertulis dalam plan).
+
+--- (rekod sesi lepas) ---
+### Sesi 2026-07-14 (petang ~14:56–15:44): sistem-olahraga — VERIFY HARDENING + MERGE ✅ LIVE PRODUCTION (main `b6aff36`, doc `94d7149`)
 **Master tanya: "Aku perlu test apa?"** → Lucy jawab dengan UJIAN, bukan senarai. **main == test == `94d7149`. TIADA kerja tertunggak.**
 
 **🔑 RANGKA FIKIR SESI NI: jangan test FIX itu — test apa yang fix itu mungkin ROSAKKAN.**
