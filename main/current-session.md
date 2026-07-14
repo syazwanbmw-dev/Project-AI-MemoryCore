@@ -3,9 +3,106 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-13 (malam ~00:08–01:50)
+**Last Activity**: 2026-07-14 (petang ~14:56–15:44)
 
-### 🆕 Sesi 2026-07-13 (malam ~00:08–01:50): sistem-olahraga — 2 Fix Cetak Laporan ✅ SEMUA LIVE PRODUCTION (main `b18056e`)
+### 🆕 Sesi 2026-07-14 (petang ~14:56–15:44): sistem-olahraga — VERIFY HARDENING + MERGE ✅ LIVE PRODUCTION (main `b6aff36`, doc `94d7149`)
+**Master tanya: "Aku perlu test apa?"** → Lucy jawab dengan UJIAN, bukan senarai. **main == test == `94d7149`. TIADA kerja tertunggak.**
+
+**🔑 RANGKA FIKIR SESI NI: jangan test FIX itu — test apa yang fix itu mungkin ROSAKKAN.**
+Fix hardening sifatnya *menambah sekatan*. Risiko sebenar bukan "sekatan tak jalan", tapi **"sekatan terlalu ketat sampai halang kerja yang betul"**. Kegagalan jenis ni lumpuhkan sistem sepenuhnya TAPI suite ujian kekal HIJAU.
+
+**2 LUBANG DITUTUP** (`tests/verify-hardening-staging.spec.js`, 5 ujian):
+1. **Guard lama cuma buktikan `id_acara` palsu DITOLAK (404). TIADA siapa buktikan id SAH masih DITERIMA.** Kalau validasi tersilap → **hakim tak boleh simpan keputusan langsung**, dan 40/40 ujian tetap lulus. → Ujian baru: cipta acara → POST keputusan → **200** → baca balik dari DB, 3 baris betul-betul ada.
+2. **URUTAN PAPAN SKOR** — regresi yang hampir lolos pagi tadi, tiada ujian menyentuhnya. → Simpan keputusan baru → sahkan ia naik ke **PUNCAK** `GET /api/dashboard/pemenang` + `GET /api/public/:id/dashboard`. Buktikan id format LAMA (`kep-<ms>-<4char>`) & BARU (`kep-<ms>-<uuid>`) bercampur ikut KRONOLOGI. **Disahkan VISUAL (screenshot), bukan angka semata.**
+
+**🔧 CORAK BARU SANGAT BERGUNA — uji TULISAN DB pada staging tanpa mencemarkannya:**
+cipta acara ujian → simpan keputusan → semak → `DELETE /api/acara/:id`. Endpoint itu **tolak balik markah rumah** (`src/index.js` ~690, bukan sekadar cascade padam). **Bukti reconcile:** semasa ujian HIJAU=357/MERAH=341 → selepas cleanup **HIJAU=339/MERAH=335/KUNING=337** = betul-betul asal. Kira balik kena: HIJAU Johan+Naib (10+8=18), MERAH Ketiga (6), KUNING 0. Ujian #5 assert `markahSelepas == markahSebelum`.
+
+**SEAL ✅:** Playwright **45/45** chromium lawan staging, wrangler dry-run CLEAN (179.39 KiB), `npm run guard` HIJAU (3 peraturan), 0 secret (7 fail diff).
+**MERGE:** `git merge test --no-ff` → main `b6aff36` → push → GitHub Actions deploy.
+**VERIFY PRODUCTION ✅ (bukan HTTP 200 kosong):** probe `POST /api/keputusan` dengan `id_acara` palsu → **404 "Acara tidak dijumpai"** = penanda KOD BARU (kod lama pulangkan 500). Probe SELAMAT — validasi berhenti sebelum sebarang DELETE/INSERT. Login production `admin_dba1097`/`1234`.
+Doc commit `94d7149` (CLAUDE.md tanda LIVE) → `test` di-fast-forward ke main, dua branch selaras.
+
+**⚠️ NOTA BUKAN-REGRESI (jangan panik sesi depan):** dalam acara YANG SAMA, susunan Johan/Naib/Ketiga adalah **RAWAK** (ketiga-tiga disimpan dalam ms yang sama → suffix UUID tentukan urutan). **Format id LAMA pun sama** (`kep-<ms>-<4 aksara rawak>`). Kalau master mahu Johan sentiasa di atas: tambah `kedudukan ASC` pada `ORDER BY` (2 tempat: `:2094`, `:2287`).
+
+**⏭️ NEXT (backlog teratas): RATE LIMITING `/api/login`** — isu security tertinggi. Sedia ada cuma delay 1s, **tiada had cubaan** → brute-force terbuka. Mula dengan `brainstorming`. Keputusan perlu: per-IP vs per-username; Cloudflare WAF Rate Limiting (tiada kod, level edge) vs Durable Object/KV counter (lebih halus, boleh kunci akaun). Nota: multi-tenant, SATU endpoint `/api/login` untuk SEMUA sekolah — per-IP sahaja mungkin tak cukup. Boleh sekalikan: `POST /api/login` pulangkan 500 bila medan body hilang (patut 400).
+
+--- (rekod sesi pagi — kini SUDAH LIVE) ---
+### Sesi 2026-07-14 (pagi ~07:36–11:30): sistem-olahraga — HUNT AUDIT MULTI-TENANT + 4 FIX HARDENING [✅ SUDAH MERGE & LIVE — lihat entri petang di atas]
+**Master tanya: "bug kategori bertindan NBA3003/WBA2005 tu berlaku lagi tak kat mana-mana?"** → hunt audit → 4 fix → push test. **main masih `7531b04`, BELUM merge.**
+
+**JAWAPAN AUDIT: TIDAK. Bug itu tidak berulang di mana-mana.** Dibuktikan secara STRUKTUR, bukan sekadar baca JOIN:
+- Bug hanya mungkin bila **id sama boleh sah wujud di 2 sekolah** → hanya pada jadual PK KOMPOSIT. Cuma ADA DUA: `kategori` (dah fix) dan `markah_penilaian` (selamat — komponennya `crypto.randomUUID()`, unik global).
+- Semua jadual lain PK SATU LAJUR → id berganda merentas sekolah **MUSTAHIL** (DB sendiri tolak). Itu sebab `JOIN acara ON ka.id_acara = a.id_acara` tanpa id_sekolah tetap selamat.
+- **Pengajaran: audit corak macam ni MESTI bermula dari SCHEMA, bukan dari senarai JOIN.** Grep JOIN sahaja takkan beritahu mana yang betul-betul berisiko.
+
+**BUKTI DB (production + test, read-only):** 0 orphan, **0 rujukan silang-sekolah** pada SEMUA laluan (keputusan↔acara, pendaftaran↔acara, keputusan↔murid, kriteria↔pertandingan, markah↔rumah). Dan bukti fix lama berfungsi: JOIN separuh kunci = **419 baris**, kunci penuh = **239**, kiraan sebenar = **239** ✅.
+**⚠️ `D_id_kategori_dikongsi = 4` dalam KEDUA-DUA DB** — id berlanggar (`kat-l10/l12/p10/p12`) MASIH dalam data (sengaja tiada migration). Satu-satunya benda yang menahan bug hidup semula = skop `id_sekolah` dalam JOIN. **Guard yang pegang picunya.**
+
+**4 FIX (subagent-driven, 7 commit `7531b04..caa4963`):**
+1. **Guard jadi gerbang CI SEBENAR** (`scripts/guard-tenant.mjs`, `npm run guard`) — guard lama hidup dalam `tests/` yang **GITIGNORED**, tak pernah masuk git, `deploy.yml` tiada langkah test langsung. Ia melindungi APA-APA PUN TIDAK. Kini skrip Node biasa (tiada browser), di-commit, **gagalkan deploy** dalam KEDUA-DUA job.
+2. **Orphan `markah_penilaian`** — satu-satunya jadual **tanpa FOREIGN KEY langsung**. `DELETE /api/rumah/:id` dulu cuma padam `rumah_sukan`. Kini cascade manual `db.batch`. (0 orphan setakat ini — ditutup mumpung kosong.)
+3. **`POST /api/keputusan` sahkan `id_acara`** — dulu `acaraInfo` null → **teruskan sahaja**. Kini 404, SEBELUM sebarang DELETE/INSERT (kedua-dua laluan heat+final).
+4. **`id_keputusan` hibrid** `` `kep-${Date.now()}-${crypto.randomUUID()}` ``.
+
+**🔴 REGRESI HAMPIR LOLOS (ditangkap REVIEW, bukan ujian — TIADA ujian menyentuhnya):**
+Plan asal kata guna `crypto.randomUUID()` TULEN. Itu akan **memecahkan `ORDER BY ka.id_keputusan DESC LIMIT 20`** dalam `GET /api/dashboard/pemenang` + `GET /api/public/:id/dashboard` → "Pemenang Terkini" (dashboard.js) dan **PAPAN SKOR AWAM** (papan.js) papar 20 pemenang **RAWAK**. Id lama `kep-<Date.now()>-<rand>` = awalan ms **13-digit lebar tetap** (sampai 2286) → susunan leksikografi == kronologi. **Kebetulan bermanfaat yang telah jadi KEBERGANTUNGAN SENYAP.** Guard hijau, 40/40 Playwright lulus, grid Statistik betul — semua "hijau" sambil papan skor awam akan hancur.
+→ Master pilih HIBRID: kekal susunan + jamin unik. BONUS: id lama & baru kongsi format awalan → sort bercampur betul.
+
+**🔴 GUARD BUTA (ditangkap RE-REVIEW):** rule #3 asal cuma semak `randomUUID` ADA. Reviewer **buktikan secara EMPIRIK** — patah balik ke UUID tulen (regresi sama persis) → **guard LULUS BERSIH**. Fix: rule #3 kini tuntut `Date.now()` DAN `crypto.randomUUID()`. Ketiga-tiga keadaan dibuktikan (hijau / tangkap UUID hilang / tangkap awalan hilang).
+
+**🔑 PENGAJARAN BESAR SESI INI:**
+1. **Mutation testing ialah SATU-SATUNYA cara sahkan guard.** Tiga kali sesi ni: setiap guard yang kita bina ada titik buta, dan hanya *sengaja rosakkan kod → tengok guard bangun tak* yang mendedahkannya. Ujian yang cuma sahkan "keadaan baik masih baik" TAK PERNAH jumpa apa-apa. Guard v1 buta pada susunan; guard v2 buta pada refactor.
+2. **"Semua hijau" ≠ betul.** Regresi papan skor lolos SEMUA ujian sebab tiada ujian menyentuh susunan. Yang tangkap ialah soalan: *"apa LAGI yang bergantung pada bentuk benda yang aku ubah ni?"*
+3. **Guard dalam `tests/` yang gitignored = guard PALSU.** Ia tak pernah jalan dalam CI, hilang kalau folder dibersih. Guard sebenar mesti di-commit + jadi gerbang deploy.
+4. **curl dalam Git Bash TAK BOLEH capai network** walaupun sandbox-disabled (000 untuk production juga). **Guna `node -e "fetch(...)"`** — itu corak yang berfungsi.
+5. **wrangler 4.79 default port 8787**, bukan 8788 → `wrangler dev --env test --remote --port 8788` (spec repo jangka 8788).
+6. `gh` CLI TIDAK dipasang. Verify deploy dengan jalankan spec terhadap staging URL (404 vs 500 = penanda kod baru/lama).
+
+**SEAL ✅:** Playwright **40/40** (termasuk e2e yang biasanya flaky, isolasi-kategori 4/4, hardening 2/2), wrangler dry-run CLEAN (179.39 KiB), guard HIJAU, 0 secret. Push `7531b04..caa4963 test->test`.
+**VERIFY STAGING ✅:** `hardening.spec.js` **2/2 LULUS terhadap staging yang di-deploy** — 404 (bukan 500) buktikan kod BARU live, dan deploy berjaya buktikan **langkah guard dalam CI memang jalan & hijau**.
+
+**⏭️ NEXT:** master verify staging → **merge `main --no-ff`** → production. Backlog dari final review (master pilih tangguh) dicatat dalam CLAUDE.md projek — yang PALING penting: **guard mesti scan `src/**/*.js` SEBELUM sebarang "Code DRY extraction"**, kalau tidak route yang dipindah terus tak berpengawal.
+**Plan:** `docs/superpowers/plans/2026-07-14-hardening-multi-tenant.md`. **Ledger:** `.superpowers/sdd/progress.md`.
+
+--- (rekod sesi lepas) ---
+### Sesi 2026-07-13 (pagi–tengah hari ~07:31–13:10): sistem-olahraga — Senarai Pingat + BUG MULTI-TENANT ✅ SEMUA LIVE PRODUCTION (main `7531b04`)
+**main == test == `7531b04`. TIADA kerja tertunggak.** Dua kerja: satu yang master minta, satu yang Lucy TERJUMPA semasa verify.
+
+**Kerja 1 — Senarai pingat: pemegang pingat sahaja (main `138e9f5`):**
+- **Master minta:** murid yang tiada emas/perak/gangsa tak perlu masuk senarai pingat.
+- **Master pilih:** tempat ke-4 TIDAK layak; kolum "Ke-4" KEKAL dipapar (untuk pemegang pingat, ke-4 dia masih dikira dalam Jumlah). Laporan penuh ikut sama.
+- **Fix:** `GET /api/pingat` + arkib → `HAVING SUM(CASE WHEN kedudukan IN (1,2,3) ...) > 0`. Tapis di **BACKEND** → page Senarai Pingat DAN seksyen pingat "Download Semua Laporan" konsisten dengan SATU perubahan (DRY). Arkib dulu kira tempat ke-4 sebagai layak — kini takrif sama. Label "X peserta" → "X pemegang pingat".
+- **Bukti test DB NBA3003:** 121 murid → 107, **14 dibuang**, kesemua 14 disahkan tiada kedudukan 1/2/3. Playwright 3/3 + screenshot visual disahkan.
+
+**Kerja 2 — 🔴 BUG MULTI-TENANT (main `4aec59e`) — Lucy TERJUMPA, bukan master report:**
+- **Cara terjumpa:** query diagnostik Lucy bagi 27 murid dibuang, senarai nama bagi 14. **Lucy TAK abaikan percanggahan** → siasat → jumpa punca.
+- **PUNCA:** `id_kategori` dijana tanpa id sekolah (`admin.js:454`: `'kat-' + nama` → `kat-l10`). Schema guna **PK KOMPOSIT `(id_kategori, id_sekolah)`** — jadi data SAH, tapi **13 JOIN hanya padankan `id_kategori`** = guna SEPARUH kunci → padanan silang sekolah → **baris berganda**.
+- **PRODUCTION MEMANG TERJEJAS:** NBA3003 & WBA2005 kongsi `kat-l10/l12/p10/p12`. Laporan keputusan NBA3003 kategori L10 papar **84 baris, sebenar 42**. Master sahkan sendiri di staging: "betul..memang berbeza".
+- **DBA1097 terselamat KEBETULAN sahaja** — kategorinya bernama "L1"/"L2" → `kat-l1`, bukan `kat-l10`. Kalau master pernah namakan kategori "L10", laporan SK Salor pun dah berganda.
+- **FIX:** 13 JOIN → `AND k.id_sekolah = a.id_sekolah`. **Guna perbandingan LAJUR, BUKAN bind param (`= ?`)** — bind param perlu tambah argumen `.bind()`, dan silap urutan bind GAGAL SENYAP. 3 query arkib guna `ka.id_sekolah` (acara di-LEFT JOIN, boleh NULL). + `admin.js` jana id berskop (`'kat-' + TENANT_ID + '-' + nama`).
+- **⚠️ PERANGKAP yang hampir lolos:** tukar penjanaan id SAHAJA → sekolah yang sudah ada `kat-l10` akan dapat id baru → upsert `ON CONFLICT(id_kategori,...)` TAK PADAN → **cipta kategori PENDUA**. Fix: `POST /api/kategori` cari kategori sedia ada ikut **NAMA** dulu (nama = kunci logikal, id = butiran dalaman). Corak SAMA dengan fungsi arkib (`:2160`) — konvensyen sedia ada, bukan reka baru.
+- **TIADA migration** — kategori lama (`kat-l10`) & baru (`kat-DBA1097-l10`) wujud serentak dengan selamat (PK komposit + semua JOIN berskop). Migration data DITOLAK: risiko tinggi, sifar faedah tambahan.
+- **GUARD:** `tests/guard-join-kategori.spec.js` — baca `src/index.js`, GAGAL kalau jumpa `JOIN kategori` tanpa `id_sekolah`. **Dibuktikan boleh gagal** (suntik JOIN runggak → merah + tunjuk baris tepat). Guard yang tak pernah diuji gagal = guard palsu.
+- **Verify:** Playwright isolasi 4/4 (lokal kod baru + staging), guard 1/1, pingat 3/3, e2e 18/18. Production DBA1097 disahkan **0 pendua, 56 acara** (tiada regresi).
+- **Spec:** `docs/superpowers/specs/2026-07-13-isolasi-kategori-sekolah-design.md`.
+
+**⏭️ NEXT (master arah sambung sesi depan): RATE LIMITING `/api/login`**
+- Isu security tertinggi dalam backlog. Sedia ada: cuma `await new Promise(r => setTimeout(r, 1000))` (delay 1s setiap request) — **tiada had cubaan**, brute-force masih terbuka.
+- Mula dengan `brainstorming` (belum dibincang langsung). Keputusan yang perlu: per-IP vs per-username (atau kedua-dua); Cloudflare **WAF Rate Limiting Rules** (tiada kod, level edge) vs **Durable Object / KV counter** dalam Worker (lebih halus, boleh kunci akaun).
+- Nota: sistem multi-tenant, satu endpoint `/api/login` untuk SEMUA sekolah — per-IP sahaja mungkin tak cukup.
+- Backlog berkaitan yang boleh disekalikan: `POST /api/login` pulangkan **500** bila medan body hilang (patut 400).
+
+**🔑 PENGAJARAN SESI INI:**
+1. **Percanggahan angka = JANGAN abaikan.** 27 vs 14 nampak macam bug kecil dalam query Lucy — sebenarnya ia menyingkap bug multi-tenant LIVE dalam production. Kalau Lucy tolak ansur, bug tu kekal sampai sekolah ketiga daftar.
+2. **Uji kod BARU, bukan kod LAMA.** Perubahan backend belum di-deploy → ujian terhadap staging cuma uji kod lama (lulus tanpa makna). Guna **`wrangler dev --env test --remote`** (worker LOKAL kod baru + test DB SEBENAR) + Playwright `BASE_URL=http://localhost:8788`. Ini corak baru yang SANGAT berguna.
+3. **Guard mesti dibuktikan boleh GAGAL.** Cubaan pertama Lucy suntik JOIN runggak guna `\n` — fail guna CRLF → suntikan tak menjadi → guard "lulus" secara palsu. Kalau Lucy tak semak, guard tu tak berguna langsung.
+4. **`wrangler dev --remote` tak larat Playwright selari** → guna `--workers=1`. Kegagalan sporadic = lag, bukan regresi (sahkan dengan jalankan berasingan).
+5. **Suite `e2e.spec.js` memang flaky** bawah beban (guna `waitForTimeout` tetap) — kegagalan berpindah-pindah antara larian (05, kemudian 08a). Sahkan berasingan sebelum panik.
+6. **Kredensial:** production `admin_dba1097` password = **`1234`** (BUKAN `123456` macam staging). `POST /api/login` jangka `{ username, password }` — BUKAN `id_pengguna`/`kata_laluan` (itu id elemen HTML). Hantar medan salah → **500** (patut 400 — dicatat backlog).
+
+--- (rekod sesi lepas) ---
+### Sesi 2026-07-13 (malam ~00:08–01:50): sistem-olahraga — 2 Fix Cetak Laporan ✅ SEMUA LIVE PRODUCTION (main `b18056e`)
 **Master test cetak staging → jumpa bug header. Dua fix, dua merge, semua live. main == test == `b18056e`. TIADA kerja tertunggak.**
 
 **Kerja 1 — Header cetak jadi FOOTER (main `80eb96e` → doc `22162ac`):**
