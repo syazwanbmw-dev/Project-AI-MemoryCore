@@ -3,9 +3,62 @@
 
 ## Session RAM Status
 **Current Session**: Updated
-**Last Activity**: 2026-07-14 (petang ~16:04–17:25)
+**Last Activity**: 2026-07-15 (pagi — DEPLOY PRODUCTION Markah Per-Hakim SELESAI)
 
-### 🆕 Sesi 2026-07-14 (petang ~16:04–17:25): sistem-olahraga — 🔴 BUG KEHILANGAN DATA: HAKIM SALING MENIMPA MARKAH ⏳ SPEC + PLAN SIAP, BELUM EXECUTE
+### 🆕 Sesi 2026-07-15 (pagi ~08:11–09:45): sistem-olahraga — DEPLOY PRODUCTION MARKAH PER-HAKIM ✅ LIVE (main `be6311c`, kod `c0b3b2a`)
+**main == test == `be6311c`. TIADA kerja tertunggak.** Deploy 4 fasa manual, gate confirm master SETIAP fasa (master guna /remote-control dari telefon).
+
+**VERIFY STAGING DEPLOYED dulu (bukan lokal):** 13 spec Playwright lulus lawan staging URL sebenar (`BASE_URL=https://sistem-olahraga-sekolah-test.syazwan-skpp82.workers.dev`) — task5-hakim-ui + task5-race-condition + verify-bil-hakim-ui (3) + markah-hakim (10, termasuk **multi-hakim SUM** & laluan manual tak terjejas). 🔑 **61/61 semalam run lawan `wrangler dev` LOKAL** (buktikan KOD betul) TAPI tak boleh sahkan deploy + edge cache. Bundle `hakim.js` production `MARKAH_PENUH=10` cf-cache **MISS** = tiada cache lama serve. Screenshot bil-hakim staging: HIJAU "1 hakim", lain "Belum dinilai".
+
+**4 FASA DEPLOY (urutan KETAT — jadual DULU, kosongkan SELEPAS kod):**
+- **F0** pra-check READ-ONLY production: jadual belum wujud, **11 baris** markah_penilaian berkriteria non-arkib bakal dikosongkan (DBA1097 ×4 skala 96-98, NBA3003 ×3 =17/19/18, WBA2005 ×4 =18/20/19/21). Backup demo NBA/WBA → scratchpad SQL restore-able (master hantar). Master pilih **tak** backup DBA1097.
+- **F1** `add_markah_hakim.sql` — CREATE jadual DULU (kod lama abaikan jadual baru = **zero-downtime**). PK 5-lajur disahkan (pk 1-5 urutan tepat).
+- **F2** merge `test`→`main` `--no-ff` = `c0b3b2a` + push → GitHub Actions deploy. **Bukti tegas kod baru live** (bukan sekadar 401): kod lama `b6aff36` TIADA `GET /api/hakim/markah` (cuma POST), kod baru ADA (`index.js:1616`) → 401 = penanda sah. + bundle skala 10 cf-cache MISS.
+- **F3** `kosongkan_markah_penilaian_berkriteria.sql` — 11 baris → 0. Verify: `berkriteria_belum_kosong=0`, **laluan manual 24 baris kekal** (Merentas Desa selamat), arkib tak tersentuh (tapisan is_arkib).
+- **F4** verify **VISUAL** production DBA1097 (read-only, login sub_admin `admin_dba1097`/`1234`, tiada tulisan): PERBARISAN 4× "Belum dinilai" (0), MERENTAS DESA `805/736/697/712` kekal. Screenshot disahkan.
+
+**Doc:** CLAUDE.md tanda LIVE `c0b3b2a`, `test` fast-forward ke `main` → doc commit `be6311c`. Dua branch selaras.
+
+**⏭️ BERBAKI (tindakan MASTER, bukan kod):** (1) maklum hakim **HARD REFRESH** `atletik.celikguru.my` (hakim.html tiada cache-bust); (2) semua hakim **WAJIB nilai semula PERBARISAN** (markah lama dikosongkan → papar 0 = "belum dinilai").
+
+**🔑 PENGAJARAN:** (1) verify lawan **STAGING DEPLOYED ≠ wrangler dev lokal** — yang lokal tak nampak isu deploy/edge cache. (2) Deploy migration production: **pra-check read-only + COUNT + backup DULU** sebelum sebarang tulisan; urutan jadual→kod→kosongkan JANGAN terbalik. (3) 401 sahaja BUKAN bukti cukup deploy siap — sahkan penanda yang PASTI beza antara kod lama vs baru (route yang memang baru).
+
+--- (rekod sesi lepas) ---
+### 🆕 Sesi 2026-07-14/15: sistem-olahraga — MARKAH PER-HAKIM ✅ EXECUTED & LIVE STAGING (test `3abb339`) ⏳ TUNGGU VERIFY MASTER
+
+**6 task + final review SIAP. Subagent-driven. main masih `b6aff36` — BELUM merge.**
+Ledger: `.superpowers/sdd/progress.md`. Plan: `docs/superpowers/plans/2026-07-14-markah-hakim-per-hakim.md`.
+
+**13 commit `d89c86d..3abb339`:** T1 migration `c1eb731` → T2 guard#4 `131a73c`+`8a329ab` → T3 backend `f0104c5`+`bad001a` → T4 cascade `e8b5bb9`+`426c70f` → T5 frontend `d5ba22b`+`46b9229` → T6 bil_hakim `ec437c1` → final fix `9229fb4`+`b532292`+`558ad86` → doc `3abb339`.
+
+**SEAL ✅:** Playwright **61/61** (1 flake `pendaftaran-banner` lulus 4/4 berasingan — sama kelas e2e flaky), wrangler dry-run CLEAN 186.77 KiB, guard HIJAU 4 peraturan, 0 secret. **Staging disahkan kod BARU:** `GET /api/hakim/markah` → **401** (route wujud); kod lama akan bagi 404. Deploy lulus = guard CI hijau.
+
+**🔑 3 PENEMUAN BESAR — semuanya ditangkap REVIEW, bukan ujian:**
+
+1. **🔴 BOM MASA ARKIB (final review opus; silang-task tulen).** `performArchive` **MENANDA** `is_arkib=1` (ia TAK salin), dan `markah_penilaian` PK **tidak termasuk `is_arkib`** → hanya SATU baris per kunci. Task 3 tulis subquery SUM tanpa tapisan arkib (SAH masa itu). **Task 4 kemudian tambah `markah_hakim` ke `performArchive` — MEMBATALKAN andaian Task 3.** Akibat: **padam akaun hakim lama pada Jan 2027 (rutin sebelum musim baru) akan MENULIS SEMULA markah kejohanan 2026** (250→200). Laporan arkib papar nombor salah, kedudukan rumah boleh bertukar, senyap, tak boleh pulih. **RED dibuktikan: `Expected: 18, Received: 0` — markah arkib MUSNAH.** Kini semua laluan padam/edit menapis `is_arkib`. **TIADA review per-task boleh nampak ini — hanya review whole-branch.**
+
+2. **🔴 GUARD PALSU (kali KETIGA projek ini).** Peraturan #4 cari `JOIN markah_hakim` — **tiada satu pun dalam kod**; semua 11 akses guna `FROM markah_hakim`. Guard mengawal corak yang **tiada sesiapa guna**. Buang skop `id_sekolah` dari subquery `bil_hakim` → **guard tetap HIJAU**. Fix: guard kini nilai **pernyataan SQL ikut kedalaman kurungan**, bukan baris (tetingkap baris buta akan tertelan `ON CONFLICT (id_sekolah, ...)` dan loloskan mutasi). **PENGAJARAN: mutation test WAJIB lawan KOD SEBENAR, bukan suntikan sintetik.** Guard yang hijau sebab "tiada apa nak diperiksa" ialah guard mati.
+
+3. **🔴 RACE CONDITION frontend.** `muatMarkahSediaAda` async tanpa semakan selepas `await` → hakim tukar rumah A→B laju, respons LAMBAT rumah A tiba selepas skrin papar B → **markah rumah A disimpan di bawah id rumah B**. Senyap. Kita hampir tukar bug kehilangan data dengan bug PENCEMARAN data. Fix: token permintaan `muatSeq`. RED dibuktikan (skrin KUNING, slider markah HIJAU).
+
+**Lubang lain ditangkap:** kriteria BERULANG lolos semakan kelengkapan (respons balas 30, DB simpan 10 — nombor MENIPU hakim); `PATCH /api/penilaian/kategori/:id` jana UUID kriteria BARU setiap edit → markah lama jadi hantu → **SUM berganda** (plan sendiri terlepas laluan ini); ujian assert nilai MUTLAK → hanya boleh lulus SEKALI.
+
+**KEPUTUSAN MASTER SESI INI:** (1) guard diketatkan SEKARANG (bukan backlog); (2) data lama skala rosak **DIKOSONGKAN** masa deploy — `migrations/kosongkan_markah_penilaian_berkriteria.sql`; (3) laluan manual `POST /api/markah-penilaian` → **backlog**; (4) `bil_hakim` **diwayarkan ke UI** `pengumuman.js` ("1 hakim"/"Belum dinilai") — tanpa ini mitigasi tak wujud; (5) arkib dilindungi sekarang.
+
+**✅ BUG MASTER DITUTUP, DISAHKAN VISUAL** (Lucy pandang sendiri screenshot): pilih semula rumah → slider pulih 6/7/8/9, skala 0–10, jumlah 30/40, butang "Kemas Kini Markah".
+
+**⚠️ KESAN OPERASI PENTING:** markah PERBARISAN lama (96–98) **DIKOSONGKAN** → **semua hakim WAJIB nilai semula selepas deploy.** Rumah belum dinilai papar **0** = jelas "belum dinilai".
+
+**⏭️ NEXT — URUTAN DEPLOY PRODUCTION (JANGAN TERBALIK):**
+1. Master verify staging (aliran hakim penuh + laporan + pengumuman `bil_hakim`).
+2. **Master confirm** → `npx wrangler d1 execute olahraga-db --remote --file=migrations/add_markah_hakim.sql` (**jadual DULU** — kod lama abaikan jadual baru = zero-downtime).
+3. `git merge test --no-ff` → push `main` → deploy.
+4. **SELEPAS kod live** → `kosongkan_markah_penilaian_berkriteria.sql`. **JANGAN jalankan SEBELUM kod** — hakim yang hantar dalam tetingkap itu dilayan kod LAMA → tulis semula skala-20 → bug skala campur yang migration ini wujud untuk halang.
+5. Sahkan `atletik.celikguru.my`. Beritahu hakim **hard refresh** (hakim.html tiada cache-bust).
+⚠️ **JANGAN deploy production tanpa confirm master.** CI **TIDAK** jalankan migration — semua manual.
+
+--- (rekod asal sesi 14 Julai — spec+plan, kini SUDAH DILAKSANA) ---
+### Sesi 2026-07-14 (petang ~16:04–17:25): sistem-olahraga — 🔴 BUG KEHILANGAN DATA: HAKIM SALING MENIMPA MARKAH [✅ SUDAH EXECUTE — lihat entri di atas]
 
 **Master report 2 bug; PUNCANYA SATU.** (1) Hakim pilih semula rumah → markah tak dipapar semula. (2) Laporan tunjuk PERBARISAN 96/97 sedangkan 5 hakim × 5 kriteria patut jauh lebih tinggi.
 
