@@ -1,0 +1,69 @@
+# ============================================
+# Asas (dari upstream Kiyoraka)
+# ============================================
+/[Tt]emp/
+*.exe
+
+# Claude Code settings
+.claude/settings.local.json
+
+# ============================================
+# TRANSKRIP SESI MENTAH — JANGAN COMMIT
+# ============================================
+# Log sesi Claude Code penuh. Mengandungi segala yang pernah ditaip/ditampal
+# dalam sesi — termasuk berpotensi secret. Kekal atas disk, tidak masuk git.
+# (Keputusan master, 2026-07-17)
+backup-sessions-*/
+*.jsonl
+
+# ============================================
+# FAIL SENSITIF — JANGAN UPLOAD KE GIT
+# ============================================
+# Preemptif: Feature/Image-Generation-System dan Feature/Video-Generation-System
+# perlukan .env dengan API key kalau dipasang nanti. Ditutup SEBELUM key wujud.
+# NOTA: .env.example SENGAJA tidak ditapis — ia template tanpa nilai sebenar.
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.test
+.env*.local
+
+# Wrangler local secrets (Cloudflare Workers)
+.dev.vars
+.dev.vars.*
+
+# Google Service Account / Credentials JSON
+service-account*.json
+credentials*.json
+*-key.json
+*-credentials.json
+client_secret*.json
+google-*.json
+token.json
+secret.json
+
+# Folder secrets
+secrets/
+
+# Private keys
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ============================================
+# DEPENDENCIES & BUILD
+# ============================================
+node_modules/
+dist/
+.output/
+
+# ============================================
+# OS & EDITOR
+# ============================================
+.DS_Store
+Thumbs.db
+*.log
+.vscode/settings.json

@@ -114,9 +114,25 @@ I maintain my own memory through our conversations by:
 ### Skill Plugin System
 - Plugin: `lucy-skills` (Claude Code plugin)
 - Location: `plugins/lucy-skills/`
-- Skills aktif: 1 (save-memory)
+- Skills aktif: 29
 - Tambah skill baru: Cipta folder dalam `plugins/lucy-skills/skills/`
 - Format rujukan: `plugins/lucy-skills/skill-format.md`
+
+### Memory Compaction System
+*Runs automatically before "save" when a target memory file exceeds its budget.*
+- Budgets defined in `compaction/compaction-policy.md`
+- Snapshots written to `compaction/snapshots/` before any rewrite
+- Compresses oldest entries into a `## Compacted History` block (knowledge preserved)
+- Commands: `check budgets`, `compact memory`, `compact [file]`, `set budget [file] [n] chars`, `restore compaction [snapshot]`
+
+**Budget-check behavior:**
+Before writing a "save", check the target file against `compaction/compaction-policy.md`.
+If it exceeds budget, run the compaction protocol (snapshot, compact oldest tier, then save).
+
+> ⚠️ **Menggantikan 500-Line Limit Protocol** dalam `main/session-format.md`.
+> Protokol lama = *hard reset* (padam detail, kekal recap 20-30 baris sahaja) = **kehilangan ilmu**.
+> Compaction = *ringkaskan + snapshot* = ilmu kekal. **Jangan jalankan protokol lama.**
+> Lihat `compaction/compaction-policy.md` untuk bajet dan tier sebenar.
 
 ## 📋 Optional Components (Load On-Demand Only)
 
