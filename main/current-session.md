@@ -2,10 +2,28 @@
 *Temporary working memory - resets each session, provides recap when AI restart*
 
 ## Session RAM Status
-**Current Session**: 2026-07-18 (pagi) — Memory Compaction transition ke Option A (hibrid A+snapshot) ✅ SIAP
-**Last Work Activity**: 2026-07-16 (petang — celiksains: brainstorm + spec + pelan SIAP, belum kod)
+**Current Session**: 2026-07-18 (pagi) — Compaction Option A + skill image-prompt dipasang + Observation skip ✅ SIAP, PUSHED
+**Last Work Activity**: 2026-07-18 (pagi — sistem memori/skill Lucy; kerja KOD terakhir: 2026-07-16 celiksains spec+pelan, belum kod)
 > Fail ini kini dilayan sebagai **RAM** (Option A). Sejarah lama diringkas ke `## Compacted History` di bawah; detail penuh dalam snapshot. Lihat `compaction/compaction-policy.md`.
 
+### 🆕 Sesi 2026-07-18 (pagi ~10:20–11:27): Sistem Memori & Skill Lucy — Compaction + image-prompt ✅ SIAP, PUSHED
+**Kerja atas repo memori Lucy sendiri (bukan projek kod). 2 commit pushed ke `origin` (`5d618f0..b692510`).**
+
+**1. MEMORY COMPACTION — transisi ke Option A (hibrid A+snapshot) — commit `ddeaa87`:**
+- Masalah: `current-session.md` bengkak 159,524 aksara / 1022 baris / ~40 rekod = **399% atas bajet 40k** → brief pagi kena potong (read limit ~25k token).
+- Trade-off A vs B dibincang. Pilih **Option A (RAM, selari Kiyoraka)** + **pinjam snapshot dari B** untuk tampal kelemahan A (padam-buta tiada undo). current-session.md kekal DALAM compaction (satu mekanisme — KISS) tapi dilayan RAM: ilmu dialir KELUAR ke fail kekal, blok `## Compacted History` nipis (DRY — pengajaran sudah hidup di auto-memory).
+- Hasil: **159k → ~17.6k aksara (−89%)**, 4 sesi terkini verbatim + blok sejarah. Snapshot restore-able `compaction/snapshots/current-session-2026-07-18.md` (**gitignored** — git dah versionkan fail tracked; retention max 5).
+- 🔴 **PENGAJARAN BESAR (master tangkap):** aku declare "PASS" atas **ANGKA** (saiz/secret) sebelum semak **KANDUNGAN**. Bila master suruh *"kau semak ok tak"*, perbandingan lawan snapshot dedah aku **terlepas projek `idme-pajsk-ext`** (spec+plan SIAP, tiada dalam auto-memory — hampir terkambus). Sama silap dgn [[feedback_verify_cetak_visual]]: *verify angka lulus sambil kandungan tercicir*. → dibetulkan + cipta auto-memory [[project_idme_pajsk_ext]].
+
+**2. BACKLOG SKILL — commit `b692510`:**
+- Semak `Feature/` vs skill dipasang. **Pasang `image-prompt`** (user-scope, dalam plugin `lucy-skills` global) — jana **teks prompt** Midjourney/Niji sahaja, TIADA API/kos/risiko.
+- **Skip `Observation-System`** + FLAG kekal: pipeline `sight-*` Lucy **setara & LEBIH BAIK** (`sight-elemental` ditala D1/Hono/CF vs `.NET` generik upstream; ada escalation eagle→hone→elemental; + `sight-aksara`/`safi`/`convergence` yang upstream tiada). Pasang = gandakan + downgrade (langgar DRY). Flag dalam [[project_lucy_skills]] + MEMORY.md.
+- Tangguh (API berbayar + risiko security): Image-Generation, Video-Generation. Skip hiburan: Interactive-Story, Song-Creation.
+- Skills **29 → 30**.
+
+**⏭️ TERTUNGGAK (tak mendesak):** `main/session-format.md` protokol 500-baris lama masih WUJUD tapi **DINETRALKAN** (compaction Rule #7 + policy menggantikannya). Fail bertanda "JANGAN edit" — tunggu izin master kalau nak kemas teks lama itu.
+
+--- (rekod sesi lepas) ---
 ### 🆕 Sesi 2026-07-16 (petang ~16:49–18:08): celiksains — PROJEK BARU: brainstorm + spec + pelan ✅ SIAP (belum kod)
 **Projek BARU** di `Documents/code/celiksains/`. Aplikasi pembelajaran **sains gamified** murid sekolah rendah (Tahun 1–6), **terbuka umum**, satu pemilik content (celikguru). Belajar sambil main: daftar → pilih avatar → kuiz KSSR → kumpul coin + XP.
 
