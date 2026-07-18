@@ -9,10 +9,22 @@
 
 | File | Budget | Newest Tier (verbatim) | Notes |
 |------|--------|------------------------|-------|
-| main/current-session.md | 40000 chars | last 4 session records | log sesi — fail paling laju membesar |
+| main/current-session.md | 40000 chars | last 4 session records | **RAM (Option A)** — lihat nota bawah |
 | main/main-memory.md | 500 lines | last 20 entries | core identity + user profile |
 | main/relationship-memory.md | 400 lines | last 15 entries | user preferences |
 | topic-diary/topics/*.md | 300 lines each | last 10 entries | per-topic journals |
+
+### current-session.md dilayan sebagai RAM (keputusan 2026-07-18, hibrid A+B)
+
+`current-session.md` ialah **memori kerja sementara**, bukan simpanan kekal. Compaction masih
+menjaga saiznya (mekanisme tunggal — KISS), tetapi dengan disiplin Option A:
+
+- **Ilmu kekal dialir KELUAR** ke fail sepatutnya (`main-memory.md`, `topic-diary`, auto-memory)
+  — bukan ditimbun dalam blok `## Compacted History` fail sesi ini.
+- Blok `## Compacted History` di sini kekal **nipis** — hanya **pointer kesinambungan** (projek
+  mana di status apa), bukan salinan penuh pengajaran/gotcha yang sudah hidup di tempat lain (DRY).
+- Bila blok + sesi terkini cecah 40k → compact semula, ringkaskan pointer lama yang sudah usang.
+- Snapshot sebelum tulis (Safety Rule #1) menggantikan padam-buta 500-Line Protocol lama.
 
 ### Entry Boundaries — main/current-session.md
 
@@ -40,6 +52,15 @@ Fail ini tiada "entri" berbaris tunggal. Satu **session record** ialah:
 - Never compact files under `compaction/snapshots/`.
 - Never compact secrets, tokens, passwords, or credentials.
 - Never compact the newest tier.
+
+## Snapshot Retention (KISS)
+
+Snapshot ialah **cache tempatan** — git sudah simpan setiap versi fail yang di-track, jadi
+snapshot tidak perlu kekal selamanya (lihat `.gitignore`, folder ini tidak masuk git).
+
+- Simpan **5 snapshot terakhir per fail**. Bila tulis snapshot ke-6, buang yang paling lama.
+- Ini menghalang `compaction/snapshots/` membesar tanpa had (satu-satunya tempat "archive
+  bloat" boleh berlaku dalam reka bentuk ini).
 
 ### Detecting Secrets
 

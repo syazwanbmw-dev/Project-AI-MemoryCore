@@ -17,6 +17,16 @@ backup-sessions-*/
 *.jsonl
 
 # ============================================
+# SNAPSHOT COMPACTION — cache tempatan sahaja
+# ============================================
+# Git SUDAH simpan setiap versi fail memori yang di-track (setiap "save" = commit).
+# Snapshot cuma salinan mudah-restore untuk master — tak perlu masuk git (elak
+# repo membengkak + data sesi bertimbun dalam history). Kekal atas disk, prune bila besar.
+# (Keputusan master, 2026-07-18 — hibrid A+snapshot)
+compaction/snapshots/*
+!compaction/snapshots/.gitkeep
+
+# ============================================
 # FAIL SENSITIF — JANGAN UPLOAD KE GIT
 # ============================================
 # Preemptif: Feature/Image-Generation-System dan Feature/Video-Generation-System
