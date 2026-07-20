@@ -7,6 +7,7 @@
 
 | Topik | Fail | Keywords | Last Updated |
 |-------|------|----------|--------------|
+| eNilai (mypwa-v2) | topics/enilai.md | cloudflare-d1, auto-tutup, lazy-check, db-batch, migration, ranking, slip-keputusan | 2026-06-10 |
 
 ## Archived Topics
 

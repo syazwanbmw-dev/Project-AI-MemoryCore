@@ -1,5 +1,5 @@
 # mypwa-v2 (eNilai)
-*Coding Project - Created 2026-03-26 | Last Updated: 2026-05-17*
+*Coding Project - Created 2026-03-26 | Last Updated: 2026-06-12*
 
 ## Description
 Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebuild dari Supabase ke Cloudflare Workers + D1.
@@ -8,7 +8,7 @@ Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebu
 - **Type**: Coding Project
 - **Status**: Active (Production Live)
 - **Created**: 2026-03-26
-- **Last Accessed**: 2026-05-17
+- **Last Accessed**: 2026-06-12
 - **Position**: #1
 - **Repo**: https://github.com/syazwanbmw-dev/mypwa-v2.git
 - **Production URL**: https://mypwa-v2.syazwan-skpp82.workers.dev
@@ -37,13 +37,17 @@ Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebu
 | PAJSK — Edit UX (loading state + notify) | ✅ Done (2026-05-10) |
 | PAJSK — Bulk Import CSV/xlsx | ✅ Done (2026-05-17) |
 | PAJSK — Auto Drive Folder per Sesi (create + delete) | ✅ Done (2026-05-17) |
+| Bug fix kedudukan keseluruhan slip keputusan | ✅ Done (2026-06-10) |
+| Auto-Tutup Ujian by Date (migration 024) | ✅ Done (2026-06-10) |
+| OMR Scanner (omr.html) — pure frontend scan borang jawapan | ✅ Done (2026-06-12) |
+| iPad Bug Fixes — dropdown race condition + sidebar logout | ✅ Done (2026-06-12) |
 
 ## Features Live (Production)
 - Login (ADMIN + GURU roles)
 - Dashboard — carta purata TP + ujian dalaman analisis
 - Rekod RPM — input TP bulk per kelas/subjek
 - Laporan RPM — pivot table + inline edit + cetak
-- Ujian Dalaman — input markah + laporan + analisis taburan gred
+- Ujian Dalaman — input markah + laporan + analisis taburan gred + auto-tutup by date
 - PAJSK — rekod pertandingan + upload PDF + kategori Sumbangan + bulk import
 - PAJSK — Auto Drive Folder per Sesi (create on tambah sesi, delete on padam sesi)
 - Admin Panel — pengguna, kelas, murid, subjek, kurikulum, tetapan, audit log, tab PAJSK
@@ -93,6 +97,32 @@ Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebu
 - Fallback chain: `sesi.drive_folder_id ?? env.DRIVE_FOLDER_ID ?? null`
 - Migration 022 — `ALTER TABLE sesi ADD COLUMN drive_folder_id TEXT`
 
+## Auto-Tutup Ujian by Date (selesai 2026-06-10)
+- `tarikh_tutup TEXT` dalam table ujian — migration 024
+- Lazy check on-the-fly (tiada cron job)
+- GET /ujian?input=1 — filter expired dari senarai guru
+- POST /ujian-markah/bulk — 403 bila status=tutup atau tarikh lepas; hari sama = dibenarkan
+- PUT /ujian/:id — db.batch() atomicity; pattern `'tarikh_tutup' in body` untuk clear ke NULL
+- Frontend: `effectiveStatus()` badge, kolum Tarikh Tutup, bukaSemula modal
+- Commits: `73d121e` → `dcc1cbe` (merge main), version `5be1df74`
+
+## Bug Fix Kedudukan Keseluruhan Slip (selesai 2026-06-10)
+- `kiraRankingSlip`: sort by `jumlah_A DESC + jumlah_markah DESC` (konsisten dengan table KED)
+- `rankKesel` group by `tahun` (bukan semua murid semua tahun)
+- Backend: tambah `tahun_kelas` dalam SELECT laporan ujian-markah
+- Commits: `b82f7aa` (test) → `694c6a4` (main)
+
+## iPad Bug Fixes (selesai 2026-06-12)
+- **Dropdown race condition** — `selUjian` disabled semasa `init()` load, aktif selepas options siap
+- **Loading feedback** — dependent dropdowns tunjuk "Memuatkan..." semasa API fetch
+- **Sidebar logout — iOS 100vh bug** — `.sidebar` + `#sidebar` tukar ke `height:100dvh`
+  - `100vh` pada iOS = layout viewport (termasuk belakang browser chrome), logout tersembunyi di bawah
+  - `100dvh` = dynamic viewport = kawasan visible sebenar
+- **Flex min-height bug** — `.sidebar-nav` tambah `min-height:0` — iOS flex child refuse shrink tanpa ini
+- **Safe area support** — `.sidebar-logout` padding-bottom guna `env(safe-area-inset-bottom)` untuk iPad tanpa home button
+- **Button visibility** — `.sidebar-logout .btn-ghost` opacity naik, tak bergantung pada `:hover`
+- Commits: `7aab1f3` → `d1292b2` (test) → `ad1015e` (main), Version `9591deac`
+
 ## Backlog
 - [ ] Compact mode Ujian Dalaman (bar 28px, 6 kad belum muat satu halaman)
 - [ ] LinkedIn setup + dokumentasi journey
@@ -105,4 +135,4 @@ Sistem eNilai — platform pengurusan penilaian murid untuk sekolah rendah. Rebu
 - Current: `app.css?v=6`
 
 ---
-*mypwa-v2 | Position #1 | Last updated 2026-05-17 (Auto Drive Folder live)*
+*mypwa-v2 | Position #1 | Last updated 2026-06-12 (iPad Bug Fixes live)*
