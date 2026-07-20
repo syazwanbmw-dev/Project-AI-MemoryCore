@@ -2,10 +2,73 @@
 *Temporary working memory - resets each session, provides recap when AI restart*
 
 ## Session RAM Status
-**Current Session**: 2026-07-18 (pagi) — Compaction Option A + skill image-prompt dipasang + Observation skip ✅ SIAP, PUSHED
-**Last Work Activity**: 2026-07-18 (pagi — sistem memori/skill Lucy; kerja KOD terakhir: 2026-07-16 celiksains spec+pelan, belum kod)
+**Current Session**: 2026-07-20 (tengah hari–petang) — **eRPH (PROJEK BARU)**: bug import ✅ SIAP & disahkan master live; kerja seterusnya = isi RPT dari RPT rasmi PPD.
+**Last Work Activity**: 2026-07-20 (~18:05 — brainstorm RPT/DSKP, tunggu dokumen RPT rasmi dari master)
 > Fail ini kini dilayan sebagai **RAM** (Option A). Sejarah lama diringkas ke `## Compacted History` di bawah; detail penuh dalam snapshot. Lihat `compaction/compaction-policy.md`.
 
+### 🆕 Sesi 2026-07-20 (11:52–18:05): eRPH — PROJEK BARU, bug import ✅ SIAP LIVE + brainstorm RPT belum selesai
+**Projek BARU `Documents/code/erph/`** (git lokal, tiada remote). Google Apps Script terikat pada Google Sheet eRPH cikgu. Ditarik guna **clasp** (v3.3.0 dah sedia ada, `.clasprc.json` sedia login — tiada npm install). 5 commit `cf97854`(baseline) → `9024b10`. Auto-memory: [[project_erph]], [[feedback_bukti_saluran_lossy]], [[feedback_pdf_ke_md]].
+
+**BHG 1 — BUG "Import Berjaya tapi kosong" ✅ SIAP, master sahkan berjaya pada sheet sebenar.**
+Satu gejala → **tiga bug**:
+1. **Punca yang master rasa:** ChatGPT keluarkan `**OBJEKTIF:**` (markdown bold); `parseRPHStrict` guna `/^OBJEKTIF:/` → tak padan → tiada isi terkumpul. Fix: `bersihkanMarkdown()` buang `**`/`__`/`#` sebelum padanan tajuk DAN sebelum simpan isi.
+2. **Lebih bahaya, master tak tahu wujud:** `clearContent()` dipanggil SEBELUM parse → setiap import gagal MEMADAM RPH sedia ada. Betul-betul berlaku (SELASA RPH 1-3 terpadam masa ujian aku suruh; dipulih via Version history). Fix: parse dulu, kosongkan hanya bila ada isi sah.
+3. **Sebab 1&2 boleh bersembunyi:** `runImport()` satu-satunya pemanggil `google.script.run` tanpa `withFailureHandler` → ralat ditelan. Ditambah + laporan jujur ("Berjaya" hanya bila ada sel benar-benar diisi).
+Ujian `tests/import.test.js` (`node --test`, tiada npm), harness `new Function(kod)` + stub SpreadsheetApp = uji kod SEBENAR. Merah 2 → hijau 6/6.
+
+**🔴 PENGAJARAN BESAR — SALURAN BUKTI LOSSY:** teks yang GAGAL pada master **LULUS** dalam ujian aku, dua kali. Sebab **chat render markdown dan buang `**`** — teks yang sampai pada aku bukan teks yang gagal. Aku hampir salahkan regex penanda dan tulis fix yang SALAH. Penyelesaian: berhenti minta master paste, tambah diagnostik yang **dump aksara mentah dari DALAM Apps Script** (`<U+200B>`, `<U+2022>`). Satu klik → punca terpampang. → [[feedback_bukti_saluran_lossy]]. Sepupu [[feedback_verify_cetak_visual]].
+
+**🔴 GOTCHA clasp:** `clasp push` TIDAK buang fail lebihan di server bila ia anggap "already up to date" — `tests/import.test.js` tersangkut di sana ~90 saat. BAHAYA: Apps Script muat SEMUA fail ke satu skop global; `require()` akan lumpuhkan seluruh skrip master. Paksa push sebenar (ubah fail) + **sahkan dengan `clasp clone` ke folder lain**. `.claspignore` kini sekat `tests/**`.
+
+**2 SILAP AKU, diakui pada master:** (a) suruh master klik Import sebelum aku baca urutan `clearContent()`→`parse()` → RPH master terpadam; (b) fail ujian terpush ke skrip master.
+
+**BHG 2 — BRAINSTORM "Lucy, buat RPH minggu 24" (BELUM SIAP, tunggu master).**
+Master mahu cakap je → Lucy rujuk MENU (subjek ikut hari) + RPT (SK/SP ikut minggu) → jana terus. **Master pilih seni bina: Lucy buat dalam chat**, bukan butang dalam sheet → **TIADA API key, TIADA kos**. Fasa 3 Gemini/API **DIBATALKAN**.
+- Spreadsheet ujian `14GiD3iY...AuF0` (master sahkan salinan ujian, selamat). Tab: MENU/AHAD/ISNIN/SELASA/RABU/KHAMIS/RPT/DSKP/DATA. Minggu sekolah **AHAD–KHAMIS**.
+- Baca sheet tanpa API: **gviz `out:html`** via browser (master log masuk Chrome). `out:csv` mencetuskan muat turun — jangan guna.
+- Struktur RPT: blok tiap **148 baris** (RPT1 baris 8, RPT2 baris 156); D8=subjek; **Minggu N = baris 9+N** (M24 = baris 33). DSKP = pangkalan data penuh semua subjek.
+- **🔴 PENEMUAN UBAH KEUTAMAAN: RPT master KOSONG.** Jana RPH bukan masalah sebenar — **isi RPT** yang kerja sebenar. Kalau aku ikut je permintaan asal, master dapat M24 dan minggu depan berdiri di tempat sama.
+- **🔴 TAPAK PIHAK KETIGA** (`@zairi_erphadmin`) ada amaran "TAPAK AKAN ROSAK" — reka bentuk mesti hanya tulis ke sel yang Import sedia ada dah tulis.
+- Keputusan master: agihan ikut **RPT rasmi PPD/panitia** (menyalin, bukan mereka — Lucy tak buat keputusan pedagogi); mula **1 subjek perintis** (Lucy cadang SAINS 5).
+- Reka dicadang (belum lulus): Lucy jana blok **TSV** 2 kolum × ~40 baris → master Ctrl+V pada `D10`. Sifar kod baharu, sifar risiko tapak.
+
+**⏭️ NEXT SESI:** master bekalkan **dokumen RPT rasmi** (path/URL). Kalau PDF → WAJIB tukar `.md` dulu ([[feedback_pdf_ke_md]], peraturan tetap baru master; `pdftotext -layout` dah dipasang, `-layout` wajib untuk jadual). Lepas tukar: silang-semak baris rawak vs asal, baru bina TSV.
+
+### 🆕 Sesi 2026-07-18/19 (malam ~17:37–00:15): sistem-olahraga — THROTTLE BRUTE-FORCE `/api/login` ✅ LIVE PRODUCTION (main `5468d85`)
+**Tutup gap security paling tinggi (rate limiting login yang di-flag berkali). Kata pipeline PENUH: brainstorm→spec→plan→subagent-driven→final review opus→verify→deploy. main==test==`5468d85` (+doc `f9896b1` test).**
+
+**MASALAH:** `/api/login` cuma ada `setTimeout(1000)` — tiada had cubaan → brute-force terbuka. Multi-tenant, satu endpoint semua sekolah, username unik global. Infra: **hanya D1** (tiada KV/DO).
+
+**KEPUTUSAN REKA (master via AskUserQuestion):** (1) throttle sementara keyed **IP+username**, auto-pulih, tiada lockout kekal; (2) storan **D1** (strongly-consistent, KISS — bukan KV eventually-consistent/raceable, bukan DO over-eng); (3) ambang Sederhana user 5/15min; (4) buang setTimeout sepenuhnya; (5) skop sistem-olahraga sahaja. **Final review naikkan ip 20→50** (master faham+setuju — elak kunci SELURUH sekolah di belakang satu NAT masa kejohanan; username=5 kekal pertahanan utama). Timing side-channel enumeration → **tangguh backlog** (terima sedar).
+
+**IMPLEMENTASI (7 commit `d1cd734..5468d85`):** jadual D1 `login_attempts` (fixed-window upsert `ON CONFLICT`), block-check SEBELUM verify (fail-closed), fail-open pada ralat D1, reset `user:` bila kredential SAH (bukan `ip:`), increment kedua-dua bila salah, sweep oportunistik 5% via `waitUntil`, helper `resetKaunterLogin` (DRY), fix bonus 500→400.
+
+**SUBAGENT-DRIVEN:** Task 1-4 implementer (haiku/sonnet) dalam sandbox (tiada network); controller (Lucy) handle verify network + deploy. Task 3 (teras) reviewer subagent: spec ✅ + tangkap flake ujian (nba3003 dikongsi vs fullyParallel) → fix. Final whole-branch review **opus: merge-ready, 0 Critical**.
+
+**VERIFY (izin sandbox master):** fail-first (kod lama 500/403≠400) → migration olahraga-test → deploy test → **Playwright 5/5 PASS** (edge+D1 sebenar, reject 429 + accept 200+reset berpasangan). LIVE prod: body{}→400, 5 gagal→401×5, ke-6→**429** "Terlalu banyak cubaan... 15 minit".
+
+**🔴 GOTCHA UJIAN:** Cloudflare edge TOLAK header `CF-Connecting-IP` palsu (403 "error code:1000") — spec ditulis semula (buang suntik IP, username unik, fail-closed test LAST, reset table). `wrangler dev --remote` juga edge (sama isu).
+**🔴 GOTCHA DEPLOY:** push main trigger Actions TAPI deploy manual serentak = RACE `assets-upload-session` (error 10013). **Pengajaran: push main SAHAJA, tunggu Actions (~7min lag); manual hanya jika Actions confirm gagal — JANGAN serentak.** (Master tegur: "bukan merge trigger deploy ke" — betul, aku patut biar Actions.)
+
+**⏭️ BACKLOG SECURITY (CLAUDE.md projek, terima sedar):** (a) timing side-channel enumeration username; (b) sustained per-username lockout DoS.
+
+--- (rekod sesi lepas) ---
+### 🆕 Sesi 2026-07-18 (pagi ~11:31–11:50): Reference baru — Palet Warna UI + Security Checklist WAJIB ✅ SIAP
+**Kerja atas auto-memory global (`.claude/projects/.../memory/`) + CLAUDE.md. Bukan projek kod. Tiada git push (dir memory ni tak bertrack).**
+
+**1. PALET WARNA UI — `reference_palet_warna_ui.md`:** master share 8 gambar "7 Color Combinations That Always Work" (@designbyawais4). Aku extract 7 palet + hex penuh + **petakan ke class Tailwind** (nilai tambah — majoriti hex = default Tailwind: `slate-900`/`blue-500`/`emerald-800`/`violet-700` dll → terus guna class, tiada hardcode). Warna cream/ivory/sand/coral = custom (tiada padanan Tailwind tepat). Calon guna: **celiksains** (belum kod). Pointer masuk MEMORY.md.
+
+**2. SECURITY CHECKLIST WAJIB — `reference_security_checklist.md`:** master minta panduan tetap "**project kita mesti kalis**" 7 ancaman. Aku petakan ke stack serverless kita ikut risiko sebenar:
+- 🔴 **Tier 1 hidup:** SQL Injection (`.bind()` wajib), XSS (escHtml/textContent+CSP), Brute Force.
+- 🟡 **Tier 2 ikut kes:** CSRF (JWT header Bearer = auto kalis; cookie = SameSite+token), File Upload (validate jenis/saiz + CSV formula injection escape).
+- 🟢 **Tier 3 kalis semula jadi Workers:** Command Injection (tiada shell/exec — jaga jangan `eval` input) & File Inclusion (tiada filesystem — jaga R2 key whitelist).
+- Ada corak kod boleh salin + **Gerbang Pra-Deploy** (checklist tick) + link ke [[feedback_wrangler_secrets]]/[[feedback_gitignore_patterns]]/[[feedback_pk_komposit_join]]. Pointer masuk MEMORY.md.
+
+**3. KUAT KUASA — CLAUDE.md:** tambah seksyen `## Security` (izin master) → semak `reference_security_checklist.md` setiap projek baru + sebelum deploy; senarai 7 ancaman. Sebab CLAUDE.md auto-baca tiap sesi → jadi arahan WAJIB, bukan nota pasif.
+
+**⚠️ ITEM TERBUKA (aku flag 2× — jujur):** checklist tetapkan STANDARD, tapi **sistem-olahraga `/api/login` MASIH `setTimeout 1s` sahaja, belum kalis brute-force**. → ✅ **DITUTUP 2026-07-19** (throttle D1 LIVE production, lihat sesi malam di atas). Pilihan: D1 counter (bukan WAF/KV/DO), keyed IP+username.
+
+--- (rekod sesi lepas) ---
 ### 🆕 Sesi 2026-07-18 (pagi ~10:20–11:27): Sistem Memori & Skill Lucy — Compaction + image-prompt ✅ SIAP, PUSHED
 **Kerja atas repo memori Lucy sendiri (bukan projek kod). 2 commit pushed ke `origin` (`5d618f0..b692510`).**
 
@@ -124,7 +187,7 @@
 
 **🔴 ITEM TERBUKA dari tier lama (belum buat — JANGAN kambus):**
 - **PROJEK: `idme-pajsk-ext` (Chrome Extension PAJSK → IDMe KPM)** — spec + plan **SIAP** (8 task TDD), repo `Documents/code/idme-pajsk-ext` (spec `ca3abcc`, plan `890821f`). Pendekatan A (MV3 Side Panel + blok JSON `#pajsk-export` dalam mypwa-v2 pajsk.html). Task 1-6 boleh mula tanpa external; **Task 7 GATED** — master kena inspect borang `idme.moe.gov.my` bekal selector medan. Ujian `node --test` (tiada npm). **NEXT: master pilih cara execute.** *(Tiada dalam auto-memory — patut jadi entri `project_` sendiri.)*
-- **Rate limiting `/api/login` (sistem-olahraga)** — isu security tertinggi. Sedia ada cuma `setTimeout 1s`, **tiada had cubaan** → brute-force terbuka. Keputusan perlu (mula `brainstorming`): per-IP vs per-username; Cloudflare WAF Rate Limiting (level edge, tiada kod) vs Durable Object/KV counter (boleh kunci akaun). Nota: multi-tenant, SATU `/api/login` untuk semua sekolah → per-IP sahaja mungkin tak cukup. Boleh sekalikan: `POST /api/login` pulangkan **500** bila medan body hilang (patut **400**).
+- ~~**Rate limiting `/api/login` (sistem-olahraga)**~~ ✅ **DITUTUP 2026-07-19** — throttle D1 `login_attempts` keyed IP+username LIVE production (main `5468d85`). Fix 500→400 sekali. Lihat rekod sesi malam 2026-07-18/19 di atas.
 - Backlog projek (Lompat Tinggi Fasa 2 kad responsif, backend DELETE-sebelum-validate C2, guard scan `src/**/*.js` sebelum Code-DRY-extraction, normalisasi markah_penuh, ETR boleh-laras, eksport Excel) **tercatat dalam CLAUDE.md projek masing-masing** — takkan hilang.
 - Cadangan audit kecil Lucy (belum master putus): `created_at` timezone di tempat lain; teks/border pucat page cetak lain (slip ujian, pajsk, RPM). **Kekal dalam snapshot.**
 
