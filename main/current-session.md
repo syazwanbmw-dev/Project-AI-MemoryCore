@@ -30,7 +30,7 @@
 
 **⏭️ TERTUNGGAK:**
 - ⏳ **Master uji sheet sebenar** — (a) TERIMA: import betul → `✅ N RPH diimport (RPH …) — X sel diisi`; (b) TOLAK: tampal sampah → `❌ Tiada RPH sah dikesan — TIADA sel diubah` **dan RPH sedia ada mesti kekal**.
-- ❓ **Soalan terbuka belum dijawab:** `runJana` (`dialogPromptStrict.html:57`) pun tiada `withFailureHandler` — butang tersangkut "Menjana..." bila gagal. ~4 baris. Master belum putus nak baiki atau tidak.
+- ✅ **`runJana` SELESAI (`d188183`, pushed+verified 23:08).** Master tanya "rosak juga ke" — jawapan jujur: **TIDAK**. Ia cuma MEMBACA sheet → tak boleh padam data, tak pernah tipu "berjaya", laluan berjaya pulihkan label betul. Satu-satunya masalah = butang tersangkut senyap "Menjana..." bila gagal. Dibaiki sebab senyap itu sendiri musuh. JS dialog **tiada ujian unit** (browser-side) — syntax + bacaan sahaja.
 - 🚫 **Sengaja TIDAK disentuh:** `PadamRPH()` ada julat mati sampai baris 496 (RPH menengah habis ~254) + komen `// RPH 1` sebenarnya lindungi 2 blok. **Ia berfungsi betul** (baris 9–248 tercakup) — kod tapak pihak ketiga, ada amaran "TAPAK AKAN ROSAK". Biar.
 
 ### 🆕 Sesi 2026-07-20 (11:52–18:05): eRPH — PROJEK BARU, bug import ✅ SIAP LIVE + brainstorm RPT belum selesai
