@@ -5,7 +5,14 @@
 **Current Session**: 2026-07-21 (malam) — **eRPH MENENGAH**: ✅ repo AKTIF **`erph-menengah-v2`** (script `12bdh…`, fail BERSIH) — semua fix pushed & verified, 8/8 hijau. 🚫 Repo `erph-menengah` (script `1Rc9…`, sheet erph-fix) **DITINGGALKAN** — master maklum spreadsheet itu memang dah rosak sebelum kerja kita. ⏳ **MENUNGGU master uji**.
 **Last Work Activity**: 2026-07-21 (~23:50 — mula semula atas fail bersih, push + verify siap)
 
-### 🔴 SAMBUNGAN (~23:58–00:05): BUG KE-4 DIJUMPAI — peta baris tak padan (BELUM SELESAI)
+### ✅ SAMBUNGAN (~00:17–00:30): BUG KE-4 SELESAI — jarak borang **48**, bukan 31 (`c9b5a17`)
+Diagnostik jawab tepat: borang mula baris **7**, jarak **48**. Lima penanda sepakat; baris **7/55/103 = DELIMA/ZAMRUD/FIRUS** (3 kelas Khamis ✓). Kod anggap 31 → hanya baris 7 bertindih → sebab itu RPH 1 sahaja menjadi (kebetulan, bukan kod betul). Alert master `✅ 3 RPH diimport` mengesahkan: script sangka semua tiga berjaya, cuma tulis ke tempat salah.
+**Aku silap magnitud** — malam tadi aku agak ~93/94, sebenarnya 48. Nasib baik tunggu data.
+FIX: jadual koordinat hardcoded dibuang → `petaBlokRPH_()` dari `BARIS_MULA_RPH=7`+`JARAK_BORANG_RPH=48`. Offset dalam borang kekal (terbukti betul pada borang 1; ujian mengunci blok 1 = `B22:K25`/`B29:K31`). Ujian 11: merah 3 → **hijau 11/11**. Pushed+verified.
+**🔴🔴 BAHAYA dimaklum master:** menu `🛠️ Baikpulih Tapak eRPH hari ini` (`baiki dropdown.js`) MASIH guna jarak 31 dan ia **MENULIS** setDataValidation → **calon kuat punca fail lama rosak. JANGAN KLIK.**
+Sheet master ada kesan import salah tempat (baris 115-118/122 dalam borang FIRUS, 208-211/215 sampah) → disyorkan pulih guna **Version history**, bukan kemas manual.
+
+### 📌 (rekod) SAMBUNGAN (~23:58–00:05): BUG KE-4 DIJUMPAI
 Master uji: **hanya RPH 1 menjadi**. Master sangka GPT salah jana — aku tunjuk bukti ia **BUKAN**: label `=== RPH 1/4/7 ===` dijana `generatePromptsStrict` sendiri (baris 125), blok lain dilangkau sebab `!sk && !sp` (baris 64). Jadi script cuma jumpa data pada blok 1, 4, 7.
 **Hipotesis:** peta baris hardcoded (jarak 31) tak padan hamparan; jarak sebenar ~3× ganda. Bukti: blok 4 tergelincir — tajuk tangkap kepala borang, sk tangkap baris tajuk kolum. Blok 1 kebetulan tepat.
 **Bug jenis BERBEZA:** 3 yang lepas = bug logik; ini = bug **andaian koordinat**. Fix lepas tetap sah.
