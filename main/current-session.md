@@ -1,9 +1,34 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
+## 🎯 TITIK SAMBUNG — eRPH MENENGAH (set 2026-07-22 01:06)
+*Baca blok ini sahaja untuk sambung kerja. Detail penuh ada di bawah.*
+
+**Projek:** `Documents/code/erph-menengah-v2/` · script **`12bdhbpGg1x5FPxbC8eaCPdlgsSf3I3krKlR1s0r03kgRraVt_Vqavoat`** · sheet **salinan ujian BERSIH** · git lokal, tiada remote.
+**Status: ✅ SEMUA 4 BUG SELESAI. Master sahkan import BERJAYA (00:39, "ok dah masuk").**
+Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnostik) → `c9b5a17` (peta baris 48). Ujian **11/11 hijau** (`node --test`, tiada npm).
+
+**Geometri (JANGAN lupa):** borang RPH mula baris **7**, jarak **48**. Sumber kebenaran = `petaBlokRPH_()` dalam `Ai eRPH 2026.js`. Nilai lama 31 = SALAH.
+
+### ⏭️ Sambung dari sini — 4 item, semua boleh tunggu
+1. **❓ Soalan belum dijawab:** ketiga-tiga kelas (DELIMA b.7 / ZAMRUD b.55 / FIRUS b.103) mendarat pada baris betul? Master cakap "dah masuk" — aku tak sahkan lebih dari itu.
+2. **🔴 BAHAYA belum dibaiki:** menu `⭐eRPH KPM 2026 › 🛠️ Baikpulih Tapak eRPH hari ini` (`baiki dropdown.js`) MASIH guna jarak 31 **dan ia MENULIS** `setDataValidation` → tanam dropdown pada sel salah. **Calon kuat punca fail lama rosak. MASTER DIMAKLUM: JANGAN KLIK.** Skop fix sengaja dihadkan master kepada jana+import sahaja. Juga peta salah (kurang bahaya): `RPH_1..RPH_8`, `SembunyiPemisah`, `PadamRPH`.
+3. **🧹 `diagnostik.js`** masih dalam script — dah buat kerjanya. Master belum putus: buang atau simpan?
+4. **🧹 Folder lama `Documents/code/erph-menengah/`** (script `1Rc9…`, sheet erph-fix ROSAK) masih ada, **tidak dipadam** (tunggu izin master). **JANGAN push ke script itu.**
+
+### 🔧 Cara kerja projek ini (elak ulang kesilapan malam tadi)
+- `clasp push --force` → **WAJIB sahkan dengan `clasp clone` ke folder lain** (push boleh tipu).
+- clasp perlu **sandbox-disabled** → **minta izin master dulu** setiap kali.
+- clasp log masuk `g-77420159@moe-dl.edu.my`; sheet mesti dikongsi ke akaun ini sebagai **Editor**.
+- Mesej commit: **`git commit -F fail.txt`**, jangan here-string.
+- **JANGAN sunting fail teks guna PowerShell** — guna tool Edit. → [[feedback_powershell_commit_heredoc]]
+- `.claspignore` sekat `tests/**` — jangan biar fail ujian naik ke Apps Script.
+
+---
+
 ## Session RAM Status
-**Current Session**: 2026-07-21 (malam) — **eRPH MENENGAH**: ✅ repo AKTIF **`erph-menengah-v2`** (script `12bdh…`, fail BERSIH) — semua fix pushed & verified, 8/8 hijau. 🚫 Repo `erph-menengah` (script `1Rc9…`, sheet erph-fix) **DITINGGALKAN** — master maklum spreadsheet itu memang dah rosak sebelum kerja kita. ⏳ **MENUNGGU master uji**.
-**Last Work Activity**: 2026-07-21 (~23:50 — mula semula atas fail bersih, push + verify siap)
+**Current Session**: 2026-07-21/22 (malam–awal pagi) — **eRPH MENENGAH ✅ SIAP & DISAHKAN**. Repo AKTIF `erph-menengah-v2`. 🚫 Repo `erph-menengah` DITINGGALKAN (spreadsheet memang dah rosak sebelum kerja kita — master sahkan).
+**Last Work Activity**: 2026-07-22 (~01:06 — titik sambung ditetapkan atas permintaan master)
 
 ### ✅ SAMBUNGAN (~00:17–00:30): BUG KE-4 SELESAI — jarak borang **48**, bukan 31 (`c9b5a17`)
 Diagnostik jawab tepat: borang mula baris **7**, jarak **48**. Lima penanda sepakat; baris **7/55/103 = DELIMA/ZAMRUD/FIRUS** (3 kelas Khamis ✓). Kod anggap 31 → hanya baris 7 bertindih → sebab itu RPH 1 sahaja menjadi (kebetulan, bukan kod betul). Alert master `✅ 3 RPH diimport` mengesahkan: script sangka semua tiga berjaya, cuma tulis ke tempat salah.
