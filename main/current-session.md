@@ -2,9 +2,36 @@
 *Temporary working memory - resets each session, provides recap when AI restart*
 
 ## Session RAM Status
-**Current Session**: 2026-07-20 (tengah hari–petang) — **eRPH (PROJEK BARU)**: bug import ✅ SIAP & disahkan master live; kerja seterusnya = isi RPT dari RPT rasmi PPD.
-**Last Work Activity**: 2026-07-20 (~18:05 — brainstorm RPT/DSKP, tunggu dokumen RPT rasmi dari master)
+**Current Session**: 2026-07-21 (malam) — **eRPH MENENGAH (PROJEK BARU `erph-menengah`)**: 3 bug import dibaiki, ujian 8/8 hijau, PUSHED ke Apps Script & disahkan via clone bebas. ⏳ **MENUNGGU master uji pada sheet sebenar** (terima + tolak).
+**Last Work Activity**: 2026-07-21 (~22:45 — push + verify siap, serah ujian pada master)
 > Fail ini kini dilayan sebagai **RAM** (Option A). Sejarah lama diringkas ke `## Compacted History` di bawah; detail penuh dalam snapshot. Lihat `compaction/compaction-policy.md`.
+
+### 🆕 Sesi 2026-07-21 (malam ~21:41–22:45): eRPH MENENGAH — PROJEK BARU, 3 bug import ✅ DIBAIKI & PUSHED (⏳ belum disahkan master)
+**Projek BARU `Documents/code/erph-menengah/`** (git lokal, tiada remote). Sheet **erph-fix** — master sahkan **salinan ujian**. Script ID `1Rc9Stj1...`. 2 commit: `108ee16` (baseline) → `b6e2b5c` (fix). Auto-memory: [[project_erph_menengah]].
+
+**KONTEKS:** gejala sama macam erph rendah semalam ("Import Berjaya tapi kosong") tapi **fail berlainan** — ini untuk sekolah **menengah**, semalam sekolah **rendah**. Master minta folder baru.
+
+**🔴 GOTCHA AKSES — clasp 403 `The caller does not have permission`:** clone gagal. **Ujian kawalan menyelamatkan diagnosis** — clone script LAMA (rendah) pada saat sama **BERJAYA** → memadam 4 kemungkinan serentak (network/login/API/ID salah), tinggal satu: akaun tiada akses. clasp log masuk sebagai `g-77420159@moe-dl.edu.my` (DELIMa); sheet erph-fix dibuat bawah akaun Google lain. **Selesai: master share sheet ke akaun DELIMa sebagai Editor** (bukan tukar `clasp login` — login clasp GLOBAL, tukar-tukar = risiko silap push antara dua projek). ID script sah = **57 aksara** (sama panjang dgn rendah) — cara cepat bezakan dari ID spreadsheet.
+
+**🔑 KOD MENENGAH BUKAN KEMBAR RENDAH — jangan port buta.** 14,173 bytes vs 34,543 (rendah). Diff 312+/786−. **4 fail** (rendah 3) — ada `baiki dropdown.js` (baik pulih data validation, TIDAK disentuh; ia sahkan susun atur: 8 blok, jarak **31 baris**, mula baris 7).
+
+**3 BUG (semua wujud, satu LEBIH TERUK dari rendah):**
+1. `parseRPHStrict` `/^OBJEKTIF:/` vs `**OBJEKTIF:**` ChatGPT → tambah `bersihkanMarkdown()` (buang `**`/`__`/`#`) sebelum padanan tajuk DAN sebelum simpan isi; regex juga terima `OBJEKTIF :`.
+2. **LEBIH TERUK:** `importRPHStrict` kosongkan **KESEMUA 8 blok tanpa syarat** sebelum parse → import gagal padam 8 RPH; import separa padam 7 yang lain walau "berjaya". Fix: pecah **FASA 1 parse → FASA 2 tulis**.
+3. `runImport()` tiada `withFailureHandler` + `alert("✅ Import Berjaya!")` **tanpa syarat** → gejala "Berjaya tapi kosong" datang dari sini. Fix: `importRPHStrict` pulangkan laporan sebenar (bil. RPH + bil. sel), dialog papar laporan itu, +`withFailureHandler`, butang pulih bila gagal.
+
+**🔑 KEPUTUSAN REKA MASTER (AskUserQuestion):** skop padam = **hanya blok yang ada dalam teks** (bukan semua 8, bukan ikut bulat-bulat fix rendah) → master boleh jana ulang SATU RPH tanpa melesapkan yang lain.
+
+**TDD:** `tests/import.test.js` port dari rendah + disesuaikan (stub `getActiveSheet`, rekod `clearContent` ikut julat). **Merah 7/8 dulu → hijau 8/8**. Termasuk ujian SKOP (import RPH 3 → hanya `B84:K87`+`B91:K93` dikosongkan, blok 1 TIDAK) dan ujian berpasangan terima/tolak.
+
+**VERIFY PUSH:** `clasp push --force` → 4 fail, `tests/` disekat `.claspignore` ✅. **Disahkan `clasp clone` ke folder bebas**: 4 fail sahaja di server, diff kosong lawan lokal, `bersihkanMarkdown`/FASA 1/FASA 2/`withFailureHandler` betul-betul ada. (Gotcha clasp semalam tidak berulang.)
+
+**🔴 GOTCHA PowerShell:** here-string `@'...'@` untuk `git commit -m` **PECAH** bila mesej ada petikan berganda `"` — git terima pathspec berpecah, commit tak jadi. **Guna `git commit -F fail.txt`** untuk mesej panjang/ada petikan.
+
+**⏭️ TERTUNGGAK:**
+- ⏳ **Master uji sheet sebenar** — (a) TERIMA: import betul → `✅ N RPH diimport (RPH …) — X sel diisi`; (b) TOLAK: tampal sampah → `❌ Tiada RPH sah dikesan — TIADA sel diubah` **dan RPH sedia ada mesti kekal**.
+- ❓ **Soalan terbuka belum dijawab:** `runJana` (`dialogPromptStrict.html:57`) pun tiada `withFailureHandler` — butang tersangkut "Menjana..." bila gagal. ~4 baris. Master belum putus nak baiki atau tidak.
+- 🚫 **Sengaja TIDAK disentuh:** `PadamRPH()` ada julat mati sampai baris 496 (RPH menengah habis ~254) + komen `// RPH 1` sebenarnya lindungi 2 blok. **Ia berfungsi betul** (baris 9–248 tercakup) — kod tapak pihak ketiga, ada amaran "TAPAK AKAN ROSAK". Biar.
 
 ### 🆕 Sesi 2026-07-20 (11:52–18:05): eRPH — PROJEK BARU, bug import ✅ SIAP LIVE + brainstorm RPT belum selesai
 **Projek BARU `Documents/code/erph/`** (git lokal, tiada remote). Google Apps Script terikat pada Google Sheet eRPH cikgu. Ditarik guna **clasp** (v3.3.0 dah sedia ada, `.clasprc.json` sedia login — tiada npm install). 5 commit `cf97854`(baseline) → `9024b10`. Auto-memory: [[project_erph]], [[feedback_bukti_saluran_lossy]], [[feedback_pdf_ke_md]].
