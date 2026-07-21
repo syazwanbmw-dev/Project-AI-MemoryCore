@@ -2,8 +2,15 @@
 *Temporary working memory - resets each session, provides recap when AI restart*
 
 ## Session RAM Status
-**Current Session**: 2026-07-21 (malam) — **eRPH MENENGAH (PROJEK BARU `erph-menengah`)**: 3 bug import dibaiki, ujian 8/8 hijau, PUSHED ke Apps Script & disahkan via clone bebas. ⏳ **MENUNGGU master uji pada sheet sebenar** (terima + tolak).
-**Last Work Activity**: 2026-07-21 (~22:45 — push + verify siap, serah ujian pada master)
+**Current Session**: 2026-07-21 (malam) — **eRPH MENENGAH**: ✅ repo AKTIF **`erph-menengah-v2`** (script `12bdh…`, fail BERSIH) — semua fix pushed & verified, 8/8 hijau. 🚫 Repo `erph-menengah` (script `1Rc9…`, sheet erph-fix) **DITINGGALKAN** — master maklum spreadsheet itu memang dah rosak sebelum kerja kita. ⏳ **MENUNGGU master uji**.
+**Last Work Activity**: 2026-07-21 (~23:50 — mula semula atas fail bersih, push + verify siap)
+
+### 🔄 SAMBUNGAN (~23:42–23:50): MULA SEMULA atas fail BERSIH
+Master maklum sheet **erph-fix** sebenarnya **sudah rosak sebelum ini** (aku tanya terus sama ada kerja aku puncanya — master sahkan **bukan**). Bekal script ID baru `12bdh…`, juga salinan ujian.
+- **Kod baseline dua-dua fail SERUPA aksara demi aksara** → kerosakan pada **spreadsheet**, bukan script. Fix semalam dipakai semula, bukan kerja terbuang.
+- **🔴 AKU HAMPIR TERSILAP:** bandingan pertama tunjuk keempat-empat fail "BEZA" (+400/+86/+70/+11 bytes) — rupanya `Set-Content -Encoding utf8` (PS 5.1) tambah **BOM + LF→CRLF**. Aku ukur kesan alat sendiri. Ulang dengan normalisasi → SEMUA SAMA. Persis [[feedback_bukti_saluran_lossy]] sekali lagi.
+- Repo baru `erph-menengah-v2`: `9de7294` baseline → `e16b818` fix. Push disahkan clone bebas (script ID betul, 4 fail, tiada tests/, 3 penanda fix ada).
+- Repo lama **dibiarkan, tidak dipadam** (tunggu izin master).
 > Fail ini kini dilayan sebagai **RAM** (Option A). Sejarah lama diringkas ke `## Compacted History` di bawah; detail penuh dalam snapshot. Lihat `compaction/compaction-policy.md`.
 
 ### 🆕 Sesi 2026-07-21 (malam ~21:41–22:45): eRPH MENENGAH — PROJEK BARU, 3 bug import ✅ DIBAIKI & PUSHED (⏳ belum disahkan master)
