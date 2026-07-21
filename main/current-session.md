@@ -5,6 +5,13 @@
 **Current Session**: 2026-07-21 (malam) — **eRPH MENENGAH**: ✅ repo AKTIF **`erph-menengah-v2`** (script `12bdh…`, fail BERSIH) — semua fix pushed & verified, 8/8 hijau. 🚫 Repo `erph-menengah` (script `1Rc9…`, sheet erph-fix) **DITINGGALKAN** — master maklum spreadsheet itu memang dah rosak sebelum kerja kita. ⏳ **MENUNGGU master uji**.
 **Last Work Activity**: 2026-07-21 (~23:50 — mula semula atas fail bersih, push + verify siap)
 
+### 🔴 SAMBUNGAN (~23:58–00:05): BUG KE-4 DIJUMPAI — peta baris tak padan (BELUM SELESAI)
+Master uji: **hanya RPH 1 menjadi**. Master sangka GPT salah jana — aku tunjuk bukti ia **BUKAN**: label `=== RPH 1/4/7 ===` dijana `generatePromptsStrict` sendiri (baris 125), blok lain dilangkau sebab `!sk && !sp` (baris 64). Jadi script cuma jumpa data pada blok 1, 4, 7.
+**Hipotesis:** peta baris hardcoded (jarak 31) tak padan hamparan; jarak sebenar ~3× ganda. Bukti: blok 4 tergelincir — tajuk tangkap kepala borang, sk tangkap baris tajuk kolum. Blok 1 kebetulan tepat.
+**Bug jenis BERBEZA:** 3 yang lepas = bug logik; ini = bug **andaian koordinat**. Fix lepas tetap sah.
+`diagnostik.js` (`e9535c0`) dibina — **baca sahaja**, pushed+verified. ⏳ Tunggu output diagnostik + jawapan master apa bunyi alert Import.
+🔑 Guard aku sendiri bagi **positif palsu** (padan `setValue` dalam KOMEN sendiri) — semak baris sebenar, jangan percaya bunyi loceng.
+
 ### 🔄 SAMBUNGAN (~23:42–23:50): MULA SEMULA atas fail BERSIH
 Master maklum sheet **erph-fix** sebenarnya **sudah rosak sebelum ini** (aku tanya terus sama ada kerja aku puncanya — master sahkan **bukan**). Bekal script ID baru `12bdh…`, juga salinan ujian.
 - **Kod baseline dua-dua fail SERUPA aksara demi aksara** → kerosakan pada **spreadsheet**, bukan script. Fix semalam dipakai semula, bukan kerja terbuang.
