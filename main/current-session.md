@@ -21,7 +21,7 @@ Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnosti
 
 ## 🆕 Sesi 2026-07-22 (petang 13:58–16:25): mypwa-v2 — BACKLOG PAJSK ✅ TUTUP SEPENUHNYA (kod + data), LIVE PRODUCTION
 
-**Repo: `main == test == 5c3db4d`** (merge `--no-ff`). Backlog PAJSK yang dibuka sesi tengah hari tadi — **keempat-empat item SELESAI**. Tiada kerja tertunggak.
+**Repo: `main == test == 14b9f16`** (dua merge `--no-ff`: `5c3db4d` normalisasi, `14b9f16` audit log). Backlog PAJSK yang dibuka sesi tengah hari tadi — **keempat-empat item SELESAI + satu item BONUS (#5 audit log)**. Tiada kerja tertunggak.
 
 ### 1️⃣ KOD — punca pendua ditutup (`94bbcd7`, TDD)
 **Punca tepat dalam kod** (bukan tekaan — dibaca dari 3 laluan tulis): `POST /upload` + `PUT /:id` guna `.toUpperCase()` **sahaja**; `POST /bulk` guna `.trim().toUpperCase()`. **Tiada satu pun** runtuhkan ruang berganda di **TENGAH** nama → `KEJOHANAN BOLA SEPAK··MSSD KB` hidup selari dengan versi satu-ruang, index migration 021 tak pernah gigit.
@@ -39,6 +39,19 @@ Master bersihkan Bridge + varian `KBS` + 7 pendua **sendiri melalui UI** (aku pa
 Staging: hantar 26 aksara (dua ruang) → simpan 25 (satu ruang) ✅ · hantar ejaan satu-ruang → **gabung ke baris sama** (dibuktikan `pencapaian` berubah `Peserta`→`Johan`, BUKAN kira baris) ✅ · nama betul-betul beza → **masih diterima** baris baru ✅. Sampah dipadam.
 Production (izin master, opsyen A): `UJIAN LUCY  VERIFY 2207` (23 aksara) → simpan **22 aksara satu-ruang** ✅ → padam → 218 kekal, 0 sisa.
 🔑 **Timestamp deploy BUKAN bukti.** Deploy muncul 16 saat selepas push (biasanya ~7min) — aku tolak untuk terima itu sebagai sahih; hanya ujian tingkah laku sebenar yang membuktikan kod hidup.
+
+### 4️⃣ AUDIT LOG PAJSK — feature BONUS, tak dirancang (`7659ce2` → merge `14b9f16`, LIVE production)
+**Cara ia dijumpai:** master cakap *"tadi aku risau ada rekod yg hilang. Sebab tak tahu mana yg sebtulnya"*. Aku cuba jawab guna `audit_log` — dapati ia **HANYA merekod `LOGIN`**, tiada satu pun operasi data PAJSK. Soalan master TIDAK boleh dijawab dari sistem; ia dapat dijawab hari itu semata-mata sebab aku kebetulan ambil `SELECT` pada setiap peringkat sepanjang sesi.
+🔴 **Log audit yang hanya merekod LOGIN = rasa selamat PALSU.** Ada "log audit", jadi orang sangka perubahan data terjejas. Peristiwa paling penting (padam rekod murid) tak pernah dicatat.
+**5 titik:** `PAJSK_PADAM` · `PAJSK_PADAM_SESI` · `PAJSK_KEMASKINI` (SEBELUM→SELEPAS) · `PAJSK_BARU` · `PAJSK_IMPORT`.
+**Helper `src/utils/pajsk-ringkas.mjs` → `ringkasRekodPajsk()`.** Master pilih (AskUserQuestion) **log PENUH** — nama murid + kelas + aktiviti + peringkat + pencapaian, supaya rekod boleh **DIBINA SEMULA** kalau tersilap padam. Medan kosong dilangkau (elak `· ·` menggantung).
+🔑 **DUA reka bentuk sengaja, dua-dua elak bumerang:** (a) fungsi **mustahil campak ralat** (ujian khusus hantar `null`/`undefined`/`{}`) — ia dipanggil DALAM laluan padam; kalau meletup, rekod jadi tak boleh dipadam langsung. *Ciri keselamatan yang menghalang kerja = bug.* (b) `SQL_REKOD_PENUH` guna **LEFT JOIN** ke murid/kelas — murid yang hilang tak boleh menghalang rekod dipadam. Log tak lengkap > sistem tersekat.
+**`admin.html`:** 5 pilihan ditambah ke dropdown tapisan — tanpa ini aksi baru muncul bawah "Semua Aksi" tapi TAK boleh ditapis khusus, sedangkan "tunjuk apa yang dipadam" itulah kegunaannya.
+**TDD:** 5 ujian dulu → merah 4/5 sebab betul → hijau 5/5. Suite 18/18.
+**VERIFY staging + production** (izin master), corak cipta→padam→semak log→bersih: production tangkap `murid:3205 AHMAD AMMAR YUSUF (6 ZAMRUD) · ... · Negeri · Johan`; PUT tangkap `Daerah · Peserta → Negeri · Johan`. Dipulihkan TEPAT: 218 rekod / 684 log / 0 sisa.
+
+### 🔴 SILAP AKU KE-2 — bentangan separa tukar keputusan master
+Ejaan bola sepak bertukar **dua kali**: master pilih `KB` dulu, kemudian tukar ke **`KBS`** setelah aku tunjuk empat sukan lain (Hoki/Bola Baling/Bola Tampar/Catur) **semua** guna `KBS`. Punca: bentangan pertama aku tunjuk **rekod bola sepak SAHAJA**, tanpa konteks aktiviti lain → master putus atas maklumat separa. **Peraturan baru: bila minta master pilih ejaan/nilai kanonikal, tunjuk SEMUA yang serupa, bukan yang bermasalah sahaja.** (Dicatat dalam `mypwa-v2/CLAUDE.md` backlog #2.) Ejaan muktamad production = `KEJOHANAN BOLA SEPAK MSSD KBS`, 15 rekod.
 
 ### 🔴 DUA PENGAJARAN BESAR (sudah jadi auto-memory)
 1. **Ejaan berbeza ≠ pendua.** Murid `3208` (AQIL HARRAZ) ada 2 rekod Bridge ejaan beza tapi **peringkat berlainan** (Daerah + Negeri) = pencapaian SAH. Dedup ikut nama aktiviti sahaja akan **padam pencapaian peringkat Negeri** senyap. Nilai guna **kunci PENUH termasuk peringkat**. → [[feedback_pendua_kunci_penuh]]
