@@ -1,21 +1,26 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
-## 🎯 TITIK SAMBUNG — eRPH MENENGAH (set 2026-07-22 12:03)
+## 🎯 TITIK SAMBUNG — eRPH MENENGAH (dikemas 2026-07-23 03:26)
 *Baca blok ini sahaja untuk sambung kerja. Detail penuh ada di bawah.*
 
 **Projek:** `Documents/code/erph-menengah-v2/` · script **`12bdhbpGg1x5FPxbC8eaCPdlgsSf3I3krKlR1s0r03kgRraVt_Vqavoat`** · sheet **salinan ujian BERSIH** · git lokal, tiada remote.
-**Status: ✅ 4 bug lama SELESAI + ✅ bug ke-5 (Aktiviti berhimpit) HIJAU 15/15 & ✅ PUSHED+DISAHKAN di server (12:08). ⏳ Tunggu master uji pada sheet sebenar.**
-Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnostik) → `c9b5a17` (peta baris 48) → **`fcb08f7`** (diagnostik merge) → **`3d66245`** (fix Aktiviti). Ujian **15/15 hijau** (`node --test`, tiada npm).
+**Status: ✅ SEMUA 5 bug SELESAI & DISAHKAN MASTER pada sheet sebenar. ✅ Prompt 2 objektif SELESAI & DISAHKAN. Tiada kerja tertunggak.**
+Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnostik) → `c9b5a17` (peta baris 48) → `fcb08f7` (diagnostik merge) → `3d66245` (fix Aktiviti) → **`deeaf2f`** (prompt 2 objektif). Ujian **15/15 hijau** — arahan betul = **`node --test`** BOGEL. 🔴 `node --test tests` (beri direktori) GAGAL pada Node v22.14 walau kod elok — kuar alat, BUKAN bug; jangan tersilap sangka regresi.
 
 **Geometri (JANGAN lupa):** borang RPH mula baris **7**, jarak **48**. Sumber kebenaran = `petaBlokRPH_()` dalam `Ai eRPH 2026.js`. Nilai lama 31 = SALAH.
 
-### ⏭️ SAMBUNG DARI SINI — 1 tindakan MENUNGGU IZIN, lepas itu 4 item lama
-0. **⏳ TINDAKAN SEGERA — master UJI pada sheet sebenar (SATU RPH dahulu, bukan tiga sekali).** Push ✅ selesai 12:08 dan **disahkan** (`clasp clone` ke folder bebas → 4 fail diff kosong selepas normalisasi CRLF; penanda `actStart`/`forEach(isi,idx)`/`if (!isi) return` ADA di server; `actText`/`pos.act` dah TIADA; `tests/` tak naik). Jangkaan: row1 Induksi · row2 Langkah · row3 Penutup, dan laporan "X sel diisi" jadi lebih besar dari dulu (normal, bukan bug).
-1. **❓ Soalan belum dijawab:** ketiga-tiga kelas (DELIMA b.7 / ZAMRUD b.55 / FIRUS b.103) mendarat pada baris betul? Master cakap "dah masuk" — aku tak sahkan lebih dari itu.
-2. **🔴 BAHAYA belum dibaiki:** menu `⭐eRPH KPM 2026 › 🛠️ Baikpulih Tapak eRPH hari ini` (`baiki dropdown.js`) MASIH guna jarak 31 **dan ia MENULIS** `setDataValidation` → tanam dropdown pada sel salah. **Calon kuat punca fail lama rosak. MASTER DIMAKLUM: JANGAN KLIK.** Skop fix sengaja dihadkan master kepada jana+import sahaja. Juga peta salah (kurang bahaya): `RPH_1..RPH_8`, `SembunyiPemisah`, `PadamRPH`.
-3. **🧹 `diagnostik.js`** masih dalam script — dah buat kerjanya. Master belum putus: buang atau simpan? (Kini ada bahagian 3 merge-check yang tak sempat dipakai — master jawab terus.)
-4. **🧹 Folder lama `Documents/code/erph-menengah/`** (script `1Rc9…`, sheet erph-fix ROSAK) masih ada, **tidak dipadam** (tunggu izin master). **JANGAN push ke script itu.**
+### ✅ DISAHKAN MASTER (2026-07-23 03:05–03:26)
+- **Bug ke-5 (Aktiviti berhimpit) SAH SELESAI** — master uji step 1→3 pada sheet sebenar: jana ✅ · import ✅ · Aktiviti dah pecah row1 Induksi / row2 Langkah / row3 Penutup ✅.
+- **Prompt 2 objektif SAH SELESAI** (`deeaf2f`, pushed+verified 03:20, master uji 03:26 → "dah jadi, keluar 2 objektif").
+  🔑 **Corak yang berkesan:** JANGAN guna ayat arahan bilangan (`[Tulis 2–4 objektif]`) — LLM abaikan. **Senaraikan bullet secara FIZIKAL** (`• [Objektif pembelajaran 1]` / `• [Objektif pembelajaran 2]`), sama macam bahagian LANGKAH yang memang sentiasa tepat 3. Struktur > arahan.
+  🔑 **`objLines.slice(0, 4)` SENGAJA KEKAL 4, jangan "baiki" jadi 2** (keputusan master). Ruang `objRange` memang 4 baris; hadkan 2 = objektif ke-3 hilang SENYAP. Alasan sama dgn Aktiviti: melimpah > kehilangan tanpa disedari. Sudah ditulis sebagai komen dalam kod.
+
+### ⏭️ SAMBUNG DARI SINI — 4 item, TIADA yang mendesak
+0. **⚪ Backlog kecil (master belum putus):** baris ~238-243 tulis ayat *"Pada akhir pengajaran dan pembelajaran, murid-murid dapat:"* ke `B(a+15)` — **serta-merta ditimpa objektif 1** sebab `fixedText` dan `objStart` dua-dua `a+15`. Master sahkan ayat itu **dah kekal tertulis di row lain**, jadi TIADA kerosakan. Kesannya: kerja sia-sia + laporan "X sel diisi" tokok **+1 palsu setiap RPH**. Aku sengaja tak sentuh (luar skop).
+1. **🔴 BAHAYA belum dibaiki:** menu `⭐eRPH KPM 2026 › 🛠️ Baikpulih Tapak eRPH hari ini` (`baiki dropdown.js`) MASIH guna jarak 31 **dan ia MENULIS** `setDataValidation` → tanam dropdown pada sel salah. **Calon kuat punca fail lama rosak. MASTER DIMAKLUM: JANGAN KLIK.** Skop fix sengaja dihadkan master kepada jana+import sahaja. Juga peta salah (kurang bahaya): `RPH_1..RPH_8`, `SembunyiPemisah`, `PadamRPH`.
+2. **🧹 `diagnostik.js`** masih dalam script — dah buat kerjanya. Master belum putus: buang atau simpan? (Kini ada bahagian 3 merge-check yang tak sempat dipakai — master jawab terus.)
+3. **🧹 Folder lama `Documents/code/erph-menengah/`** (script `1Rc9…`, sheet erph-fix ROSAK) masih ada, **tidak dipadam** (tunggu izin master). **JANGAN push ke script itu.**
 
 ---
 
