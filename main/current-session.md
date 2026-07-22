@@ -19,6 +19,31 @@ Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnosti
 
 ---
 
+## 🆕 Sesi 2026-07-22 (tengah hari 12:47–13:41): mypwa-v2 — AUDIT PAJSK production + isi borang bola tampar ✅ SIAP
+
+**Repo mypwa-v2 BERSIH:** `main == test == origin/main == origin/test == 8761c67`. Tiada kerja tertunggak.
+🔴 **Memory RAM sebelum ni ketinggalan 5 commit** — catat `a40c638` padahal repo dah sampai `a92a237` (sesi petang 16 Julai, feature **"Tambah Murid terus guna dropdown kelas"**, tak sempat disimpan). Kod selamat, cuma catatan berlubang. *(Belum dibaca detail — kalau perlu, baca `0063d91..a92a237`.)*
+
+### 🔑 GOTCHA — wrangler login "hilang"
+Fail OAuth `%APPDATA%\xdg.config\.wrangler\config\default.toml` **ditukar nama jadi `.basi-2026-07-22.bak`** (entah oleh siapa). Wrangler dalam mod non-interactive TAK boleh buka browser → gagal dengan *"necessary to set CLOUDFLARE_API_TOKEN"*. **Bukan isu sandbox.** Selesai: master jalankan `! npx wrangler login` (prefix `!` dalam prompt). Fail `.bak` sengaja TIDAK disentuh.
+
+### 📊 AUDIT PAJSK production (SELECT sahaja — 0 tulisan)
+`mypwa-v2-db` (`0d2c2d33…`): **224 rekod · 125 murid · 1 sesi (2026) · 7 guru**. Kategori: Kelab/Persatuan Kebangsaan 128, Sukan/Permainan Daerah 85, Kelab Daerah 7, Kelab Negeri 4. Aktiviti terbesar MY CYBER HERO ROOKIE (110).
+
+**4 isu → sudah masuk backlog `mypwa-v2/CLAUDE.md` (commit `8761c67`, pushed test).** Ringkas:
+1. 🔴 **PUNCA** — `nama_aktiviti` teks bebas **memintas unique index migration 021**. Kunci = `(murid_id, nama_sesi, kategori, nama_aktiviti, COALESCE(peringkat,''))`; beza ejaan = aktiviti lain pada mata SQLite → pendua masuk secara SAH. Constraint tak gagal — kunci yang bergantung pada teks manusia itu yang bocor. Fix: normalize (trim + collapse ruang + uppercase) pada **ketiga-tiga** laluan tulis (`POST /upload`, `PUT /:id`, `POST /bulk`).
+2. 🟡 1 kejohanan bola sepak = **4 ejaan**, 20 rekod berselerak → kiraan laporan salah. Perlu master putus ejaan betul (`KB` vs `KBS`, awalan `STEM`?).
+3. 🟡 **7 murid ada pendua sebenar** — murid_id 3203, 3205 (Bridge Building) · 2996, 3175, 3212, 3222, 3215 (Bola Sepak). Buat SELEPAS #1.
+4. ⚪ **224/224 `drive_link` kosong** — belum disahkan bug atau sengaja. Tanya master dulu.
+
+### 🏐 Borang bola tampar — 12 pemain dimasukkan ke Google Sheet
+Sheet **SK SALOR** `1HK48uo-i8CHG_oJI_mKZtG_r-6kTBcX-ER7dv242Qyg` (borang penyertaan KEJOHANAN BOLA TAMPAR MSSD KOTA BHARU SELATAN, B12 Lelaki, 08-09 April 2026). Diisi via **Chrome automation**: `A2:A13` = BIL 1-12, `B2:B13` = 12 nama dari DB. Kolum C (NO KP) **sengaja diabaikan** (arahan master). D-G sudah sedia ada.
+Pemain: 6 DELIMA 2 · 6 TOPAZ 4 · 6 ZAMRUD 6 — semua lelaki, Peserta, Daerah. Aktiviti `BOLA TAMPAR MSSD KBS` **bersih** (satu ejaan, tiada pendua) — tak terjejas isu backlog.
+
+**🔴 SILAP AKU + PENGAJARAN (sudah jadi auto-memory):** percubaan pertama nama masuk di **B4 bukan B2**. Punca: screenshot di-render pada **skala berbeza** dari halaman sebenar (baris 2 pada `y=250` dalam gambar = baris 4 pada halaman). Aku ukur salinan, bertindak atas asal — sepupu [[feedback_bukti_saluran_lossy]]. Dibetulkan: potong `B4:B15` → tampal `B2` guna **Name Box**. **Peraturan baru: Google Sheets guna Name Box (rujukan sel), JANGAN klik koordinat piksel.** → [[feedback_sheets_name_box]]
+
+---
+
 ## 🆕 Sesi 2026-07-22 (pagi 08:42–12:03): eRPH MENENGAH — BUG KE-5 "Aktiviti berhimpit satu baris" ✅ KOD SIAP, ⏳ BELUM PUSH
 
 **Gejala master:** *"banyak line dimasukkan dalam 1 row. Aku nak 1 row tu 3 line ayat sahaja bila import."*
@@ -51,8 +76,8 @@ Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnosti
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-07-22 (pagi) — **eRPH MENENGAH: bug ke-5 (Aktiviti berhimpit) kod SIAP, hijau 15/15, ⏳ belum push**. Repo AKTIF `erph-menengah-v2`. 🚫 Repo `erph-menengah` DITINGGALKAN (spreadsheet memang dah rosak sebelum kerja kita — master sahkan).
-**Last Work Activity**: 2026-07-22 (~12:03 — RAM dikemas atas permintaan master, menunggu izin clasp push)
+**Current Session**: 2026-07-22 (tengah hari) — **mypwa-v2: audit PAJSK production + borang bola tampar SIAP**. Sebelum ni (pagi) eRPH MENENGAH bug ke-5 ✅ pushed+disahkan, ⏳ tunggu master uji sheet sebenar.
+**Last Work Activity**: 2026-07-22 (~13:41 — memory disimpan atas permintaan master)
 
 ### ✅ SAMBUNGAN (~00:17–00:30): BUG KE-4 SELESAI — jarak borang **48**, bukan 31 (`c9b5a17`)
 Diagnostik jawab tepat: borang mula baris **7**, jarak **48**. Lima penanda sepakat; baris **7/55/103 = DELIMA/ZAMRUD/FIRUS** (3 kelas Khamis ✓). Kod anggap 31 → hanya baris 7 bertindih → sebab itu RPH 1 sahaja menjadi (kebetulan, bukan kod betul). Alert master `✅ 3 RPH diimport` mengesahkan: script sangka semua tiga berjaya, cuma tulis ke tempat salah.
