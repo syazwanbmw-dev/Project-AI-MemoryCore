@@ -1,20 +1,44 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
-## 🎯 TITIK SAMBUNG — eRPH MENENGAH (set 2026-07-22 01:06)
+## 🎯 TITIK SAMBUNG — eRPH MENENGAH (set 2026-07-22 12:03)
 *Baca blok ini sahaja untuk sambung kerja. Detail penuh ada di bawah.*
 
 **Projek:** `Documents/code/erph-menengah-v2/` · script **`12bdhbpGg1x5FPxbC8eaCPdlgsSf3I3krKlR1s0r03kgRraVt_Vqavoat`** · sheet **salinan ujian BERSIH** · git lokal, tiada remote.
-**Status: ✅ SEMUA 4 BUG SELESAI. Master sahkan import BERJAYA (00:39, "ok dah masuk").**
-Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnostik) → `c9b5a17` (peta baris 48). Ujian **11/11 hijau** (`node --test`, tiada npm).
+**Status: ✅ 4 bug lama SELESAI + ✅ bug ke-5 (Aktiviti berhimpit) SIAP DIKOD & HIJAU 15/15 — 🔴 TAPI BELUM DI-PUSH ke Apps Script.**
+Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnostik) → `c9b5a17` (peta baris 48) → **`fcb08f7`** (diagnostik merge) → **`3d66245`** (fix Aktiviti). Ujian **15/15 hijau** (`node --test`, tiada npm).
 
 **Geometri (JANGAN lupa):** borang RPH mula baris **7**, jarak **48**. Sumber kebenaran = `petaBlokRPH_()` dalam `Ai eRPH 2026.js`. Nilai lama 31 = SALAH.
 
-### ⏭️ Sambung dari sini — 4 item, semua boleh tunggu
+### ⏭️ SAMBUNG DARI SINI — 1 tindakan MENUNGGU IZIN, lepas itu 4 item lama
+0. **⏳ TINDAKAN SEGERA — `clasp push` belum dibuat, tunggu izin sandbox-disabled master.** Aku dah minta (12:0x), master jawab "update ram" dahulu. Rancangan: `clasp push --force` → **`clasp clone` ke folder lain untuk SAHKAN** (push boleh tipu) → master uji **SATU RPH dahulu**, bukan tiga sekali.
 1. **❓ Soalan belum dijawab:** ketiga-tiga kelas (DELIMA b.7 / ZAMRUD b.55 / FIRUS b.103) mendarat pada baris betul? Master cakap "dah masuk" — aku tak sahkan lebih dari itu.
 2. **🔴 BAHAYA belum dibaiki:** menu `⭐eRPH KPM 2026 › 🛠️ Baikpulih Tapak eRPH hari ini` (`baiki dropdown.js`) MASIH guna jarak 31 **dan ia MENULIS** `setDataValidation` → tanam dropdown pada sel salah. **Calon kuat punca fail lama rosak. MASTER DIMAKLUM: JANGAN KLIK.** Skop fix sengaja dihadkan master kepada jana+import sahaja. Juga peta salah (kurang bahaya): `RPH_1..RPH_8`, `SembunyiPemisah`, `PadamRPH`.
-3. **🧹 `diagnostik.js`** masih dalam script — dah buat kerjanya. Master belum putus: buang atau simpan?
+3. **🧹 `diagnostik.js`** masih dalam script — dah buat kerjanya. Master belum putus: buang atau simpan? (Kini ada bahagian 3 merge-check yang tak sempat dipakai — master jawab terus.)
 4. **🧹 Folder lama `Documents/code/erph-menengah/`** (script `1Rc9…`, sheet erph-fix ROSAK) masih ada, **tidak dipadam** (tunggu izin master). **JANGAN push ke script itu.**
+
+---
+
+## 🆕 Sesi 2026-07-22 (pagi 08:42–12:03): eRPH MENENGAH — BUG KE-5 "Aktiviti berhimpit satu baris" ✅ KOD SIAP, ⏳ BELUM PUSH
+
+**Gejala master:** *"banyak line dimasukkan dalam 1 row. Aku nak 1 row tu 3 line ayat sahaja bila import."*
+
+**PUNCA (jumpa dalam bacaan pertama, bukan tekaan):** `importRPHStrict` baris 252-257 gabung `induksi + langkah + penutup` jadi SATU rentetan → `setValue` ke **satu sel** `B(a+22)`, walaupun `actRange` = `B(a+22):K(a+24)` memang khaskan **3 baris**. Jadi 8-10 ayat berhimpit, dua baris bawah kosong.
+🔑 **Bahagian Objektif di atasnya SUDAH betul** (gelung `objStart + idx`, satu ayat satu baris) — Aktiviti satu-satunya pengecualian. Fix = jadikan ia ikut corak yang sama (DRY).
+
+**KEPUTUSAN REKA MASTER (3 soalan AskUserQuestion):**
+1. "3 line" = **3 AYAT/bullet per row** (bukan 3 baris visual/wrap).
+2. Kumpulan ikut **SEKSYEN**, bukan kiraan: row1=Induksi, row2=Langkah, row3=Penutup. Sempadan seksyen tak pernah bercampur. *(Lucy dedah preview sendiri hampir tersilap pengaruh master — contoh kebetulan 3/3/2 nampak macam ikut seksyen padahal ikut kiraan.)*
+3. Melimpah >3 ayat → **masuk PENUH, tiada potongan** (master tolak cadangan potong+lapor). Kehilangan senyap lebih buruk dari row tinggi.
+
+**🔑 RISIKO MERGE — DISELESAIKAN TANPA KOS:** Lucy enggan andaikan sama ada `B29:K31` merged merentas baris (kalau ya, tulis 3 baris mustahil). Bina bahagian 3 diagnostik merge-check **+ ujian kawalan** (baris Objektif yang terbukti berjaya) dan minta izin push. **Master jawab terus: "Kolum utk isi masuk tu tak merge"** → jimat satu pusingan penuh. Diagnostik itu kekal dalam kod, tak sempat dipakai.
+
+**TDD:** 4 ujian baharu → **merah 4/4 dengan sebab BETUL** (`actual` papar `'• Induksi 1\n• Langkah 1\n• Langkah 2\n• Langkah 3\n• Penutup 1'` semua dalam B77 — betul-betul gejala master) → fix → **hijau 15/15**. Liputi: pengasingan seksyen, seksyen tak bercampur, 5 bullet masuk penuh, seksyen kosong tak tulis apa-apa.
+
+**KOD:** `petaBlokRPH_()` tambah `actStart: a+22`, buang `act` (tiada pengguna). `importRPHStrict` guna `[induksi, langkah, penutup].forEach` + `if (!isi) return`. Diff sentuh SATU blok sahaja.
+**Kesan sampingan dijangka (bukan bug):** laporan "X sel diisi" kini lebih besar/tepat — 3 seksyen dikira 3 sel, dulu 1.
+
+**⏭️ NEXT:** izin sandbox-disabled → `clasp push --force` → sahkan `clasp clone` → master uji 1 RPH dahulu.
 
 ### 🔧 Cara kerja projek ini (elak ulang kesilapan malam tadi)
 - `clasp push --force` → **WAJIB sahkan dengan `clasp clone` ke folder lain** (push boleh tipu).
@@ -27,8 +51,8 @@ Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnosti
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-07-21/22 (malam–awal pagi) — **eRPH MENENGAH ✅ SIAP & DISAHKAN**. Repo AKTIF `erph-menengah-v2`. 🚫 Repo `erph-menengah` DITINGGALKAN (spreadsheet memang dah rosak sebelum kerja kita — master sahkan).
-**Last Work Activity**: 2026-07-22 (~01:06 — titik sambung ditetapkan atas permintaan master)
+**Current Session**: 2026-07-22 (pagi) — **eRPH MENENGAH: bug ke-5 (Aktiviti berhimpit) kod SIAP, hijau 15/15, ⏳ belum push**. Repo AKTIF `erph-menengah-v2`. 🚫 Repo `erph-menengah` DITINGGALKAN (spreadsheet memang dah rosak sebelum kerja kita — master sahkan).
+**Last Work Activity**: 2026-07-22 (~12:03 — RAM dikemas atas permintaan master, menunggu izin clasp push)
 
 ### ✅ SAMBUNGAN (~00:17–00:30): BUG KE-4 SELESAI — jarak borang **48**, bukan 31 (`c9b5a17`)
 Diagnostik jawab tepat: borang mula baris **7**, jarak **48**. Lima penanda sepakat; baris **7/55/103 = DELIMA/ZAMRUD/FIRUS** (3 kelas Khamis ✓). Kod anggap 31 → hanya baris 7 bertindih → sebab itu RPH 1 sahaja menjadi (kebetulan, bukan kod betul). Alert master `✅ 3 RPH diimport` mengesahkan: script sangka semua tiga berjaya, cuma tulis ke tempat salah.
