@@ -5,13 +5,13 @@
 *Baca blok ini sahaja untuk sambung kerja. Detail penuh ada di bawah.*
 
 **Projek:** `Documents/code/erph-menengah-v2/` · script **`12bdhbpGg1x5FPxbC8eaCPdlgsSf3I3krKlR1s0r03kgRraVt_Vqavoat`** · sheet **salinan ujian BERSIH** · git lokal, tiada remote.
-**Status: ✅ 4 bug lama SELESAI + ✅ bug ke-5 (Aktiviti berhimpit) SIAP DIKOD & HIJAU 15/15 — 🔴 TAPI BELUM DI-PUSH ke Apps Script.**
+**Status: ✅ 4 bug lama SELESAI + ✅ bug ke-5 (Aktiviti berhimpit) HIJAU 15/15 & ✅ PUSHED+DISAHKAN di server (12:08). ⏳ Tunggu master uji pada sheet sebenar.**
 Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnostik) → `c9b5a17` (peta baris 48) → **`fcb08f7`** (diagnostik merge) → **`3d66245`** (fix Aktiviti). Ujian **15/15 hijau** (`node --test`, tiada npm).
 
 **Geometri (JANGAN lupa):** borang RPH mula baris **7**, jarak **48**. Sumber kebenaran = `petaBlokRPH_()` dalam `Ai eRPH 2026.js`. Nilai lama 31 = SALAH.
 
 ### ⏭️ SAMBUNG DARI SINI — 1 tindakan MENUNGGU IZIN, lepas itu 4 item lama
-0. **⏳ TINDAKAN SEGERA — `clasp push` belum dibuat, tunggu izin sandbox-disabled master.** Aku dah minta (12:0x), master jawab "update ram" dahulu. Rancangan: `clasp push --force` → **`clasp clone` ke folder lain untuk SAHKAN** (push boleh tipu) → master uji **SATU RPH dahulu**, bukan tiga sekali.
+0. **⏳ TINDAKAN SEGERA — master UJI pada sheet sebenar (SATU RPH dahulu, bukan tiga sekali).** Push ✅ selesai 12:08 dan **disahkan** (`clasp clone` ke folder bebas → 4 fail diff kosong selepas normalisasi CRLF; penanda `actStart`/`forEach(isi,idx)`/`if (!isi) return` ADA di server; `actText`/`pos.act` dah TIADA; `tests/` tak naik). Jangkaan: row1 Induksi · row2 Langkah · row3 Penutup, dan laporan "X sel diisi" jadi lebih besar dari dulu (normal, bukan bug).
 1. **❓ Soalan belum dijawab:** ketiga-tiga kelas (DELIMA b.7 / ZAMRUD b.55 / FIRUS b.103) mendarat pada baris betul? Master cakap "dah masuk" — aku tak sahkan lebih dari itu.
 2. **🔴 BAHAYA belum dibaiki:** menu `⭐eRPH KPM 2026 › 🛠️ Baikpulih Tapak eRPH hari ini` (`baiki dropdown.js`) MASIH guna jarak 31 **dan ia MENULIS** `setDataValidation` → tanam dropdown pada sel salah. **Calon kuat punca fail lama rosak. MASTER DIMAKLUM: JANGAN KLIK.** Skop fix sengaja dihadkan master kepada jana+import sahaja. Juga peta salah (kurang bahaya): `RPH_1..RPH_8`, `SembunyiPemisah`, `PadamRPH`.
 3. **🧹 `diagnostik.js`** masih dalam script — dah buat kerjanya. Master belum putus: buang atau simpan? (Kini ada bahagian 3 merge-check yang tak sempat dipakai — master jawab terus.)
