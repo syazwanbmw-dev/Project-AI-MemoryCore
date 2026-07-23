@@ -1,12 +1,13 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
-## 🎯 TITIK SAMBUNG — eRPH MENENGAH (dikemas 2026-07-23 03:26)
+## 🎯 TITIK SAMBUNG — eRPH MENENGAH (dikemas 2026-07-23 11:20)
 *Baca blok ini sahaja untuk sambung kerja. Detail penuh ada di bawah.*
 
 **Projek:** `Documents/code/erph-menengah-v2/` · script **`12bdhbpGg1x5FPxbC8eaCPdlgsSf3I3krKlR1s0r03kgRraVt_Vqavoat`** · sheet **salinan ujian BERSIH** · git lokal, tiada remote.
-**Status: ✅ SEMUA 5 bug SELESAI & DISAHKAN MASTER pada sheet sebenar. ✅ Prompt 2 objektif SELESAI & DISAHKAN. Tiada kerja tertunggak.**
-Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnostik) → `c9b5a17` (peta baris 48) → `fcb08f7` (diagnostik merge) → `3d66245` (fix Aktiviti) → **`deeaf2f`** (prompt 2 objektif). Ujian **15/15 hijau** — arahan betul = **`node --test`** BOGEL. 🔴 `node --test tests` (beri direktori) GAGAL pada Node v22.14 walau kod elok — kuar alat, BUKAN bug; jangan tersilap sangka regresi.
+**Status: ✅ SEMUA 5 bug SELESAI & DISAHKAN MASTER. ✅ Prompt 2 objektif SELESAI & DISAHKAN. ✅ Pembersihan SELESAI. Tinggal SATU item bahaya (item 1 di bawah).**
+Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnostik) → `c9b5a17` (peta baris 48) → `fcb08f7` (diagnostik merge) → `3d66245` (fix Aktiviti) → `deeaf2f` (prompt 2 objektif) → **`6fb1e2a`** (buang diagnostik.js). Ujian **15/15 hijau** — arahan betul = **`node --test`** BOGEL. 🔴 `node --test tests` (beri direktori) GAGAL pada Node v22.14 walau kod elok — kuar alat, BUKAN bug; jangan tersilap sangka regresi.
+**Projek kini 4 fail** (lokal & server sama): `Ai eRPH 2026.js` · `appsscript.json` · `baiki dropdown.js` · `dialogPromptStrict.html`.
 
 **Geometri (JANGAN lupa):** borang RPH mula baris **7**, jarak **48**. Sumber kebenaran = `petaBlokRPH_()` dalam `Ai eRPH 2026.js`. Nilai lama 31 = SALAH.
 
@@ -16,11 +17,16 @@ Commit: `9de7294` baseline → `e16b818` (3 bug import) → `e9535c0` (diagnosti
   🔑 **Corak yang berkesan:** JANGAN guna ayat arahan bilangan (`[Tulis 2–4 objektif]`) — LLM abaikan. **Senaraikan bullet secara FIZIKAL** (`• [Objektif pembelajaran 1]` / `• [Objektif pembelajaran 2]`), sama macam bahagian LANGKAH yang memang sentiasa tepat 3. Struktur > arahan.
   🔑 **`objLines.slice(0, 4)` SENGAJA KEKAL 4, jangan "baiki" jadi 2** (keputusan master). Ruang `objRange` memang 4 baris; hadkan 2 = objektif ke-3 hilang SENYAP. Alasan sama dgn Aktiviti: melimpah > kehilangan tanpa disedari. Sudah ditulis sebagai komen dalam kod.
 
-### ⏭️ SAMBUNG DARI SINI — 4 item, TIADA yang mendesak
+### ✅ PEMBERSIHAN SELESAI (2026-07-23 10:18–11:00, arahan master "buang diagnostik.js, buang folder lama")
+- **`diagnostik.js` dibuang (`6fb1e2a`)** — bersama **entri menunya** dalam `Ai eRPH 2026.js`. 🔑 Padam fail sahaja = menu kekal di sheet master lalu campak `Script function not found`. → [[feedback_padam_cascade_rujukan]]
+  Komen geometri DIKEKALKAN (rekod dari mana nombor 48 datang) + nota `git show e9535c0 -- diagnostik.js`. Disahkan `clasp clone` bebas: server 4 fail, 4/4 identik lokal. Ujian 15/15.
+- **Folder lama `erph-menengah/` DIPADAM** — arkib `Documents/code/erph-menengah-arkib.bundle` (13.6 KB, sejarah penuh 3 commit). **Dibuktikan dengan `git clone` sebenar dari bundle SEBELUM padam**, bukan sekadar `git bundle verify`. Disahkan fail-demi-fail tiada apa yang unik dalam repo lama.
+- ⚠️ Gotcha Windows: `rm -rf` gagal *"Device or resource busy"* sebab shell aku sendiri sempat `cd` masuk folder itu. Isinya SUDAH terpadam, cuma cangkerang direktori tinggal → `ls` dulu, jangan andai gagal sepenuhnya. Selesai guna PowerShell `Remove-Item` dari luar.
+
+### ⏭️ SAMBUNG DARI SINI — 2 item, TIADA yang mendesak
 0. **⚪ Backlog kecil (master belum putus):** baris ~238-243 tulis ayat *"Pada akhir pengajaran dan pembelajaran, murid-murid dapat:"* ke `B(a+15)` — **serta-merta ditimpa objektif 1** sebab `fixedText` dan `objStart` dua-dua `a+15`. Master sahkan ayat itu **dah kekal tertulis di row lain**, jadi TIADA kerosakan. Kesannya: kerja sia-sia + laporan "X sel diisi" tokok **+1 palsu setiap RPH**. Aku sengaja tak sentuh (luar skop).
 1. **🔴 BAHAYA belum dibaiki:** menu `⭐eRPH KPM 2026 › 🛠️ Baikpulih Tapak eRPH hari ini` (`baiki dropdown.js`) MASIH guna jarak 31 **dan ia MENULIS** `setDataValidation` → tanam dropdown pada sel salah. **Calon kuat punca fail lama rosak. MASTER DIMAKLUM: JANGAN KLIK.** Skop fix sengaja dihadkan master kepada jana+import sahaja. Juga peta salah (kurang bahaya): `RPH_1..RPH_8`, `SembunyiPemisah`, `PadamRPH`.
-2. **🧹 `diagnostik.js`** masih dalam script — dah buat kerjanya. Master belum putus: buang atau simpan? (Kini ada bahagian 3 merge-check yang tak sempat dipakai — master jawab terus.)
-3. **🧹 Folder lama `Documents/code/erph-menengah/`** (script `1Rc9…`, sheet erph-fix ROSAK) masih ada, **tidak dipadam** (tunggu izin master). **JANGAN push ke script itu.**
+*(item 2 & 3 dahulu — buang `diagnostik.js` + padam folder lama — SUDAH SELESAI, lihat blok Pembersihan di atas.)*
 
 ---
 
@@ -129,8 +135,8 @@ Pemain: 6 DELIMA 2 · 6 TOPAZ 4 · 6 ZAMRUD 6 — semua lelaki, Peserta, Daerah.
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-07-22 (petang) — **mypwa-v2: backlog PAJSK ✅ TUTUP SEPENUHNYA, live production (`main==test==5c3db4d`)**. Sebelum ni (tengah hari) audit PAJSK + borang bola tampar; (pagi) eRPH MENENGAH bug ke-5 ✅ pushed+disahkan, ⏳ tunggu master uji sheet sebenar.
-**Last Work Activity**: 2026-07-22 (~16:25 — memory disimpan atas permintaan master)
+**Current Session**: 2026-07-23 (pagi 10:16–11:20) — **eRPH MENENGAH: pembersihan ✅ SIAP** (`6fb1e2a` buang `diagnostik.js` + entri menu, pushed & clone-verified; repo lama dipadam + bundle arkib). Sebelum ni (2026-07-23 dini hari) semua 5 bug + prompt 2 objektif disahkan master; (2026-07-22 petang) mypwa-v2 backlog PAJSK tutup sepenuhnya.
+**Last Work Activity**: 2026-07-23 (~11:20 — memory disimpan atas permintaan master)
 
 ### ✅ SAMBUNGAN (~00:17–00:30): BUG KE-4 SELESAI — jarak borang **48**, bukan 31 (`c9b5a17`)
 Diagnostik jawab tepat: borang mula baris **7**, jarak **48**. Lima penanda sepakat; baris **7/55/103 = DELIMA/ZAMRUD/FIRUS** (3 kelas Khamis ✓). Kod anggap 31 → hanya baris 7 bertindih → sebab itu RPH 1 sahaja menjadi (kebetulan, bukan kod betul). Alert master `✅ 3 RPH diimport` mengesahkan: script sangka semua tiga berjaya, cuma tulis ke tempat salah.
