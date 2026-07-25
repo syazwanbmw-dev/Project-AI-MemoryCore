@@ -1,6 +1,30 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
+## 🎯 TITIK SAMBUNG — celiksains v2 ADAPTIF (dikemas 2026-07-25 08:31)
+*Sesi terkini. Baca blok ni untuk sambung celiksains.*
+
+**Projek:** `Documents/code/celiksains/` · git LOKAL tiada remote · **BELUM kod**.
+**Pencetus:** master tunjuk post Threads @khairazwani (peluang inovasi/komersial apps cikgu) + 4 screenshot pesaing **"Arena Sains Seronok"** (Sains T4, 8 stesen, tab Main/Nota/Kuiz, permainan "Labelkan Diagram", kunci linear, 5 mata wang). Master: *"buat lagi hebat + interaktif, murid main berulang tanpa bosan, jalan tak sama seperti pertama kali."*
+
+**HASIL SESI:** brainstorming penuh (8 AskUserQuestion) → **spec v2 baru** + **pelan Fasa 1a** (16 task TDD). 2 commit: `866313f` (spec) + `0c5095e` (pelan).
+- Spec: `docs/superpowers/specs/2026-07-25-celiksains-v2-adaptif-design.md` (GANTI spec MCQ 2026-07-16)
+- Pelan 1a: `docs/superpowers/plans/2026-07-25-celiksains-1a-tapak-gelung.md`
+
+**8 KEPUTUSAN REKA (detail penuh dalam [[project_celiksains]] auto-memory yang baru dikemas):**
+1. "Tak sama" = **aktiviti beza, konsep sama**. 2. Content = **FAKTA berstruktur** (isi sekali→jana 4 permainan). 3. 4 permainan; **Labelkan guna SVG dalam kod** (tiada R2). 4. **Enjin Leitner** per-fakta (tahap 0-5, jarak [0,1,2,4,7,14] hari, salah→tetap 1). 5. Bahan tipis→benarkan main+mesej lembut, jangan sekat. 6. **3 mata wang beza** (XP/coin/streak); buang permata+tahap. 7. **Bintang DIKIRA dari tahap** bukan kaunter (satu sumber kebenaran). 8. **Semua topik terbuka** bukan kunci linear.
+
+🔑 Akaun WAJIB (adaptif perlu memori). 🔑 Matlamat: **bantu murid, bukan kejar pertandingan**.
+
+**5 jadual:** topik · fakta · pengguna · penguasaan_fakta(PK murid+fakta) · sesi_main. Tiada `soalan`/`bintang`/`kemajuan_topik`.
+
+### ⏭️ SAMBUNG DARI SINI
+- **Master belum pilih cara laksana:** Subagent-Driven (disyor) vs Inline. Aku dah tanya, belum jawab.
+- 🔴 **Sebelum kod (semua sentuh Cloudflare → izin dulu):** (1) `wrangler d1 create celiksains-db`→isi database_id wrangler.jsonc, (2) secret JWT_SECRET+KUNCI_SETUP guna **Bash printf** [[feedback_wrangler_secrets]], (3) `.dev.vars` dlm .gitignore, (4) `npm install` (hono/wrangler/@playwright), (5) deploy tunggu izin.
+- Fasa 1b (Kuiz/Susun/Labelkan+SVG) & 1c (4 tab+animasi+streak) dapat pelan sendiri kemudian.
+
+---
+
 ## 🎯 TITIK SAMBUNG — eRPH MENENGAH (dikemas 2026-07-23 11:20)
 *Baca blok ini sahaja untuk sambung kerja. Detail penuh ada di bawah.*
 
@@ -135,8 +159,8 @@ Pemain: 6 DELIMA 2 · 6 TOPAZ 4 · 6 ZAMRUD 6 — semua lelaki, Peserta, Daerah.
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-07-23 (pagi 10:16–11:20) — **eRPH MENENGAH: pembersihan ✅ SIAP** (`6fb1e2a` buang `diagnostik.js` + entri menu, pushed & clone-verified; repo lama dipadam + bundle arkib). Sebelum ni (2026-07-23 dini hari) semua 5 bug + prompt 2 objektif disahkan master; (2026-07-22 petang) mypwa-v2 backlog PAJSK tutup sepenuhnya.
-**Last Work Activity**: 2026-07-23 (~11:20 — memory disimpan atas permintaan master)
+**Current Session**: 2026-07-25 (pagi 07:22–08:31) — **celiksains v2 ADAPTIF: brainstorm+spec+pelan 1a ✅ SIAP, belum kod** (`866313f` spec + `0c5095e` pelan, git lokal). Reka berputar arah lepas tengok pesaing "Arena Sains Seronok". Tunggu master pilih cara laksana. Sebelum ni: (2026-07-23) eRPH MENENGAH pembersihan siap; (2026-07-22) mypwa-v2 PAJSK tutup.
+**Last Work Activity**: 2026-07-25 (~08:31 — memory disimpan atas permintaan master "update session")
 
 ### ✅ SAMBUNGAN (~00:17–00:30): BUG KE-4 SELESAI — jarak borang **48**, bukan 31 (`c9b5a17`)
 Diagnostik jawab tepat: borang mula baris **7**, jarak **48**. Lima penanda sepakat; baris **7/55/103 = DELIMA/ZAMRUD/FIRUS** (3 kelas Khamis ✓). Kod anggap 31 → hanya baris 7 bertindih → sebab itu RPH 1 sahaja menjadi (kebetulan, bukan kod betul). Alert master `✅ 3 RPH diimport` mengesahkan: script sangka semua tiga berjaya, cuma tulis ke tempat salah.
