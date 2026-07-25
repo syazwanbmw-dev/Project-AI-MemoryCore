@@ -1,27 +1,37 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
-## 🎯 TITIK SAMBUNG — celiksains v2 ADAPTIF (dikemas 2026-07-25 08:31)
-*Sesi terkini. Baca blok ni untuk sambung celiksains.*
+## 🎯 TITIK SAMBUNG — celiksains: FASA 1a LIVE STAGING + HARDENING spec/plan SIAP belum kod (dikemas 2026-07-25 ~16:04)
+*Sesi terkini. Baca blok ni untuk sambung celiksains. Master minta berhenti selepas plan hardening — "aku sambung nanti".*
 
-**Projek:** `Documents/code/celiksains/` · git LOKAL tiada remote · **BELUM kod**.
-**Pencetus:** master tunjuk post Threads @khairazwani (peluang inovasi/komersial apps cikgu) + 4 screenshot pesaing **"Arena Sains Seronok"** (Sains T4, 8 stesen, tab Main/Nota/Kuiz, permainan "Labelkan Diagram", kunci linear, 5 mata wang). Master: *"buat lagi hebat + interaktif, murid main berulang tanpa bosan, jalan tak sama seperti pertama kali."*
+**Projek:** `Documents/code/celiksains/` · git LOKAL tiada remote · branch **`test`** (main=produksi, master→main direname) · **FASA 1a SIAP + DEPLOY STAGING**.
+**Staging LIVE:** https://celiksains.syazwan-skpp82.workers.dev (bind `celiksains-db-test`). Admin staging: **admin / AdminStaging1**.
 
-**HASIL SESI:** brainstorming penuh (8 AskUserQuestion) → **spec v2 baru** + **pelan Fasa 1a** (16 task TDD). 2 commit: `866313f` (spec) + `0c5095e` (pelan).
-- Spec: `docs/superpowers/specs/2026-07-25-celiksains-v2-adaptif-design.md` (GANTI spec MCQ 2026-07-16)
-- Pelan 1a: `docs/superpowers/plans/2026-07-25-celiksains-1a-tapak-gelung.md`
+**HASIL SESI:** Subagent-Driven laksana 16 task pelan 1a (haiku implementer + sonnet/opus reviewer). **25 commit atas main.** Gelung teras HIDUP: daftar→login→admin isi fakta→murid main Padan (ditanda server)→XP+Leitner+bintang. **unit 13/13 + E2E 17/17 hijau.** Deploy staging disahkan smoke 9/9 atas remote D1.
 
-**8 KEPUTUSAN REKA (detail penuh dalam [[project_celiksains]] auto-memory yang baru dikemas):**
-1. "Tak sama" = **aktiviti beza, konsep sama**. 2. Content = **FAKTA berstruktur** (isi sekali→jana 4 permainan). 3. 4 permainan; **Labelkan guna SVG dalam kod** (tiada R2). 4. **Enjin Leitner** per-fakta (tahap 0-5, jarak [0,1,2,4,7,14] hari, salah→tetap 1). 5. Bahan tipis→benarkan main+mesej lembut, jangan sekat. 6. **3 mata wang beza** (XP/coin/streak); buang permata+tahap. 7. **Bintang DIKIRA dari tahap** bukan kaunter (satu sumber kebenaran). 8. **Semua topik terbuka** bukan kunci linear.
+**2 DB Cloudflare dicipta (APAC):** celiksains-db-test `e9c5a714-ef0c-4f28-b263-5f72aad66995` (staging) · celiksains-db `da78cb77-0bd2-4bc0-90db-620c4efd46df` (prod, BELUM deploy). wrangler.jsonc dua-env, bind `DB`. Secret staging JWT_SECRET+KUNCI_SETUP di-set (nilai lokal gitignored `celiksains/.superpowers/sdd/.secret_*`).
 
-🔑 Akaun WAJIB (adaptif perlu memori). 🔑 Matlamat: **bantu murid, bukan kejar pertandingan**.
+**8 isu sebenar ditangkap review** (hijau boleh sembunyi): bug JWT silang-potong (hono v4 wajib alg HS256), lubang farming anti-tipu, ujian anti-tipu MENIPU (`!includes('jawapan')` sentiasa lulus), XSS innerHTML, bug susunan ujian skema, skrip test:unit rosak Node v22, kripto tak constant-time, e2e-admin lumba klik. Semua dibaiki.
 
-**5 jadual:** topik · fakta · pengguna · penguasaan_fakta(PK murid+fakta) · sesi_main. Tiada `soalan`/`bintang`/`kemajuan_topik`.
+### 🔴 BACKLOG WAJIB tutup SEBELUM murid sebenar (dlm celiksains/CLAUDE.md):
+1. **Kunci jawapan bocor `/sesi/mula`** — janaPadan hantar id_fakta di pasangan+pilihan → pilihan perlu LEGAP (ubah skema).
+2. **Idempotency `/sesi/jawab`** — elak replay-farm sesi sendiri (ubah skema: simpan fakta sesi + status jawab).
+- Fix murah SUDAH: id_sesi ownership + aktif + batch atomik + XSS escape. Teras anti-tipu (server tanda, no leak flag) OK.
+- Minor pra-produksi: lockout-DoS per-username, throttle /daftar, 500→400/409, N+1 /topik.
 
-### ⏭️ SAMBUNG DARI SINI
-- **Master belum pilih cara laksana:** Subagent-Driven (disyor) vs Inline. Aku dah tanya, belum jawab.
-- 🔴 **Sebelum kod (semua sentuh Cloudflare → izin dulu):** (1) `wrangler d1 create celiksains-db`→isi database_id wrangler.jsonc, (2) secret JWT_SECRET+KUNCI_SETUP guna **Bash printf** [[feedback_wrangler_secrets]], (3) `.dev.vars` dlm .gitignore, (4) `npm install` (hono/wrangler/@playwright), (5) deploy tunggu izin.
-- Fasa 1b (Kuiz/Susun/Labelkan+SVG) & 1c (4 tab+animasi+streak) dapat pelan sendiri kemudian.
+### ⏭️ SAMBUNG DARI SINI — HARDENING ANTI-TIPU (spec+plan SIAP, BELUM kod)
+**Master pilih (a) hardening anti-tipu penuh.** Brainstorm+spec+plan SIAP, commit di branch `test`. **Master minta berhenti di sini — "aku sambung nanti".**
+- Spec: `docs/superpowers/specs/2026-07-25-celiksains-hardening-anti-tipu-design.md` (commit `6bdcbfc`)
+- Plan (5 task TDD): `docs/superpowers/plans/2026-07-25-celiksains-hardening-anti-tipu.md` (commit `ce8e0ef`)
+- **Master BELUM pilih cara laksana** — aku syor **Subagent-Driven** (sama Fasa 1a) vs Inline. Tanya semula bila sambung.
+
+**Reka hardening (master dah lulus):** jadual baru `sesi_fakta(id_sesi,id_fakta,token_nama,token_pilihan,sudah_jawab,betul, PK sesi+fakta)`. Token legap `crypto.randomUUID()`, **token_nama≠token_pilihan** (elak klien sambung). `janaPadan` pulang `{pasangan:[{token,nama,emoji}], pilihan:[{token,keterangan}], peta:[{id_fakta,token_nama,token_pilihan}]}` — pasangan/pilihan TIADA id_fakta; peta disimpan server, dibuang dari respons. `/sesi/jawab {id_sesi,token_nama,token_pilihan}` selesai token→fakta di server; **jawapan kedua fakta sama→409** (keputusan master: tolak). Frontend guna `data-token`, butang dijawab jadi kelabu+disable.
+🔑 **Ujian E2E jawab betul walau token legap:** padan ikut KANDUNGAN — helper-seed guna `nama:'N'+i`/`keterangan:'K'+i` → N{i}↔K{i} (macam murid baca makna). Anti-farm dibukti via 409 early-return.
+
+**5 task:** 1 skema sesi_fakta · 2 janaPadan legap (unit) · 3 mula/jawab token+idempotency (E2E) · 4 frontend token+kelabu (E2E) · 5 migrasi remote test DB + verify staging.
+
+### Pilihan LAIN (kalau master tukar arah): (b) Fasa 1b (Kuiz/Susun/Labelkan+SVG), (c) Fasa 1c (4 tab+animasi+streak), (d) merge test→main + deploy produksi (`celiksains-db` + `wrangler deploy --env production` + secret --env production — TUNGGU izin master).
+- 🔴 JANGAN deploy produksi/merge main tanpa tutup hardening + izin master.
 
 ---
 
