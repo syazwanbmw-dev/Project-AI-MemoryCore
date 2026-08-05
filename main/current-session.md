@@ -1,6 +1,55 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
+## 🎯 TITIK SAMBUNG — eRPH RENDAH: ISI RPT SAINS 5 — Task 1-2 SIAP, sambung Task 3 (dikemas 2026-08-05 ~15:30)
+*Sesi terkini. Master minta "update dulu, save, nanti sambung". Berhenti selepas Task 2 lulus review.*
+
+**Projek:** `Documents/code/erph/` (eRPH **sekolah RENDAH** — JANGAN keliru dgn `erph-menengah-v2`). Git lokal, **tiada remote**.
+**Branch kerja: `rpt-sains5`** (dicabang dari `master` @ `79d1f30`). Master pilih branch berasingan, bukan terus atas master.
+**Ledger SDD: `.superpowers/sdd/progress.md`** — baca ini dulu bila sambung. Ia gitignored tapi kekal di disk.
+
+### Kerja: isi tab RPT yang KOSONG dalam Google Sheet eRPH
+Ini sambungan brainstorm 20 Julai yang tergantung. Penemuan lama masih sah: **jana RPH bukan masalah sebenar — RPT kosong itu masalahnya.**
+
+**Keputusan master sesi ni (3 soalan):**
+1. Sumber = `RPT SAINS THN 5 (SK) 2026 By Rozayus Academy (Kump A&B).docx` dalam `Downloads/Telegram Desktop/` (master download 5 Ogos 13:44, sejam sebelum sesi).
+2. 🔑 **Kump A = Kelantan/Terengganu/Kedah, Ahad–Khamis.** Lucy mula-mula sangka Kump B — MASTER BETULKAN. Guna tarikh Kump A.
+3. Isi kolum = **kod + huraian PENUH**, salin bulat-bulat. Sebab: isi RPT jadi input prompt ChatGPT masa jana RPH; kod je (`1.1.1`) buat objektif RPH mengarut.
+4. Skop = **SAINS 5 SAHAJA** (perintis). 7 subjek lain kemudian.
+5. Cara = **skrip penukar** (bukan Lucy susun manual), sebab ada 8 subjek menanti.
+
+### 🔴 FAKTA DOKUMEN (sudah disahkan — jangan andai semula)
+- Minggu **1–43**. Ada **julat**: `39-40` (UASA), `41-43` (Pengurusan Akhir Tahun).
+- Huruf besar-kecil TAK konsisten: `Kump A:` **dan** `KUMP A:` → padanan mesti case-insensitive.
+- Header berulang ~15× (`TEMA:`, `MINGGU`, `TAHAP PENGUASAAN`, `TEMA / UNIT`).
+- Minggu tanpa SK/SP: 1 (`MINGGU ORIENTASI`), 6 (`CUTI PERAYAAN`), `CUTI PENGGAL`, UASA — **minggu SAH**, bukan ralat.
+- Jadual **bersarang** dalam kolum CATATAN (Minggu 8: Jantung/Peparu/Salur darah) — mendatar jadi baris biasa.
+- Baris terakhir = **iklan penerbit** (`#DOWNLOAD FREE RPT: https://rphsekolahrendah…`) — buang.
+
+🔑 **BUKTI yang bentukkan seluruh reka bentuk:** parsing naif kehilangan **10 nombor minggu** (10,13,15,17,20,22,25,28,29,32) sebab sel bergabung — padahal minggu 20 & 32 MEMANG wujud. Output yang hilang 10 minggu **masih nampak lengkap**. Sebab itu laporan semakan + `process.exit(1)` bila ada jurang = teras, bukan hiasan. Sepupu [[feedback_sifar_palsu]].
+
+### Dokumen (di-commit atas `master`, sebelum branch)
+- Spec: `docs/superpowers/specs/2026-08-05-erph-isi-rpt-sains5-design.md` (`4e45409`)
+- Pelan 8 task TDD: `docs/superpowers/plans/2026-08-05-erph-isi-rpt-sains5.md` (`79d1f30`)
+
+### ✅ SIAP (Subagent-Driven, master pilih)
+- **Task 1 `68ca88b`** — 🔴 **Pagar `.claspignore`.** Ia dulu TAK sekat `tools/` atau `docs/`. Kalau fail Node dicipta dulu, `clasp push` seterusnya naikkan `require('node:fs')` ke Apps Script master → **seluruh skrip master lumpuh**. Terjumpa masa tulis pelan, bukan masa kod. Kini sekat `tools/**` + `docs/**`, corak lama kekal. Lucy sahkan sendiri, bukan percaya laporan subagent.
+- **Task 2 `c1bc07d` → fix `f8c79b3`** — `tools/buka-docx.js`, `bacaEntriZip(buffer, nama)` baca entri ZIP guna `node:zlib` sahaja, **tiada npm**. Review tangkap jurang betul: ujian asal guna ZIP **satu entri** sedangkan .docx sebenar ~15 entri dan `word/document.xml` bukan yang pertama → gelung Central Directory tak diuji. Ditambah: ZIP berbilang-entri, kaedah 0 (stored), extra LFH≠CD, EOCD rosak, petikan pintar Word (U+201C/D). **Suite 13/13 hijau** (Lucy jalankan sendiri).
+
+### ⏭️ SAMBUNG DARI SINI — Task 3
+`tools/ekstrak-rpt.js` → `xmlKeBaris(xml)` + `adalahHeader(sel)`.
+🔑 **Resolusi pengawal:** brief Task 3 dalam pelan ada arahan **BERSYARAT** (*"kalau ujian gagal, tambah syarat ini"*) — **masukkan syarat itu DARI AWAL**, jangan tunggu gagal.
+Baki: Task 4 (nomborMinggu + julat) · 5 (kumpulMinggu, abai jadual bersarang) · 6 (semak + CLI exit 1) · 7 (jalan atas dokumen sebenar, **master WAJIB sahkan Minggu 2/20/35 — minggu 20 sebab ia antara 10 yang hilang dulu**).
+
+### 🔒 Task 8 DIGANTUNG — `jadi-tsv.js` tunggu tab RPT sebenar
+**Chrome extension TAK bersambung sepanjang sesi.** Punca dikesan: Chrome tak berjalan langsung, dan `chrome` **bukan alias dalam PATH** (jadi `start chrome` gagal senyap). Extension **MEMANG dah dipasang** — profil `Default` + `Profile 2`, id `fcoeoabgfenejglbffodgkkbkcdhcgfn`. Laluan betul: `C:\Program Files\Google\Chrome\Application\chrome.exe`. Master kena log masuk claude.ai dgn akaun SAMA (`syazwan.skpp82@gmail.com`).
+Struktur RPT dari rekod 20 Julai **BELUM disahkan semula**: blok 148 baris, RPT1 baris 8, `D8`=subjek, minggu N = baris 9+N. Sahkan guna gviz `out:html` (BUKAN `out:csv` — csv cetus muat turun).
+
+### 🔴 Pembetulan pelan
+`zlib.crc32` **MEMANG wujud** dalam Node v22.14 — pelan tersilap kata mungkin tiada. Tak menjejaskan kod (CRC tak disahkan).
+
+---
+
 ## 🎯 TITIK SAMBUNG — celiksains: FASA 1a LIVE STAGING + HARDENING spec/plan SIAP belum kod (dikemas 2026-07-25 ~16:04)
 *Sesi terkini. Baca blok ni untuk sambung celiksains. Master minta berhenti selepas plan hardening — "aku sambung nanti".*
 
@@ -169,8 +218,11 @@ Pemain: 6 DELIMA 2 · 6 TOPAZ 4 · 6 ZAMRUD 6 — semua lelaki, Peserta, Daerah.
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-07-25 (pagi 07:22–08:31) — **celiksains v2 ADAPTIF: brainstorm+spec+pelan 1a ✅ SIAP, belum kod** (`866313f` spec + `0c5095e` pelan, git lokal). Reka berputar arah lepas tengok pesaing "Arena Sains Seronok". Tunggu master pilih cara laksana. Sebelum ni: (2026-07-23) eRPH MENENGAH pembersihan siap; (2026-07-22) mypwa-v2 PAJSK tutup.
-**Last Work Activity**: 2026-07-25 (~08:31 — memory disimpan atas permintaan master "update session")
+**Current Session**: 2026-08-05 (petang ~13:57–15:30) — **eRPH RENDAH: isi RPT SAINS 5.** Spec `4e45409` + pelan 8 task `79d1f30` atas `master`; kod atas branch **`rpt-sains5`**. Task 1 (pagar `.claspignore`) + Task 2 (`buka-docx.js`, 13/13 hijau) SIAP & lulus review. Sambung **Task 3**. Chrome extension tak bersambung → Task 8 digantung. Lihat blok TITIK SAMBUNG paling atas.
+**Last Work Activity**: 2026-08-05 (~15:30 — Task 2 lulus review, master minta save)
+
+**(rekod sebelum ini)** 2026-08-03 (petang ~14:08–14:33) — **mypwa-v2: fix nombor Bil laporan PAJSK reset per murid ✅ LIVE PRODUCTION** (`main == test`, merge `ea2a587`, fix `6a10480`). Tab Laporan guru (`pajsk.html`) + tab PAJSK admin (`admin.html`): buang kaunter bersambung `rowNum`, guna index kumpulan `rekod.map((p,i)=>i+1)` — selaras dgn fungsi cetak yg dah betul (DRY). Frontend sahaja, 4 baris. Unit 14/14 + Playwright admin 2/2. Disahkan production `erpm-sksalor.celikguru.my` (rowNum=0). 🔑 GOTCHA merge: `main` nampak "diverged" dari `test` tapi `git diff main test --stat` = HANYA fix aku → capah topologi (commit merge), BUKAN kandungan; verify diff sebelum merge production elak risau kod audit log hilang. Sebelum ni: (2026-07-25) celiksains 1a; (2026-07-23) eRPH MENENGAH; (2026-07-22) mypwa-v2 PAJSK backlog.
+**Last Work Activity**: 2026-08-03 (~14:33 — fix laporan PAJSK live production)
 
 ### ✅ SAMBUNGAN (~00:17–00:30): BUG KE-4 SELESAI — jarak borang **48**, bukan 31 (`c9b5a17`)
 Diagnostik jawab tepat: borang mula baris **7**, jarak **48**. Lima penanda sepakat; baris **7/55/103 = DELIMA/ZAMRUD/FIRUS** (3 kelas Khamis ✓). Kod anggap 31 → hanya baris 7 bertindih → sebab itu RPH 1 sahaja menjadi (kebetulan, bukan kod betul). Alert master `✅ 3 RPH diimport` mengesahkan: script sangka semua tiga berjaya, cuma tulis ke tempat salah.
