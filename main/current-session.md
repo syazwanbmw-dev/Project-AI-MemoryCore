@@ -1,8 +1,8 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
-## 🎯 TITIK SAMBUNG — eRPH RENDAH: ISI RPT SAINS 5 — Task 1-2 SIAP, sambung Task 3 (dikemas 2026-08-05 ~15:30)
-*Sesi terkini. Master minta "update dulu, save, nanti sambung". Berhenti selepas Task 2 lulus review.*
+## 🎯 TITIK SAMBUNG — eRPH RENDAH: ISI RPT SAINS 5 — Task 1-3 kod SIAP, sambung RE-REVIEW Task 3 (dikemas 2026-08-05 ~16:15)
+*Sesi terkini. Master minta "save dulu, sambung nanti" DUA kali (15:30 dan 16:15). Berhenti selepas fix Critical Task 3.*
 
 **Projek:** `Documents/code/erph/` (eRPH **sekolah RENDAH** — JANGAN keliru dgn `erph-menengah-v2`). Git lokal, **tiada remote**.
 **Branch kerja: `rpt-sains5`** (dicabang dari `master` @ `79d1f30`). Master pilih branch berasingan, bukan terus atas master.
@@ -36,10 +36,16 @@ Ini sambungan brainstorm 20 Julai yang tergantung. Penemuan lama masih sah: **ja
 - **Task 1 `68ca88b`** — 🔴 **Pagar `.claspignore`.** Ia dulu TAK sekat `tools/` atau `docs/`. Kalau fail Node dicipta dulu, `clasp push` seterusnya naikkan `require('node:fs')` ke Apps Script master → **seluruh skrip master lumpuh**. Terjumpa masa tulis pelan, bukan masa kod. Kini sekat `tools/**` + `docs/**`, corak lama kekal. Lucy sahkan sendiri, bukan percaya laporan subagent.
 - **Task 2 `c1bc07d` → fix `f8c79b3`** — `tools/buka-docx.js`, `bacaEntriZip(buffer, nama)` baca entri ZIP guna `node:zlib` sahaja, **tiada npm**. Review tangkap jurang betul: ujian asal guna ZIP **satu entri** sedangkan .docx sebenar ~15 entri dan `word/document.xml` bukan yang pertama → gelung Central Directory tak diuji. Ditambah: ZIP berbilang-entri, kaedah 0 (stored), extra LFH≠CD, EOCD rosak, petikan pintar Word (U+201C/D). **Suite 13/13 hijau** (Lucy jalankan sendiri).
 
-### ⏭️ SAMBUNG DARI SINI — Task 3
-`tools/ekstrak-rpt.js` → `xmlKeBaris(xml)` + `adalahHeader(sel)`.
-🔑 **Resolusi pengawal:** brief Task 3 dalam pelan ada arahan **BERSYARAT** (*"kalau ujian gagal, tambah syarat ini"*) — **masukkan syarat itu DARI AWAL**, jangan tunggu gagal.
-Baki: Task 4 (nomborMinggu + julat) · 5 (kumpulMinggu, abai jadual bersarang) · 6 (semak + CLI exit 1) · 7 (jalan atas dokumen sebenar, **master WAJIB sahkan Minggu 2/20/35 — minggu 20 sebab ia antara 10 yang hilang dulu**).
+- **Task 3 `eab609c` → fix `ea0fd95`** — `tools/ekstrak-rpt.js`: `xmlKeBaris(xml)` + `adalahHeader(sel)`. Review pertama: spec PATUH (syarat `MINGGU`/`STANDARD KANDUNGAN` dimasukkan dari awal ikut arahan pengawal, kedudukan betul) **TAPI jumpa 1 CRITICAL**.
+  🔴 **BUG CRITICAL dalam kod yang Lucy sendiri tulis dalam pelan:** regex `/<w:tr[ >][\s\S]*?<\/w:tr>/g` bukan-tamak **berhenti pada `</w:tr>` PERTAMA**. Dokumen ada jadual **BERSARANG** (`<w:tbl>` dalam `<w:tc>`) — Minggu 8 sel CATATAN (Jantung/Peparu/Salur darah). Akibat sebenar: CATATAN Minggu 8 rosak + **2 baris hantu disuntik** ke aliran data.
+  **Fix:** `elemenPeringkatAtas(xml, tag)` — pengimbas **sedar-kedalaman**, ganti regex untuk `w:tr` + `w:tc`. `w:p` SENGAJA kekal regex (w:p tak bersarang dalam OOXML — itulah sebab isi jadual bersarang kekal dalam teks sel induk). Tambah ujian regresi nyahkod entiti berganda (`&amp;lt;` → `&lt;`, bukan `<`). **Suite 20/20** (Lucy jalankan sendiri).
+  🔑 **PENGAJARAN:** ujian 18/18 hijau, regex nampak betul — tapi salah pada tempat yang kita DAH TAHU wujud. Puncanya ujian pagar jadual bersarang diletak pada **Task 5**, melepasi lapisan (`xmlKeBaris`) yang sebenarnya pecah. **Ujian yang menguji lapisan salah = suite hijau yang tak bermakna.**
+
+### ⏭️ SAMBUNG DARI SINI — RE-REVIEW Task 3 dulu
+⏳ **TERTUNGGAK:** dispatch task-reviewer untuk range `eab609c..ea0fd95` SEBELUM tanda Task 3 complete. Jana pakej: `scripts/review-package eab609c ea0fd95`.
+Kemudian: Task 4 (nomborMinggu + julat) · 5 (kumpulMinggu) · 6 (semak + CLI exit 1) · 7 (jalan atas dokumen sebenar, **master WAJIB sahkan Minggu 2/20/35 — minggu 20 sebab ia antara 10 yang hilang dulu**).
+
+🔑 **Catatan silang-tugas:** fix Task 3 ubah apa yang Task 5 nampak. Pelan Task 5 ada heuristik `sel.length < 3 = jadual bersarang` — selepas fix, baris bersarang **tidak lagi sampai** ke `kumpulMinggu`. Heuristik itu jadi pertahanan berlapis, bukan laluan utama. **Jangan buang ujian pagar Task 5**; nilai semula sama ada heuristik masih perlu.
 
 ### 🔒 Task 8 DIGANTUNG — `jadi-tsv.js` tunggu tab RPT sebenar
 **Chrome extension TAK bersambung sepanjang sesi.** Punca dikesan: Chrome tak berjalan langsung, dan `chrome` **bukan alias dalam PATH** (jadi `start chrome` gagal senyap). Extension **MEMANG dah dipasang** — profil `Default` + `Profile 2`, id `fcoeoabgfenejglbffodgkkbkcdhcgfn`. Laluan betul: `C:\Program Files\Google\Chrome\Application\chrome.exe`. Master kena log masuk claude.ai dgn akaun SAMA (`syazwan.skpp82@gmail.com`).
@@ -218,8 +224,8 @@ Pemain: 6 DELIMA 2 · 6 TOPAZ 4 · 6 ZAMRUD 6 — semua lelaki, Peserta, Daerah.
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-05 (petang ~13:57–15:30) — **eRPH RENDAH: isi RPT SAINS 5.** Spec `4e45409` + pelan 8 task `79d1f30` atas `master`; kod atas branch **`rpt-sains5`**. Task 1 (pagar `.claspignore`) + Task 2 (`buka-docx.js`, 13/13 hijau) SIAP & lulus review. Sambung **Task 3**. Chrome extension tak bersambung → Task 8 digantung. Lihat blok TITIK SAMBUNG paling atas.
-**Last Work Activity**: 2026-08-05 (~15:30 — Task 2 lulus review, master minta save)
+**Current Session**: 2026-08-05 (petang ~13:57–16:15) — **eRPH RENDAH: isi RPT SAINS 5.** Spec `4e45409` + pelan 8 task `79d1f30` atas `master`; kod atas branch **`rpt-sains5`**. Task 1 (pagar `.claspignore`) + Task 2 (`buka-docx.js`) lulus review; **Task 3 kod siap + fix Critical jadual bersarang `ea0fd95`, RE-REVIEW TERTUNGGAK**. Suite **20/20**. Chrome extension tak bersambung → Task 8 digantung. Lihat blok TITIK SAMBUNG paling atas.
+**Last Work Activity**: 2026-08-05 (~16:15 — fix Critical Task 3, master minta save)
 
 **(rekod sebelum ini)** 2026-08-03 (petang ~14:08–14:33) — **mypwa-v2: fix nombor Bil laporan PAJSK reset per murid ✅ LIVE PRODUCTION** (`main == test`, merge `ea2a587`, fix `6a10480`). Tab Laporan guru (`pajsk.html`) + tab PAJSK admin (`admin.html`): buang kaunter bersambung `rowNum`, guna index kumpulan `rekod.map((p,i)=>i+1)` — selaras dgn fungsi cetak yg dah betul (DRY). Frontend sahaja, 4 baris. Unit 14/14 + Playwright admin 2/2. Disahkan production `erpm-sksalor.celikguru.my` (rowNum=0). 🔑 GOTCHA merge: `main` nampak "diverged" dari `test` tapi `git diff main test --stat` = HANYA fix aku → capah topologi (commit merge), BUKAN kandungan; verify diff sebelum merge production elak risau kod audit log hilang. Sebelum ni: (2026-07-25) celiksains 1a; (2026-07-23) eRPH MENENGAH; (2026-07-22) mypwa-v2 PAJSK backlog.
 **Last Work Activity**: 2026-08-03 (~14:33 — fix laporan PAJSK live production)
