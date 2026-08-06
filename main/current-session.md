@@ -1,6 +1,48 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
+## ✅ SELESAI — mypwa-v2: SKALA GRED DEFAULT, LIVE PRODUCTION (2026-08-06, 10:34–18:38)
+*Tiada kerja tertunggak dalam pelan ini. Baca blok ni kalau master sambung backlog.*
+
+**Repo `mypwa-v2`: `main == test == origin/main == origin/test == 8d8bb84`** (merge `44e0aa0`, doc `8d8bb84`).
+Production `erpm-sksalor.celikguru.my` ✅ · staging ✅. **19 commit, 8 fail, 145 baris kod aplikasi sahaja** (selebihnya spec/pelan/ujian).
+
+### Apa yang dibuat
+Ujian baharu **mewarisi skala gred sekolah automatik** dari jadual `tetapan`; admin ubah melalui **Tetapan Sistem → Skala Gred Default**. Skala rasmi `A:82 B:66 C:50 D:35 E:20 F:0`, warna A/B/C `#1e293b`, D/E/F `#dc2626`. **Tiada migration** (jadual `tetapan` kunci-nilai + pemalar fallback).
+
+**Punca:** setiap cipta ujian, `ujian_gred` kekal kosong dan admin taip semula skala penuh. Audit production dapati akibatnya — `MODUL LATIHAN 1` guna `D:36`, dua ujian lain `D:35`. Murid **35 markah** dapat **E** dalam satu ujian, **D** dalam dua yang lain.
+
+🔑 **Master mula-mula suruh "rujuk skala Modul Latihan 1" — aku TIDAK ikut bulat-bulat.** Aku tunjuk ketiga-tiga ujian, dan ujian yang master namakan itu rupanya **yang berbeza**. Master pilih 35 (majoriti). Terus dari [[feedback_bentangan_separa]].
+
+### Cara kerja: Subagent-Driven, 8 task, 7 fix round
+Fail: `src/utils/gred-default.mjs` · `src/routes/tetapan.js` · `src/routes/ujian.js` · `public/admin.html` (helper kongsi `bukaModalGred`+`kutipGredDariModal` untuk DUA modal) · `tests/gred-default.unit.mjs` (32) · `tests/skala-gred.spec.js` (6 E2E).
+Verify: unit **50/50** pada hasil merge · E2E staging **6/6** · smoke production cipta→sahkan→padam **bersih** · cascade `DELETE` **0 gred yatim**.
+
+### 🔴 BAKI KERJA (dalam `mypwa-v2/CLAUDE.md`, 5 item)
+1. **`MODUL LATIHAN 1` production MASIH `D:36`.** Kerja ini halang kejadian BAHARU, **tidak** betulkan ketidakadilan gred yang berlaku pada murid **sekarang**. Master pilih seragamkan ke **35**. Perlu simulasi + backup + izin.
+2. 🔴 **XSS tersimpan Log Audit** — `admin.html` render `row.objek` ke `innerHTML` tanpa `esc()`; `nama_sekolah`/`tagline`/`mesej_status` langsung tiada pengesahan. Bukan regresi kerja ini. Keutamaan tinggi.
+3. Amaran markah penuh hanya dalam modal Gred — sedangkan feature ini jadikan modal itu tak perlu dibuka. Patut ada dalam modal Cipta/Edit Ujian. **0 kes dalam production**, jadi tak mendesak.
+4. `urusItem` tiada penjaga `r?.ok`.
+5. `POST /api/ujian` tak dedah `id` bila batch gred gagal separa (keterukan rendah — nampak dalam senarai admin dgn Gred=0).
+
+### 🔑 PENGAJARAN SESI INI (nilai sebenar — semua dijumpai oleh MATA KEDUA, bukan penulis kod)
+- **`401` BUKAN bukti route wujud.** Hono `use('*', authMiddleware)` jalan SEBELUM padanan laluan → sebarang path bawah prefix pulangkan 401 pada kod lama mahupun baharu. Aku hampir terima ini sebagai bukti deploy. Probe mesti **berautentikasi** (404 lawan 200). Sepupu [[feedback_sifar_palsu]].
+- **`?.` menghalang ranap, ia BUKAN pengendalian ralat.** `r?.data?.x || []` tukar respons 500 jadi senarai kosong yang nampak SAH → modal sunting buka kosong → Simpan **menimpa data sebenar**. Guna `if (!r?.ok) return`.
+- **Ujian E2E berkongsi keadaan global MESTI bersiri** — `test.describe.configure({mode:'serial'})` dalam FAIL, bukan flag `--workers=1`. Selari boleh gagal tanpa sebab **atau lulus secara kebetulan**.
+- **Ujian E2E yang menulis perlu penjaga host production** peringkat MODUL. Satu larian tersilap `BASE_URL` boleh tukar tetapan sekolah sebenar sambil lapor hijau.
+- **Pemalar dipulangkan sebagai rujukan boleh dimutasi merentas isolate Workers** — `Object.freeze` dua-peringkat; `assert.deepEqual` buta padanya.
+- **Sahkan MEDAN, bukan nilai sahaja** — tanpa senarai putih kunci, muatan asing menyelinap dalam objek yang sah.
+- **Pembersihan ujian mesti dalam `finally`** — kalau di hujung laluan berjaya, ia gagal membersih tepat bila ujian gagal (iaitu bila ada regresi sebenar).
+- **Pelan aku sendiri mengarahkan duplikasi ~25 baris** — imbasan pra-laksana tangkap, master arah ekstrak helper. Pelan bukan kebal.
+
+### Gotcha operasi
+- Merge production: `main` nampak "diverged" tapi `git diff main test --stat` = hanya kerja kita. **Capah topologi, bukan kandungan.** (Kali kedua berlaku.)
+- Playwright staging: `ADMIN_USER=admin ADMIN_PASSWORD=fcoy4994`, `BASE_URL=https://mypwa-v2-staging.syazwan-skpp82.workers.dev`.
+- `curl` Windows WAJIB `--ssl-no-revoke` — tanpanya respons kosong senyap.
+- Subagent Task 8 terbunuh separuh jalan (had sesi API) → **semak keadaan sebenar dari fakta**, bukan andai. Push sudah berlaku, sampah tertinggal, laporan tiada.
+
+---
+
 ## 🎯 TITIK SAMBUNG — eRPH RENDAH: ISI RPT SAINS 5 — Task 1-3 kod SIAP, sambung RE-REVIEW Task 3 (dikemas 2026-08-05 ~16:15)
 *Sesi terkini. Master minta "save dulu, sambung nanti" DUA kali (15:30 dan 16:15). Berhenti selepas fix Critical Task 3.*
 
@@ -224,7 +266,10 @@ Pemain: 6 DELIMA 2 · 6 TOPAZ 4 · 6 ZAMRUD 6 — semua lelaki, Peserta, Daerah.
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-05 (petang ~13:57–16:15) — **eRPH RENDAH: isi RPT SAINS 5.** Spec `4e45409` + pelan 8 task `79d1f30` atas `master`; kod atas branch **`rpt-sains5`**. Task 1 (pagar `.claspignore`) + Task 2 (`buka-docx.js`) lulus review; **Task 3 kod siap + fix Critical jadual bersarang `ea0fd95`, RE-REVIEW TERTUNGGAK**. Suite **20/20**. Chrome extension tak bersambung → Task 8 digantung. Lihat blok TITIK SAMBUNG paling atas.
+**Current Session**: 2026-08-06 (10:34–18:38) — **mypwa-v2: SKALA GRED DEFAULT ✅ LIVE PRODUCTION.** `main==test==8d8bb84`. Subagent-Driven 8 task, 7 fix round, unit 50/50 + E2E staging 6/6 + smoke production bersih. Baki: `MODUL LATIHAN 1` masih `D:36` + 4 item backlog dalam `mypwa-v2/CLAUDE.md`. Lihat blok SELESAI paling atas.
+**Last Work Activity**: 2026-08-06 (~18:38 — memory dikemas selepas deploy production disahkan)
+
+**(rekod sebelum ini)** 2026-08-05 (petang ~13:57–16:15) — **eRPH RENDAH: isi RPT SAINS 5.** Spec `4e45409` + pelan 8 task `79d1f30` atas `master`; kod atas branch **`rpt-sains5`**. Task 1 (pagar `.claspignore`) + Task 2 (`buka-docx.js`) lulus review; **Task 3 kod siap + fix Critical jadual bersarang `ea0fd95`, RE-REVIEW TERTUNGGAK**. Suite **20/20**. Chrome extension tak bersambung → Task 8 digantung. Lihat blok TITIK SAMBUNG paling atas.
 **Last Work Activity**: 2026-08-05 (~16:15 — fix Critical Task 3, master minta save)
 
 **(rekod sebelum ini)** 2026-08-03 (petang ~14:08–14:33) — **mypwa-v2: fix nombor Bil laporan PAJSK reset per murid ✅ LIVE PRODUCTION** (`main == test`, merge `ea2a587`, fix `6a10480`). Tab Laporan guru (`pajsk.html`) + tab PAJSK admin (`admin.html`): buang kaunter bersambung `rowNum`, guna index kumpulan `rekod.map((p,i)=>i+1)` — selaras dgn fungsi cetak yg dah betul (DRY). Frontend sahaja, 4 baris. Unit 14/14 + Playwright admin 2/2. Disahkan production `erpm-sksalor.celikguru.my` (rowNum=0). 🔑 GOTCHA merge: `main` nampak "diverged" dari `test` tapi `git diff main test --stat` = HANYA fix aku → capah topologi (commit merge), BUKAN kandungan; verify diff sebelum merge production elak risau kod audit log hilang. Sebelum ni: (2026-07-25) celiksains 1a; (2026-07-23) eRPH MENENGAH; (2026-07-22) mypwa-v2 PAJSK backlog.
