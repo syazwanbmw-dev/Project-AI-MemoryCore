@@ -1,6 +1,65 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
+## 🎯 TITIK SAMBUNG — mypwa-v2: TUTUP XSS SILANG-KEISTIMEWAAN — Task 2/7, sambung dari SEMAK KEADAAN (dikemas 2026-08-06 ~23:34)
+*Sesi terkini (19:33–23:34). Master minta berhenti — "ok berhenti dulu, save memory". Kerja BELUM siap, TIADA yang di-push.*
+
+**Repo `mypwa-v2`, branch `test`.** Baseline sesi ini `8d8bb84` (== main). **Belum push, belum merge main, production TIDAK disentuh.**
+**Ledger SDD: `.superpowers/sdd/2026-08-06-xss-silang-keistimewaan/progress.md`** — BACA INI DULU bila sambung. Gitignored tapi kekal di disk.
+
+### 🔴 LANGKAH PERTAMA BILA SAMBUNG — jangan andai
+Sesi tamat semasa **subagent Task 2 fix round 1 masih berjalan**. Keadaan akhir yang dilihat: `HEAD=789f366`, `tests/xss-log-audit.spec.js` **M (belum commit)**, fail sementara `tests/_cleanup_temp.spec.js` sudah dibersihkan sendiri.
+Fix itu mungkin siap selepas sesi tamat, mungkin tidak. **Semak `git log` + `git status` + ledger DAHULU.** Jangan ulang dispatch Task 2 tanpa semak — sepupu gotcha sesi 2026-08-06 pagi (subagent Task 8 terbunuh separuh jalan → semak fakta, bukan andai).
+
+### Kerja: tutup XSS, kriteria SILANG-KEISTIMEWAAN
+Backlog `CLAUDE.md` #2 catat "satu medan, penyerang mesti admin". **Kedua-duanya SALAH.**
+
+🔑 **PENEMUAN TERAS — ada DUA fungsi bernama `esc()` dengan semantik berbeza:**
+- **HTML-escape betul:** `dashboard.html:746` · `pajsk.html:971` · `panduan.html:49` · `pelawat.html:129` · `trend.html:80` · `app.js:281`
+- **JS-string escape (BUKAN perlindungan XSS, `<` `>` lalu terus):** `admin.html:2423` · `admin.html:1819` · `rekod.html:544` · `tetapan.html:121`
+
+`admin.html:2423` pada **skop atas fail** → ia mengikat **55 panggilan** dalam halaman berkeistimewaan TERTINGGI. Tab PAJSK (`1677-1691`) tulis `${esc(p.pencapaian)}` — **nampak dilindungi, sebenarnya tidak.** Kelas bug ini lebih bahaya dari terlupa escape: terlupa escape KELIHATAN masa baca kod; `esc()` yang salah beri **jaminan palsu**. Sepupu [[feedback_sifar_palsu]].
+
+🔑 **Penyerang boleh GURU, bukan admin** — `pajsk.js:19` guna `authMiddleware` SAHAJA (bukan `adminOnly`). Guru tulis `pencapaian` (MENTAH, `pajsk.js:74`, tiada normalisasi) → masuk `audit_log.objek` via `ringkasRekodPajsk` → render dalam skrin ADMIN. **Naik taraf keistimewaan GURU → ADMIN.** JWT ada dalam `localStorage.token` (`app.js:2`).
+
+### ✅ GATE MERAH DISAHKAN — bukan lagi hipotesis
+Diuji lawan staging sebenar:
+- Tab PAJSK: elemen `<img>` **SEBENAR tercipta** dari input guru
+- Log Audit: `window.__xss` benar-benar jadi **1** — **skrip BETUL-BETUL JALAN**, sifar escaping
+
+🔑 Dalam tab PAJSK payload cipta elemen tapi **TAK jalan** — bukan sebab kod melindungi, tapi sebab `esc()` lama tersilap mangle petikan sampai `onerror` jadi teks mati. **Kebetulan, BUKAN pertahanan.** Payload tanpa petikan akan jalan di situ juga.
+
+### Dokumen (SUDAH di-commit atas `test`)
+- Spec: `docs/superpowers/specs/2026-08-06-xss-silang-keistimewaan-design.md` (`fa23bb6`)
+- Pelan 7 task TDD: `docs/superpowers/plans/2026-08-06-xss-silang-keistimewaan.md` (`da67c1b`, betulan `63cbb8a`)
+
+### ✅ SIAP
+- **Task 1 `6b93505` → fix `7f10773`** — `escHtml` + `escJs` satu sumber dalam `public/app.js`; `tests/escape.unit.mjs` **10/10** (penyemak jalankan SENDIRI). 🔑 `escJs = escHtml(jsEscape(s))` — corak `esc` LAMA **BOCOR**: penyemak imbas nyahkod entiti HTML dalam nilai atribut **SEBELUM** JS hurai, jadi `A&#39;;alert(1);//` terlepas walau tiada petikan literal. Dibuktikan dengan skrip sebenar, bukan penaakulan.
+- **Task 2 `789f366`** — `tests/xss-log-audit.spec.js`, gate MERAH. ⏳ **fix round 1 BELUM disahkan** (lihat langkah pertama di atas).
+
+### ⏭️ SAMBUNG DARI SINI
+1. Semak keadaan sebenar → habiskan Task 2 (re-review berskop `review-package ... 789f366 HEAD`)
+2. Task 3 Log Audit 4 medan · 4 **admin.html 55 panggilan** (24 `escJs`, baki `escHtml`, buang 3 `const esc`) · 5 `rekod.html`+`tetapan.html` · 6 had panjang `tetapan.js` · 7 verify penuh + kemas `CLAUDE.md`
+3. Kemudian: `commit-seal` → push. **JANGAN merge main tanpa izin master.**
+
+### 🔑 SILAP LUCY YANG SUBAGENT TANGKAP (nilai sebenar sesi ini)
+- Draf ujian guna `/api/murid?limit=1` — **endpoint tak wujud**, route perlu `kelas_id`.
+- `waitForSelector('tr')` **berlumba dengan baris placeholder** → ujian boleh lapor **"selamat" PALSU**. [[feedback_sifar_palsu]] dalam kod ujian sendiri.
+- Komen `escJs` dakwa "urutan penting" — **tidak benar**; kedua-dua fungsi sentuh set aksara TERPISAH, jadi komutatif. Penyemak buktikan, komen dibetulkan jadi jujur.
+- Pelan Task 3 Step 2 jangka hasil **MUSTAHIL** — `expect()` halt pada kegagalan pertama, jadi blok Log Audit tak pernah dicapai. Fix: `expect.soft()`.
+- 🔴 **Subagent tanda todo Task 2 `completed` sedangkan fix round MASIH berjalan.** Lucy pulihkan ke `in_progress`. **Jangan percaya tanda todo dari subagent — sahkan dari git + ledger.**
+
+### Keputusan master sesi ini
+- Skop = **silang-keistimewaan sahaja** (bukan audit penuh 96 titik `innerHTML`)
+- Nama fungsi = **namakan semula ikut kerja** (`escHtml`/`escJs`), bukan tampal
+- **KISS & DRY sebagai kekangan keras** — sebab itu 5 fail lain (`dashboard`/`pajsk`/`panduan`/`pelawat`/`trend`) yang ada pendua `esc` **SEMANTIK BETUL** sengaja TIDAK disentuh: sifar keuntungan keselamatan, 5 fail LIVE berisiko. Hutang DRY, masuk backlog.
+- Task 6 (had panjang) — master **tidak jawab** soalan ujian automatik; Lucy ambil syor sendiri (tambah 2 E2E). Master boleh tolak, kos ~15 baris.
+
+### ✅ BONUS — backlog #1 TUTUP
+Master betulkan sendiri gred D `MODUL LATIHAN 1` → **35**. Lucy sahkan dari production DB: ketiga-tiga ujian kini identik `A82 B66 C50 D35 E20 F0`, warna betul. Backlog `CLAUDE.md` belum dikemas (Task 7).
+
+---
+
 ## ✅ SELESAI — mypwa-v2: SKALA GRED DEFAULT, LIVE PRODUCTION (2026-08-06, 10:34–18:38)
 *Tiada kerja tertunggak dalam pelan ini. Baca blok ni kalau master sambung backlog.*
 
@@ -266,7 +325,10 @@ Pemain: 6 DELIMA 2 · 6 TOPAZ 4 · 6 ZAMRUD 6 — semua lelaki, Peserta, Daerah.
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-06 (10:34–18:38) — **mypwa-v2: SKALA GRED DEFAULT ✅ LIVE PRODUCTION.** `main==test==8d8bb84`. Subagent-Driven 8 task, 7 fix round, unit 50/50 + E2E staging 6/6 + smoke production bersih. Baki: `MODUL LATIHAN 1` masih `D:36` + 4 item backlog dalam `mypwa-v2/CLAUDE.md`. Lihat blok SELESAI paling atas.
+**Current Session**: 2026-08-06 (19:33–23:34) — **mypwa-v2: TUTUP XSS SILANG-KEISTIMEWAAN, Task 2/7, BELUM SIAP.** Branch `test`, `HEAD=789f366`, **belum push**. Spec + pelan 7 task di-commit. Task 1 siap (10/10). **Gate MERAH DISAHKAN — XSS betul-betul jalan pada staging.** Punca sebenar: DUA fungsi bernama `esc()` semantik berbeza; `admin.html:2423` ikat 55 panggilan. Penyerang boleh **GURU**, bukan admin. 🔴 Sesi tamat semasa subagent Task 2 fix round MASIH jalan — **semak `git status` + ledger DULU**. Bonus: backlog `MODUL LATIHAN 1` D:36 → **35 disahkan tutup**. Lihat blok TITIK SAMBUNG paling atas.
+**Last Work Activity**: 2026-08-06 (~23:34 — master minta berhenti, memory dikemas)
+
+**(rekod sebelum ini)** 2026-08-06 (10:34–18:38) — **mypwa-v2: SKALA GRED DEFAULT ✅ LIVE PRODUCTION.** `main==test==8d8bb84`. Subagent-Driven 8 task, 7 fix round, unit 50/50 + E2E staging 6/6 + smoke production bersih.
 **Last Work Activity**: 2026-08-06 (~18:38 — memory dikemas selepas deploy production disahkan)
 
 **(rekod sebelum ini)** 2026-08-05 (petang ~13:57–16:15) — **eRPH RENDAH: isi RPT SAINS 5.** Spec `4e45409` + pelan 8 task `79d1f30` atas `master`; kod atas branch **`rpt-sains5`**. Task 1 (pagar `.claspignore`) + Task 2 (`buka-docx.js`) lulus review; **Task 3 kod siap + fix Critical jadual bersarang `ea0fd95`, RE-REVIEW TERTUNGGAK**. Suite **20/20**. Chrome extension tak bersambung → Task 8 digantung. Lihat blok TITIK SAMBUNG paling atas.
