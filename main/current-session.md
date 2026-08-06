@@ -8,8 +8,9 @@
 **Ledger SDD: `.superpowers/sdd/2026-08-06-xss-silang-keistimewaan/progress.md`** — BACA INI DULU bila sambung. Gitignored tapi kekal di disk.
 
 ### 🔴 LANGKAH PERTAMA BILA SAMBUNG — jangan andai
-Sesi tamat semasa **subagent Task 2 fix round 1 masih berjalan**. Keadaan akhir yang dilihat: `HEAD=789f366`, `tests/xss-log-audit.spec.js` **M (belum commit)**, fail sementara `tests/_cleanup_temp.spec.js` sudah dibersihkan sendiri.
-Fix itu mungkin siap selepas sesi tamat, mungkin tidak. **Semak `git log` + `git status` + ledger DAHULU.** Jangan ulang dispatch Task 2 tanpa semak — sepupu gotcha sesi 2026-08-06 pagi (subagent Task 8 terbunuh separuh jalan → semak fakta, bukan andai).
+**Semak `git log` + `git status` + ledger DAHULU** sebelum dispatch apa-apa. Jangan ulang dispatch task yang sudah siap — gotcha berulang (sesi 2026-08-06 pagi: subagent Task 8 terbunuh separuh jalan → semak fakta, bukan andai).
+
+Keadaan terakhir yang **disahkan**: Task 2 fix round 1 **SIAP**, commit `b1ad460`. ⏳ **Re-review berskop Task 2 BELUM dibuat** — itu langkah seterusnya (`review-package … 789f366 HEAD`), kemudian barulah tanda Task 2 complete dan mula Task 3.
 
 ### Kerja: tutup XSS, kriteria SILANG-KEISTIMEWAAN
 Backlog `CLAUDE.md` #2 catat "satu medan, penyerang mesti admin". **Kedua-duanya SALAH.**
@@ -35,7 +36,11 @@ Diuji lawan staging sebenar:
 
 ### ✅ SIAP
 - **Task 1 `6b93505` → fix `7f10773`** — `escHtml` + `escJs` satu sumber dalam `public/app.js`; `tests/escape.unit.mjs` **10/10** (penyemak jalankan SENDIRI). 🔑 `escJs = escHtml(jsEscape(s))` — corak `esc` LAMA **BOCOR**: penyemak imbas nyahkod entiti HTML dalam nilai atribut **SEBELUM** JS hurai, jadi `A&#39;;alert(1);//` terlepas walau tiada petikan literal. Dibuktikan dengan skrip sebenar, bukan penaakulan.
-- **Task 2 `789f366`** — `tests/xss-log-audit.spec.js`, gate MERAH. ⏳ **fix round 1 BELUM disahkan** (lihat langkah pertama di atas).
+- **Task 2 `789f366` → fix `b1ad460`** — `tests/xss-log-audit.spec.js`, gate MERAH, **kedua-dua paparan kini diuji setiap larian**. 🔑 Fix: 6 assertion per-paparan tukar ke **`expect.soft()`** — `expect()` biasa halt pada kegagalan pertama, jadi blok Log Audit **tak pernah dicapai** dan Task 3 tak mungkin dapat isyarat lulus. Setup expectations kekal keras (kalau cipta rekod gagal, tiada apa nak diuji).
+  **4 kegagalan diperhati:** PAJSK `img[src=x]` 1 · PAJSK payload-sebagai-teks gagal (tag telan sebahagian rentetan) · **Log Audit `window.__xss` = 1 (skrip BETUL-BETUL JALAN)** · Log Audit `img[src=x]` 24 (sampah `audit_log` terkumpul — tiada laluan padam, ikut reka bentuk).
+  🔑 **Punca PAJSK cipta elemen tapi TAK jalan:** `esc()` lama tukar `"` jadi `&quot;`; bila penghurai HTML nyahkod balik dalam atribut tak berpetik, `onerror="window.__xss=1"` runtuh jadi literal rentetan mati. **Kebetulan, BUKAN pertahanan** — payload tanpa petikan jalan penuh di situ.
+  ⚠️ `test.setTimeout` dinaikkan ke **180000ms** (default 60s terlalu ketat untuk 2 peralihan paparan + panggilan API lawan staging).
+  ⏳ **Re-review berskop BELUM dibuat.**
 
 ### ⏭️ SAMBUNG DARI SINI
 1. Semak keadaan sebenar → habiskan Task 2 (re-review berskop `review-package ... 789f366 HEAD`)
@@ -54,6 +59,13 @@ Diuji lawan staging sebenar:
 - Nama fungsi = **namakan semula ikut kerja** (`escHtml`/`escJs`), bukan tampal
 - **KISS & DRY sebagai kekangan keras** — sebab itu 5 fail lain (`dashboard`/`pajsk`/`panduan`/`pelawat`/`trend`) yang ada pendua `esc` **SEMANTIK BETUL** sengaja TIDAK disentuh: sifar keuntungan keselamatan, 5 fail LIVE berisiko. Hutang DRY, masuk backlog.
 - Task 6 (had panjang) — master **tidak jawab** soalan ujian automatik; Lucy ambil syor sendiri (tambah 2 E2E). Master boleh tolak, kos ~15 baris.
+
+### 💡 IDEA BARU (bincang santai 23:45–23:58) — Kumpulan Intervensi
+**Dokumen penuh: `memory/projects/mypwa-v2-kumpulan-intervensi.md`.** Belum brainstorm, belum spec. Buat SELEPAS XSS siap.
+
+Ringkas: murid tahun 4 disusun **semula ikut tahap, BERCAMPUR merentas kelas** untuk 4 subjek matriks (BM/BI/Sains/Matematik). Cikgu nak isi markah satu skrin, bukan buka 3 kelas.
+🔴 **JANGAN pindahkan murid antara kelas dalam sistem** — `murid.id_kelas` keadaan semasa, bukan sejarah; laporan tanya semula → markah **MODUL 1 ikut berpindah**, purata/ranking/taburan berubah senyap. Dan MODUL 1 itulah garis dasar "sebelum intervensi". Jawapannya: konsep **Kumpulan** di sebelah kelas, kelas tak pernah berubah.
+⚠️ Bahagian senang terlepas: `jadual_guru` mesti terima kumpulan juga, kalau tidak cikgu tekan Cari → senarai kosong.
 
 ### ✅ BONUS — backlog #1 TUTUP
 Master betulkan sendiri gred D `MODUL LATIHAN 1` → **35**. Lucy sahkan dari production DB: ketiga-tiga ujian kini identik `A82 B66 C50 D35 E20 F0`, warna betul. Backlog `CLAUDE.md` belum dikemas (Task 7).
