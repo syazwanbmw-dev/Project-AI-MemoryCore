@@ -16,6 +16,11 @@ Commit: `23655b7` (22 sink + guard) · `383e727` (2 ujian E2E mustahil lulus) ·
 
 🟢 Guard `tests/tetapan-render.unit.mjs` **dibuktikan boleh gagal dua cara**: merah pada 22 sink sebenar + ujian-mutasi lawan kod sebenar (`ujian.html:423`).
 
+🔴 **PEMBETULAN (`49f056d`, 00:0x) — verify visual pusingan pertama CACAT, MASTER yang tangkap.** Screenshot diambil sebaik `<table>` muncul, **sebelum** logo (imej luar `postimg.cc`) sempat dimuat → potret separuh siap, dan Lucy isytihar *"header utuh"*. Disahkan kemudian: `<img>` ada, `src` utuh, `complete:true`, `naturalWidth:176` — **`escHtml` tak pernah merosakkan logo**. Kesimpulan betul, **bukti tidak sah**.
+🔴 Silap kedua siasatan sama: dakwaan *"logo tidak diset"* datang dari `/api/tetapan/landing` yang ada **senarai putih kunci** tanpa `logo_sekolah`. Nilai sebenar ADA, 85 aksara, sama staging+production.
+➡️ Verify visual mesti tunggu `images.every(complete && naturalWidth>0)`, **dan kira `img` dulu** (`every([])`=true).
+⚠️ Kerapuhan operasi: logo di-hos `postimg.cc` (pihak ketiga percuma) — hos tumbang = semua laporan hilang logo senyap. Pertimbang R2/`data:` URI.
+
 ### ⏭️ SAMBUNG DARI SINI — SATU kerja sahaja
 **Gate payload `rekod.html` + `tetapan.html`** — master **SUDAH LULUSKAN**, belum dikerjakan. ~1 jam (guna semula mesin `xss-log-audit.spec.js`). Tulis payload guna token ADMIN, baca sebagai GURU, pulih dalam `finally`.
 🔴 Sink sudah dibaiki ⇒ gate akan hijau serta-merta ⇒ **ujian-mutasi WAJIB**.
