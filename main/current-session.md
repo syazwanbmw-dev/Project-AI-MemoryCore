@@ -21,6 +21,14 @@ Commit: `23655b7` (22 sink + guard) · `383e727` (2 ujian E2E mustahil lulus) ·
 ➡️ Verify visual mesti tunggu `images.every(complete && naturalWidth>0)`, **dan kira `img` dulu** (`every([])`=true).
 ⚠️ Kerapuhan operasi: logo di-hos `postimg.cc` (pihak ketiga percuma) — hos tumbang = semua laporan hilang logo senyap. Pertimbang R2/`data:` URI.
 
+### ✅ FIX CETAK `onload` (`2fa2db2` + doc `6932d24`, arahan master 00:2x)
+`laporan.html:847` (`setTimeout 800ms`) + `omr.html:208` (`300ms`) → `<script>window.onload=()=>window.print()<\/script>`, sama dengan 5 laluan cetak sedia ada.
+🔴 **Guard `tests/cetak-onload.unit.mjs` menemui `omr.html` yang semakan grep manual Lucy TERLEPAS** (semakan itu hanya 6 fail yang dah diketahui; guard imbas semua 15). Kali kedua "inventori dari senarai sedia ada" gagal malam ni.
+Verify: unit **86/86** · guard MERAH pada 2 tapak sebenar + ujian-mutasi (`laporan.html:848`) · perambatan per-fail · **verify visual `laporan.html`: logo 176×180 HADIR** · regresi 24 lulus / 1 skip / 1 gagal PERSEKITARAN (lulus berasingan 43.1s).
+
+🔴 **TIGA KALI malam ni Lucy memeriksa TERLALU AWAL** — screenshot sebelum imej dimuat · `domcontentloaded` pada popup KOSONG (`window.open()` dipanggil SEBELUM `await`) · kira option sebelum fetch balik. ➡️ **Tunggu KANDUNGAN, bukan peristiwa muat.**
+🔴 Lapor "tiada data" pada DB yang ada **1542 rekod** — skrip terlepas klik butang "Muat Laporan". **Sahkan dari API bila UI kata kosong.**
+
 ### ⏭️ SAMBUNG DARI SINI — SATU kerja sahaja
 **Gate payload `rekod.html` + `tetapan.html`** — master **SUDAH LULUSKAN**, belum dikerjakan. ~1 jam (guna semula mesin `xss-log-audit.spec.js`). Tulis payload guna token ADMIN, baca sebagai GURU, pulih dalam `finally`.
 🔴 Sink sudah dibaiki ⇒ gate akan hijau serta-merta ⇒ **ujian-mutasi WAJIB**.
