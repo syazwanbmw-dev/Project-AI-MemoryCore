@@ -42,17 +42,29 @@
 ---
 
 ## Projek Aktif
+*(dikemas 2026-08-07 — senarai lama lapuk: `my-pwa` sudah DIPADAM, `erpm-cf`/`myportfolio` kurang aktif)*
 
-- `erpm-cf`
-- `myportfolio`
-- `my-pwa`
+- `mypwa-v2` (eNilai — per-SEKOLAH, live production)
+- `erph` (sekolah RENDAH) · `erph-menengah-v2`
+- `celiksains`
 - `sistem-olahraga-sekolah`
+- `idme-pajsk-ext`
+- Kurang aktif: `adni`, `balapan`, `sprint`, `erpm-v2`, `myportfolio`, `erpm-cf`
 
 ---
 
 ## Goals & Aspirations
 
 _(akan diisi bila master share)_
+
+---
+
+## Keputusan Master (kekal sehingga ditarik balik)
+
+- **Password awal guru KEKAL** (2026-08-07) — menukarnya bermakna memaklum semua guru; itu keputusan **operasi sekolah**, bukan teknikal. Nilai sebenar hidup dalam `.env.ujian.ps1` (gitignored), **jangan tulis dalam mana-mana fail dijejak git**.
+- **Password admin** akan ditukar sendiri oleh master melalui UI — Lucy tidak menukarnya.
+- **Izin KEKAL:** Lucy tulis ke `MEMORY.md` setiap projek sendiri, tanpa tanya.
+- **Sejarah git sengaja TIDAK ditulis semula** untuk rahsia lama — sebaik password ditukar, nilai lama tidak bernilai; risiko `force-push` lebih besar daripada faedahnya.
 
 ---
 

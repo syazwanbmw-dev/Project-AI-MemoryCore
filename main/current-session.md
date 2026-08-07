@@ -1,74 +1,114 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
-## 🎯 TITIK SAMBUNG — mypwa-v2: TUTUP XSS SILANG-KEISTIMEWAAN — Task 2/7, sambung dari SEMAK KEADAAN (dikemas 2026-08-06 ~23:34)
-*Sesi terkini (19:33–23:34). Master minta berhenti — "ok berhenti dulu, save memory". Kerja BELUM siap, TIADA yang di-push.*
+## 🎯 TITIK SAMBUNG — mypwa-v2: TUTUP XSS SILANG-KEISTIMEWAAN — Task 4/7 SIAP (dikemas 2026-08-07 20:10)
+*Sesi panjang petang→malam via remote-control. Task 2, 3, 4 + audit di luar skop semuanya SIAP dan hidup di staging.*
 
-**Repo `mypwa-v2`, branch `test`.** Baseline sesi ini `8d8bb84` (== main). **Belum push, belum merge main, production TIDAK disentuh.**
-**Ledger SDD: `.superpowers/sdd/2026-08-06-xss-silang-keistimewaan/progress.md`** — BACA INI DULU bila sambung. Gitignored tapi kekal di disk.
+**Repo `mypwa-v2`, branch `test` @ `825efaa` == `origin/test`** · working tree bersih · `main` @ `8d8bb84` — **production TIDAK disentuh langsung sepanjang sesi.**
+**Ledger SDD: `.superpowers/sdd/2026-08-06-xss-silang-keistimewaan/progress.md`**
+🆕 **BACA `mypwa-v2/MEMORY.md` DULU bila sambung** — ia lebih terperinci daripada fail ini. Ledger untuk butiran per-task.
 
-### 🔴 LANGKAH PERTAMA BILA SAMBUNG — jangan andai
-**Semak `git log` + `git status` + ledger DAHULU** sebelum dispatch apa-apa. Jangan ulang dispatch task yang sudah siap — gotcha berulang (sesi 2026-08-06 pagi: subagent Task 8 terbunuh separuh jalan → semak fakta, bukan andai).
+**Urutan commit sesi ini:** `5f726af` push · `651e847` kredensial→env var · `8808102` backlog · `a802a84` **Task 3** · `4b3b909` doc · `f5a8835` **Task 4** · `dc0fc5f` doc · `2efa1cf` **52 sink** · `825efaa` doc
 
-Keadaan terakhir yang **disahkan**: Task 2 fix round 1 **SIAP**, commit `b1ad460`. ⏳ **Re-review berskop Task 2 BELUM dibuat** — itu langkah seterusnya (`review-package … 789f366 HEAD`), kemudian barulah tanda Task 2 complete dan mula Task 3.
+### ✅ TASK 2 + TASK 3 SELESAI — isyarat bersih tercapai (`4b3b909`)
+Re-review `2522b48` **DILULUSKAN** → Task 2 ✅ → Task 3 `a802a84` ✅ hidup staging.
 
-### Kerja: tutup XSS, kriteria SILANG-KEISTIMEWAAN
-Backlog `CLAUDE.md` #2 catat "satu medan, penyerang mesti admin". **Kedua-duanya SALAH.**
+| Paparan | Selepas Task 3 |
+|---|---|
+| Log Audit | 🟢 3 assertion → **0 kegagalan** |
+| Tab PAJSK | 🔴 **3 kekal merah** (Task 4) |
 
-🔑 **PENEMUAN TERAS — ada DUA fungsi bernama `esc()` dengan semantik berbeza:**
-- **HTML-escape betul:** `dashboard.html:746` · `pajsk.html:971` · `panduan.html:49` · `pelawat.html:129` · `trend.html:80` · `app.js:281`
-- **JS-string escape (BUKAN perlindungan XSS, `<` `>` lalu terus):** `admin.html:2423` · `admin.html:1819` · `rekod.html:544` · `tetapan.html:121`
+Dua pusingan sebelum ini GAGAL hasilkan pemisahan ini. Bukti ujian tajam bukan kehijauan Log Audit — tapi **kemerahan PAJSK yang berterusan**.
 
-`admin.html:2423` pada **skop atas fail** → ia mengikat **55 panggilan** dalam halaman berkeistimewaan TERTINGGI. Tab PAJSK (`1677-1691`) tulis `${esc(p.pencapaian)}` — **nampak dilindungi, sebenarnya tidak.** Kelas bug ini lebih bahaya dari terlupa escape: terlupa escape KELIHATAN masa baca kod; `esc()` yang salah beri **jaminan palsu**. Sepupu [[feedback_sifar_palsu]].
+🔴 **PENEMUAN SILANG-TUGAS:** `PENANDA_BINAAN` terikat pada **ejaan kod TEPAT**. `escHtml(row.objek || '—')` berfungsi sama betul (escHtml tak sentuh sempang em) TAPI corak tak padan → `adaTempatan=false` → penjaga staging-lapuk **mati senyap** sambil lapor `Task 3=TIADA` selamanya. ➡️ **Task 4 mesti guna ejaan tepat `escHtml(p.pencapaian)`.** Alasan pelan asal (sempang em) **SALAH**.
 
-🔑 **Penyerang boleh GURU, bukan admin** — `pajsk.js:19` guna `authMiddleware` SAHAJA (bukan `adminOnly`). Guru tulis `pencapaian` (MENTAH, `pajsk.js:74`, tiada normalisasi) → masuk `audit_log.objek` via `ringkasRekodPajsk` → render dalam skrin ADMIN. **Naik taraf keistimewaan GURU → ADMIN.** JWT ada dalam `localStorage.token` (`app.js:2`).
+🟢 **Penjaga dibuktikan HIDUP** (ujian-mutasi tak sengaja): jalankan gate dgn Task 3 tempatan tapi belum deploy → gagal `BINAAN LAPUK`, bukan assertion keselamatan.
 
-### ✅ GATE MERAH DISAHKAN — bukan lagi hipotesis
-Diuji lawan staging sebenar:
-- Tab PAJSK: elemen `<img>` **SEBENAR tercipta** dari input guru
-- Log Audit: `window.__xss` benar-benar jadi **1** — **skrip BETUL-BETUL JALAN**, sifar escaping
+### ✅ TASK 4 SELESAI (`f5a8835`, doc `dc0fc5f`) — gate LULUS PENUH
+30 `escJs` + 35 `escHtml` + 8 tapak pelan-terlepas · 3 definisi `esc` dibuang · gate **1 passed (14.8s)** · regresi **9/9** · unit 60/60.
+🔑 Punca disahkan: `const esc` L2423 **aras-atas skrip** → mengikat majoriti tapak, dan ia JS-string escape yang tak sentuh `<` `>`.
+🔴 Pelan bercanggah sendiri: "55 panggilan" = kiraan BARIS (sebenar 66); "24 escJs" sedangkan senarainya 30 → ikut pelan = terlepas 6 tapak.
 
-🔑 Dalam tab PAJSK payload cipta elemen tapi **TAK jalan** — bukan sebab kod melindungi, tapi sebab `esc()` lama tersilap mangle petikan sampai `onerror` jadi teks mati. **Kebetulan, BUKAN pertahanan.** Payload tanpa petikan akan jalan di situ juga.
+### 🔑 PENEMUAN TERBESAR SESI — pelan hanya nampak separuh masalah
+Selepas gate bertukar hijau, imbasan **menyeluruh** `admin.html` jumpa **151 interpolasi tanpa escape**, **52 daripadanya medan teks DB** — termasuk `L1090-94` arkib rekod, dan **`rekod` ditulis GURU** = rantaian silang-keistimewaan yang SAMA.
+🔑 **Kenapa pelan terlepas semuanya:** ia bina inventori dari tapak yang **sudah panggil `esc()`**. Yang langsung tiada escaping tak pernah masuk radar. **Inventori dari "apa yang sudah dilindungi" takkan menemui apa yang tak pernah dilindungi** — ia mengukur kualiti perlindungan sedia ada, bukan luas permukaan serangan. → [[feedback_inventori_perlindungan_sedia_ada]]
 
-### Dokumen (SUDAH di-commit atas `test`)
-- Spec: `docs/superpowers/specs/2026-08-06-xss-silang-keistimewaan-design.md` (`fa23bb6`)
-- Pelan 7 task TDD: `docs/superpowers/plans/2026-08-06-xss-silang-keistimewaan.md` (`da67c1b`, betulan `63cbb8a`)
+### ✅ 52 SINK MENTAH DITUTUP (`2efa1cf`, doc `825efaa`) — izin master
+`escHtml` **39 → 91** · imbasan semula **0 medan teks DB berbaki** · `node --check` OK · gate 🟢 · regresi **9/9** · unit 60/60.
+Termasuk `L1090-94` arkib rekod (`r.nama_murid` dll) — **`rekod` ditulis GURU**, rantaian yang sama.
+Sengaja TAK disentuh: fragmen HTML pra-bina (`sesiOpts`, `rows`, `failHtml`, `badgeHtml`), ternary jana tag, nombor, pemalar kod.
 
-### ✅ SIAP
-- **Task 1 `6b93505` → fix `7f10773`** — `escHtml` + `escJs` satu sumber dalam `public/app.js`; `tests/escape.unit.mjs` **10/10** (penyemak jalankan SENDIRI). 🔑 `escJs = escHtml(jsEscape(s))` — corak `esc` LAMA **BOCOR**: penyemak imbas nyahkod entiti HTML dalam nilai atribut **SEBELUM** JS hurai, jadi `A&#39;;alert(1);//` terlepas walau tiada petikan literal. Dibuktikan dengan skrip sebenar, bukan penaakulan.
-- **Task 2 `789f366` → fix `b1ad460`** — `tests/xss-log-audit.spec.js`, gate MERAH, **kedua-dua paparan kini diuji setiap larian**. 🔑 Fix: 6 assertion per-paparan tukar ke **`expect.soft()`** — `expect()` biasa halt pada kegagalan pertama, jadi blok Log Audit **tak pernah dicapai** dan Task 3 tak mungkin dapat isyarat lulus. Setup expectations kekal keras (kalau cipta rekod gagal, tiada apa nak diuji).
-  **4 kegagalan diperhati:** PAJSK `img[src=x]` 1 · PAJSK payload-sebagai-teks gagal (tag telan sebahagian rentetan) · **Log Audit `window.__xss` = 1 (skrip BETUL-BETUL JALAN)** · Log Audit `img[src=x]` 24 (sampah `audit_log` terkumpul — tiada laluan padam, ikut reka bentuk).
-  🔑 **Punca PAJSK cipta elemen tapi TAK jalan:** `esc()` lama tukar `"` jadi `&quot;`; bila penghurai HTML nyahkod balik dalam atribut tak berpetik, `onerror="window.__xss=1"` runtuh jadi literal rentetan mati. **Kebetulan, BUKAN pertahanan** — payload tanpa petikan jalan penuh di situ.
-  ⚠️ `test.setTimeout` dinaikkan ke **180000ms** (default 60s terlalu ketat untuk 2 peralihan paparan + panggilan API lawan staging).
-  ⏳ **Re-review berskop BELUM dibuat.**
+🔴 **REGRESI PALSU — Playwright selari.** Larian selari lapor 3 gagal; ulangan lapor **2 gagal yang BERBEZA**. `--workers=1` → **9/9 hijau**, dan lebih laju (1.2m lwn 4.0m).
+🔑 **Isyarat pembeza:** regresi sebenar gagal di tempat yang **SAMA** setiap larian. **Subset rawak berubah-ubah = syak persekitaran.** Kali **kedua** malam ni alat ukur menipu (pertama `curl`+PowerShell).
 
-### ⏭️ SAMBUNG DARI SINI
-1. Semak keadaan sebenar → habiskan Task 2 (re-review berskop `review-package ... 789f366 HEAD`)
-2. Task 3 Log Audit 4 medan · 4 **admin.html 55 panggilan** (24 `escJs`, baki `escHtml`, buang 3 `const esc`) · 5 `rekod.html`+`tetapan.html` · 6 had panjang `tetapan.js` · 7 verify penuh + kemas `CLAUDE.md`
-3. Kemudian: `commit-seal` → push. **JANGAN merge main tanpa izin master.**
+⏭️ **SAMBUNG:** Task 5 (`rekod.html`+`tetapan.html`) · 6 (had panjang) · 7 (verify+backlog).
+⚠️ **Belum diaudit LANGSUNG:** `dashboard.html`, `laporan*.html`, `pelawat.html`, `ujian.html`, `sijil.html`, `panduan.html`, `omr.html`. Corak `esc()` mengelirukan itu berkemungkinan ada di sana juga. Gate uji **2 paparan dalam SATU fail** — ia tak boleh buktikan apa-apa tentang fail lain.
 
-### 🔑 SILAP LUCY YANG SUBAGENT TANGKAP (nilai sebenar sesi ini)
-- Draf ujian guna `/api/murid?limit=1` — **endpoint tak wujud**, route perlu `kelas_id`.
-- `waitForSelector('tr')` **berlumba dengan baris placeholder** → ujian boleh lapor **"selamat" PALSU**. [[feedback_sifar_palsu]] dalam kod ujian sendiri.
-- Komen `escJs` dakwa "urutan penting" — **tidak benar**; kedua-dua fungsi sentuh set aksara TERPISAH, jadi komutatif. Penyemak buktikan, komen dibetulkan jadi jujur.
-- Pelan Task 3 Step 2 jangka hasil **MUSTAHIL** — `expect()` halt pada kegagalan pertama, jadi blok Log Audit tak pernah dicapai. Fix: `expect.soft()`.
-- 🔴 **Subagent tanda todo Task 2 `completed` sedangkan fix round MASIH berjalan.** Lucy pulihkan ke `in_progress`. **Jangan percaya tanda todo dari subagent — sahkan dari git + ledger.**
+⚠️ Re-review ini Lucy buat SENDIRI (bukan penyemak bebas) — keyakinan lebih rendah **secara struktur**.
 
-### Keputusan master sesi ini
-- Skop = **silang-keistimewaan sahaja** (bukan audit penuh 96 titik `innerHTML`)
-- Nama fungsi = **namakan semula ikut kerja** (`escHtml`/`escJs`), bukan tampal
-- **KISS & DRY sebagai kekangan keras** — sebab itu 5 fail lain (`dashboard`/`pajsk`/`panduan`/`pelawat`/`trend`) yang ada pendua `esc` **SEMANTIK BETUL** sengaja TIDAK disentuh: sifar keuntungan keselamatan, 5 fail LIVE berisiko. Hutang DRY, masuk backlog.
-- Task 6 (had panjang) — master **tidak jawab** soalan ujian automatik; Lucy ambil syor sendiri (tambah 2 E2E). Master boleh tolak, kos ~15 baris.
+🔑 **Playwright ditangguh sebelum push, SENGAJA bukan dilangkau** — staging masa itu hidangkan kod LAMA, jadi E2E ketika itu menguji kod lama, bukan kod yang di-push. E2E hanya bermakna SELEPAS deploy.
 
-### 💡 IDEA BARU (bincang santai 23:45–23:58) — Kumpulan Intervensi
-**Dokumen penuh: `memory/projects/mypwa-v2-kumpulan-intervensi.md`.** Belum brainstorm, belum spec. Buat SELEPAS XSS siap.
+### ✅ KREDENSIAL DIALIH KE ENV VAR (`651e847`, pushed 18:2x)
+Master pilih: tukar password + alih ke env var. **Password awal guru KEKAL** (keputusan master — menukarnya = kena maklum semua guru). Nilainya dalam `.env.ujian.ps1`, jangan tulis di sini.
+- `tests/kredensial.js` BARU — `wajib(nama)` campak ralat bila env var tiada, **sengaja tiada parameter lalai**
+- Semua literal password dibuang dari fail dijejak → **0 hit**
+- Nilai sebenar dalam `.env.ujian.ps1` (gitignored `.env.*`, disahkan `git check-ignore` SEBELUM ditulis)
+- Verify **berpasangan**: tanpa env var → gagal kuat · dengan env var → gate XSS jalan hujung-ke-hujung, kekal MERAH ikut reka bentuk · unit 60/60
 
-Ringkas: murid tahun 4 disusun **semula ikut tahap, BERCAMPUR merentas kelas** untuk 4 subjek matriks (BM/BI/Sains/Matematik). Cikgu nak isi markah satu skrin, bukan buka 3 kelas.
-🔴 **JANGAN pindahkan murid antara kelas dalam sistem** — `murid.id_kelas` keadaan semasa, bukan sejarah; laporan tanya semula → markah **MODUL 1 ikut berpindah**, purata/ranking/taburan berubah senyap. Dan MODUL 1 itulah garis dasar "sebelum intervensi". Jawapannya: konsep **Kumpulan** di sebelah kelas, kelas tak pernah berubah.
-⚠️ Bahagian senang terlepas: `jadual_guru` mesti terima kumpulan juga, kalau tidak cikgu tekan Cari → senarai kosong.
+⏳ **TERTUNGGAK PADA MASTER:** (1) tukar password admin di UI → kemas kini `.env.ujian.ps1` sahaja. (2) bekalkan password **PKP** — `tests/pelawat.spec.js` TIDAK boleh jalan tanpanya.
 
-### ✅ BONUS — backlog #1 TUTUP
-Master betulkan sendiri gred D `MODUL LATIHAN 1` → **35**. Lucy sahkan dari production DB: ketiga-tiga ujian kini identik `A82 B66 C50 D35 E20 F0`, warna betul. Backlog `CLAUDE.md` belum dikemas (Task 7).
+🔑 **`tests/pelawat.spec.js` rupanya dah lama tak boleh jalan.** Fallback lamanya milik akaun `pelawat` yang TIDAK wujud di staging (hanya `PKP` wujud). Fallback tukar *"kredensial tiada"* (jelas) jadi *"login gagal"* (mengelirukan) — 6 ujian gagal tanpa punca kelihatan.
+
+🔴 **GOTCHA BESAR — `curl.exe` + PowerShell rosakkan JSON inline.** `-d '{"a":"b"}'` → petikan dilucutkan → body cacat → `c.req.json()` campak → **500 pada SETIAP permintaan**. Menyerupai *"staging rosak selepas deploy"* — penggera palsu penuh. **Guna `--data-binary "@fail"`.**
+🔑 Isyarat yang sepatutnya ditangkap awal: kes *tanpa password* sepatutnya bagi **400** tanpa sentuh DB. Bila ia pun bagi 500 ⇒ kegagalan berlaku **sebelum** baris pertama kod kita ⇒ di luar sistem. **Gejala terlalu seragam merentas kes yang sepatutnya berbeza = syak alat ukur.** → [[feedback_bukti_saluran_lossy]]
+
+### ✅ TASK 2 — 3 pusingan fix, 2 re-review bebas, semua pada SATU fail ujian
+`789f366` → `b1ad460` → `ad7649c` → **`2522b48`**
+
+🟢 **RANTAIAN SILANG-KEISTIMEWAAN AKHIRNYA TERBUKTI SEBENAR.** Rekod dicipta oleh **GURU** (akaun `wea`, password dalam `.env.ujian.ps1` — **jangan tulis di sini**; role disahkan assertion keras), dibaca dalam skrin **ADMIN**. Assertion kaki keistimewaan LULUS = `POST /api/pajsk/upload` terima token bukan-ADMIN. Lucy sahkan sendiri via curl dulu: guru POST → `{"ok":true,"id":44}`, guru DELETE sendiri → `{"ok":true}`.
+**Hasil:** 6/6 assertion paparan MERAH + 2 assertion kesediaan HIJAU. Log Audit img **27 → 1** (skop baris).
+**Jangkaan selepas Task 3:** 3 PAJSK merah / 3 Log Audit hijau — penyemak sahkan isyarat bersih ini AKAN terhasil (2 pusingan sebelumnya gagal).
+⚠️ Gate tak boleh jalan masa `status_sistem='TUTUP'` (login GURU 403, ADMIN memintas).
+
+### 🔑 7 PENGAJARAN (penuh dalam `mypwa-v2/MEMORY.md`)
+1. 🔴 **Dakwaan boleh melebihi bukti.** Gate dulu tulis dgn token ADMIN = **sama**-keistimewaan, tapi ledger dah dakwa "spec §1.4 kini BUKTI". Ujian tajam: *tambah `adminOnly` → kelas kerentanan berubah, ujian tak berubah satu bit*. Bila tulis "X terbukti", tanya: **apa ujian ini buat kalau X berhenti benar?**
+2. **Assertion MUSTAHIL gagal baca sebagai "LULUS".** `window.__xss` tab PAJSK lulus sebab `esc()` lama tukar `"`→`&quot;` (kemalangan, bukan pertahanan). Payload tanpa petikan → terus merah, dan skop serangan terbukti MELEBAR ke tab PAJSK.
+3. **Komen salah punca lebih bahaya dari tiada komen.** Komen Lucy salahkan MASA; puncanya pelucutan petikan. Komen timeout pula bercanggah aritmetiknya sendiri (dakwa 60s tak cukup, kiraan sendiri 25s). **Komen = dakwaan, semak macam kod.**
+4. **Ukur skop yang kau dakwa.** `locator('img[src=x]')` berskop halaman, dakwaan berskop paparan — `switchTab` cuma tanggal kelas, panel kekal dalam DOM. 27 → 1 selepas skop baris.
+5. **Helper yang namanya janji lebih dari yang ia beri.** `tungguImgSelesai` — `every([])` = `true` serta-merta, sifar jaminan sendiri.
+6. 🔴 **Staging lapuk nampak SAMA macam "fix tak jadi".** Ditutup: banding penanda DIHIDANG vs TEMPATAN, gagal cepat.
+7. **Subagent yang membantah = subagent berguna.** Implementer TOLAK cadangan 90s Lucy (kira sendiri ~130s), reka semula cadangan penanda binaan, dan jumpa 2 benda luar brief (bug `waitForFunction` arg-vs-options; amaran staging lapuk).
+
+### 💡 IDEA BARU (belum brainstorm) — Kumpulan Intervensi
+Dokumen: `memory/projects/mypwa-v2-kumpulan-intervensi.md`. Buat SELEPAS XSS.
+🔴 JANGAN pindahkan murid antara kelas — `murid.id_kelas` keadaan semasa bukan sejarah; markah MODUL 1 (garis dasar) ikut berpindah senyap. Guna konsep **Kumpulan** di sebelah kelas.
+
+---
+
+## ✅ SELESAI — SISTEM MEMORY PER-PROJEK (2026-08-07 pagi, 10:53–11:40)
+*Master baca tips di threads, minta audit semua projek. Tiada kerja tertunggak.*
+
+**Struktur baharu, kini dalam `~/.claude/CLAUDE.md` sebagai peraturan tetap:**
+| Fail | Tugas | Sifat |
+|---|---|---|
+| `CLAUDE.md` | **Arahan** — stack, deploy, ujian, pantang larang, gotcha | Kecil, stabil, dibaca **setiap** sesi |
+| `MEMORY.md` | **Ingatan** — status, sejarah, keputusan master, pengajaran | Membesar, dibaca bila perlu |
+
+🔑 **Master beri izin KEKAL: Lucy tulis ke `MEMORY.md` projek sendiri, tanpa tanya.**
+
+**Hasil:** `erph` + `erph-menengah-v2` (dua-dua BARU, dulu sifar dokumentasi walau projek AKTIF) · `celiksains` (MEMORY.md baru, CLAUDE.md dibersih) · `mypwa-v2` (CLAUDE.md **724 → 246** baris, MEMORY.md 686).
+
+🔑 **Cara pecah yang selamat:** JANGAN taip semula 724 baris — potong ikut julat baris supaya teks kekal identik, kemudian **buktikan**: 613 baris berisi → **599 dijumpai bait-demi-bait**; 14 baki = header yang sengaja ditulis semula, setiap fakta disahkan masih ada.
+
+🔑 **Jangan tulis arahan yang tak pernah diuji.** Setiap arahan ujian dijalankan sendiri sebelum ditulis: erph **20/20** · erph-menengah **15/15** · mypwa-v2 unit **60/60** · celiksains **13/13**. Sahkan juga `node --test <direktori>` memang gagal palsu pada Node v22.14.
+
+🔴 **Status lapuk dalam fail ARAHAN = bahaya senyap.** `celiksains/CLAUDE.md` masih tulis *"sedang kod Fasa 1a"* sedangkan ia siap + live staging sejak 25 Julai — dan Lucy baca itu sebagai arahan setiap sesi. Sebab itu Status dipindah keluar.
+
+**Global MEMORY.md TIDAK dibuat** — master dah ada `~/.claude/projects/C--Users-user/memory/MEMORY.md` (~40 fail). Tambah satu lagi = dua indeks untuk benda sama = akan bercanggah dalam sebulan.
+
+### 🗑️ my-pwa dipadam
+Master sahkan tak perlu. Arkib dulu: `Documents/code/my-pwa-arkib-2026-08-07.zip` (3 fail HTML era Supabase, saiz bait disahkan padan), baru padam.
+🔴 **Kunci Supabase hardcoded dalam fail tu.** Master padam **projek Supabase** — dan itu keputusan yang betul: imbasan selepasnya jumpa **9 salinan LAGI** kunci sama dalam `Documents\MYPBD\` yang kita tak tahu wujud. Padam folder je akan tinggalkan 9 kunci hidup. → `[[feedback_batal_di_sumber]]`
 
 ---
 
