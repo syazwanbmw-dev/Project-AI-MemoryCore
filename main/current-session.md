@@ -1,14 +1,65 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
-## 🎯 TITIK SAMBUNG — mypwa-v2: TUTUP XSS SILANG-KEISTIMEWAAN — Task 4/7 SIAP (dikemas 2026-08-07 20:10)
-*Sesi panjang petang→malam via remote-control. Task 2, 3, 4 + audit di luar skop semuanya SIAP dan hidup di staging.*
+## 🎯 TITIK SAMBUNG — mypwa-v2: TUTUP XSS SILANG-KEISTIMEWAAN — Task 7 SEPARUH (dikemas 2026-08-08 ~00:20)
+*Sesi panjang petang→lewat malam. Task 2–6 SIAP. Task 7: verify SIAP, satu kerja diluluskan masih tertunggak.*
 
-**Repo `mypwa-v2`, branch `test` @ `825efaa` == `origin/test`** · working tree bersih · `main` @ `8d8bb84` — **production TIDAK disentuh langsung sepanjang sesi.**
+**Repo `mypwa-v2`, branch `test` @ `cfd0720` == `origin/test`** · working tree bersih · `main` @ `8d8bb84` — **production TIDAK disentuh langsung sepanjang sesi.**
+
+### 🟡 TASK 7 — apa yang SIAP malam ni
+Commit: `23655b7` (22 sink + guard) · `383e727` (2 ujian E2E mustahil lulus) · `9cd9687` (kerasan gelung) · `cfd0720` (docs)
+**Verify:** unit **83/83** · E2E selepas deploy **25 lulus / 0 gagal / 1 skip jujur** (3.8m) · verify **visual** popup cetak bersih · perambatan disahkan **per-fail** untuk 6 fail.
+
+🔴 **Ledger tersilap kira: 4 tapak sebenarnya 22 sink / 18 baris / 6 fail.** Puncanya ledger catat baris **UMPUKAN** (`laporan:689`, `trend:196`) bukan baris **RENDER** (`695`, `234`). `trend.html` sebenarnya sudah SELAMAT; `laporan-ujian.html:403` tak pernah disenaraikan. ➡️ **Cari SINK, bukan nama medan.**
+
+🔴 **`loginGuru()` dalam 2 spek sebenarnya log masuk ADMIN** (JWT: `TEST_USER`→ADMIN, `GURU_USER`→GURU). Punca = migrasi kredensial kita sendiri `651e847`. Dua skrin GURU **tidak diuji langsung** sambil laporan berbunyi "2 gagal sedia ada".
+
+🟢 Guard `tests/tetapan-render.unit.mjs` **dibuktikan boleh gagal dua cara**: merah pada 22 sink sebenar + ujian-mutasi lawan kod sebenar (`ujian.html:423`).
+
+### ⏭️ SAMBUNG DARI SINI — SATU kerja sahaja
+**Gate payload `rekod.html` + `tetapan.html`** — master **SUDAH LULUSKAN**, belum dikerjakan. ~1 jam (guna semula mesin `xss-log-audit.spec.js`). Tulis payload guna token ADMIN, baca sebagai GURU, pulih dalam `finally`.
+🔴 Sink sudah dibaiki ⇒ gate akan hijau serta-merta ⇒ **ujian-mutasi WAJIB**.
+
+⏳ **TERTUNGGAK PADA MASTER:** (1) password **PKP** — tanpanya `npx playwright test` tanpa argumen **gagal serta-merta** dan menghalang 12 fail spek lain. (2) password admin di UI (kemas `.env.ujian.ps1` sahaja).
+
+⚠️ **Belum diuji langsung:** blok cetak `dashboard.html` (skip JUJUR — data staging tiada subjek untuk guru itu) · `pelawat.spec.js` (6 ujian, tersekat PKP).
+
+### ✅ TASK 6 SELESAI (`ab17c52` + `3bb86cd`, doc `3043b6e`/`9daf1a4`) — had panjang + tolak jenis, `PUT /api/tetapan/:kunci`
+6 kunci teks bebas dahulu terima input **tanpa had langsung**. Master pilih **helper** (`src/utils/tetapan-had.mjs`) bukan objek inline ikut pelan → boleh diuji unit 0.1s tanpa rangkaian.
+Verify: unit **80/80** (naik dari 60) · E2E **4/4** · regresi **21/21** (2.6m) · `wrangler --dry-run` bersih.
+
+🔴 **TOLAK JENIS BUKAN-TEKS (keputusan master, pilihan a).** Diukur pada staging hidup dulu: `{"a":1}`→**500**, `["a","b"]`→**500**, `12345`→**200 tapi tersimpan `"12345.0"`**. **Kes ketiga paling bahaya sebab ia LULUS** — D1 simpan nombor sebagai REAL, jadi nilai yang KELUAR bukan yang MASUK; kerosakan hanya nampak bila orang buka halaman pendaratan. Semakan panjang mustahil tangkap (`String(12345).length` = 5). Kelas [[feedback_sifar_palsu]].
+
+🔑 **`semakPanjang` → `semakNilaiTeks`** — fungsi kini kuatkuasa jenis **DAN** panjang, jadi nama lama janji **kurang** dari yang ia buat. [[feedback_nama_fungsi_jaminan_palsu]] diterapkan **sebelum** ia menggigit, kali ketiga corak ini muncul dalam repo.
+
+🟢 **DUA ujian mutasi, bukan satu.** (1) Stub sengaja lulus semua → 11 terima hijau / 3 tolak merah. (2) E2E lawan staging **sebelum** deploy → `Expected: 400, Received: 200` — kerentanan disahkan pada **endpoint hidup**, bukan dibaca dari kod. Selepas deploy 3/3 hijau. **Merah→hijau atas kod ujian yang SAMA.**
+
+🔑 **Had dipilih terhadap DATA SEBENAR** (dibaca `GET /api/tetapan/landing`, endpoint AWAM, prod+staging): 24/29/27/47/59 aksara lwn had 120/200/80/500/500 — ruang lega paling ketat 3×. Nilai sebenar itu **dikodkan sebagai ujian terima**.
+
+🔑 **PAGAR LAPISAN** — unit menuntut payload XSS pendek **DITERIMA**. Kalau ia merah, seseorang pasang tapisan aksara di lapisan salah, dan tapisan itu akan tolak `SAINS & MATEMATIK` juga.
+
+🔴 **Pelan tak diikut bulat-bulat, dan betul begitu:** arahan `curl` Step 2 campur bash `$(printf ...)` dengan PowerShell `$env:...` dalam baris SAMA — tiada shell faham. Ganti dgn E2E automatik (selaras keputusan pra-terbang ledger).
+
+⚠️ **JUMPAAN BARU untuk Task 7:** `logo_sekolah` tanpa escape dalam `pajsk.html:814`, `laporan-ujian.html:498`, `laporan.html:689`, `trend.html:196`; `hero_image` masuk CSS `url()` di `index.html:599` (**halaman AWAM, sebelum log masuk**). Had panjang **tidak** tutup kelas ni — `javascript:` muat selesa dalam 500 aksara. Penulis = ADMIN sahaja (keterukan lebih rendah), tapi `hero_image` dipapar kepada pelawat **tidak berautentikasi**.
 **Ledger SDD: `.superpowers/sdd/2026-08-06-xss-silang-keistimewaan/progress.md`**
 🆕 **BACA `mypwa-v2/MEMORY.md` DULU bila sambung** — ia lebih terperinci daripada fail ini. Ledger untuk butiran per-task.
 
-**Urutan commit sesi ini:** `5f726af` push · `651e847` kredensial→env var · `8808102` backlog · `a802a84` **Task 3** · `4b3b909` doc · `f5a8835` **Task 4** · `dc0fc5f` doc · `2efa1cf` **52 sink** · `825efaa` doc
+**Urutan commit sesi ini:** `5f726af` push · `651e847` kredensial→env var · `8808102` backlog · `a802a84` **Task 3** · `4b3b909` doc · `f5a8835` **Task 4** · `dc0fc5f` doc · `2efa1cf` **52 sink** · `825efaa` doc · `254524f` **Task 5** · `e39e05a` doc
+
+### ✅ TASK 5 SELESAI (`254524f`, doc `e39e05a`) — `rekod.html` + `tetapan.html`
+Definisi `esc` **ketiga + keempat** dibuang → nama `esc` kini **tiada sebagai definisi** dalam mana-mana fail `public/`.
+Pelan asal 9 panggilan (rekod 6 → 2 `escHtml` `data-sk` + 4 `escJs` `onclick`; tetapan 3 → `escJs`) **+ 17 sink mentah** yang pelan tak pernah senaraikan.
+Verify: `0 esc(` berbaki · `node --check` OK · unit **60/60** · gate 🟢 15.9s · regresi **17/17** (2.7m, `--workers=1`) termasuk a11y `rekod`+`tetapan` 0 violation.
+
+🔑 **KETERUKAN LEBIH RENDAH dari admin.html — disemak, bukan diandai.** Route tulis `murid`/`kelas`/`subjek`/`sesi`/`kurikulum` **semua `adminOnly`**; pembaca dua skrin ini = **GURU**. Arah **admin → guru = TURUN keistimewaan**. Pengerasan berlapis, **BUKAN** rantaian eskalasi. Sengaja TIDAK dilapor sebagai "tutup lubang silang-keistimewaan".
+
+🔴 **Pelan silap kira BARIS sebagai TAPAK — kali KEDUA** ("+3"/"+2" sebenar 6/3; Task 4 "55" sebenar 66). ➡️ Dalam pelan ini **angka tapak tak boleh dipercayai — kira sendiri dari kod**.
+
+🔑 **SEMAKAN BACA-BALIK (hampir terlepas).** Nilai di-escape dibaca semula di `dataset.sk` L249, `selSesi.value` L268, `selectedOptions[].text` L392-393. Parser HTML nyahkod entiti → rentetan ASAL dipulangkan → perbandingan padan, `SAINS & MATEMATIK` OK. **Kalau andaian ini salah: dropdown tak pernah padan, TIADA ralat, TIADA ujian merah.** → [[feedback_escape_atribut_baca_balik]]
+
+⚠️ **PERAMBATAN DEPLOY PER-FAIL.** Semakan pertama: `rekod.html` baharu tapi `tetapan.html` **masih LAMA** — commit SAMA, beza beberapa saat. E2E ketika itu = uji kod lama sambil lapor hijau. **Sahkan SETIAP fail diubah, bukan satu wakil.** → [[feedback_perambatan_deploy_per_fail]]
+
+🔴 **BELUM DIBUKTIKAN:** tiada ujian hantar **payload bermusuh** melalui dua skrin itu. 17/17 buktikan aku tak merosakkan apa-apa; ia **tidak** buktikan escaping menangkis serangan di sana. ➡️ **Keputusan master perlu dalam Task 7:** tambah gate payload (kena tulis data bermusuh ke DB staging) **atau** terima sedar sebab arahnya turun-keistimewaan.
 
 ### ✅ TASK 2 + TASK 3 SELESAI — isyarat bersih tercapai (`4b3b909`)
 Re-review `2522b48` **DILULUSKAN** → Task 2 ✅ → Task 3 `a802a84` ✅ hidup staging.
@@ -41,8 +92,12 @@ Sengaja TAK disentuh: fragmen HTML pra-bina (`sesiOpts`, `rows`, `failHtml`, `ba
 🔴 **REGRESI PALSU — Playwright selari.** Larian selari lapor 3 gagal; ulangan lapor **2 gagal yang BERBEZA**. `--workers=1` → **9/9 hijau**, dan lebih laju (1.2m lwn 4.0m).
 🔑 **Isyarat pembeza:** regresi sebenar gagal di tempat yang **SAMA** setiap larian. **Subset rawak berubah-ubah = syak persekitaran.** Kali **kedua** malam ni alat ukur menipu (pertama `curl`+PowerShell).
 
-⏭️ **SAMBUNG:** Task 5 (`rekod.html`+`tetapan.html`) · 6 (had panjang) · 7 (verify+backlog).
-⚠️ **Belum diaudit LANGSUNG:** `dashboard.html`, `laporan*.html`, `pelawat.html`, `ujian.html`, `sijil.html`, `panduan.html`, `omr.html`. Corak `esc()` mengelirukan itu berkemungkinan ada di sana juga. Gate uji **2 paparan dalam SATU fail** — ia tak boleh buktikan apa-apa tentang fail lain.
+⏭️ **SAMBUNG:** ~~Task 5~~ ✅ · ~~Task 6~~ ✅ · **Task 7 (verify penuh + kemas backlog, termasuk keputusan gate payload rekod/tetapan)** — tugas terakhir pelan.
+⚠️ **BELUM DIAUDIT LANGSUNG — 12 fail.** Dikira dari `ls public/*.html` (15 fail) tolak 3 yang sudah diaudit menyeluruh (`admin`, `rekod`, `tetapan`):
+`dashboard` · `index` · `laporan` · `laporan-ujian` · `omr` · `pajsk` · `panduan` · `pelawat` · `profil` · `sijil` · `trend` · `ujian`
+Gate uji **2 paparan dalam SATU fail** — ia tak boleh buktikan apa-apa tentang 12 fail lain.
+
+🔴 **ANGKA LAMA SEMUANYA SALAH — dan puncanya sama setiap kali.** Catatan pernah tulis 9, kemudian 7, kemudian aku "betulkan" jadi 9 lagi (2026-08-07 21:2x). Semuanya salah. Senarai asal tak pernah mengandungi `index.html`, `pajsk.html`, `profil.html`, `trend.html` — jadi setiap pembetulan yang bermula dari **senarai lama** mewarisi kekurangan yang sama. ➡️ **Kira dari `ls public/*.html`, jangan dari catatan.** [[feedback_inventori_perlindungan_sedia_ada]] berulang satu lapisan lebih tinggi: bukan lagi "inventori dari perlindungan sedia ada", tapi **"inventori dari inventori"**.
 
 ⚠️ Re-review ini Lucy buat SENDIRI (bukan penyemak bebas) — keyakinan lebih rendah **secara struktur**.
 
@@ -377,8 +432,11 @@ Pemain: 6 DELIMA 2 · 6 TOPAZ 4 · 6 ZAMRUD 6 — semua lelaki, Peserta, Daerah.
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-06 (19:33–23:34) — **mypwa-v2: TUTUP XSS SILANG-KEISTIMEWAAN, Task 2/7, BELUM SIAP.** Branch `test`, `HEAD=789f366`, **belum push**. Spec + pelan 7 task di-commit. Task 1 siap (10/10). **Gate MERAH DISAHKAN — XSS betul-betul jalan pada staging.** Punca sebenar: DUA fungsi bernama `esc()` semantik berbeza; `admin.html:2423` ikat 55 panggilan. Penyerang boleh **GURU**, bukan admin. 🔴 Sesi tamat semasa subagent Task 2 fix round MASIH jalan — **semak `git status` + ledger DULU**. Bonus: backlog `MODUL LATIHAN 1` D:36 → **35 disahkan tutup**. Lihat blok TITIK SAMBUNG paling atas.
-**Last Work Activity**: 2026-08-06 (~23:34 — master minta berhenti, memory dikemas)
+**Current Session**: 2026-08-07 (petang→malam, ~13:00–21:35) — **mypwa-v2: TUTUP XSS SILANG-KEISTIMEWAAN, Task 2–6 SIAP, tinggal Task 7.** Branch `test` @ **`c169d02`** == `origin/test`, working tree bersih, **`main` @ `8d8bb84` TIDAK disentuh**. Task 2 (gate merah, 3 pusingan fix) · 3 (Log Audit) · 4 (admin.html 73 tapak) · **52 sink mentah di luar pelan** · 5 (rekod+tetapan, +17 sink) · **6 (had panjang + tolak jenis `PUT /api/tetapan/:kunci`)**. Unit **80/80**, E2E regresi **21/21**. Kredensial dialih ke env var (`tests/kredensial.js` + `.env.ujian.ps1`). 🔴 Baki: **Task 7 sahaja** + **12 fail HTML belum diaudit** (dikira dari `ls`, angka lama 9/7 salah). Lihat blok TITIK SAMBUNG paling atas.
+**Last Work Activity**: 2026-08-07 (~21:35 — master minta kemas session + memory)
+
+**(rekod sebelum ini)** 2026-08-06 (19:33–23:34) — **mypwa-v2: XSS Task 2/7.** `HEAD=789f366`, belum push. Gate MERAH disahkan; punca DUA fungsi `esc()` semantik berbeza. Diteruskan dan diselesaikan dalam sesi 2026-08-07.
+**Last Work Activity**: 2026-08-06 (~23:34)
 
 **(rekod sebelum ini)** 2026-08-06 (10:34–18:38) — **mypwa-v2: SKALA GRED DEFAULT ✅ LIVE PRODUCTION.** `main==test==8d8bb84`. Subagent-Driven 8 task, 7 fix round, unit 50/50 + E2E staging 6/6 + smoke production bersih.
 **Last Work Activity**: 2026-08-06 (~18:38 — memory dikemas selepas deploy production disahkan)
