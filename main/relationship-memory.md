@@ -65,6 +65,8 @@ _(akan diisi bila master share)_
 - **Password admin** akan ditukar sendiri oleh master melalui UI — Lucy tidak menukarnya.
 - **Izin KEKAL:** Lucy tulis ke `MEMORY.md` setiap projek sendiri, tanpa tanya.
 - **Sejarah git sengaja TIDAK ditulis semula** untuk rahsia lama — sebaik password ditukar, nilai lama tidak bernilai; risiko `force-push` lebih besar daripada faedahnya.
+- **Password admin SUDAH ditukar** (disahkan master 2026-08-08). Lalai `Admin@1234` dalam `seed.sql` **tidak** dibetulkan sekarang — master pilih biarkan. Ia cuma relevan semula **bila pasang instance baharu**; pembetulan sebenar = paksa tukar pada log masuk pertama, bukan padam baris dokumen.
+- **Master beri izin merge production bila bukti mencukupi** — pada 2026-08-08 master pilih **jalankan suite penuh dahulu** sebelum merge, walaupun kesimpulan "persekitaran" sudah terbukti. ➡️ Corak: master mahu **garis dasar hijau penuh** sebelum menyentuh sekolah sebenar, bukan sekadar hujah yang meyakinkan.
 
 ---
 

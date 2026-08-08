@@ -1,10 +1,65 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
-## 🎯 TITIK SAMBUNG — mypwa-v2: TUTUP XSS SILANG-KEISTIMEWAAN — Task 7 SEPARUH (dikemas 2026-08-08 ~00:20)
-*Sesi panjang petang→lewat malam. Task 2–6 SIAP. Task 7: verify SIAP, satu kerja diluluskan masih tertunggak.*
+## 🎯 TITIK SAMBUNG — mypwa-v2: XSS SILANG-KEISTIMEWAAN ✅ **SELESAI & LIVE PRODUCTION** (dikemas 2026-08-08 10:30)
+*Sesi malam 06–08 Ogos menyiapkan Task 1–7; sesi pagi 08 Ogos (07:59–10:30) menutup verify pra-merge dan menghantarnya ke production.*
 
-**Repo `mypwa-v2`, branch `test` @ `cfd0720` == `origin/test`** · working tree bersih · `main` @ `8d8bb84` — **production TIDAK disentuh langsung sepanjang sesi.**
+**Repo `mypwa-v2`: `main` @ `8542f96` == `origin/main` = APA YANG HIDUP di `erpm-sksalor.celikguru.my`.**
+`test` @ `88be429` (satu commit **docs** di hadapan `main`) · working tree bersih.
+
+🟢 **Kerja XSS kini melindungi sekolah SEBENAR** — bukan lagi hijau di staging sahaja. Disahkan dari tingkah laku production, bukan timestamp.
+⏭️ **Satu-satunya kerja tertunggak: brainstorm Kumpulan Intervensi (langkah 4).** Tiada baki kerja XSS.
+
+### 🔴 SIGHT-HONE (`e936615`) — 4 isu dalam kod ujian yang baru diisytihar "verified"
+Master minta hone **selepas** gate dipush. Ia jumpa 4 isu, semuanya dalam kod aku sendiri:
+(1) `adaTempatan` tak di-assert ⇒ penanda binaan **mati senyap** · (2) bendera dibaca sebelum `<img>` selesai ⇒ **hijau palsu** · (3) `expect()` dalam pengendali `route` ⇒ halaman tergantung, timeout ganti diagnostik · (4) semakan binaan di HUJUNG `beforeAll`, selepas 5 baris berpayload ditulis.
+🟢 Dua guard baharu **dibuktikan boleh merah**: patah corak → `PENANDA MATI` + `3 did not run` (sekali gus buktikan fix #4) · mutasi ke `/app.css` → `MUTASI TIDAK MENGGIGIT` menamakan laluan tepat. Fail dipulihkan bait-demi-bait (md5 padan).
+🔑 **Isu 2 = kali KEEMPAT "memeriksa terlalu awal" dalam 24 jam.** Aku MENYALIN gate lama tapi tertinggal langkah tunggu-img yang gate itu sendiri dokumenkan panjang lebar. **Menyalin corak tidak menyalin sebabnya** — bahagian paling mudah tertinggal ialah bahagian yang wujud untuk masalah yang tidak kelihatan.
+🔑 **Gate boleh lulus semua ujiannya sendiri sambil guardnya separuh mati.** Hijau mengukur subjek ujian, bukan ujian itu sendiri.
+
+### ✅ TASK 7 DITUTUP — Gate payload `rekod.html` + `tetapan.html` (`a8555bf`, 01:2x)
+`tests/xss-rekod-tetapan.spec.js` — **fail ujian sahaja, sifar kod aplikasi berubah.** Master pilih **opsyen A** untuk ujian mutasi.
+Dua payload, dua konteks: `<img src=x onerror=…>` (HTML, melaksana masa **render**) + `');window.__xssJs=1;//` (rentetan JS dalam `onclick`, melaksana masa **KLIK**) — konteks kedua itu yang gate lama **mengaku sendiri** ia tak boleh ukur.
+🟢 **2 ujian mutasi KEKAL dalam suite:** `page.route` pintas dokumen dihidang, tukar `escHtml(`/`escJs(` → `String(`, assertion **yang sama** tuntut payload MEMANG melaksana (`toBe(1)`). Sink dah dibaiki ⇒ tanpa ini hijaunya sifar nilai.
+🔴 **Perangkap dijumpai masa reka bentuk:** `latest=1` tapis dengan `(SELECT MAX(tahun_sesi) FROM kelas)` — **GLOBAL**. Kelas ujian dengan `tahun_sesi` lebih tinggi akan sembunyikan kelas sebenar dari **SEMUA guru** staging, tanpa ralat. Nilai dibaca dari API, tak pernah ditaip. → [[feedback_tetingkap_global_agregat]]
+⚠️ Had diakui di kepala fail: **sifar liputan pecah-keluar pembatas atribut** (payload tiada `"`).
+🔑 Anggaran aku (**1.5–2 jam**) SALAH ke arah bertentangan — sebenar **~20 minit**. Aku kira setiap langkah persediaan sebagai kerja baharu, sedangkan majoritinya **salinan** corak gate sedia ada.
+**Verify:** unit **86/86** · gate baharu **4/4** (25.6s) · regresi **29 lulus / 0 gagal / 1 skip jujur** (2.8m, 12 fail spek) · staging disahkan **BERSIH dari API** (0 sisa, `MAX(tahun_sesi)` kekal 2026).
+
+### 🔓 PENGHADANG PKP DIBUKA (01:5x) — master bekalkan password
+Nilai masuk **`.env.ujian.ps1` SAHAJA** (`git check-ignore` disahkan **sebelum** tulis). **Jangan tulis nilainya di fail dijejak git.**
+🟢 **`npx playwright test` tanpa argumen berjalan buat kali PERTAMA** — dulu `wajib('PELAWAT_PASSWORD')` aras-atas modul melontar semasa pengumpulan, menghalang 12 fail spek lain.
+🟢 **`pelawat.spec.js` 6/6 LULUS** (tak pernah jalan sebelum ni) — termasuk 2 assertion **keselamatan**: PELAWAT tiada butang tulis · PELAWAT dilencong balik dari `admin.html`. Ini tutup jurang pra-merge paling teruk: `pelawat.html` BERUBAH dalam kerja 22-sink tapi sifar liputan.
+
+### ✅ 2026-08-08 PAGI (07:59–08:3x) — LANGKAH 1 & 2 SELESAI. Repo kini `c5da61a`.
+
+**1️⃣ 10 kegagalan suite penuh = PERSEKITARAN.** Ulangan 4 fail berasingan → **10 lulus · 1 skip · 1.5m**. Staging diprob **200 ~350ms ×3**.
+🔑 Larian ini membezakan sebab `workers: 1` sudah dalam config ⇒ 10 ujian itu di **kedudukan & turutan yang SAMA**; hanya **masa** berbeza. Ia juga pulih **di tengah larian** sambil 25 ujian selepasnya lulus — worker tumbang akan bunuh 25 itu juga.
+🔴 Pencetus tepat **tidak dapat disahkan** (`gh` tiada pada mesin) — dicatat sebagai *tak dapat dipulihkan selepas kejadian*, **bukan** "sudah tentu persekitaran".
+
+**2️⃣ Verify visual cetak SELESAI — TIGA susun atur, bukan dua.** `laporan-ujian.html` ada **dua** laluan cetak yang kedua-duanya berubah (`cetakLaporan` landskap + `cetakSemuaSlip` potret), tambah `pajsk.html` potret. Semua ✅ muat, imej **rosak 0** (1 · **93** · 1), sifar JS error, header/logo/tagline utuh, tiada entiti bocor. PDF sebenar dihantar kepada master.
+🔴 **SILAP AKU (ditangkap sendiri):** pusingan pertama lapor `laporan-ujian` **LIMPAH KERTAS** — PALSU. Laporan itu `@page { size: landscape }` (`:399`), aku render atas kertas **potret**. ➡️ **Baca `@page` DAHULU.** Alat ukur salah orientasi menuduh halaman yang elok.
+🔑 `pdftoppm` **dan** `pdftotext` **tiada pada PATH** — memory global tentang pdftotext tidak sah untuk mesin ini.
+🔑 `#lSelSesi` (pajsk) dalam tab bukan-lalai: **ada dalam DOM, tidak kelihatan** → timeout 30s. Log kata *"resolved to `<select>`"* **tapi** *"not visible"* = salah **keadaan**, bukan salah **pemilih**.
+⚠️ **HAD DIAKUI:** data staging tiada `&`/`<` dalam tetapan ⇒ ini buktikan escaping **tak merosakkan paparan**, BUKAN escaping **menangkis payload** di laluan cetak. Gate payload cetak masih tiada.
+
+**3️⃣ GARIS DASAR SUITE PENUH BERSIH (09:11).** **36 ujian · 34 lulus · 2 skip jujur · 0 gagal · 3.1m**, semua 13 fail spek jalan. Malam tadi 25/**10**/1 dalam **13.0m** — jumlah ujian SAMA (36) ⇒ suite yang sama, dan beza masa memadani ~10 timeout. Kesimpulan "persekitaran" **kekal**.
+🔴 Regex aku sendiri (`tests\\[a-z-]+\.spec\.js`) buang `a11y` sebab kelas aksara tiada digit → lapor 12 fail spek sedangkan 13. **Senarai jana-regex mesti disahkan terhadap kiraan diketahui.**
+
+**🔐 Kata laluan admin lalai — RENDAH, master pilih tak bertindak (08-08).** `seed.sql:11` = SHA-256('Admin@1234'), tertulis juga `seed.sql:6` + `CLAUDE.md:251`. **Tiada pendedahan hidup** (staging disahkan bukan lalai · master sahkan production ditukar · repo PRIVATE). 🔑 staging & production = **DUA D1 BERASINGAN** (`f87c8bbc…`/`0d2c2d33…`). ⏭️ Risiko **masa depan**: pemasangan baharu mula dengan lalai diketahui, tiada apa memaksa tukaran. Bangkitkan semula **bila pasang instance baharu**; fix sebenar = paksa tukar pada log masuk pertama.
+
+**4️⃣ ✅ MERGE + PRODUCTION LIVE (izin master ~09:40).** `main == test == origin == 8542f96`, fast-forward `8d8bb84..8542f96` (30 fail, +4162/−878). Deploy production via **Actions BERJAYA**. Perambatan disahkan **per-FAIL: 11/11 padan bait-demi-bait**. Verify tingkah laku di `erpm-sksalor.celikguru.my` (baca-sahaja, sifar tulisan): `200` · `escHtml`/`escJs` = **function** · `escHtml('<img…>&"')` → `&lt;img…&gt;&amp;&quot;` · `escJs` larikan petikan · **0 ralat JS**. Kerja XSS **berfungsi di sekolah sebenar**, bukan sekadar wujud.
+
+🔴 **TIGA PENGGERA PALSU DALAM SATU SEMAKAN — semuanya alat ukur, sifar masalah sebenar:**
+(1) output `curl` melalui **paip PowerShell** merosakkan kandungan → aku isytihar **"5/11 fail masih LAMA"** dan hampir lapor deploy separa kepada master; fail SAMA via `curl -o` ke cakera → **beza 0 aksara, 577/577 baris**. (2) md5 mentah gagal sebab pokok kerja **CRLF** lawan hidangan **LF**. (3) fungsi bernama `H` = alias terbina `Get-History`, jadi ia tak pernah dipanggil.
+🔑 **Isyarat yang sepatutnya hentikan aku awal:** penanda halus padan **sempurna** (`admin.html` escHtml **91/91**, escJs **38/38**) sedangkan perbandingan bait kata "lama" — **fail lapuk MUSTAHIL mengandungi kiraan penanda versi baharu**. Bercanggah pada arah yang mustahil ⇒ **syak alat ukur, bukan sistem**. → [[reference_curl_powershell_json]]
+🔑 `index.html` **tidak memuat `/app.js`** (macam `pelawat.html`) ⇒ `escHtml` memang tiada di halaman pendaratan, dan itu **BETUL**. Smoke test pertama gagal atas sebab yang salah. Untuk uji app.js dihidang: `addScriptTag({url:'/app.js'})`.
+⚠️ `npx wrangler deploy --env production` dari mesin ini **tak boleh** tanpa interaksi — OAuth tamat (`Failed to fetch auth token: 400`). Laluan Actions berfungsi; kalau perlu manual, master kena `npx wrangler login` dahulu.
+
+### ⏭️ SAMBUNG DARI SINI
+4. **Brainstorm Kumpulan Intervensi** — idea doc `memory/projects/mypwa-v2-kumpulan-intervensi.md`, 4 soalan reka bentuk belum dijawab.
+🟡 Backlog baharu (rendah): `pajsk.html:971` ada `esc()` tempatan walaupun `/app.js` dimuat. **Semantik BETUL** — pendua + langgar larangan nama, bukan lubang.
+⏳ **TERTUNGGAK PADA MASTER:** tukar password admin di UI (kemas `.env.ujian.ps1` sahaja).
 
 ### 🟡 TASK 7 — apa yang SIAP malam ni
 Commit: `23655b7` (22 sink + guard) · `383e727` (2 ujian E2E mustahil lulus) · `9cd9687` (kerasan gelung) · `cfd0720` (docs)
@@ -29,11 +84,8 @@ Verify: unit **86/86** · guard MERAH pada 2 tapak sebenar + ujian-mutasi (`lapo
 🔴 **TIGA KALI malam ni Lucy memeriksa TERLALU AWAL** — screenshot sebelum imej dimuat · `domcontentloaded` pada popup KOSONG (`window.open()` dipanggil SEBELUM `await`) · kira option sebelum fetch balik. ➡️ **Tunggu KANDUNGAN, bukan peristiwa muat.**
 🔴 Lapor "tiada data" pada DB yang ada **1542 rekod** — skrip terlepas klik butang "Muat Laporan". **Sahkan dari API bila UI kata kosong.**
 
-### ⏭️ SAMBUNG DARI SINI — SATU kerja sahaja
-**Gate payload `rekod.html` + `tetapan.html`** — master **SUDAH LULUSKAN**, belum dikerjakan. ~1 jam (guna semula mesin `xss-log-audit.spec.js`). Tulis payload guna token ADMIN, baca sebagai GURU, pulih dalam `finally`.
-🔴 Sink sudah dibaiki ⇒ gate akan hijau serta-merta ⇒ **ujian-mutasi WAJIB**.
-
-⏳ **TERTUNGGAK PADA MASTER:** (1) password **PKP** — tanpanya `npx playwright test` tanpa argumen **gagal serta-merta** dan menghalang 12 fail spek lain. (2) password admin di UI (kemas `.env.ujian.ps1` sahaja).
+### ✅ ~~SAMBUNG DARI SINI — SATU kerja sahaja~~ — SUDAH SIAP (`a8555bf`, lihat blok Task 7 di atas)
+Gate payload `rekod.html` + `tetapan.html` diluluskan master, **dikerjakan 2026-08-08 01:1x–01:2x**.
 
 ⚠️ **Belum diuji langsung:** blok cetak `dashboard.html` (skip JUJUR — data staging tiada subjek untuk guru itu) · `pelawat.spec.js` (6 ujian, tersekat PKP).
 
