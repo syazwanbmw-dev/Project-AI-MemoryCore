@@ -3,7 +3,80 @@
 
 ---
 
-## 🎯 TITIK SAMBUNG — mypwa-v2: T4 SIAP + ACTIONS PULIH (dikemas 2026-08-09 **08:5x**)
+## 🎯 TITIK SAMBUNG — mypwa-v2: **T5 + T8 SIAP** (dikemas 2026-08-09 **13:0x**)
+
+**Repo `test` @ `61e05cb` == `origin/test`** · `main` @ `8542f96` tidak disentuh.
+**Kumpulan Intervensi 8/10** — `T1`–`T8` ✅ · ⏳ `T9` `T10`. 🆕 **BACA `mypwa-v2/MEMORY.md` DULU.**
+
+### 🟢 T8 — SKRIN GURU SEDAR KUMPULAN (`61e05cb`)
+✅ **Amaran operasi T5 DITUTUP** — suis `guna_kumpulan` kini selamat dihidupkan dalam admin.
+Kunci komposit `K<id>`/`C<id>` (awalan huruf perlu: kumpulan 7 ≠ kelas 7, akan bertembung senyap) ·
+label ✦ · nota intervensi + lajur **Kelas Asal** skrin **dan** cetak · `simpanSemua()` hantar cap.
+
+🔴 **AKU ULANG KESILAPAN T5 DALAM TASK SELEPASNYA.** Rename `kelas_id` → `kunci` tertinggal
+`selSubjek.disabled = !kelas_id`. `node --check` lulus · `--dry-run` lulus · deploy berjaya ·
+dropdown DIISI tetapi kekal **disabled** — nampak macam "ujian ini memang tiada subjek".
+➡️ **Selepas SETIAP rename, grep nama LAMA dalam skop itu.** Menulis pengajaran ≠ memasangnya.
+🟢 Ditangkap oleh ujian pelayar yang ditulis **MERAH dahulu** — gagal pada langkah tepat.
+
+🔒 Pengerasan XSS: `m.nama` tanpa escape `:252` skrin + `:384` cetak (`escHtml` memang ada).
+ADMIN→GURU = **turun** keistimewaan ⇒ pengerasan, BUKAN tutup lubang silang-keistimewaan.
+Terlepas oleh kerja 22-sink kerana inventorinya dari medan `tetapan`, bukan dari **sink**.
+
+🟢 Fixtur diekstrak ke `tests/fixtur-kumpulan.js` (T5+T8, T10 nanti). Bukan sekadar elak salinan —
+setiap semakan "sahkan alat ukur sebelum mengukur" mesti terpakai kepada SETIAP spek. T5 kekal 5/5.
+
+**Verify:** merah 3/3 sebab masing-masing → hijau 3/3 · mutasi bunuh HANYA ujian cap · suite penuh
+**46/0/2** · staging kosong · disahkan atas binaan **Actions** `97420494` (9/9).
+**Visual cetak** (`@page` dibaca DAHULU = A4 portrait): kumpulan **5 lajur** sejajar, logo utuh,
+✦ terbawa, muat A4 · kelas kekal **4 lajur**.
+🔑 `pdftoppm` **tiada** pada mesin ni ⇒ `Read` PDF gagal. Guna `page.pdf()` + PNG `fullPage`
+viewport **794×1123** (A4 @96dpi) untuk ditengok.
+
+### ⏭️ SAMBUNG: **T9** (laporan/analisis/trend — suis "Papar ikut") → T10
+🔴 Baki: cap `kumpulan_id` **boleh dipalsukan** (master pilih kerja berasingan) · pagar tak semak
+`murid_id` tergolong dalam kelas/kumpulan guru.
+
+---
+
+## 🎯 ~~TITIK SAMBUNG~~ ✅ DISAMBUNG — mypwa-v2: **T5 SIAP** (dikemas 2026-08-09 **10:1x**)
+*Sesi pagi sambungan. Satu task (T5) ditutup + baki T4 `markah: []` → 500.*
+
+**Repo `mypwa-v2` branch `test` @ `5a27148` == `origin/test`** · working tree bersih ·
+`main` @ `8542f96` **tidak disentuh**. 🆕 **BACA `mypwa-v2/MEMORY.md` DULU.**
+
+### 📊 KEADAAN 10 TASK — **7 siap**
+`T1` ✅ · `T2` ✅ · `T3` ✅ · `T4` ✅ · **`T5` ✅ `5a27148`** · `T6` ✅ · `T7` ✅ · ⏳ `T8` `T9` `T10`
+
+### 🟢 T5 — LALUAN KUMPULAN (`/jadual`, `/murid`, cap COALESCE pada `/bulk`)
+🔑 **Pelan T5 akan bagi hijau palsu — bukan sebab assertion lemah, sebab TIADA DATA.**
+Kesemua 16 `ujian_item` staging ada `guna_kumpulan = 0`; Step 5 pelan ("laluan kelas tak
+regresi") tidak menyentuh cabang baharu walau sekali. Bila satu cabang hanya hidup di bawah
+keadaan yang tiada dalam data, fixture mesti **dicipta**, bukan dicari.
+🔑 **Pelan rujuk `laluan` yang tidak wujud** selepas T4 — dan `node --check` (Step 4 pelan)
+**tidak menangkapnya**: rujukan pengenal tak-terisytihar ialah sintaks **sah**, meletup sebagai
+500 pada runtime sahaja. ➡️ `node --check` sahkan fail boleh **dihurai**, bukan **dijalankan**.
+🔑 **Pembersihan dijerat oleh larangan KITA SENDIRI:** `DELETE /kumpulan/:id` = 409 selagi ada
+markah bercap (T3) ⇒ `afterAll` mesti padam **ujian dahulu** (cascade buang cap), baru kumpulan.
+🟢 Dua mutasi lawan kod sebenar, menggigit **berasingan** — perlu, sebab semasa merah ujian cap
+tersekat di hulu oleh `400` `/murid`, jadi ia tak pernah dilihat gagal atas sebabnya sendiri.
+**Verify:** merah 5/5 sebab masing-masing → hijau 5/5 kod sama · unit 99/99 · suite penuh
+**43/0/2** (2.6m, garis dasar paling bersih setakat ini) · staging kembali kosong selepas 8
+larian · disahkan semula atas binaan **Actions** `ecd206bb` (8/8).
+
+### 🔴 AMARAN OPERASI — JANGAN HIDUPKAN SUIS SEBELUM T8
+`ujian.html:181` kunci dropdown ikut `kelas_id`. Baris kumpulan (`kelas_id` NULL) ⇒ semua
+kumpulan runtuh jadi **satu** pilihan, dan ia hantar `kelas_id=null` ⇒ senarai murid **KOSONG
+tanpa satu ralat pun**. Bukan regresi (0 item `guna_kumpulan=1` hari ini) — tetapi suis itu
+kini **butang yang memecahkan skrin guru secara senyap** sampai T8 mendarat.
+
+### ⏭️ SAMBUNG: **T8** (`public/ujian.html` — dropdown sedar kumpulan; ia juga tutup amaran di atas) → T9 → T10
+🔴 Baki: `kumpulan_id` yang dicap **boleh dipalsukan** (pagar semak "ada mana-mana kumpulan untuk
+subjek+tahun+sesi", bukan "kumpulan_id INI milik awak"). **Master pilih kerjakan berasingan.**
+
+---
+
+## 🎯 ~~TITIK SAMBUNG~~ ✅ DISAMBUNG — mypwa-v2: T4 SIAP + ACTIONS PULIH (dikemas 2026-08-09 **08:5x**)
 *Sesi pagi 07:33–08:5x. Satu task (T4) + satu blocker infrastruktur ditutup.*
 
 **Repo `mypwa-v2` branch `test` @ `fc6cbb8` == `origin/test`** · working tree bersih ·
