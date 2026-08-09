@@ -4,20 +4,117 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-09 (pagi→petang) — **mypwa-v2: Kumpulan Intervensi T5 + T8 SIAP (8/10 task).**
-Branch `test` @ **`e03f5d7`** == `origin/test`, working tree bersih, **`main` @ `8542f96` TIDAK disentuh**.
-Suite penuh **46/0/2**. ⏭️ Seterusnya **T9** (laporan) → T10. Butiran: blok TITIK SAMBUNG di bawah + `mypwa-v2/MEMORY.md`.
-**Last Work Activity**: 2026-08-09 (~13:1x — master minta kemas memory + session, lalu compaction)
+**Current Session**: 2026-08-09 (pagi→petang) — **mypwa-v2: Kumpulan Intervensi SIAP 10/10 task.**
+Branch `test` @ **`b586a8c`** == `origin/test` (kod terakhir `53a0133`; `e0ae3e5`+`b586a8c` = docs),
+working tree bersih, **`main` @ `8542f96` TIDAK disentuh**.
+Suite penuh **58/0/2**, unit 99/99, staging bersih. ⏭️ Seterusnya **pipeline pra-merge**.
+**Last Work Activity**: 2026-08-09 (~16:4x — T10 siap; master **sedang uji manual di staging**)
+
+🔵 **KEADAAN BILA SESI INI BERHENTI:** master pilih **tengok + uji sendiri di staging DULU**
+sebelum baki pipeline (`sight-hone`→`safi`→`julius`→`convergence`) dan sebelum merge `main`.
+Soalan terbuka kepada master: nak Lucy bukakan ujian `2` (set `buka` + kosongkan `tarikh_tutup`),
+atau master buat sendiri melalui UI? **Belum dijawab — jangan andai.**
+
+🟡 **DIPARKIR 18:24 — Markah per-subjek tab Kumpulan** (master: "simpan dulu"). Brainstorm siap,
+**3/3 keputusan reka bentuk dibuat**, spec BELUM ditulis, kod BELUM. Semua butiran + 3 jerat +
+2 soalan terbuka ada dalam **`mypwa-v2/MEMORY.md`** blok BACKLOG. Jangan ulang bincang.
+🔴 Master pernah sangka ia perlu **migration** — **tidak**. `ujian_item.subjek_id` sudah wujud.
+
+---
+## 🎯 TITIK SAMBUNG — mypwa-v2: **T10 SIAP, 10/10** (dikemas 2026-08-09 **16:4x**)
+
+**`test` @ `b586a8c` == `origin/test`** · `main` @ `8542f96` tidak disentuh.
+`tests/kumpulan-e2e.spec.js` (`53a0133`) + docs (`e0ae3e5`, `b586a8c`). 🆕 **BACA `mypwa-v2/MEMORY.md` DULU.**
+
+### ⏭️ SAMBUNG — baki Kata pipeline (BUKAN sebahagian pelan, belum dibuat)
+`sight-hone` → `safi` → `cross-ai-julius` → `convergence` → **izin master** → merge `main`.
+🔴 **Migration `026`–`028` BELUM dijalankan pada production `mypwa-v2-db`** — mesti dijalankan
+**sebelum** kod production dihidangkan, kalau tidak setiap query menyentuh `kumpulan_id` campak.
+
+### 🧪 KEADAAN STAGING UNTUK UJIAN MANUAL (diukur 2026-08-09 16:4x)
+🔴 **TIADA ujian yang guru boleh isi.** `1` tutup · `50` tutup (0 item) · `133` sampah lama
+(`UJIAN MODAL 1786234346272`, 0 item, **tak dipadam — tunggu izin**) · **`2` status `buka`
+TAPI `tarikh_tutup = 2026-06-17` sudah lepas ⇒ auto-tutup**. Skrin guru akan nampak KOSONG
+dan itu **bukan** bug kumpulan. → [[reference_mypwa_ujian_tertutup]] (BARU)
+**0 kumpulan / 0 ahli** — suite bersihkan semuanya; kumpulan mesti dicipta semula untuk uji.
+Tahun 4: **4 DELIMA (32) · 4 TOPAZ (30) · 4 ZAMRUD (31)** — cukup untuk bukti merentas kelas.
+
+### 🔴 LARANGAN 1 LOLOS 9 TASK TANPA DIUJI
+`DELETE /kumpulan/:id` = `409` bila ada cap — 6 spek kumpulan, tiada satu pun mengujinya.
+`bersihFixtur` memanggil endpoint itu setiap `afterAll`, jadi ia **nampak** berliputan — tetapi
+ia mengharap `200`, iaitu dakwaan yang BERLAWANAN. → [[feedback_route_sama_dakwaan_beza]] (BARU)
+
+### 🔑 DUA PENEMUAN MUTASI MEMBETULKAN TANGGAPAN LAMA
+1. Padam kumpulan bercap **tidak** menyebabkan kehilangan senyap — **D1 FK komposit menolak**
+   dengan `500`. Pagar `409` ialah lapisan **mesej boleh baca**, bukan satu-satunya perlindungan.
+2. `PUT /ahli` boleh lapor `{"ok":true,"diubah":3}` sambil menulis **sifar** baris. `binaFixtur`
+   sendiri tak nampak (assert `200` sahaja) — hanya **baca-balik** menangkapnya.
+
+### 🔴 DUA GOTCHA OPERASI BAHARU
+1. Deploy + ujian dalam SATU arahan ⇒ keputusan dari build **LAMA**. Corak mustahil (pagar
+   dibuang tapi ujian lulus) = syak **perambatan**. → [[feedback_deploy_ujian_serentak]] (BARU)
+2. **`wrangler deploy` tanpa `--env` bind DB PRODUCTION** (`wrangler.toml` aras atas =
+   `mypwa-v2-db`). Maut semasa ujian mutasi. `CLAUDE.md` projek dikemas.
+
+**Verify T10:** 3 mutasi → 3 gigitan BERASINGAN · 4/4 hijau atas kod dipulihkan (`git diff`
+kosong) · suite penuh **58/0/2** · unit **99/99** · 24/24 spek kumpulan disahkan semula atas
+**deployment Actions `66b377f5`** (bukan deploy manual kita) · staging bersih 0/0/0.
+
+---
+## 🎯 ~~TITIK SAMBUNG~~ ✅ DISAMBUNG — mypwa-v2: **T9 SIAP** (dikemas 2026-08-09 **15:2x**)
+
+**`test` @ `6f50899` == `origin/test`** · `main` @ `8542f96` tidak disentuh. 🆕 **BACA `mypwa-v2/MEMORY.md` DULU.**
+`T1`–`T9` ✅ · ⏳ **`T10`** (E2E laluan penuh — pelan ada dalam `docs/superpowers/plans/`).
+
+### 🔑 KEPUTUSAN MASTER DIPINDA — semua skrin ikut KEAHLIAN SEMASA
+Asal: `laporan`+`dashboard` ikut **cap**, `trend` ikut keahlian semasa. Master pinda:
+**ketiga-tiganya ikut `kumpulan_ahli`**. Sebab — guru intervensi sentiasa bertanya bermula
+dari kumpulan yang dia pegang **hari ini**; ikut cap, murid yang baru masuk nampak macam
+tiada markah langsung sebelum itu (iaitu garis dasar yang dia perlukan). **Kesan diterima:**
+cetakan lama tidak boleh dihasilkan semula bila murid dipindah — markah tak berubah, cuma
+**siapa masuk senarai mana**. Cap KEKAL ditulis + kekal asas larangan `409`. Spec §7 dikemas.
+
+### 🔴 PELAN T9 ASAL ADA 3 KECACATAN — ditangkap SEBELUM dilaksana
+1. `WHERE um.kumpulan_id=?` atas **`LEFT JOIN`** → INNER JOIN senyap; mutasi: **3 ahli → 1**
+   pada laporan ber-**RANKING**. → [[reference_left_join_where_inner]] (memory BARU)
+2. Sisip `JOIN ... = ?` di tengah SQL menggeser `.bind()` — guna subkueri `IN`, `?` di hujung
+3. `const allKelas = !kelas_id` — satu boolean, dua keadaan ⇒ `?kumpulan_id=` pulang SEMUA kelas
+
+### 🔴 GREP NAMA LAMA TANGKAP BUG SEBENAR — kali ini SEBELUM dihantar
+Dropdown bertukar ke kunci komposit `K`/`C` (konvensyen T8), tapi `cetakSemuaSlip()` masih
+`m.kelas_id == selKelas.value` ⇒ `== 'C12'` tak pernah padan ⇒ **Cetak Semua Slip mati**
+dengan toast "Tiada murid" pada laporan penuh murid. Mutasi UI sahkan spek menangkapnya.
+Juga: `d.kelas` NULL dalam mod kumpulan ⇒ `trend.html:268,284` TypeError, cetakan mati senyap.
+
+### ⚠️ DUA KEGAGALAN PERSEKITARAN (bukan kod)
+`getaddrinfo ENOTFOUND` staging ⇒ pembersihan fixtur gagal ⇒ **kumpulan hantu** tertinggal
+dan memecahkan spek T5 pada larian seterusnya (`item 94` dapat DUA baris kumpulan).
+Dibersih manual (`DELETE ... LIKE '[AUTO]%'`, ujian dahulu baru kumpulan) → 20/20 hijau.
+🔑 Kegagalan rangkaian tidak berhenti pada larian itu — ia **meninggalkan keadaan** yang
+menyalahkan larian berikutnya. Sahkan DB bersih sebelum menuduh kod.
+
+### 🔴 `git add -A` pada commit mutasi = spek baharu terpadam oleh revert
+→ [[feedback_revert_seluas_commit]] (memory BARU)
+
+**Verify T9:** merah 5/6 atas sebab masing-masing (ke-6 lulus atas kod tanpa ciri — dikuatkan
+sebelum jadi hijau) · 2 ujian mutasi lawan kod sebenar, kedua-duanya menggigit · spek kumpulan
+**20/20** · suite penuh **54/0/2** · **visual cetak DITENGOK**: `@page` laporan = **landskap**
+(fail ini ada DUA `@page`), muat `1123==1123`, logo utuh, lajur KELAS papar `4 DELIMA · 4
+DELIMA · 4 ZAMRUD` = bukti merentas-kelas atas kertas.
+
+🔴 Baki: cap `kumpulan_id` **boleh dipalsukan** · pagar `/bulk` tak semak `murid_id` milik
+guru · **`pelawat.html` kekal mod kelas** (master pilih skop 3 skrin, bukan terlupa).
 
 > Fail ini dilayan sebagai **RAM** (Option A). Ilmu kekal dialir KELUAR ke auto-memory + `MEMORY.md`
 > projek; blok `## Compacted History` di bawah kekal **nipis** — pointer kesinambungan sahaja.
 > Lihat `compaction/compaction-policy.md`.
 
 ---
-## 🎯 TITIK SAMBUNG — mypwa-v2: **T5 + T8 SIAP** (dikemas 2026-08-09 **13:0x**)
+## 🎯 ~~TITIK SAMBUNG~~ ✅ DISAMBUNG — mypwa-v2: **T5 + T8 SIAP** (dikemas 2026-08-09 **13:0x**)
+*T9 sudah siap 15:2x — lihat blok TITIK SAMBUNG aktif di ATAS. Blok ini rekod sejarah sahaja.*
 
-**Repo `test` @ `61e05cb` == `origin/test`** · `main` @ `8542f96` tidak disentuh.
-**Kumpulan Intervensi 8/10** — `T1`–`T8` ✅ · ⏳ `T9` `T10`. 🆕 **BACA `mypwa-v2/MEMORY.md` DULU.**
+**Repo `test` @ `61e05cb`** (bukan HEAD lagi) · `main` @ `8542f96` tidak disentuh.
+**Kumpulan Intervensi 8/10** — `T1`–`T8` ✅ · ~~⏳ `T9`~~ ✅ · ⏳ `T10`.
 
 ### 🟢 T8 — SKRIN GURU SEDAR KUMPULAN (`61e05cb`)
 ✅ **Amaran operasi T5 DITUTUP** — suis `guna_kumpulan` kini selamat dihidupkan dalam admin.
@@ -348,7 +445,9 @@ jalankan protokol di dalamnya. → [[project_lucy_skills]]
   `mypwa-v2/pajsk.html`. Task 1–6 boleh mula; **Task 7 GATED** — master kena bekal selector borang
   `idme.moe.gov.my`. Ujian `node --test` (tiada npm). → [[project_idme_pajsk_ext]]
 - **mypwa-v2**: gate payload XSS laluan **cetak** · cap `kumpulan_id` **boleh dipalsukan** (master
-  pilih kerja berasingan) · pagar `/bulk` tak semak `murid_id` tergolong dalam kelas/kumpulan guru.
+  pilih kerja berasingan) · pagar `/bulk` tak semak `murid_id` tergolong dalam kelas/kumpulan guru
+  · **`pelawat.html` kekal mod kelas sahaja** (pengguna ke-4 `/analisis`; master pilih skop 3 skrin
+  pada T9 — keputusan sedar, bukan terlepas pandang).
 - **Cadangan audit kecil Lucy** (belum master putus): `created_at` timezone di tempat lain ·
   teks/border pucat pada page cetak lain (slip ujian, pajsk, RPM). Kekal dalam snapshot.
 - **Lalai `Admin@1234` dalam `seed.sql`** — master pilih **biarkan**; relevan semula hanya bila
