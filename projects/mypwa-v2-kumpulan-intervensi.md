@@ -1,6 +1,13 @@
 # Idea — Kumpulan Intervensi (mypwa-v2)
 
-*Bincang santai dengan master, 2026-08-06 malam (23:45–23:58). BELUM brainstorm penuh, BELUM ada spec/pelan. Sambung selepas kerja XSS selesai.*
+> ⚠️ **FAIL INI SUDAH DIGANTI — 2026-08-08.** Brainstorm penuh selesai; spec diluluskan
+> ada dalam repo: **`mypwa-v2/docs/superpowers/specs/2026-08-08-kumpulan-intervensi-design.md`**
+> (commit `a8d3fd2`, branch `test`).
+>
+> Fail ini disimpan sebagai **rekod idea asal sahaja**. Senarai *"Soalan yang BELUM dijawab"*
+> di bawah **sudah dijawab semua** — jangan baca ia sebagai kerja tertunggak.
+
+*Bincang santai dengan master, 2026-08-06 malam (23:45–23:58).*
 
 ---
 
@@ -85,14 +92,22 @@ Idea lanjut (belum dibincang): sebab markah MODUL 1 sudah ada dalam DB, sistem b
 
 ---
 
-## Soalan yang BELUM dijawab
+## Soalan yang dahulu belum dijawab — SEMUA SUDAH DIJAWAB (2026-08-08)
 
-1. Semua murid tahun 4 masuk kumpulan, atau sesetengah sahaja kekal dalam kelas asal?
-2. Kumpulan terikat pada **sesi** atau pada **ujian**? (Susunan berubah antara MODUL 2 dan MODUL 3?)
-3. Siapa urus keahlian kumpulan — admin sahaja, atau guru juga?
-4. Perlu laporan/analisis khas ikut kumpulan, atau guna semula paparan sedia ada?
+| Soalan asal | Jawapan master |
+|---|---|
+| 1. Semua murid masuk kumpulan? | Ya bila intervensi aktif — kelas asal **disekat** untuk subjek itu. Murid tertinggal jadi tak boleh diisi, jadi admin dapat amaran "Belum Berkumpulan" |
+| 2. Terikat pada sesi atau ujian? | **Ujian.** Suis `guna_kumpulan` pada `ujian_item` (ujian × tahun × subjek) |
+| 3. Siapa urus keahlian? | **Admin sahaja** — termasuk menetapkan guru pada kumpulan |
+| 4. Laporan khas? | **Ya** — suis "Papar ikut Kelas Asal / Kumpulan" pada laporan-ujian, dashboard, trend |
+
+**Keputusan tambahan yang tidak pernah ada dalam senarai asal:**
+- Sejarah dikunci pada **ujian**, bukan tarikh — `ujian` tiada tarikh tunggal yang boleh dipakai
+- Cap `ujian_markah.kumpulan_id` ditulis auto masa Simpan, dilindungi `COALESCE`
+- **Trend** guna keahlian **semasa** (bukan cap) supaya banding MODUL 1 lawan MODUL 3 berfungsi
+- Lubang kebenaran `POST /api/ujian-markah/bulk` ditutup sekali dalam kerja ini
 
 ## Status
 
-**Idea sahaja.** Belum brainstorm penuh, belum spec, belum pelan.
-**Aturan kerja:** habiskan XSS silang-keistimewaan (Task 3–7) dahulu, kemudian brainstorm penuh untuk ini.
+**Spec siap & diluluskan master, belum ada pelan pelaksanaan.**
+Langkah seterusnya: `writing-plans` → pelan → TDD.

@@ -1,6 +1,196 @@
 # 🌟 Current Session Memory - RAM
 *Temporary working memory - resets each session, provides recap when AI restart*
 
+---
+
+## 🎯 TITIK SAMBUNG — mypwa-v2: T4 SIAP + ACTIONS PULIH (dikemas 2026-08-09 **08:5x**)
+*Sesi pagi 07:33–08:5x. Satu task (T4) + satu blocker infrastruktur ditutup.*
+
+**Repo `mypwa-v2` branch `test` @ `fc6cbb8` == `origin/test`** · working tree bersih ·
+`main` @ `8542f96` **tidak disentuh**.
+🆕 **BACA `mypwa-v2/MEMORY.md` DULU** — lebih terperinci. Ledger:
+`.superpowers/sdd/2026-08-08-kumpulan-intervensi/progress.md` (gitignored).
+
+### 📊 KEADAAN 10 TASK — 6 siap
+`T1` ✅ · `T2` ✅ · `T3` ✅ · `T6` ✅ · `T7` ✅ · **`T4` ✅ `fb2b570`** · ⏳ `T5` `T8` `T9` `T10`
+
+### 🔓 T4 — PAGAR KEIZINAN `POST /api/ujian-markah/bulk` (`fb2b570`)
+Route ini dahulu **tidak menyemak apa-apa selain "ada token"**. Diperhatikan berlaku di staging,
+bukan dibaca dari kod: `PELAWAT` (baca-sahaja) dan `GURU luar hak` kedua-duanya dapat
+`200 {"ok":true,"message":"1 rekod markah disimpan."}` — dan baris itu **memang masuk DB**.
+Selepas fix: `403`, dan bacaan semula sahkan **tiada baris ditulis**.
+**Verify:** merah **2/3** → hijau **3/3** atas kod ujian **sama persis** · unit 99/99 · suite penuh
+36 lulus (`skala-gred:253` 6/6 lulus berasingan = persekitaran).
+
+🔴 **PELAN T4 AKAN BAGI HIJAU PALSU — tercetus pada data sebenar.** `POST /bulk` sudah pulangkan
+`403` untuk ujian **DITUTUP**. Pelan minta assert `toBe(403)` sahaja, dan **ketiga-tiga** ujian
+staging tertutup secara berkesan (`1`+`50` status tutup; `2` buka tapi `tarikh_tutup` 2026-06-17
+lepas) ⇒ dua ujian penolakan **LULUS atas sistem tanpa pagar**.
+➡️ **`403` BUKAN SATU SEBAB — assert MESEJ.** → [[feedback_status_dikongsi_sebab]] (memory BARU)
+🔴 Lima lagi kecacatan pelan: ESM lawan CommonJS repo · `process.env.BASE_URL` kosong yang
+**mematikan penjaga production pelan sendiri** · `ujian_item_id: 1` tak disahkan wujud · gelung
+`1..50` boleh pilih id tak wujud · tiada assertion peranan.
+🔴 **`markah: []` → 500** (`DB.batch([])` meletup). Pelan guna muatan kosong ⇒ selepas pagar betul,
+guru sah dapat **500** dan pelan suruh salahkan `nama_sesi` dalam SQL. Buru bug yang tak wujud.
+🔑 `ujian_item.tahun` **INTEGER** lawan `kelas.tahun`/`kumpulan.tahun` **TEXT** — D1 pulangkan
+nombor sebagai REAL ⇒ `'4.0' = '4'` sifar baris ⇒ **setiap guru ditolak**, ADMIN lulus, tanpa ralat.
+`String()` di sempadan. Hanya **sisi TERIMA** boleh tangkap ini; semua spek lain login ADMIN.
+
+### ✅ GITHUB ACTIONS PULIH (08:43) — puncanya SECRET TOKEN
+Master tetapkan semula secret `CLOUDFLARE_API_TOKEN` (nilai dari `.env.ujian.ps1`).
+Push `526b0f2` → deployment **`2dfc0618`** @ `00:43:17Z` **dicipta Actions, bukan tangan kita**.
+Gate `kumpulan-pagar` **3/3 hijau** atas binaan itu (Actions=LF vs manual=CRLF ⇒ bait berbeza,
+jadi tingkah laku disahkan semula, bukan diandaikan).
+➡️ **Blocker merge ke `main` kini TERBUKA** — production hanya boleh lalu Actions.
+
+🔴 **AKU SALAH LABEL 12 JAM: "Actions SENYAP" — sebenarnya TERCETUS dan GAGAL** (run #549–#552
+semuanya ❌). Master yang dedahkan, via screenshot inbox GitHub.
+🔑 Puncanya: aku tanya sistem deploy **Cloudflare** ("ada deployment baharu?") → "tiada". Tapi
+*"tak tercetus"* dan *"tercetus lalu gagal"* bagi kesan hilir yang **SAMA**. Aku sudah pegang
+pengajaran *"tanya sistem deploy, bukan endpoint"* — dan tetap tanya sistem yang **SALAH**.
+➡️ **Tanya sistem yang MEMILIKI peristiwa itu.** → [[feedback_sifar_palsu]] (dikemas)
+🟢 Yang berjalan betul: punca dipersempit **berprinsip** dulu (antara run berjaya terakhir dan
+gagal pertama, repo cuma berubah docs + 3 SQL migration; deploy manual atas kod sama BERJAYA ⇒
+punca di luar repo), dan korelasi masa ditulis sebagai **calon, bukan punca**.
+⚠️ Master pilih **ganti secret terus** tanpa baca log — jimat satu pusingan. Gerbang keputusan =
+**deployment baharu yang bukan kita cipta**, bukan senarai run hijau (run boleh hijau tanpa deploy).
+
+### ⏭️ BAKI T4 (deferred, direkod bukan dilupa)
+- `markah: []` → 500. Fix = satu baris pulangan awal. Tak dibundle supaya skop T4 jelas.
+- Pagar tak semak `murid_id` tergolong dalam kelas guru. `ujian_item` = (ujian × tahun × subjek),
+  **dikongsi semua kelas tahun itu** ⇒ guru SAINS T4 sah boleh tulis markah murid T4 **kelas lain**.
+  ⚠️ **Bukti STATIK sahaja**, belum diperhatikan berlaku. Bangkitkan bersama T5.
+
+### ⏭️ SAMBUNG
+**T5** (laluan kumpulan dalam `ujian-markah.js` — fail SAMA dengan T4, giliran seterusnya) →
+T8 → T9 → T10. Baki semakan bebas T7 masih terbuka (lihat blok di bawah).
+
+---
+
+## 🎯 ~~TITIK SAMBUNG~~ ✅ SUDAH DISAMBUNG — mypwa-v2: KUMPULAN INTERVENSI (dikemas 2026-08-08 **21:35**)
+*Sesi 12:00–21:35 (~9.5 jam). Brainstorm → spec → pelan 10 task → 6 task siap. Blocker D1 dibuka
+20:15; T7 ditutup 21:1x dengan bug Critical ditemui, dibaiki, dan **dibuktikan pada runtime**.*
+
+**Repo `mypwa-v2` branch `test` @ `35559e9` == `origin/test`** · `main` @ `8542f96` **tidak disentuh**.
+🆕 **BACA `mypwa-v2/MEMORY.md` DULU** — lebih terperinci. Ledger per-task:
+`.superpowers/sdd/2026-08-08-kumpulan-intervensi/progress.md` (gitignored, kekal di disk).
+
+### 📊 KEADAAN 10 TASK
+
+| Task | Status |
+|---|---|
+| T1 migration + sahkan FK | ✅ `94c6949` — **FK komposit DIKUATKUASAKAN oleh D1** |
+| T2 helper fungsi-tulen | ✅ `5dcb30e` |
+| T3 8 route + 2 larangan | ✅ `9692c61` (3 fix round) |
+| T6 tab admin Kumpulan | ✅ `2bbff65` (2 fix round) |
+| *fix envelope* | ✅ `ad7e67f` — **disahkan runtime** |
+| **T7** suis `guna_kumpulan` | ✅ `35559e9` — **merah→hijau pada pelayar sebenar** |
+| T4 T5 T8 T9 T10 | ⏳ belum |
+
+### ✅ DUA HAL TERBUKA — KEDUA-DUANYA SUDAH DITUTUP 2026-08-09
+
+**1. ~~GitHub Actions senyap~~ ✅ PULIH 08:43 — dan labelnya SALAH.** Ia bukan senyap; ia
+**tercetus dan GAGAL** (run #549–#552 semuanya ❌). Punca = secret `CLOUDFLARE_API_TOKEN`;
+master tetapkan semula, deployment `2dfc0618` dicipta Actions. Lihat blok TITIK SAMBUNG di atas.
+🔑 Ayat asal di bawah ini dikekalkan **sebagai rekod kesilapan**, bukan sebagai fakta.
+
+**2. Catatan sesi lepas menulis tafsiran sebagai fakta.** "T7 tunggu perambatan, bukan bug" — salah.
+Probe endpoint berulang **tak boleh** membezakan "belum sampai" dari "takkan sampai"; hanya
+`wrangler deployments list` boleh. ➡️ **Tanya sistem deploy, bukan endpoint.**
+
+### 🔴 BUG ENVELOPE KEJADIAN KE-4 — dibawa balik oleh `cherry-pick` SENDIRI
+`admin.html:2726` `r.data.data.filter(...)` lawan array telanjang ⇒ TypeError ⇒ menghidupkan
+intervensi **mustahil**, gagalnya **senyap** (kotak nampak bertanda, DB kekal 0, tiada toast).
+Mematikan berfungsi (melangkau blok itu) ⇒ ujian manual dua-hala nampak separuh betul.
+🔑 `de8e0c7` ditulis semasa route berbalut → di-revert **keluar** → `ad7e67f` tukar bentuk route
+semasa ia tiada ⇒ imbasan fix **tak boleh melihatnya** → cherry-pick bawa balik utuh. Diff
+cherry-pick **bersih**; yang berubah ialah **sekelilingnya**. → [[feedback_cherry_pick_kontrak_basi]]
+🔑 **DUA konvensyen envelope wujud** — `laporan-ujian.html` guna `.data.data` dgn BETUL. Penjaga
+pukal akan menuduh 3 baris tak bersalah. **Imbas dulu sebelum bina penjaga.**
+
+### 🟢 UJIAN TINGKAH LAKU MENANGKAP APA YANG 3 SEMAKAN STATIK TERLEPAS
+`tests/kumpulan-suis.spec.js` — sahkan dari **PELAYAN**, bukan `toBeChecked()` (kotak itulah yang
+menipu; `toBeChecked()` akan **LULUS** atas kod berbug). MERAH atas kod berbug hidup dgn mesej
+sebenar `"Cannot read properties of undefined (reading 'filter')"` → HIJAU atas kod ujian sama.
+🔑 `page.on('dialog', d => d.accept())` **wajib** — Playwright tolak dialog secara lalai ⇒ tanpa ia
+laluan BETUL gagal atas sebab palsu.
+
+### ⏭️ BAKI TERBUKA (semakan bebas T7 — belum dikerjakan, di luar skop)
+`kumpulan.js:79` abaikan `kelas.tahun_sesi` (**laten** — betul hari ini secara kebetulan) · tiada
+pagar pelayan untuk hidupkan suis tanpa kumpulan · `DELETE /item/:id` **cascade padam markah tanpa
+pengesahan mahupun audit** · `skala-gred.spec.js:39` masih ada fallback `ADMIN_USER`.
+
+### 🔓 CARA GUNA D1 SEKARANG (blocker sudah selesai)
+Token Cloudflare dengan kebenaran **D1: Edit** hidup dalam `.env.ujian.ps1` (gitignored).
+
+```powershell
+. .\.env.ujian.ps1; npx wrangler d1 execute mypwa-v2-staging-db --remote --command "..."
+```
+
+🔑 **Dot-source WAJIB pada SETIAP arahan** — env var tidak kekal antara panggilan tool.
+🔑 Template *"Edit Cloudflare Workers"* **TIDAK** termasuk D1. Gejala mengelirukan: auth
+**BERJAYA** (wrangler kenal akaun+emel) tapi `/d1/database` bagi `Authentication error [10000]`.
+Sunting kebenaran token — **jangan Roll**, itu tukar nilai token.
+🔴 `mypwa-v2-db` = **sekolah sebenar**. Semua kerja pada `mypwa-v2-staging-db` sahaja.
+
+### 🟢 BUKTI RUNTIME PERTAMA (staging, baca-sahaja)
+- `GET /api/kumpulan` → **`Object[]`** array telanjang ⇒ fix envelope disahkan **hidup**
+- `GET /api/kumpulan/murid?tahun=4` → **93 murid** merentas **4 DELIMA · 4 ZAMRUD · 4 TOPAZ**
+  ⇒ senario idea doc wujud dalam data sebenar
+- Tahun 4 = tepat 4 subjek: BM · ENGLISH · MATEMATIK · SAINS
+- Ujian: `1` DIAGNOSTIK TAHUN 4 (4 item) · `2` LATIHAN PERTENGAHAN SESI (12 item) · `50` Modul (0)
+
+### ❌ ~~HAL SEMASA — T7 tunggu perambatan deploy~~ — DAKWAAN INI TERBUKTI SALAH
+Ayat asal: *"Kod betul. Ini perambatan, bukan bug."* — itu **tafsiran ditulis sebagai fakta**.
+Sebenarnya Actions gagal. Dikekalkan sebagai rekod kesilapan sahaja. T7 sudah ✅ `35559e9`.
+
+⏭️ **SAMBUNG (dikemas 2026-08-09):** ~~(1) sahkan `bdafe9d`~~ ✅ · ~~(2) semakan T7~~ ✅ ·
+(3) sahkan **10 perkara** dalam senarai runtime ledger — termasuk tiga bug yang kita **tahu**
+wujud tapi tak pernah lihat berlaku · ~~(4) T4~~ ✅ `fb2b570` · **(5) T5 ← SETERUSNYA** ·
+(6) T8 · (7) T9 · (8) T10.
+
+### 🔴 REKA BENTUK: JANGAN PINDAHKAN `murid.id_kelas`
+`ujian_markah` **langsung tidak menyimpan kelas** — ia di-`JOIN` masa **BACA**
+(`ujian-markah.js:90`, `:152`, `:237`). Memindahkan murid memindahkan markah **MODUL 1** dia
+sekali, **tanpa ralat**. MODUL 1 itulah garis dasar "sebelum intervensi".
+
+**Keputusan master terkunci:** sejarah dikunci pada **UJIAN** bukan tarikh · cap auto
+`ujian_markah.kumpulan_id` dilindungi `COALESCE` · suis `guna_kumpulan` pada **`ujian_item`**
+(ujian × tahun × subjek) · **admin** tetapkan guru · laporan ikut **cap**, trend ikut
+**keahlian semasa** · dua larangan (padam kumpulan bercap `409`, ahli silap tahun `400`).
+
+### 🔑 EMPAT PENGAJARAN SESI INI
+
+**1. `GET /:id/guru` digugurkan dengan sebab yang DIPINJAM.** Mengecil 12 route → 7 atas nama
+KISS: `GET /:id/ahli` digugurkan **betul** (superset wujud), kemudian `GET /:id/guru` digugurkan
+dengan **alasan yang sama** tanpa menyemak ia masih terpakai. Ia tidak.
+Kesan: `PUT` ganti-semua + tiada baca ⇒ panel mula **kosong** ⇒ Simpan memadam penetapan guru
+sedia ada **tanpa admin pernah melihatnya**. ➡️ **Ganti-semua MESTI berpasangan dengan
+baca-dahulu**; bacaan gagal MESTI menghalang Simpan. → [[feedback_salin_corak_bukan_sebab]]
+
+**2. Aku menulis arahan tentang fail yang aku tidak baca — tiga kali.** Rangka HTML guna kelas
+**Tailwind** sedangkan `admin.html` tidak memuat Tailwind · `r?.error` sedangkan mesej ada di
+`r?.data?.error` (larangan `409` akan gagal **senyap**) · kiraan "14 ujian" sedangkan kod aku
+sendiri ada **13**.
+
+**3. Gelung fix boleh mewarisi kecacatan yang sama.** Penyemak namakan **3** tapak `String()`;
+pelaksana baiki ketiga-tiganya; re-review jumpa **tapak keempat**. Punca: senarai fix dibina dari
+**senarai penemuan penyemak**, bukan dari **tapak dalam fail**. ➡️ Arahan diubah kepada *"imbas
+fail SENDIRI, lapor jumlah sebenar"* → **3 tapak, 0 tertinggal**, dan dua route **ditolak** dengan
+sebab boleh diperiksa. → [[feedback_inventori_perlindungan_sedia_ada]]
+
+**4. Route melaporkan NIAT, bukan HASIL.** `diubah: murid_id.length` bukan `meta.changes` ⇒
+`DELETE` padan 0 baris, murid **kekal** dalam kumpulan, skrin papar "berjaya". Dibetulkan pada
+cawangan DELETE; INSERT dibiarkan **dengan komen KENAPA** (upsert sentiasa menulis ⇒ kiraan tak
+boleh bercapah). Komen itu wajib supaya penyemak seterusnya tidak "membetulkan" sesuatu yang
+memang sengaja.
+
+🟢 **Subagent yang MEMBANTAH = subagent berguna, disahkan lagi.** Ketiga-tiga kesilapan aku
+ditangkap oleh pelaksana/penyemak, bukan oleh aku. Penyemak juga buat **imbasan sink sendiri**
+(16 sink, padan tepat dengan pelaksana) dan bukan menerima senarai bulat-bulat.
+
+---
+
 ## 🎯 TITIK SAMBUNG — mypwa-v2: XSS SILANG-KEISTIMEWAAN ✅ **SELESAI & LIVE PRODUCTION** (dikemas 2026-08-08 10:30)
 *Sesi malam 06–08 Ogos menyiapkan Task 1–7; sesi pagi 08 Ogos (07:59–10:30) menutup verify pra-merge dan menghantarnya ke production.*
 
