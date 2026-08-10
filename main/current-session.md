@@ -4,16 +4,26 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-09 (pagi→petang) — **mypwa-v2: Kumpulan Intervensi SIAP 10/10 task.**
-Branch `test` @ **`b586a8c`** == `origin/test` (kod terakhir `53a0133`; `e0ae3e5`+`b586a8c` = docs),
-working tree bersih, **`main` @ `8542f96` TIDAK disentuh**.
-Suite penuh **58/0/2**, unit 99/99, staging bersih. ⏭️ Seterusnya **pipeline pra-merge**.
-**Last Work Activity**: 2026-08-09 (~16:4x — T10 siap; master **sedang uji manual di staging**)
+**Current Session**: 2026-08-10 (pagi, 08:07→09:1x) — **mypwa-v2: PIPELINE PRA-MERGE SIAP.**
+Branch `test` @ **`65782b7`** == `origin/test`, working tree bersih, **`main` @ `8542f96` TIDAK disentuh**.
+Suite penuh **58/0/2**, unit 99/99, spek kumpulan 24/24.
+**Last Work Activity**: 2026-08-10 (~09:1x — Aksara siap, memory dikemas atas arahan master)
 
-🔵 **KEADAAN BILA SESI INI BERHENTI:** master pilih **tengok + uji sendiri di staging DULU**
-sebelum baki pipeline (`sight-hone`→`safi`→`julius`→`convergence`) dan sebelum merge `main`.
-Soalan terbuka kepada master: nak Lucy bukakan ujian `2` (set `buka` + kosongkan `tarikh_tutup`),
-atau master buat sendiri melalui UI? **Belum dijawab — jangan andai.**
+🔵 **KEADAAN BILA SESI INI BERHENTI:** pipeline habis sampai `convergence` = ◈ **PARTIAL 4/5**
+(`Hone` ✓ · `SAFI` ✓ · `Julius` ✓ · `Aksara` ✓ · `Hunt` ✗ tidak dijalankan).
+**Menunggu izin master untuk Langkah 1** — semakan skema production BACA-SAHAJA.
+
+🔴 **URUTAN MIGRATION DIBETULKAN SESI INI — memory lama SALAH.**
+`feedback_mypwa_workflow.md` merekod *merge dahulu (3), migration production kemudian (4)*.
+Untuk migration **aditif** itu terbalik: kod baharu hidup sambil kolum belum wujud ⇒
+`/analisis` `/laporan` `/trend` campak. Urutan betul (sudah dibetulkan dalam memory):
+**staging → uji → semak skema production baca-sahaja → migration production → merge `main`.**
+
+⏭️ **SAMBUNG:** (1) semak skema `mypwa-v2-db` baca-sahaja · (2) jalankan `026`–`028` pada
+production · (3) minta izin merge · (4) sahkan tingkah laku di `erpm-sksalor.celikguru.my`.
+
+🟡 **DIPARKIR (kekal):** Markah per-subjek tab Kumpulan — spec BELUM ditulis. Butiran dalam
+`mypwa-v2/MEMORY.md` blok BACKLOG. 🔴 **TIDAK** perlu migration — `ujian_item.subjek_id` sudah wujud.
 
 🟡 **DIPARKIR 18:24 — Markah per-subjek tab Kumpulan** (master: "simpan dulu"). Brainstorm siap,
 **3/3 keputusan reka bentuk dibuat**, spec BELUM ditulis, kod BELUM. Semua butiran + 3 jerat +
@@ -21,7 +31,46 @@ atau master buat sendiri melalui UI? **Belum dijawab — jangan andai.**
 🔴 Master pernah sangka ia perlu **migration** — **tidak**. `ujian_item.subjek_id` sudah wujud.
 
 ---
-## 🎯 TITIK SAMBUNG — mypwa-v2: **T10 SIAP, 10/10** (dikemas 2026-08-09 **16:4x**)
+## 🎯 TITIK SAMBUNG — mypwa-v2: **PIPELINE PRA-MERGE SIAP** (dikemas 2026-08-10 **09:1x**)
+
+**`test` @ `65782b7` == `origin/test`** · `main` @ `8542f96` tidak disentuh.
+Tiga commit sesi ini: `a6d2977` (fix komen+rename) · `6d02b7f` (memory) · `65782b7` (7 drift docs).
+
+### 🔑 PENEMUAN BESAR SESI INI — ralat berhijrah KELUAR dari kod ke prosa
+`Hone` jumpa **3 komen** menyimpang · `SAFI` **2** · `Aksara` **7 dokumen** · **kod: 0 kecacatan**.
+Struktural, bukan nasib: kod ada 58 ujian yang menghukumnya; prosa **tiada apa-apa**.
+Yang paling mahal: komen dakwa `kelas.tahun` INTEGER (ia **TEXT**) — tepat kelas pepijat yang
+pernah gigit projek ni (`'4.0' != '4'` ⇒ setiap guru 403). → [[feedback_ralat_berhijrah_ke_prosa]]
+🔑 **Nota anti-undur mesti pada SETIAP tempat keputusan muncul.** §7 ada nota "jangan betulkan
+balik"; §14 (Ringkasan) senyap-senyap masih berhujah untuk reka bentuk yang **dibatalkan**.
+
+### 🔑 JULIUS 5/6 — dan yang ke-6 SALAH SEPENUHNYA
+Dakwa `COALESCE` halang cap dikemas bila murid pindah. **Arahnya terbalik.** Diuji pada D1:
+hantar `20` → cap `20` · hantar `NULL` → cap kekal. Hujahnya lengkap dan meyakinkan; yang
+membezakan hanya **dua baris SQL**. → [[feedback_cross_ai_hujah_munasabah]]
+🟢 Dua penemuan terbaiknya datang dari soalan **TERBUKA** ("apa yang aku tak sebut?"), bukan
+dari 5 soalan berfokus yang aku sendiri rangka.
+
+### 🔴 DUA BAKI SAH DARI JULIUS — master pilih **merge dulu, baiki selepas** (bukan regresi)
+1. `r.murid_id` dalam `POST /bulk` **langsung tak disahkan**. Bentuknya jahat: `/laporan`+`/trend`
+   ada `ui.tahun = k.tahun` ⇒ markah yatim **lenyap**; `/analisis` **tiada** ⇒ ia merosakkan carta
+   gred sekolah sambil **tak kelihatan** dalam laporan yang guru buka untuk menyiasat.
+2. `markah` teks disimpan senyap ke kolum INTEGER. Diukur: `'85','A',''` ⇒ **AVG 28.33**, COUNT 3.
+   Ia menyuap lajur **Markah Rujukan** yang admin guna MEMILIH ahli intervensi.
+   → [[reference_d1_nombor_real]] (dikemas dengan arah songsang)
+
+### ⚠️ Perubahan neutral tak boleh dibukti perambatan melalui tingkah laku
+Rename + komen = tiada penanda kandungan. Bukti datang dari **sistem deploy** (`fb6900c4` dicipta
+Actions 20 saat selepas push; deployment sebelumnya **14 jam** lebih awal ⇒ tiada push saingan)
++ **kesan songsang** (rename tersilap ⇒ `/trend` 500). → [[feedback_perubahan_neutral_perambatan]]
+
+### 🟡 EMPAT BAKI HONE — master pilih tidak baiki (sedar)
+`PUT /kumpulan/:id` tiada catch UNIQUE (500 bukan 409) · `PUT /:id/guru` tiada dedup (500) ·
+`kumpulan_id` tiada validasi jenis (500 bukan 400) · `<title>` cetak `laporan-ujian.html:471`
+tak di-escape (**pra-wujud**, input ADMIN-sahaja ⇒ pengerasan bukan lubang).
+
+---
+## 🎯 ~~TITIK SAMBUNG~~ ✅ DISAMBUNG — mypwa-v2: **T10 SIAP, 10/10** (dikemas 2026-08-09 **16:4x**)
 
 **`test` @ `b586a8c` == `origin/test`** · `main` @ `8542f96` tidak disentuh.
 `tests/kumpulan-e2e.spec.js` (`53a0133`) + docs (`e0ae3e5`, `b586a8c`). 🆕 **BACA `mypwa-v2/MEMORY.md` DULU.**
