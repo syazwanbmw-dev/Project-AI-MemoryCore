@@ -70,6 +70,18 @@ _(akan diisi bila master share)_
 - **Izin cipta DATA UJIAN pada staging DB** (2026-08-09) — bila satu cabang kod hanya hidup di bawah keadaan yang **tiada dalam data staging**, master luluskan fixture dicipta (melalui API, dibersihkan semula). ⚠️ `mypwa-v2-staging-db` sahaja; `mypwa-v2-db` = sekolah sebenar, **jangan sentuh**.
 - **Skop task kekal KETAT — jangan bundle baiki bersebelahan** (2026-08-09) — ditawarkan dua baki keselamatan untuk digabungkan ke dalam T5; master ambil **yang kecil sahaja** (`markah: []` → 500) dan tolak yang besar (sahkan `kumpulan_id` milik guru), walaupun task itulah yang **memperkenalkan** medan berkenaan. ➡️ Corak: master lebih suka satu commit = satu perkara yang boleh diperiksa, daripada commit besar yang "sekali harung". Lucy patut **tawar sebagai pilihan berasingan**, bukan selitkan diam-diam, dan **rekod baki dalam `MEMORY.md`** supaya ia tidak hilang.
 
+- **KOD dibaiki minimum, DOKUMEN dibaiki menyeluruh** (2026-08-10) — dalam satu sesi yang sama:
+  daripada **5** penemuan `sight-hone` pada kod, master ambil **satu sahaja** (pembetulan komen,
+  kos hampir sifar) dan tolak empat yang lain walaupun kesemuanya kecil. Tetapi daripada **6**
+  drift dokumen `sight-aksara`, master ambil **kesemuanya sekali gus**.
+  ➡️ Corak: risiko yang master timbang ialah **menyentuh kod**, bukan jumlah kerja. Perubahan
+  dokumen tidak boleh memecahkan apa-apa, jadi ia murah tanpa mengira saiz; perubahan kod
+  membawa risiko regresi, jadi ia dinilai satu per satu. **Lucy patut tawar fix kod sebagai
+  pilihan berasingan (satu commit satu perkara), tetapi fix dokumen boleh dibundle jadi satu.**
+- **Master beri "Ok" ringkas sebagai persetujuan kepada cadangan terakhir Lucy** (2026-08-10).
+  Bila ada dua pilihan ditawarkan, "Ok" bermakna pilihan yang Lucy **syorkan**. Kalau taruhannya
+  tinggi (sentuh production/DB sekolah), **jangan** tafsir "Ok" — tanya semula secara spesifik.
+
 ---
 
 ## Catatan Penting
