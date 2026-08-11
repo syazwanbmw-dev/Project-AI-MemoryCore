@@ -4,23 +4,102 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-10 (pagi, 08:07→09:1x) — **mypwa-v2: PIPELINE PRA-MERGE SIAP.**
-Branch `test` @ **`65782b7`** == `origin/test`, working tree bersih, **`main` @ `8542f96` TIDAK disentuh**.
+**Current Session**: 2026-08-11 (10:53→13:1x) — 🆕 **PROJEK BAHARU: `opr-insaniah`.**
+Reka bentuk **SIAP dan diluluskan master**. **Kod BELUM bermula** (master: *"simpan dulu specs tu"*).
+Repo `Documents/code/opr-insaniah` · git **lokal, tiada remote** · 3 commit @ **`690c203`**.
+**Last Work Activity**: 2026-08-11 (~13:1x — memory disimpan)
+🔵 **mypwa-v2 TIDAK disentuh hari ini** — blok sesi 2026-08-10 kekal utuh di bawah.
+
+### 🎯 OPR PEMBANGUNAN KARAKTER INSANIAH — sistem laporan sekolah (Apps Script)
+
+🔴 **BUKAN stack biasa master.** Bukan Hono, bukan Workers, bukan D1. **Google Apps Script Web App**
+berdiri sendiri + Sheets + Drive. Sebab: login **DELIMa** percuma, sekolah sudah ada Drive.
+Precedent cara kerja = `erph` (clasp, `node --test` **bogel**, pagar `.claspignore`).
+
+**Baca ikut susunan:** `opr-insaniah/CLAUDE.md` → `MEMORY.md` →
+`docs/superpowers/specs/2026-08-11-opr-insaniah-design.md` (498 baris, 12 keputusan + sebab).
+
+### 🔬 TASK 0 BELUM DIJALANKAN — ia boleh MEMBUNUH arkitektur
+Buktikan `html2canvas` + `jsPDF` berjalan dalam sandbox **`HtmlService`** dan PDF mendarat dalam
+Drive **serta boleh dibuka**. Aku *jangka* ia berfungsi — **tidak pernah membuktikannya**.
+Gagal ⇒ kembali ke Google Docs template dan spec §14 ditulis semula. **Jangan bina apa-apa di
+atasnya sebelum ini hijau.**
+
+### 🔴 TIGA KEPUTUSAN YANG PALING MUDAH DIUNDUR TANPA SEDAR
+1. **Google Docs template SENGAJA dibuang** — bukan terlupa. PDF dijana di **browser**
+   (`html2canvas`+`jsPDF`→JPEG 0.9), backend cuma **menyimpan**. Ini membunuh seluruh kelas pepijat
+   `replaceText` (regex · aksara `$` · teks berbilang baris). Memulihkan template = memulangkan
+   **enam** masalah sekali gus.
+2. **Semua pengguna ACTIVE boleh BACA semua laporan** — keputusan master. `getReportsByUser()`
+   spec asal §25 dibuang **sengaja**. Edit/padam kekal pemilik + admin, dikuatkuasa di **backend**.
+3. **PDF tidak pernah jadi pautan Drive** — backend baca fail, hantar base64. Kesan berguna:
+   File ID bebas berubah ⇒ tiada perlu Drive Advanced Service.
+
+### 🔑 DUA SENARAI MEDAN BERCANGGAH DARIPADA ORANG YANG SAMA
+Master taip **9 medan** ("mesti ada"), kemudian hantar prototaip HTML mengandungi **17 medan**.
+Bukan satu subset satu lagi — prototaip **tiada** `HARI` dan `ELEMEN`, tetapi ada 8 medan yang
+master tak sebut. Kalau diterima diam-diam ⇒ borang + Sheets + PDF ditulis semula kemudian.
+➡️ Dua sumber bercanggah dari orang **sama** ≠ salah satu salah. Ia tanda mereka menjawab
+**soalan berbeza** — prototaip dihantar sebagai contoh *checkbox*, bukan spesifikasi medan.
+**Ditanya, bukan diteka.** Master pilih **9 medan**.
+
+### 🔴 PEPIJAT PROTOTAIP YANG JANGAN DIWARISI
+`pdf.addImage(img,"PNG",0,0,210,297)` — A4 ditetapkan **keras**. Kandungan melebihi 1123px
+**dipaksa** masuk ⇒ teks **picak menegak**, bukan tumpah ke muka 2. Gagal **senyap sepenuhnya**;
+lencana amaran prototaip tidak menghalang apa-apa. Gerbang "halang HANTAR bila melebihi 1 muka"
+(keputusan #10) menjadikannya **mustahil dicapai**, bukan sekadar dibaiki.
+
+### 🔒 KESELAMATAN — disahkan dengan master
+**Tiada password di mana-mana.** Google sahkan **siapa**, kita putuskan **apa boleh dibuat**.
+`USERS` = `EMAIL · NAMA · ROLE · STATUS` sahaja.
+🔴 Satu perbuatan **manusia** boleh memecahkan segalanya: **berkongsi spreadsheet**. Akses tulis
+⇒ sesiapa boleh taip `ADMIN` sebelah namanya. `Execute as: Me` sudah menutup ini secara semula
+jadi (guru tak pernah dapat kebenaran Drive pada Sheet). Direkod dalam `CLAUDE.md`.
+*Bukan risiko:* `SPREADSHEET_ID` dalam git — ID bukan akses.
+
+### ⏭️ SAMBUNG
+(1) master bekalkan **senarai `ELEMEN`** → sheet `RUJUKAN` *(tak sekat apa-apa)* ·
+(2) **Task 0** spike · (3) tulis **pelan pelaksanaan** Task 0 + Fasa 1.
+🟡 Master belum sahkan dia dah **baca** spec — gerbang semakan masih terbuka.
+
+---
+
+## 🎯 TITIK SAMBUNG — mypwa-v2 (sesi 2026-08-10, tidak disentuh 2026-08-11)
+**Sesi lepas**: 2026-08-10 (pagi, 09:24→10:0x) — 🟢 **mypwa-v2: KUMPULAN INTERVENSI LIVE PRODUCTION.**
+**`test` == `main` == `origin/*` @ `b008fe6`** (fast-forward). `main` lama `8542f96` digantikan.
 Suite penuh **58/0/2**, unit 99/99, spek kumpulan 24/24.
-**Last Work Activity**: 2026-08-10 (~09:1x — Aksara siap, memory dikemas atas arahan master)
+**Last Work Activity**: 2026-08-10 (~10:0x — merge + deploy production disahkan)
 
-🔵 **KEADAAN BILA SESI INI BERHENTI:** pipeline habis sampai `convergence` = ◈ **PARTIAL 4/5**
-(`Hone` ✓ · `SAFI` ✓ · `Julius` ✓ · `Aksara` ✓ · `Hunt` ✗ tidak dijalankan).
-**Menunggu izin master untuk Langkah 1** — semakan skema production BACA-SAHAJA.
+🟢 **SIAP SESI INI:** (1) skema production dibanding lawan staging · (2) migration `026`–`028`
+mendarat pada `mypwa-v2-db` · (3) merge `main` atas izin master · (4) deploy Actions
+**`f278b825`** disahkan melalui **penanda kandungan**, bukan timestamp.
+`convergence` kekal ◈ **PARTIAL 4/5** (`Hunt` ✗) — master pilih merge tetap.
 
-🔴 **URUTAN MIGRATION DIBETULKAN SESI INI — memory lama SALAH.**
-`feedback_mypwa_workflow.md` merekod *merge dahulu (3), migration production kemudian (4)*.
-Untuk migration **aditif** itu terbalik: kod baharu hidup sambil kolum belum wujud ⇒
-`/analisis` `/laporan` `/trend` campak. Urutan betul (sudah dibetulkan dalam memory):
-**staging → uji → semak skema production baca-sahaja → migration production → merge `main`.**
+✅ **MIGRATION PRODUCTION SIAP (09:3x)** — `026` (3 jadual kumpulan) · `027` (36/36 item
+`guna_kumpulan=0`, 0 NULL) · `028` (2624/2624 `kumpulan_id` NULL). `ujian_markah` kekal 2624
+baris. 3 baris `markah IS NULL` = `is_td=1` bertarikh `2026-04-27`, **pra-wujud** (diperiksa
+satu per satu, bukan diandaikan). Skema production kini **sepadan tepat** dengan staging.
+🔑 Pra-semakan yang berbaloi: **banding** skema production lawan staging, bukan tanya kewujudan.
+🔑 `rows_written: 1` untuk 2624 baris = normal (skema sahaja, nilai lalai dikira masa BACA).
+→ [[feedback_banding_skema_sebelum_migration]] (BARU)
 
-⏭️ **SAMBUNG:** (1) semak skema `mypwa-v2-db` baca-sahaja · (2) jalankan `026`–`028` pada
-production · (3) minta izin merge · (4) sahkan tingkah laku di `erpm-sksalor.celikguru.my`.
+🔴 **URUTAN MIGRATION DIBETULKAN SESI LEPAS — memory lama SALAH, kini sudah dibetulkan.**
+Untuk migration **aditif**: **staging → uji → banding skema production → migration production
+→ merge `main`.** DB boleh menunggu kod; kod tidak boleh menunggu DB.
+
+🔴 **SIFAR PALSU HAMPIR MENIPU AKU** semasa verify: jadual papar `PROD = 0` pada 3 fail —
+sebenarnya `curl` gagal DNS/sambungan dan `grep -c` mengira fail kosong. Pembetulan: rakam
+`%{http_code}` + saiz dalam jadual yang sama. Semakan yang mengira **KETIADAAN** mesti
+membuktikan ia berjaya **BERTANYA** dahulu. → [[feedback_sifar_palsu]]
+
+⚠️ **HAD BUKTI:** yang terbukti = **aset** baharu dihidangkan. Laluan **API** production belum
+diuji berautentikasi (`401` bukan bukti route wujud). Ujian penerimaan sebenar = master log
+masuk, buka `/analisis` `/laporan` `/trend`, dan cuba tab Kumpulan dalam admin.
+
+⏭️ **SAMBUNG:** (1) master sahkan visual di `erpm-sksalor.celikguru.my` · (2) dua baki Julius
+(master pilih **baiki selepas merge**): `r.murid_id` `/bulk` tak disahkan · `markah` teks
+merosakkan `AVG` Markah Rujukan · (3) empat baki Hone (500 → 409/400, `<title>` cetak).
+🟢 Feature mendarat **MATI** — `guna_kumpulan = 0` pada 36/36 item production. Selamat.
 
 🟡 **DIPARKIR (kekal):** Markah per-subjek tab Kumpulan — spec BELUM ditulis. Butiran dalam
 `mypwa-v2/MEMORY.md` blok BACKLOG. 🔴 **TIDAK** perlu migration — `ujian_item.subjek_id` sudah wujud.

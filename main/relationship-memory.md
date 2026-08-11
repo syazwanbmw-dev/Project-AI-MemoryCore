@@ -44,6 +44,8 @@
 ## Projek Aktif
 *(dikemas 2026-08-07 — senarai lama lapuk: `my-pwa` sudah DIPADAM, `erpm-cf`/`myportfolio` kurang aktif)*
 
+- 🆕 `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script**, bukan Hono/Workers.
+  Reka bentuk siap 2026-08-11, kod belum mula)
 - `mypwa-v2` (eNilai — per-SEKOLAH, live production)
 - `erph` (sekolah RENDAH) · `erph-menengah-v2`
 - `celiksains`
