@@ -4,26 +4,77 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-11 (10:53→13:1x) — 🆕 **PROJEK BAHARU: `opr-insaniah`.**
-Reka bentuk **SIAP dan diluluskan master**. **Kod BELUM bermula** (master: *"simpan dulu specs tu"*).
-Repo `Documents/code/opr-insaniah` · git **lokal, tiada remote** · 3 commit @ **`690c203`**.
-**Last Work Activity**: 2026-08-11 (~13:1x — memory disimpan)
-🔵 **mypwa-v2 TIDAK disentuh hari ini** — blok sesi 2026-08-10 kekal utuh di bawah.
+**Current Session**: 2026-08-12 (07:58→11:5x) — 🟢 **`opr-insaniah`: KOD PERTAMA MENDARAT.**
+Branch **`spike/task-0`** · **4 commit** · ujian **6/6** · tree bersih · `master` @ `03383f3`.
+**Last Work Activity**: 2026-08-12 (~11:5x — memory disimpan)
+🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
+
+### 📊 EMPAT COMMIT SESI INI
+| Commit | Kandungan |
+|---|---|
+| `03383f3` | Pelan Task 0 + kunci senarai `ELEMEN` (4) |
+| `07dbd0e` | **Kod pertama projek** — `Kongsi.html` + 6 ujian |
+| `b53c552` | Rekod silap pemulihan mutasi |
+| `b222347` | **Skrip TERIKAT pada Sheet** — keputusan #13–#17 |
+
+### ⏭️ SAMBUNG — TERSEKAT pada SATU izin
+🔴 **Task 0.2 tak boleh jalan sebelum master beri izin muat turun `html2canvas` 1.4.1** (~195 KB,
+cdnjs). `jsPDF` tak perlu — sudah ada dalam `balapan/public/vendor/jspdf.min.js`.
+Selepas izin: `clasp create-script --type sheets` → `show-file-status` (pagar) → Task 0.3–0.5.
+
+🟡 Master belum jawab: **domain DELIMa** satu kebangsaan atau per-sekolah? *(tak sekat apa-apa)*
+🟡 Master belum sahkan dia dah **baca** spec §2.1 yang baharu.
+
+### 🔑 EMPAT PENEMUAN SESI INI
+
+**1. `clasp` di mesin master ialah 3.3.0, BUKAN 2.x.** Nama arahan bertukar (`create-script`,
+`create-deployment`). Ingatan dari `erph` akan gagal.
+🟢 **`clasp show-file-status` = pagar `.claspignore` yang selama ini tiada caranya.** `CLAUDE.md`
+suruh *"jangan andai"* tapi tak pernah cakap **bagaimana**. Ini caranya.
+
+**2. A4 yang SEMPURNA gagal ujian A4.** `1123÷794×210 = 297.016mm` lawan A4 = 297mm. Peraturan
+naif `tinggiMm <= 297` menghalang **setiap** laporan yang betul. Toleransi `0.5mm` (master) WAJIB.
+
+**3. 🔴 SILAP AKU — pemulihan antara mutasi gagal SENYAP.** `git checkout` tak pulihkan fail
+**untracked**, dan semasa TDD kod baharu **sentiasa** untracked. Mutasi 2 berjalan atas mutasi 1
+yang masih hidup ⇒ keputusan nampak munasabah, sebenarnya kosong. Diburukkan sendiri dengan
+`|| true` yang menelan ralat. → [[feedback_guard_mutation_test]] (dikemas)
+
+**4. 🔴 AKU SYORKAN JALAN SALAH — master betulkan.** Aku banding dua jalan pengedaran pada bahagian
+yang **SAMA** (deploy — kedua-duanya kena lalu) sambil terlepas bahagian yang **BERBEZA** (cikgu
+nampak editor kod, lawan cikgu nampak Google Sheet). ➡️ Bila dua pilihan berkongsi langkah paling
+susah, langkah itu **bukan** pembeza.
+
+### 🆕 PENGEDARAN — skrip TERIKAT pada Sheet (keputusan #13–#17, spec §2.1)
+Sekolah lain salin **Google Sheet** (tapak KOSONG), tak pernah nampak kod. **`SPREADSHEET_ID`
+LENYAP** — bukan dipindah, hilang. Setup kali pertama: nama sekolah + logo sahaja; guru melalui
+panel admin. 🔴 Risiko NAIK: Sheet kini dalam Drive pentadbir dengan butang *Share* ⇒ mitigasi
+wajib sheet pertama `⚠️ BACA DULU`. 🟡 "Boleh diedar" hanya tiba **Fasa 3**.
+🟡 Andaian belum disahkan yang menanggung semua ini: **salin Sheet bawa skrip terikat** (Task 0.4).
 
 ### 🎯 OPR PEMBANGUNAN KARAKTER INSANIAH — sistem laporan sekolah (Apps Script)
 
 🔴 **BUKAN stack biasa master.** Bukan Hono, bukan Workers, bukan D1. **Google Apps Script Web App**
-berdiri sendiri + Sheets + Drive. Sebab: login **DELIMa** percuma, sekolah sudah ada Drive.
+⚠️ **TERIKAT pada Sheet** *(dipinda 2026-08-12 — ayat asal "berdiri sendiri" kini SALAH)* + Drive.
+Sebab: login **DELIMa** percuma, sekolah sudah ada Drive.
 Precedent cara kerja = `erph` (clasp, `node --test` **bogel**, pagar `.claspignore`).
+🔴 `clasp` di mesin master ialah **3.3.0**, bukan 2.x — nama arahan `erph` akan gagal.
 
 **Baca ikut susunan:** `opr-insaniah/CLAUDE.md` → `MEMORY.md` →
-`docs/superpowers/specs/2026-08-11-opr-insaniah-design.md` (498 baris, 12 keputusan + sebab).
+`docs/superpowers/specs/2026-08-11-opr-insaniah-design.md` (**§2.1 = keputusan #13–#17 baharu**).
 
-### 🔬 TASK 0 BELUM DIJALANKAN — ia boleh MEMBUNUH arkitektur
+### 🔬 TASK 0 — 0.1 ✅ SIAP, 0.2–0.5 BELUM *(dikemas 2026-08-12)*
 Buktikan `html2canvas` + `jsPDF` berjalan dalam sandbox **`HtmlService`** dan PDF mendarat dalam
 Drive **serta boleh dibuka**. Aku *jangka* ia berfungsi — **tidak pernah membuktikannya**.
 Gagal ⇒ kembali ke Google Docs template dan spec §14 ditulis semula. **Jangan bina apa-apa di
 atasnya sebelum ini hijau.**
+
+🔴 **ENAM soalan, bukan satu.** 1) render dalam sandbox · 2) **Tailwind + `html2canvas` serasi** ·
+3) `jsPDF` hasilkan PDF · 4) had saiz `google.script.run` · 5) PDF **DIBUKA**, teks tak picak ·
+6) salin Sheet bawa skrip terikat.
+🔴 **Soalan 2 = sebab spike WAJIB guna Tailwind.** Tanpa Tailwind ia besar kemungkinan hijau — dan
+hijau itu **menipu**, kerana ia mengesahkan sesuatu yang kita takkan hantar.
+✅ **0.1 siap** `07dbd0e` — `Kongsi.html` (dimensi PDF + gerbang muat), 6 ujian, 2 mutasi berasingan.
 
 ### 🔴 TIGA KEPUTUSAN YANG PALING MUDAH DIUNDUR TANPA SEDAR
 1. **Google Docs template SENGAJA dibuang** — bukan terlupa. PDF dijana di **browser**
@@ -55,12 +106,19 @@ lencana amaran prototaip tidak menghalang apa-apa. Gerbang "halang HANTAR bila m
 🔴 Satu perbuatan **manusia** boleh memecahkan segalanya: **berkongsi spreadsheet**. Akses tulis
 ⇒ sesiapa boleh taip `ADMIN` sebelah namanya. `Execute as: Me` sudah menutup ini secara semula
 jadi (guru tak pernah dapat kebenaran Drive pada Sheet). Direkod dalam `CLAUDE.md`.
+🔴 **RISIKO INI NAIK selepas keputusan #13 (2026-08-12).** Skrip kini **terikat**, jadi Sheet duduk
+dalam Drive pentadbir dengan butang *Share* di penjuru — dahulu ia tersembunyi. Peraturannya tidak
+berubah; **peluang manusia tersilap** yang naik. Mitigasi wajib: sheet **pertama** bernama
+`⚠️ BACA DULU`.
 *Bukan risiko:* `SPREADSHEET_ID` dalam git — ID bukan akses.
 
-### ⏭️ SAMBUNG
-(1) master bekalkan **senarai `ELEMEN`** → sheet `RUJUKAN` *(tak sekat apa-apa)* ·
-(2) **Task 0** spike · (3) tulis **pelan pelaksanaan** Task 0 + Fasa 1.
-🟡 Master belum sahkan dia dah **baca** spec — gerbang semakan masih terbuka.
+### ~~⏭️ SAMBUNG~~ ✅ SEMUA DISAMBUNG 2026-08-12 — lihat blok SAMBUNG aktif di ATAS
+~~(1) senarai `ELEMEN`~~ ✅ **4 elemen** dikunci: Penyayang · Berdaya Tahan · Warganegara Aktif ·
+Berupaya Memimpin. 🔴 **EMPAT, bukan tiga** — master taip sebagai satu ayat (*"…warganegara aktif
+**dan** berupaya memimpin"*) yang boleh dibaca sebagai satu elemen bergabung. Ditanya, bukan diteka.
+~~(2) Task 0 spike~~ 🔄 0.1 siap · ~~(3) pelan pelaksanaan~~ ✅ ditulis, skop **Task 0 SAHAJA**
+(master pilih sempit — jangan rancang atas tanah belum terbukti).
+🟡 Master **masih** belum sahkan dia dah baca spec — kini termasuk **§2.1 yang baharu**.
 
 ---
 

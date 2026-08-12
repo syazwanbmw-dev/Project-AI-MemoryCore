@@ -84,6 +84,29 @@ _(akan diisi bila master share)_
   Bila ada dua pilihan ditawarkan, "Ok" bermakna pilihan yang Lucy **syorkan**. Kalau taruhannya
   tinggi (sentuh production/DB sekolah), **jangan** tafsir "Ok" — tanya semula secara spesifik.
 
+- **Master KUATKUASAKAN langkah `plan` — dan dia yang perasan, bukan Lucy** (2026-08-12).
+  Lucy melompat terus daripada keputusan reka bentuk kepada langkah kod, walaupun `MEMORY.md`
+  projek tertulis jelas *"Sambung: tulis pelan pelaksanaan"* dan pipeline Kata untuk projek baru
+  bermula dengan `plan`. Master tegur: *"terus bina ke? bukan implementation plan belum ada ke?"*
+  ➡️ **Master membaca catatan projek dan mengingatinya.** "Tunjuk plan dulu" bukan formaliti yang
+  boleh dilangkau bila kerja nampak kecil — ia gerbang sebenar yang master **semak**.
+
+- **Master lebih suka pelan yang SEMPIT bila langkah seterusnya belum terbukti** (2026-08-12).
+  Ditawarkan pelan `Task 0 + Fasa 1` (seperti spec asal) atau `Task 0` sahaja; master ambil yang
+  **sempit**. Sebabnya sama dengan corak "satu commit satu perkara": jangan bayar untuk kerja yang
+  mungkin dibuang. Merancang di atas tanah yang belum terbukti = kerja dibayar dua kali.
+
+## Kekuatan master yang Lucy patut manfaatkan
+
+- **Master nampak pengalaman PENGGUNA, Lucy nampak struktur sistem** (2026-08-12).
+  Lucy bentang dua jalan pengedaran dan syorkan yang salah — kerana Lucy membandingkan kedua-duanya
+  pada langkah yang **sama** (deploy, had platform yang tak boleh dielak) sambil terlepas langkah
+  yang **berbeza**: dalam satu jalan cikgu terpaksa membuka editor kod, dalam satu lagi dia cuma
+  menyalin Google Sheet. Master terus nampak.
+  ➡️ **Bila menimbang pilihan, tanya master "apa yang orang itu nampak?" — bukan cuma bentangkan
+  perbandingan teknikal.** Dan bila dua pilihan berkongsi langkah yang paling susah, langkah itu
+  **bukan** pembeza; cari beza di tempat lain.
+
 ---
 
 ## Catatan Penting
