@@ -17,8 +17,29 @@ PDF **dibuka master**: teks terbaca, tak picak, **1 muka** · salin Sheet **bawa
 
 ➡️ **Arkitektur hibrid SELAMAT.** Google Docs template kekal dibuang — jangan tinjau semula.
 
-### ⏭️ SAMBUNG — tulis **PELAN FASA 1**
-Tiada penyekat. Master sudah luluskan merge dan sudah jawab semua soalan tergantung.
+### ⏭️ SAMBUNG — 🔴 **SATU KEPUTUSAN MASTER MENUNGGU** (dibentang 13:4x, master rehat sebelum jawab)
+
+**Soalannya:** ukur `gambarB64` **dahulu** (~15 min), atau tulis pelan Fasa 1 **sekarang**?
+
+**Cadangan Lucy: ukur dahulu.** Sebabnya — `gambarB64` (21 MB, belum diuji) bukan di tepi Fasa 1,
+ia duduk **di dalam** kawasan *"simpan + PDF"*, salah satu daripada 7 kawasan Fasa 1. Jawapannya
+mengubah reka bentuk:
+- **lulus** ⇒ hantar foto mentah, simpan ke Drive. Paling ringkas berfungsi
+- **gagal** ⇒ ubah saiz di client · simpan versi kecil · atau **jana semula gambar Edit daripada
+  PDF** — dan pilihan terakhir itu turut mengubah **Fasa 2 (Edit)**
+
+🔑 Ini corak master sendiri (2026-08-12): *"jangan rancang atas tanah belum terbukti — kerja yang
+dibayar dua kali."* Kali ini tanah belum terbukti itu berada **di dalam** kawasan yang nak dirancang.
+
+🟢 **Alatnya sudah sedia** — `Spike.html` sengaja tidak dipadam tepat untuk ini. Kerja: tambah
+`gambarB64` ke panggilan `google.script.run`, redeploy `--deploymentId` (ID sama, URL master tak
+berubah), master klik sekali.
+
+*(Alternatif yang ditawarkan: tulis pelan Fasa 1 sekarang, tanda laluan simpanan "tertakluk
+perubahan". Lebih cepat nampak bergerak; kalau 21 MB gagal, bahagian itu dibuang dan ditulis semula.)*
+
+**Skop Fasa 1 ikut spec §12:** setup larian pertama · auth · borang · pratonton · simpan · PDF ·
+senarai — **7 kawasan**. Pelan besar; pertimbangkan hiris lebih sempit bila menulisnya.
 
 🔴 **`Spike.html` SENGAJA TIDAK DIPADAM** (keputusan master) walaupun pelan asal kata padam bila GO.
 Ia **satu-satunya alat ukur muatan** kita, dan backlog #6 memerlukannya. Padam **selepas** #6 dijawab.
