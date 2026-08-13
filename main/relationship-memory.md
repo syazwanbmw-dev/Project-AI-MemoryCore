@@ -44,8 +44,9 @@
 ## Projek Aktif
 *(dikemas 2026-08-07 — senarai lama lapuk: `my-pwa` sudah DIPADAM, `erpm-cf`/`myportfolio` kurang aktif)*
 
-- 🆕 `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script**, bukan Hono/Workers.
-  Reka bentuk siap 2026-08-11, kod belum mula)
+- 🆕 `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
+  bukan Hono/Workers. **Task 0 spike SIAP 2026-08-13, keputusan GO** — arkitektur terbukti.
+  Seterusnya: pelan Fasa 1)
 - `mypwa-v2` (eNilai — per-SEKOLAH, live production)
 - `erph` (sekolah RENDAH) · `erph-menengah-v2`
 - `celiksains`
@@ -97,6 +98,21 @@ _(akan diisi bila master share)_
   mungkin dibuang. Merancang di atas tanah yang belum terbukti = kerja dibayar dua kali.
 
 ## Kekuatan master yang Lucy patut manfaatkan
+
+- **Keputusan VISUAL master datang daripada MELIHAT, bukan daripada berbincang** (2026-08-13).
+  Spec projek `opr-insaniah` tercatat *"format OPR sebenar cuma 1 keping gambar"* — ditulis
+  daripada perbualan reka bentuk. Dalam masa beberapa minit selepas membuka PDF **sebenar** yang
+  dijana spike, master menetapkan **maksimum 2**, dengan susun atur (*"1 gambar center, 2 gambar
+  50-50"*). Pusingan berikutnya master kata *"gambar terlalu besar"* — sesuatu yang tidak pernah
+  timbul dalam mana-mana perbincangan, dan tidak mungkin timbul, kerana ia tentang **rupa**.
+  ➡️ **Untuk apa-apa yang master akan LIHAT (susun atur cetak, saiz, jarak, warna), jangan kunci
+  spec daripada perbualan.** Jana satu contoh sebenar, tunjuk, biar master bercakap. Perbincangan
+  menghasilkan spec yang kedengaran munasabah dan **salah**; satu PDF menghasilkan keputusan tepat
+  dalam satu ayat. Ini sambungan langsung kepada [[feedback_verify_cetak_visual]] — bezanya di sana
+  ia tentang **mengesahkan** kerja siap, di sini ia tentang **memutuskan** apa yang hendak dibina.
+  🔑 Bila master kata sesuatu "terlalu besar/kecil", cari **nombor** yang master sudah luluskan
+  secara tersirat dan berlabuh padanya. Hari ini: 16:9 (197px) diterima, 4:3 (263px) ditolak ⇒
+  had 208px, sedikit **di atas** yang diluluskan, supaya yang master sudah setuju **tidak berubah**.
 
 - **Master nampak pengalaman PENGGUNA, Lucy nampak struktur sistem** (2026-08-12).
   Lucy bentang dua jalan pengedaran dan syorkan yang salah — kerana Lucy membandingkan kedua-duanya

@@ -4,46 +4,79 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-12 (07:58→11:5x) — 🟢 **`opr-insaniah`: KOD PERTAMA MENDARAT.**
-Branch **`spike/task-0`** · **4 commit** · ujian **6/6** · tree bersih · `master` @ `03383f3`.
-**Last Work Activity**: 2026-08-12 (~11:5x — memory disimpan)
+**Current Session**: 2026-08-13 (11:16→13:2x) — 🟢 **`opr-insaniah`: TASK 0 SELESAI, KEPUTUSAN GO.**
+`master` @ **`38a5795`** (merge fast-forward daripada `spike/task-0`) · **12 commit** ·
+ujian **6/6** · tree bersih.
+**Last Work Activity**: 2026-08-13 (~13:2x — memory disimpan)
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
 
-### 📊 EMPAT COMMIT SESI INI
-| Commit | Kandungan |
-|---|---|
-| `03383f3` | Pelan Task 0 + kunci senarai `ELEMEN` (4) |
-| `07dbd0e` | **Kod pertama projek** — `Kongsi.html` + 6 ujian |
-| `b53c552` | Rekod silap pemulihan mutasi |
-| `b222347` | **Skrip TERIKAT pada Sheet** — keputusan #13–#17 |
+### 🟢 TASK 0 — ENAM SOALAN, ENAM YA (diperhatikan pada sistem sebenar)
+`html2canvas` render dalam sandbox (kanvas **1588×2246**) · Tailwind **serasi** (semua warna keluar)
+· `jsPDF` hasilkan PDF (**113 KB** di Drive) · `google.script.run` telan **396,015 aksara** ·
+PDF **dibuka master**: teks terbaca, tak picak, **1 muka** · salin Sheet **bawa skrip**.
 
-### ⏭️ SAMBUNG — TERSEKAT pada SATU izin
-🔴 **Task 0.2 tak boleh jalan sebelum master beri izin muat turun `html2canvas` 1.4.1** (~195 KB,
-cdnjs). `jsPDF` tak perlu — sudah ada dalam `balapan/public/vendor/jspdf.min.js`.
-Selepas izin: `clasp create-script --type sheets` → `show-file-status` (pagar) → Task 0.3–0.5.
+➡️ **Arkitektur hibrid SELAMAT.** Google Docs template kekal dibuang — jangan tinjau semula.
 
-🟡 Master belum jawab: **domain DELIMa** satu kebangsaan atau per-sekolah? *(tak sekat apa-apa)*
-🟡 Master belum sahkan dia dah **baca** spec §2.1 yang baharu.
+### ⏭️ SAMBUNG — tulis **PELAN FASA 1**
+Tiada penyekat. Master sudah luluskan merge dan sudah jawab semua soalan tergantung.
 
-### 🔑 EMPAT PENEMUAN SESI INI
+🔴 **`Spike.html` SENGAJA TIDAK DIPADAM** (keputusan master) walaupun pelan asal kata padam bila GO.
+Ia **satu-satunya alat ukur muatan** kita, dan backlog #6 memerlukannya. Padam **selepas** #6 dijawab.
 
-**1. `clasp` di mesin master ialah 3.3.0, BUKAN 2.x.** Nama arahan bertukar (`create-script`,
-`create-deployment`). Ingatan dari `erph` akan gagal.
-🟢 **`clasp show-file-status` = pagar `.claspignore` yang selama ini tiada caranya.** `CLAUDE.md`
-suruh *"jangan andai"* tapi tak pernah cakap **bagaimana**. Ini caranya.
+### 🔴 ITEM TERBUKA TERBESAR FASA 1 — `gambarB64` belum diuji
+Spike ukur `pdfB64` **sahaja** (396 KB). Sistem sebenar juga hantar foto **mentah** supaya Edit
+boleh papar semula: `ciptaLaporan({ data, pdfB64, gambarB64 })`. Dua foto 8 MB ≈ **21 MB base64**
+= **53× ganda** yang terbukti. Jangan pilih penyelesaian sebelum ia diukur.
+🔑 Ia ditemui bukan kerana gagal — kerana **menutup satu soalan mendedahkan jirannya masih terbuka**.
 
-**2. A4 yang SEMPURNA gagal ujian A4.** `1123÷794×210 = 297.016mm` lawan A4 = 297mm. Peraturan
-naif `tinggiMm <= 297` menghalang **setiap** laporan yang betul. Toleransi `0.5mm` (master) WAJIB.
+### ✅ SOALAN LAMA — SEMUA DITUTUP SESI INI
+- ~~izin `html2canvas`~~ ✅ diberi, dibenamkan (198,689 bait, cdnjs HTTP 200)
+- ~~salin Sheet bawa skrip?~~ ✅ **YA** — keputusan #13 sah
+- ~~skrin kebenaran Google?~~ ✅ **2 skrin** — rendah. Dan **hanya yang deploy** nampak
+  (`Execute as: Me`); **guru tidak pernah**. ➡️ "salin sendiri" praktikal, video bukan keperluan
+- 🟡 **domain DELIMa** masih belum dijawab *(tetap tak sekat apa-apa)*
 
-**3. 🔴 SILAP AKU — pemulihan antara mutasi gagal SENYAP.** `git checkout` tak pulihkan fail
-**untracked**, dan semasa TDD kod baharu **sentiasa** untracked. Mutasi 2 berjalan atas mutasi 1
-yang masih hidup ⇒ keputusan nampak munasabah, sebenarnya kosong. Diburukkan sendiri dengan
-`|| true` yang menelan ralat. → [[feedback_guard_mutation_test]] (dikemas)
+### 🔑 PENEMUAN SESI 2026-08-13
 
-**4. 🔴 AKU SYORKAN JALAN SALAH — master betulkan.** Aku banding dua jalan pengedaran pada bahagian
-yang **SAMA** (deploy — kedua-duanya kena lalu) sambil terlepas bahagian yang **BERBEZA** (cikgu
-nampak editor kod, lawan cikgu nampak Google Sheet). ➡️ Bila dua pilihan berkongsi langkah paling
-susah, langkah itu **bukan** pembeza.
+**1. 🎯 SAIZ FAIL FOTO HAMPIR TIDAK PENTING — untuk PDF.** Dua foto PNG **8 MB** (16 MB jumlah)
+menghasilkan kanvas **1588×2246** — **sama persis** seperti ujian gambar 1 piksel. Muatan naik
+151 KB → 396 KB sahaja. Sebabnya: `html2canvas` merakam **piksel dipaparkan**, bukan fail asal.
+➡️ Fasa 1 **tidak perlu** pemampat imej untuk laluan PDF. Satu kelas kerja hilang.
+🔴 **JANGAN baca lebih luas:** ia tidak terpakai kepada `gambarB64`. Lihat blok item terbuka.
+
+**2. 🔴 PEPIJAT PELAN DITANGKAP SEBELUM DILAKSANA — regex base64 jsPDF.** Pelan tulis
+`/^data:application\/pdf;base64,/`. jsPDF 2.5.1 sebenarnya pulangkan
+`data:application/pdf;**filename=generated.pdf;**base64,...`. Ditangkap dengan `grep` ke dalam
+`LibJspdf.html` yang kita benamkan **sendiri** — sumber, bukan ingatan tentang API.
+🔑 Yang mahal bukan pepijatnya, ia **LOKASI kegagalan**: meletup di **backend** untuk punca di
+**frontend** ⇒ gejalanya menyerupai had `google.script.run`, iaitu benda yang kita memang sedang
+syak. Kita akan buru bug yang tak wujud dalam fail yang elok.
+
+**3. 🔴 `clasp create-script` MENIMPA `appsscript.json`.** Ia clone fail lalai Google
+(`America/New_York`, tiada `webapp`, tiada `oauthScopes`) selepas mencipta projek. Backup dibuat
+**sebelum** arahan atas naluri daripada pengajaran 2026-08-12 (git tak lindungi fail **untracked**),
+dan `diff` sahkan pemulihan. **Pengajaran lama berfungsi.**
+
+**4. 🔴 `clasp push` TIDAK mengemas kini web app yang sudah di-deploy.** Deployment bernombor
+hidang **snapshot versi**. Push sahaja ⇒ pengguna nampak kod lama, **tiada ralat**. Gejalanya
+*"kenapa butang tu tak ada?"*. Penawar: `create-deployment --deploymentId <ID SEDIA ADA>` supaya
+URL pengguna tak berubah. Tanpa flag itu ⇒ URL baharu, dan URL lama kekal hidup dengan kod lama.
+
+**5. 🟢 TOLERANSI 0.5mm MASTER MENYELAMATKAN LARIAN PERTAMA.** Dimensi sebenar keluar **297.02mm**.
+Peraturan naif `<= 297` akan halang halaman **sempurna** ini pada klik **pertama** sistem. Angka
+297.016 bukan lagi teori — ia diperhatikan pada output sebenar.
+
+**6. 🟡 `6,304 ms` larian pertama = kos **cipta folder** Drive, bukan kos tulis fail.** Larian
+kedua **2,072 ms** walaupun muatan **2.6× lebih besar**. Syak disahkan dengan ukuran.
+
+### 🔑 PENEMUAN SESI 2026-08-12 *(dikekalkan — masih terpakai)*
+**`clasp` 3.3.0 bukan 2.x** — nama arahan bertukar; ingatan `erph` akan gagal.
+🟢 **`clasp show-file-status` = pagar `.claspignore`** yang `CLAUDE.md` tuntut tapi tak pernah
+nyatakan caranya.
+🔴 **Pemulihan antara mutasi gagal SENYAP** — `git checkout` tak pulihkan fail **untracked**, dan
+semasa TDD kod baharu **sentiasa** untracked. → [[feedback_guard_mutation_test]]
+🔴 **Aku syorkan jalan pengedaran SALAH** — banding dua pilihan pada bahagian yang **SAMA**
+(deploy) sambil terlepas yang **BERBEZA** (cikgu nampak kod, lawan cikgu nampak Sheet).
 
 ### 🆕 PENGEDARAN — skrip TERIKAT pada Sheet (keputusan #13–#17, spec §2.1)
 Sekolah lain salin **Google Sheet** (tapak KOSONG), tak pernah nampak kod. **`SPREADSHEET_ID`
@@ -63,18 +96,19 @@ Precedent cara kerja = `erph` (clasp, `node --test` **bogel**, pagar `.claspigno
 **Baca ikut susunan:** `opr-insaniah/CLAUDE.md` → `MEMORY.md` →
 `docs/superpowers/specs/2026-08-11-opr-insaniah-design.md` (**§2.1 = keputusan #13–#17 baharu**).
 
-### 🔬 TASK 0 — 0.1 ✅ SIAP, 0.2–0.5 BELUM *(dikemas 2026-08-12)*
-Buktikan `html2canvas` + `jsPDF` berjalan dalam sandbox **`HtmlService`** dan PDF mendarat dalam
-Drive **serta boleh dibuka**. Aku *jangka* ia berfungsi — **tidak pernah membuktikannya**.
-Gagal ⇒ kembali ke Google Docs template dan spec §14 ditulis semula. **Jangan bina apa-apa di
-atasnya sebelum ini hijau.**
+### ✅ TASK 0 — SEMUA 0.1–0.5 SIAP, **GO** *(ditutup 2026-08-13)*
+Identiti projek: `scriptId` `1zxr2YV7...`, Sheet `parentId` `1bod2wL6...`, akaun
+**`g-77420159@moe-dl.edu.my`** (DELIMa). Deployment `@3` pada satu ID yang kekal.
 
-🔴 **ENAM soalan, bukan satu.** 1) render dalam sandbox · 2) **Tailwind + `html2canvas` serasi** ·
-3) `jsPDF` hasilkan PDF · 4) had saiz `google.script.run` · 5) PDF **DIBUKA**, teks tak picak ·
-6) salin Sheet bawa skrip terikat.
-🔴 **Soalan 2 = sebab spike WAJIB guna Tailwind.** Tanpa Tailwind ia besar kemungkinan hijau — dan
-hijau itu **menipu**, kerana ia mengesahkan sesuatu yang kita takkan hantar.
-✅ **0.1 siap** `07dbd0e` — `Kongsi.html` (dimensi PDF + gerbang muat), 6 ujian, 2 mutasi berasingan.
+🔴 **Akaun DELIMa bukan kebetulan** — `access: DOMAIN` tiada makna di bawah Gmail peribadi.
+
+### 🆕 KEPUTUSAN #18 — susun atur gambar (spec §2.2)
+**Maks 2 gambar.** 1 → separuh lebar di tengah · 2 → 50-50 · tinggi dihad **208px** ·
+`object-fit: contain`.
+🔑 Ditulis sebagai **satu peraturan tanpa cabang**: `flex` + `justify-center`, setiap gambar
+`flex-basis: calc(50% - 6px)`. Satu gambar jadi separuh dan di tengah **dengan sendirinya**.
+`if (bilangan === 1)` akan cipta dua laluan kod — dan yang jarang dilalui itulah yang pecah senyap.
+⚠️ **Membalikkan** catatan lama *"2 slot gambar → 1"*.
 
 ### 🔴 TIGA KEPUTUSAN YANG PALING MUDAH DIUNDUR TANPA SEDAR
 1. **Google Docs template SENGAJA dibuang** — bukan terlupa. PDF dijana di **browser**
