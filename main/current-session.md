@@ -4,179 +4,169 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-13 (11:16→13:2x) — 🟢 **`opr-insaniah`: TASK 0 SELESAI, KEPUTUSAN GO.**
-`master` @ **`38a5795`** (merge fast-forward daripada `spike/task-0`) · **12 commit** ·
-ujian **6/6** · tree bersih.
-**Last Work Activity**: 2026-08-13 (~13:2x — memory disimpan)
+**Current Session**: 2026-08-13 (16:45→23:1x) — 🟡 **`opr-insaniah`: HIRISAN 1 KOD SIAP,
+UJIAN PENERIMAAN 9/14 LANGKAH.** Branch **`fasa1/hirisan-1`** @ **`26705cc`** (dari `master` @
+`530c99e`) · tree bersih · ujian **38/38** (disahkan semula 22:5x) · deploy **`@7`**.
+**`master` TIDAK disentuh.**
+**Last Work Activity**: 2026-08-13 (~23:1x — langkah 4–9 penerimaan lulus, dicommit)
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
 
-### 🟢 TASK 0 — ENAM SOALAN, ENAM YA (diperhatikan pada sistem sebenar)
-`html2canvas` render dalam sandbox (kanvas **1588×2246**) · Tailwind **serasi** (semua warna keluar)
-· `jsPDF` hasilkan PDF (**113 KB** di Drive) · `google.script.run` telan **396,015 aksara** ·
-PDF **dibuka master**: teks terbaca, tak picak, **1 muka** · salin Sheet **bawa skrip**.
+### ⏭️ SAMBUNG — ujian penerimaan LANGKAH 10 (senarai penuh dalam `opr-insaniah/MEMORY.md`)
 
-➡️ **Arkitektur hibrid SELAMAT.** Google Docs template kekal dibuang — jangan tinjau semula.
+Langkah **1–9 LULUS**. `1–3` diperhatikan 22:44 (skrin utama papar `SEKOLAH KEBANGSAAN SALOR` ·
+`Pentadbir` · `ADMIN` · *"Belum ada laporan."*) ⇒ seluruh laluan `Setup`→`Database`→`AuthService`
+→`Kod`→frontend berjalan hujung ke hujung. `4–9` diperhatikan **23:0x** (`⚠️ BACA DULU` tab
+PERTAMA · 4 ELEMEN + 12 NILAI · `USERS` satu baris tanpa password · 16 header `OPR` beku ·
+3 folder Drive kosong · muat semula → skrin utama). Commit memory `26705cc`.
 
-### ⏭️ SAMBUNG — 🔴 **SATU KEPUTUSAN MASTER MENUNGGU** (dibentang 13:4x, master rehat sebelum jawab)
+🟡 **PENEMUAN: tab `Sheet1` tertinggal** — `Setup.gs` tidak pernah memadam tab lalai Google.
+**Kosmetik sahaja** (bacaan ikut NAMA, bukan kedudukan); `BACA DULU` kekal pertama ⇒ mitigasi utuh.
+Relevan kerana keputusan #13 (sekolah lain **salin fail**). Backlog #8, sengaja **tidak** dibaiki.
 
-**Soalannya:** ukur `gambarB64` **dahulu** (~15 min), atau tulis pelan Fasa 1 **sekarang**?
+URL: `https://script.google.com/macros/s/AKfycbxss9BfkhH…/exec` (ID kekal, tidak pernah berubah)
 
-**Cadangan Lucy: ukur dahulu.** Sebabnya — `gambarB64` (21 MB, belum diuji) bukan di tepi Fasa 1,
-ia duduk **di dalam** kawasan *"simpan + PDF"*, salah satu daripada 7 kawasan Fasa 1. Jawapannya
-mengubah reka bentuk:
-- **lulus** ⇒ hantar foto mentah, simpan ke Drive. Paling ringkas berfungsi
-- **gagal** ⇒ ubah saiz di client · simpan versi kecil · atau **jana semula gambar Edit daripada
-  PDF** — dan pilihan terakhir itu turut mengubah **Fasa 2 (Edit)**
+🔴 **Yang BELUM diuji ialah yang paling bernilai — semuanya menguji KEGAGALAN:**
+- **10–11** `esc()` + peta header. Senarai kosong ⇒ kod pemapar baris, `esc()` dan peta header
+  **dihantar tanpa pernah diperhatikan berjalan**. Perlu **satu baris palsu** dalam sheet `OPR`
+  (`TAJUK`=`<b>Ujian</b>`, `NAMA_GURU`=`Cikgu & Rakan`), kemudian sisip kolum di hadapan `ID_OPR`
+- **12** pagar `INACTIVE` — **satu-satunya** ujian pagar `ACTIVE` pada Sheet sebenar melalui sesi
+  Google sebenar. 38 ujian `node --test` semuanya menguji objek yang **kita bina sendiri**
+- **14** padam baris `SETUP_SIAP` → setup mesti **menyambung**, tiada sheet berganda *(fix #20)*
+- **15** baris kedua `USERS` email sama → mesti `EMAIL_BERGANDA`, bukan "tidak aktif" *(fix #21)*
 
-🔑 Ini corak master sendiri (2026-08-12): *"jangan rancang atas tanah belum terbukti — kerja yang
-dibayar dua kali."* Kali ini tanah belum terbukti itu berada **di dalam** kawasan yang nak dirancang.
+Kemudian: padam `Spike.html` (**perlu izin master**) → kemas spec §10 (`Code.gs`→`Kod.gs`) →
+semakan akhir seluruh branch → merge ke `master`.
 
-🟢 **Alatnya sudah sedia** — `Spike.html` sengaja tidak dipadam tepat untuk ini. Kerja: tambah
-`gambarB64` ke panggilan `google.script.run`, redeploy `--deploymentId` (ID sama, URL master tak
-berubah), master klik sekali.
+Ledger penuh: `opr-insaniah/.superpowers/sdd/2026-08-13-opr-insaniah-fasa1-hirisan1/progress.md`
 
-*(Alternatif yang ditawarkan: tulis pelan Fasa 1 sekarang, tanda laluan simpanan "tertakluk
-perubahan". Lebih cepat nampak bergerak; kalau 21 MB gagal, bahagian itu dibuang dan ditulis semula.)*
+### 📦 TUJUH TASK SIAP — commit
 
-**Skop Fasa 1 ikut spec §12:** setup larian pertama · auth · borang · pratonton · simpan · PDF ·
-senarai — **7 kawasan**. Pelan besar; pertimbangkan hiris lebih sempit bila menulisnya.
+`d566eb9` T1 `Utils.gs`+pemuat ujian · `b0354e5` T2 `Config`+`Setup` · `7b32865` T3 `Database` ·
+`811351a` T4 `AuthService` · `780b3d3` T5 `Kod.gs` · `2148402` T6 frontend+`esc()` ·
+`92df945` fix skop OAuth · `f475d6c` memory.
 
-🔴 **`Spike.html` SENGAJA TIDAK DIPADAM** (keputusan master) walaupun pelan asal kata padam bila GO.
-Ia **satu-satunya alat ukur muatan** kita, dan backlog #6 memerlukannya. Padam **selepas** #6 dijawab.
+### 🔴 PENEMUAN BESAR MALAM INI — `oauthScopes` tidur sejak hari pertama
 
-### 🔴 ITEM TERBUKA TERBESAR FASA 1 — `gambarB64` belum diuji
-Spike ukur `pdfB64` **sahaja** (396 KB). Sistem sebenar juga hantar foto **mentah** supaya Edit
-boleh papar semula: `ciptaLaporan({ data, pdfB64, gambarB64 })`. Dua foto 8 MB ≈ **21 MB base64**
-= **53× ganda** yang terbukti. Jangan pilih penyelesaian sebelum ia diukur.
-🔑 Ia ditemui bukan kerana gagal — kerana **menutup satu soalan mendedahkan jirannya masih terbuka**.
+Klik **pertama** master gagal: *"Specified permissions are not sufficient to call
+`SpreadsheetApp.getActiveSpreadsheet`"*. `appsscript.json` ada **hanya** `/auth/drive`.
 
-### ✅ SOALAN LAMA — SEMUA DITUTUP SESI INI
-- ~~izin `html2canvas`~~ ✅ diberi, dibenamkan (198,689 bait, cdnjs HTTP 200)
-- ~~salin Sheet bawa skrip?~~ ✅ **YA** — keputusan #13 sah
-- ~~skrin kebenaran Google?~~ ✅ **2 skrin** — rendah. Dan **hanya yang deploy** nampak
-  (`Execute as: Me`); **guru tidak pernah**. ➡️ "salin sendiri" praktikal, video bukan keperluan
-- 🟡 **domain DELIMa** masih belum dijawab *(tetap tak sekat apa-apa)*
+🔑 **Ia TIDAK MUNGKIN ditemui lebih awal.** Spike Task 0 hanya guna `DriveApp` ⇒ `drive` memang
+cukup ⇒ 6/6 lulus bersih. Hirisan 1 ialah kod **PERTAMA dalam sejarah projek** yang menyentuh
+Sheets.
+🔴 **38 ujian, 4 penyemak, 3 fix round, 4 mutasi — semuanya terlepas.** Bukan kerana lemah:
+`node --test` berjalan di mesin master, di mana tiada Google. Ia menguji **peraturan**; ia tidak
+boleh menguji **izin**. Semua semakan memeriksa **kod**; tiada sesiapa memeriksa **fail tetapan**.
+➡️ Yang menangkapnya: **master klik satu butang.** → [[feedback_izin_bukan_peraturan]] (BARU)
 
-### 🔑 PENEMUAN SESI 2026-08-13
+Fix: **tiga** skop — `spreadsheets.currentonly` + `userinfo.email` + `drive`.
+🟢 `currentonly` **disahkan berfungsi**, dan ia **menguatkuasakan keputusan #13 pada peringkat
+platform**: kod tak boleh buka spreadsheet lain walaupun `SPREADSHEET_ID` ditambah semula.
 
-**1. 🎯 SAIZ FAIL FOTO HAMPIR TIDAK PENTING — untuk PDF.** Dua foto PNG **8 MB** (16 MB jumlah)
-menghasilkan kanvas **1588×2246** — **sama persis** seperti ujian gambar 1 piksel. Muatan naik
-151 KB → 396 KB sahaja. Sebabnya: `html2canvas` merakam **piksel dipaparkan**, bukan fail asal.
-➡️ Fasa 1 **tidak perlu** pemampat imej untuk laluan PDF. Satu kelas kerja hilang.
-🔴 **JANGAN baca lebih luas:** ia tidak terpakai kepada `gambarB64`. Lihat blok item terbuka.
+### 🆕 DUA KEPUTUSAN MASTER — kedua-duanya membaiki PELAN, bukan kod
 
-**2. 🔴 PEPIJAT PELAN DITANGKAP SEBELUM DILAKSANA — regex base64 jsPDF.** Pelan tulis
-`/^data:application\/pdf;base64,/`. jsPDF 2.5.1 sebenarnya pulangkan
-`data:application/pdf;**filename=generated.pdf;**base64,...`. Ditangkap dengan `grep` ke dalam
-`LibJspdf.html` yang kita benamkan **sendiri** — sumber, bukan ingatan tentang API.
-🔑 Yang mahal bukan pepijatnya, ia **LOKASI kegagalan**: meletup di **backend** untuk punca di
-**frontend** ⇒ gejalanya menyerupai had `google.script.run`, iaitu benda yang kita memang sedang
-syak. Kita akan buru bug yang tak wujud dalam fail yang elok.
+- **#20 setup boleh DISAMBUNG.** Gerbang bertukar daripada *"ada sheet?"* kepada *"setup SIAP?"*
+  (penanda `TETAPAN.SETUP_SIAP` ditulis paling akhir) + `sheetIkutNama()` cari-dahulu-cipta-
+  kalau-tiada. Dahulu: Drive gagal ⇒ sheet sudah wujud ⇒ larian kedua pulang `SUDAH_DISEDIAKAN`
+  ⇒ folder **tak pernah** dicipta, meletup dalam Hirisan 2 jauh dari puncanya.
+  🔴 `sudahDisediakan()` **sengaja tidak sentuh Drive** — ia dipanggil setiap muat halaman.
+- **#21 email berganda `USERS` DITOLAK.** Dahulu baris pertama menang senyap ⇒ turun pangkat
+  dengan **menambah** baris (bukan menyunting) gagal tanpa amaran.
+  🔑 Hujah pemutus: `binaPetaHeader()` **sudah** campak untuk kolum berganda atas sebab sama.
+  🔑 Sentinel `{berganda:true}` atas `throw` kerana ia **gagal-tertutup sendiri**.
 
-**3. 🔴 `clasp create-script` MENIMPA `appsscript.json`.** Ia clone fail lalai Google
-(`America/New_York`, tiada `webapp`, tiada `oauthScopes`) selepas mencipta projek. Backup dibuat
-**sebelum** arahan atas naluri daripada pengajaran 2026-08-12 (git tak lindungi fail **untracked**),
-dan `diff` sahkan pemulihan. **Pengajaran lama berfungsi.**
+### 🔑 MUTASI YANG MENGGIGIT SIFAR = ujian tak pernah sentuh pagar
 
-**4. 🔴 `clasp push` TIDAK mengemas kini web app yang sudah di-deploy.** Deployment bernombor
-hidang **snapshot versi**. Push sahaja ⇒ pengguna nampak kod lama, **tiada ralat**. Gejalanya
-*"kenapa butang tu tak ada?"*. Penawar: `create-deployment --deploymentId <ID SEDIA ADA>` supaya
-URL pengguna tak berubah. Tanpa flag itu ⇒ URL baharu, dan URL lama kekal hidup dengan kod lama.
+Mutasi 2 Task 4 membunuh **sifar** ujian. Fixture `PEMILIK` ada email **tak kosong**, jadi
+`'' === 'guru1@…'` sudah pulangkan `false` tanpa pagar. Kes bahaya sebenar ialah **kosong lawan
+kosong** (`'' === ''` ⇒ **true** ⇒ sesiapa boleh edit baris rosak) — dan **komen pada pagar itu
+sendiri** sudah menulis amaran itu dengan tepat.
+➡️ Jangan simpul *"pagar tak perlu"*. Tanya **baris MANA yang memutuskan**.
+Selepas satu assertion ditambah: **4/4 mutasi menggigit ujian yang diramal.**
+→ [[feedback_guard_mutation_test]] (dikemas)
 
-**5. 🟢 TOLERANSI 0.5mm MASTER MENYELAMATKAN LARIAN PERTAMA.** Dimensi sebenar keluar **297.02mm**.
-Peraturan naif `<= 297` akan halang halaman **sempurna** ini pada klik **pertama** sistem. Angka
-297.016 bukan lagi teori — ia diperhatikan pada output sebenar.
+### 🎯 SKOP HIRISAN 1 — dan DUA sempadan bersih yang jatuh dengan sendirinya
 
-**6. 🟡 `6,304 ms` larian pertama = kos **cipta folder** Drive, bukan kos tulis fail.** Larian
-kedua **2,072 ms** walaupun muatan **2.6× lebih besar**. Syak disahkan dengan ukuran.
+Setup larian pertama + Auth + senarai **kosong**. Master pilih hiris Fasa 1 (7 kawasan) jadi
+**2 keping**, bukan satu pelan besar.
 
-### 🔑 PENEMUAN SESI 2026-08-12 *(dikekalkan — masih terpakai)*
-**`clasp` 3.3.0 bukan 2.x** — nama arahan bertukar; ingatan `erph` akan gagal.
-🟢 **`clasp show-file-status` = pagar `.claspignore`** yang `CLAUDE.md` tuntut tapi tak pernah
-nyatakan caranya.
-🔴 **Pemulihan antara mutasi gagal SENYAP** — `git checkout` tak pulihkan fail **untracked**, dan
-semasa TDD kod baharu **sentiasa** untracked. → [[feedback_guard_mutation_test]]
-🔴 **Aku syorkan jalan pengedaran SALAH** — banding dua pilihan pada bahagian yang **SAMA**
-(deploy) sambil terlepas yang **BERBEZA** (cikgu nampak kod, lawan cikgu nampak Sheet).
+1. **Sempadan KESELAMATAN** — Hirisan 1 mengandungi semua yang memutuskan *siapa awak, apa awak
+   boleh buat*; Hirisan 2 semuanya *buat kerja*. Kalau auth silap, ia salah **sebelum** ada 4
+   kawasan lain di atasnya
+2. **Sempadan DRIVE** — Hirisan 1 **tidak menulis satu fail pun** ke Drive, cuma cipta 3 folder
+   kosong. `DriveService.gs` lahir sekali dengan pemiliknya dalam Hirisan 2
 
-### 🆕 PENGEDARAN — skrip TERIKAT pada Sheet (keputusan #13–#17, spec §2.1)
-Sekolah lain salin **Google Sheet** (tapak KOSONG), tak pernah nampak kod. **`SPREADSHEET_ID`
-LENYAP** — bukan dipindah, hilang. Setup kali pertama: nama sekolah + logo sahaja; guru melalui
-panel admin. 🔴 Risiko NAIK: Sheet kini dalam Drive pentadbir dengan butang *Share* ⇒ mitigasi
-wajib sheet pertama `⚠️ BACA DULU`. 🟡 "Boleh diedar" hanya tiba **Fasa 3**.
-🟡 Andaian belum disahkan yang menanggung semua ini: **salin Sheet bawa skrip terikat** (Task 0.4).
+### ✅ SIAP SESI INI
 
-### 🎯 OPR PEMBANGUNAN KARAKTER INSANIAH — sistem laporan sekolah (Apps Script)
+| Perkara | Hasil |
+|---|---|
+| Ukur `gambarB64` | **9.19 MB lulus, 19.5 s** (transport ~10.4 s + backend 9.1 s) |
+| Perbandingan visual ASAL vs 800px | Master: **"tak nampak beza"** |
+| **Keputusan #19** (spec §2.3) | `gambarB64` = resize client **800px JPEG 0.85** |
+| Backlog #6 | ✅ **DITUTUP** |
+| Pelan Hirisan 1 | ✅ ditulis, 7 task |
 
-🔴 **BUKAN stack biasa master.** Bukan Hono, bukan Workers, bukan D1. **Google Apps Script Web App**
-⚠️ **TERIKAT pada Sheet** *(dipinda 2026-08-12 — ayat asal "berdiri sendiri" kini SALAH)* + Drive.
-Sebab: login **DELIMa** percuma, sekolah sudah ada Drive.
-Precedent cara kerja = `erph` (clasp, `node --test` **bogel**, pagar `.claspignore`).
-🔴 `clasp` di mesin master ialah **3.3.0**, bukan 2.x — nama arahan `erph` akan gagal.
+### 🔑 TIGA PENGAJARAN SESI INI *(butiran penuh dalam auto-memory)*
+
+**1. Ukuran ada TIGA keputusan, bukan dua — dan yang ketiga senyap.**
+`9.19 MB` **lulus**. Tiada apa-apa dalam sistem yang akan mengadu tentang 19.5 saat — **guru yang
+mengadu**. → [[feedback_lulus_tapi_lambat]]
+
+**2. Soalan siling DIPADAMKAN, bukan dijawab.** Kita tak pernah jumpa di mana muatan patah, dan
+kini **tak perlu tahu**: resize meletakkan muatan di bawah 1 MB. Siling itu **milik Google** dan
+boleh berubah tanpa memberitahu kita. → [[feedback_lulus_tapi_lambat]]
+
+**3. Perbandingan A/B boleh memberi kesimpulan SALAH, bukan sekadar gagal.** Dua pagar yang
+menyelamatkannya: satu laluan kod dikongsi, dan `pasangGambar()` **menunggu `img.onload`**.
+Tanpa yang kedua, PDF kedua keluar separuh dan kita akan baca itu sebagai *"versi kecil nampak
+teruk"*. Bug itu **tidak wujud** pada butang asal — manusia ambil masa nak klik; dua larian
+berturut-turut tidak beri jeda itu. → [[feedback_perbandingan_jujur]]
+
+### 🟡 SATU ANGKA MASIH ANGGARAN — sengaja tidak dikejar
+`~0.2 MB` / `~2 s` selepas resize. Larian Banding **memang** mengukurnya, cuma keputusannya
+tinggal pada skrin master. **Akan keluar sendiri semasa Hirisan 1/2** — jangan buat kerja
+berasingan untuknya. Yang **diukur dan dicatat**: mentah 8.77 MB / muatan 9.19 MB / 19.5 s.
+
+### 🔴 JANGAN BACA UKURAN ITU LEBIH LUAS DARIPADA BUKTINYA
+Yang diuji **9.19 MB**, **bukan** 21 MB — foto master lebih kecil daripada anggaran 8 MB sebiji.
+Selepas keputusan #19 ia tidak penting, tetapi jangan petik sebagai *"21 MB terbukti lulus"*.
+
+### 🔴 `Spike.html` — padam hanya dalam Task 7 Hirisan 1
+Backlog #6 sudah dijawab, jadi sebab asal menyimpannya sudah tamat. Tetapi ia dipadam **selepas**
+`doGet` disahkan menghidangkan `index` — memadam sumber sebelum penggantinya terbukti berjalan
+bermakna tiada apa-apa untuk kembali kepadanya. **Perlu confirm master** (`CLAUDE.md`).
+
+### 🎯 OPR PEMBANGUNAN KARAKTER INSANIAH — asas yang tidak berubah
+
+🔴 **BUKAN stack biasa master.** Bukan Hono, bukan Workers, bukan D1. Google Apps Script Web App
+**TERIKAT pada Sheet** + Drive. Login **DELIMa** percuma, sekolah sudah ada Drive.
+Precedent = `erph` (clasp, `node --test` **bogel**, pagar `.claspignore`).
+🔴 `clasp` **3.3.0**, bukan 2.x — nama arahan `erph` akan gagal.
 
 **Baca ikut susunan:** `opr-insaniah/CLAUDE.md` → `MEMORY.md` →
-`docs/superpowers/specs/2026-08-11-opr-insaniah-design.md` (**§2.1 = keputusan #13–#17 baharu**).
+`docs/superpowers/specs/2026-08-11-opr-insaniah-design.md` (**§2.3 = keputusan #19 baharu**).
 
-### ✅ TASK 0 — SEMUA 0.1–0.5 SIAP, **GO** *(ditutup 2026-08-13)*
-Identiti projek: `scriptId` `1zxr2YV7...`, Sheet `parentId` `1bod2wL6...`, akaun
-**`g-77420159@moe-dl.edu.my`** (DELIMa). Deployment `@3` pada satu ID yang kekal.
+Identiti: `scriptId` `1zxr2YV7...` · Sheet `parentId` `1bod2wL6...` · akaun
+**`g-77420159@moe-dl.edu.my`** (DELIMa — `access: DOMAIN` tiada makna di bawah Gmail peribadi).
+Deployment satu ID kekal, kini **`@5`**.
 
-🔴 **Akaun DELIMa bukan kebetulan** — `access: DOMAIN` tiada makna di bawah Gmail peribadi.
-
-### 🆕 KEPUTUSAN #18 — susun atur gambar (spec §2.2)
-**Maks 2 gambar.** 1 → separuh lebar di tengah · 2 → 50-50 · tinggi dihad **208px** ·
-`object-fit: contain`.
-🔑 Ditulis sebagai **satu peraturan tanpa cabang**: `flex` + `justify-center`, setiap gambar
-`flex-basis: calc(50% - 6px)`. Satu gambar jadi separuh dan di tengah **dengan sendirinya**.
-`if (bilangan === 1)` akan cipta dua laluan kod — dan yang jarang dilalui itulah yang pecah senyap.
-⚠️ **Membalikkan** catatan lama *"2 slot gambar → 1"*.
-
-### 🔴 TIGA KEPUTUSAN YANG PALING MUDAH DIUNDUR TANPA SEDAR
-1. **Google Docs template SENGAJA dibuang** — bukan terlupa. PDF dijana di **browser**
-   (`html2canvas`+`jsPDF`→JPEG 0.9), backend cuma **menyimpan**. Ini membunuh seluruh kelas pepijat
-   `replaceText` (regex · aksara `$` · teks berbilang baris). Memulihkan template = memulangkan
-   **enam** masalah sekali gus.
-2. **Semua pengguna ACTIVE boleh BACA semua laporan** — keputusan master. `getReportsByUser()`
-   spec asal §25 dibuang **sengaja**. Edit/padam kekal pemilik + admin, dikuatkuasa di **backend**.
-3. **PDF tidak pernah jadi pautan Drive** — backend baca fail, hantar base64. Kesan berguna:
-   File ID bebas berubah ⇒ tiada perlu Drive Advanced Service.
-
-### 🔑 DUA SENARAI MEDAN BERCANGGAH DARIPADA ORANG YANG SAMA
-Master taip **9 medan** ("mesti ada"), kemudian hantar prototaip HTML mengandungi **17 medan**.
-Bukan satu subset satu lagi — prototaip **tiada** `HARI` dan `ELEMEN`, tetapi ada 8 medan yang
-master tak sebut. Kalau diterima diam-diam ⇒ borang + Sheets + PDF ditulis semula kemudian.
-➡️ Dua sumber bercanggah dari orang **sama** ≠ salah satu salah. Ia tanda mereka menjawab
-**soalan berbeza** — prototaip dihantar sebagai contoh *checkbox*, bukan spesifikasi medan.
-**Ditanya, bukan diteka.** Master pilih **9 medan**.
-
-### 🔴 PEPIJAT PROTOTAIP YANG JANGAN DIWARISI
-`pdf.addImage(img,"PNG",0,0,210,297)` — A4 ditetapkan **keras**. Kandungan melebihi 1123px
-**dipaksa** masuk ⇒ teks **picak menegak**, bukan tumpah ke muka 2. Gagal **senyap sepenuhnya**;
-lencana amaran prototaip tidak menghalang apa-apa. Gerbang "halang HANTAR bila melebihi 1 muka"
-(keputusan #10) menjadikannya **mustahil dicapai**, bukan sekadar dibaiki.
+### 🔴 EMPAT KEPUTUSAN YANG PALING MUDAH DIUNDUR TANPA SEDAR
+1. **Google Docs template SENGAJA dibuang** — PDF dijana di **browser**; backend cuma menyimpan.
+   Memulihkan template = memulangkan **enam** masalah sekali gus
+2. **Semua pengguna ACTIVE boleh BACA semua laporan** — keputusan master, bukan terlepas pandang
+3. **PDF tidak pernah jadi pautan Drive** — backend baca fail, hantar base64
+4. 🆕 **`gambarB64` dihantar KECIL (800px), bukan mentah** — sesiapa yang cadang *"hantar mentah
+   je, kita dah uji ia lulus"* sedang tukar 19.5 s dengan ~2 s untuk kualiti yang master sendiri
+   **tak boleh bezakan**, sambil memulangkan semula soalan siling yang keputusan #19 buang
 
 ### 🔒 KESELAMATAN — disahkan dengan master
 **Tiada password di mana-mana.** Google sahkan **siapa**, kita putuskan **apa boleh dibuat**.
 `USERS` = `EMAIL · NAMA · ROLE · STATUS` sahaja.
-🔴 Satu perbuatan **manusia** boleh memecahkan segalanya: **berkongsi spreadsheet**. Akses tulis
-⇒ sesiapa boleh taip `ADMIN` sebelah namanya. `Execute as: Me` sudah menutup ini secara semula
-jadi (guru tak pernah dapat kebenaran Drive pada Sheet). Direkod dalam `CLAUDE.md`.
-🔴 **RISIKO INI NAIK selepas keputusan #13 (2026-08-12).** Skrip kini **terikat**, jadi Sheet duduk
-dalam Drive pentadbir dengan butang *Share* di penjuru — dahulu ia tersembunyi. Peraturannya tidak
-berubah; **peluang manusia tersilap** yang naik. Mitigasi wajib: sheet **pertama** bernama
-`⚠️ BACA DULU`.
-*Bukan risiko:* `SPREADSHEET_ID` dalam git — ID bukan akses.
-
-### ~~⏭️ SAMBUNG~~ ✅ SEMUA DISAMBUNG 2026-08-12 — lihat blok SAMBUNG aktif di ATAS
-~~(1) senarai `ELEMEN`~~ ✅ **4 elemen** dikunci: Penyayang · Berdaya Tahan · Warganegara Aktif ·
-Berupaya Memimpin. 🔴 **EMPAT, bukan tiga** — master taip sebagai satu ayat (*"…warganegara aktif
-**dan** berupaya memimpin"*) yang boleh dibaca sebagai satu elemen bergabung. Ditanya, bukan diteka.
-~~(2) Task 0 spike~~ 🔄 0.1 siap · ~~(3) pelan pelaksanaan~~ ✅ ditulis, skop **Task 0 SAHAJA**
-(master pilih sempit — jangan rancang atas tanah belum terbukti).
-🟡 Master **masih** belum sahkan dia dah baca spec — kini termasuk **§2.1 yang baharu**.
+🔴 Satu perbuatan **manusia** boleh memecahkan segalanya: **berkongsi spreadsheet**. `Execute as: Me`
+menutupnya secara semula jadi. Risiko **NAIK** selepas keputusan #13 (Sheet kini dalam Drive
+pentadbir dengan butang *Share*). Mitigasi wajib: sheet **pertama** `⚠️ BACA DULU` — sudah
+dimasukkan ke dalam pelan Hirisan 1 Task 2.
 
 ---
-
 ## 🎯 TITIK SAMBUNG — mypwa-v2 (sesi 2026-08-10, tidak disentuh 2026-08-11)
 **Sesi lepas**: 2026-08-10 (pagi, 09:24→10:0x) — 🟢 **mypwa-v2: KUMPULAN INTERVENSI LIVE PRODUCTION.**
 **`test` == `main` == `origin/*` @ `b008fe6`** (fast-forward). `main` lama `8542f96` digantikan.

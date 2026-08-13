@@ -45,8 +45,8 @@
 *(dikemas 2026-08-07 — senarai lama lapuk: `my-pwa` sudah DIPADAM, `erpm-cf`/`myportfolio` kurang aktif)*
 
 - 🆕 `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
-  bukan Hono/Workers. **Task 0 spike SIAP 2026-08-13, keputusan GO** — arkitektur terbukti.
-  Seterusnya: pelan Fasa 1)
+  bukan Hono/Workers. **Fasa 1 Hirisan 1 KOD SIAP 2026-08-13** — branch `fasa1/hirisan-1`, 38/38,
+  deploy `@7`, skrin utama hidup. Seterusnya: ujian penerimaan **langkah 4–15**)
 - `mypwa-v2` (eNilai — per-SEKOLAH, live production)
 - `erph` (sekolah RENDAH) · `erph-menengah-v2`
 - `celiksains`
@@ -96,6 +96,55 @@ _(akan diisi bila master share)_
   Ditawarkan pelan `Task 0 + Fasa 1` (seperti spec asal) atau `Task 0` sahaja; master ambil yang
   **sempit**. Sebabnya sama dengan corak "satu commit satu perkara": jangan bayar untuk kerja yang
   mungkin dibuang. Merancang di atas tanah yang belum terbukti = kerja dibayar dua kali.
+
+- **"Ukur dahulu" TERBUKTI berbaloi — bukan sekadar berhati-hati** (2026-08-13). Master pilih ukur
+  `gambarB64` sebelum menulis pelan Fasa 1, dan bukan sebaliknya. Hasilnya **mengubah reka bentuk**:
+  laluan simpan kini ada langkah **resize di client** yang tidak wujud dalam **mana-mana** lakaran
+  sebelum itu. Kalau pelan ditulis dahulu, bahagian itu kena buang dan tulis semula.
+  ➡️ Ujinya bukan *"berapa besar risikonya?"* tetapi **"tanah yang belum terbukti itu di TEPI
+  kawasan yang nak dirancang, atau di DALAMnya?"** Kalau di dalam — ukur dahulu, sentiasa.
+
+- **Master ingatkan KISS & DRY di TENGAH kerja, bukan selepas** (2026-08-13). Sebaik Lucy siap
+  menulis pelan 7 task, master hantar *"Ok. Jangan lupa KISS & DRY"* — sebelum melihat pelan itu.
+  Semakan sendiri yang tercetus daripadanya membuang **lima** perkara: pemuat ujian yang disalin
+  4 kali, `esc()` yang menduakan diri, dua fungsi tanpa pemanggil, dan amaran 18 baris yang takkan
+  dibaca.
+  ➡️ **Master menyangka Lucy akan lebihkan barang, dan master betul.** Jalankan semakan KISS/DRY
+  ke atas kerja sendiri **sebelum** membentangkannya — jangan tunggu diingatkan.
+  🔑 Tetapi jangan buang kod hanya kerana ia belum berjalan: pemapar senarai Hirisan 1 **dikekalkan**
+  dan ujian penerimaan diubah supaya ia **diperhatikan berjalan**. Kod mati dibaiki dengan
+  **menghidupkannya**, bukan sentiasa dengan membuangnya.
+
+- **Master MEMBENARKAN pelan diubah — bila ditunjuk senario kegagalan BERNAMA** (2026-08-13 malam).
+  Ini melengkapkan, bukan membatalkan, catatan 2026-08-12 *"master kuatkuasakan langkah `plan`"*.
+  Dalam satu sesi pelaksanaan, **dua** semakan mendedahkan pelan yang master sendiri luluskan
+  bercanggah dengan dirinya. Kedua-duanya dibentang sebagai **cerita konkrit** — *"Cikgu Zaki
+  diturunkan pangkat dengan menambah baris, bukan menyunting; baris ADMIN lama menang; master fikir
+  dah turun, sebenarnya tidak"* — bukan sebagai istilah (*"first-match resolution is
+  order-dependent"*). Master luluskan penyimpangan **kedua-duanya, serta-merta**.
+  ➡️ **Gerbang `plan` itu bukan tentang mematuhi teks pelan; ia tentang master yang memutuskan.**
+  Menyelit fix diam-diam melanggarnya; menunjuk kegagalan bernama dan bertanya **tidak**.
+  🔑 Yang menukar jawapan ialah **hujah konsistensi dalaman**: *"`binaPetaHeader()` sudah campak
+  untuk kolum berganda atas sebab yang sama persis — ini masalah sama bentuk pada baris."* Master
+  bergerak paling laju bila ditunjuk keputusan yang **dia sudah buat**, dipakai semula.
+  Sambungan [[feedback_soalan_reka_bentuk_contoh]].
+
+- **Master berhenti bila ditawarkan berhenti — jangan tunggu dia minta** (2026-08-13, 22:44).
+  Selepas ~6 jam, master pilih *"berhenti — simpan semua dulu"* daripada meneruskan 12 langkah ujian
+  penerimaan yang berbaki. Isyarat awal ada dan Lucy **terlepas** pada mulanya: dua mesej bertaip
+  rawak (`33333333333333+`, `222999999\/9.`) sekitar 18:00.
+  ➡️ Bila kerja berbaki melibatkan **menyunting data sebenar dan mengembalikannya semula**, dan jam
+  sudah lewat, **tawarkan titik berhenti dengan jaminan tiada kerja hilang** — jangan sekadar
+  serahkan senarai seterusnya. Master ambil tawaran itu.
+
+  🔑 **PENAMBAHAN 23:1x sesi yang sama — master kembali 11 minit kemudian dengan *"sambung project
+  opr"*.** Jadi "berhenti" bukan bermakna sesi tamat; ia bermakna **beban** itu yang ditolak, bukan
+  kerja. Yang berkesan: **pecahkan baki ikut RISIKO, bukan ikut bilangan.** 12 langkah berbaki
+  dibelah kepada 6 *"melihat sahaja, tiada apa perlu dipulihkan"* lawan 6 *"sunting-lalu-pulihkan"*.
+  Master ambil yang selamat, siapkan **kesemuanya** dalam ~10 minit, dan projek bergerak 9/14.
+  ➡️ **Jangan tawarkan hanya `teruskan` lawan `berhenti`.** Cari belahan semula jadi dalam kerja
+  itu sendiri — selalunya *"yang mana boleh silap, dan silapnya susah dipulihkan?"* — dan tawarkan
+  bahagian selamat sebagai pilihan ketiga. Bahagian itu selalunya siap penuh, bukan separuh.
 
 ## Kekuatan master yang Lucy patut manfaatkan
 
