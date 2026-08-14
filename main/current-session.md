@@ -4,16 +4,52 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-13 (16:45→23:1x) — 🟡 **`opr-insaniah`: HIRISAN 1 KOD SIAP,
-UJIAN PENERIMAAN 9/14 LANGKAH.** Branch **`fasa1/hirisan-1`** @ **`26705cc`** (dari `master` @
-`530c99e`) · tree bersih · ujian **38/38** (disahkan semula 22:5x) · deploy **`@7`**.
-**`master` TIDAK disentuh.**
-**Last Work Activity**: 2026-08-13 (~23:1x — langkah 4–9 penerimaan lulus, dicommit)
-🌙 **SESI DITUTUP 23:3x** — diary `daily-diary/current/2026-08-13.md` ✅ · semua repo bersih ·
-`memory` push `031c4a0` · reminder dibetulkan ke **langkah 10 @ `26705cc`** (dulu tunjuk langkah 4).
+**Current Session**: 2026-08-14 (08:29→09:2x) — ✅ **`opr-insaniah`: HIRISAN 1 SIAP DAN
+DI-MERGE.** **`master` @ `8ebbb70`** (merge `--no-ff` `940e3f3` dari `fasa1/hirisan-1` @
+`f0ef154`) · tree bersih · ujian **38/38** · deploy **`@8`** · penerimaan **14/14**.
+**Last Work Activity**: 2026-08-14 (~09:2x — merge + kemas memory)
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
 
-### ⏭️ SAMBUNG — ujian penerimaan LANGKAH 10 (senarai penuh dalam `opr-insaniah/MEMORY.md`)
+### 🔑 SATU CORAK YANG BERKESAN PAGI INI — ramalan DAHULU, baru perhati
+
+Lima langkah berbaki semuanya menguji **KEGAGALAN**, dan kegagalan mudah dirasionalkan selepas
+melihatnya. Jadi setiap langkah ditulis sebagai **ramalan + kriteria bunuh SEBELUM** master
+menyentuh Sheet, dan **kriteria bunuh dicatat sekali** dalam `MEMORY.md`.
+➡️ Rekod *"lulus"* yang tidak menyatakan **apa yang akan kelihatan kalau ia gagal** tidak boleh
+diperiksa semula kemudian — ia jadi dakwaan, bukan bukti.
+🔑 Langkah 14 contoh terbaiknya: ia lulus dengan memerhati sesuatu yang **TIDAK berlaku** (nama
+sekolah enggan bertukar). Setup yang rosak pun papar *"Selesai"* — mesej kejayaan bukan bukti.
+
+### 🔴 DUA BACAAN KOD MENJIMATKAN PUSINGAN PENUH
+
+Kedua-duanya ditemui dengan **membaca kod sebelum menulis runbook**, bukan semasa menguji:
+1. Setup yang disambung akan **abaikan** nama sekolah baharu. Tanpa diramal, master akan baca itu
+   sebagai pepijat dan kita buru sesuatu yang memang betul.
+2. `text-transform:uppercase` ada pada **`th` sahaja** (`style.html:21`) — jadi huruf besar dalam
+   jadual datang daripada Sheet. Percanggahan (`<b>Ujian</b>` kekal huruf kecil) **ditanya**, bukan
+   diandaikan.
+
+### ✅ SIAP SESI INI
+
+| Perkara | Hasil |
+|---|---|
+| Penerimaan langkah 10 · 11a-c · 12 · 14 · 15 | **LULUS**, semua langkah pulih disahkan |
+| `6812108` | label `Tidak dapat masuk` → **`Akses ditolak`** (diminta master) |
+| `56b38d7` | **`Spike.html` dipadam** (izin master) — grep dulu, tiada rujukan hidup |
+| `f0ef154` | **5 drift** spec/`CLAUDE.md` ditutup (direkod cuma 1) |
+| `940e3f3` | merge `--no-ff` ke `master`, 16 commit |
+| Deploy | `@8` pada ID kekal, **disahkan hidup** oleh master |
+
+🟢 **Apps Script menyalurkan mesej `throw` pelayan sampai ke `withFailureHandler`** tanpa ditapis.
+Menolak dengan **LANTANG** memang didengar. Tidak membatalkan sentinel `{berganda:true}` — di sana
+kita mahu gagal **TERTUTUP**.
+
+### ⏭️ SAMBUNG — **Fasa 1 Hirisan 2** (*buat kerja*)
+Borang · `Validate.gs` · `ReportService.gs` · **`DriveService.gs`** · PDF di browser ·
+`bacaRujukan()` · `jana ID` · `kira HARI`.
+🔴 **Mulakan dengan `plan`.** 🔴 Keputusan **#19** (resize 800px) **belum wujud dalam kod**.
+
+### ~~⏭️ SAMBUNG — ujian penerimaan LANGKAH 10~~ ✅ **SELESAI 2026-08-14, 14/14** *(rekod sejarah)*
 
 Langkah **1–9 LULUS**. `1–3` diperhatikan 22:44 (skrin utama papar `SEKOLAH KEBANGSAAN SALOR` ·
 `Pentadbir` · `ADMIN` · *"Belum ada laporan."*) ⇒ seluruh laluan `Setup`→`Database`→`AuthService`
@@ -27,7 +63,8 @@ Relevan kerana keputusan #13 (sekolah lain **salin fail**). Backlog #8, sengaja 
 
 URL: `https://script.google.com/macros/s/AKfycbxss9BfkhH…/exec` (ID kekal, tidak pernah berubah)
 
-🔴 **Yang BELUM diuji ialah yang paling bernilai — semuanya menguji KEGAGALAN:**
+✅ **Kesemua yang disenaraikan di bawah SUDAH diuji dan LULUS 2026-08-14 pagi.** Senarai dikekalkan
+kerana ia merakam **kenapa** setiap satu bernilai — bukan sebagai kerja tertunggak:
 - **10–11** `esc()` + peta header. Senarai kosong ⇒ kod pemapar baris, `esc()` dan peta header
   **dihantar tanpa pernah diperhatikan berjalan**. Perlu **satu baris palsu** dalam sheet `OPR`
   (`TAJUK`=`<b>Ujian</b>`, `NAMA_GURU`=`Cikgu & Rakan`), kemudian sisip kolum di hadapan `ID_OPR`
