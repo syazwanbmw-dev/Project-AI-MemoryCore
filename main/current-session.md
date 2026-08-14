@@ -4,11 +4,62 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-14 (08:29→09:2x) — ✅ **`opr-insaniah`: HIRISAN 1 SIAP DAN
-DI-MERGE.** **`master` @ `8ebbb70`** (merge `--no-ff` `940e3f3` dari `fasa1/hirisan-1` @
-`f0ef154`) · tree bersih · ujian **38/38** · deploy **`@8`** · penerimaan **14/14**.
-**Last Work Activity**: 2026-08-14 (~09:2x — merge + kemas memory)
+**Current Session**: 2026-08-14 (08:29→10:1x) — 📋 **`opr-insaniah`: PELAN HIRISAN 2 SIAP,
+KOD BELUM MULA.** Branch **`fasa1/hirisan-2`** @ `9511e84` (4 commit, **SEMUA `docs/`**).
+Pagi ini: Hirisan 1 di-merge (`master` @ `8ebbb70`, 38/38, deploy `@8`, penerimaan 14/14) →
+spec §2.4 keputusan **#22–#24** → pelan **11 task**.
+**Last Work Activity**: 2026-08-14 (~10:1x — kemas memory selepas master tangguh pelaksanaan)
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
+
+### ⏭️ SAMBUNG — laksana pelan Hirisan 2, mula **Task 1**
+
+`docs/superpowers/plans/2026-08-14-opr-insaniah-fasa1-hirisan2.md`
+Master pilih **tangguh** ("simpan dulu, kita jalankan plan nanti"). Bila sambung: pilih
+**Subagent-Driven** atau **Inline**, kemudian Task 1 (`Utils.gs` — `janaIdOpr` + `kiraHari`).
+🔴 **Jangan ulang migrasi Sheet dahulu** — lihat gotcha di bawah.
+
+### 🔴 GOTCHA 10:0x — MIGRASI DIJALANKAN SEBELUM KOD, gejalanya "TIADA APA-APA BERLAKU"
+
+Master padam `SETUP_SIAP` + Sediakan semula, jangka kolum jadi 17. **Kekal 16.**
+
+`jalankanSetup()` **tidak menambah kolum** — ia menyalin `STRUKTUR[SHEET.OPR]` **daripada KOD**
+ke baris 1. Task 3 belum dilaksana ⇒ senarai masih 16 nama ⇒ setup menulis semula 16 di atas 16.
+**Prosedur betul; kod belum sampai.**
+
+🔴 Setup tetap melapor **"Selesai"** — **mesej kejayaan bukan bukti**, sama seperti langkah 14
+penerimaan Hirisan 1. Membacanya sebagai pepijat migrasi akan menyebabkan kita memburu
+`sheetIkutNama()` atau kebenaran Drive — **dua tempat yang memang elok sepenuhnya**.
+➡️ Urutan: tukar kod → `clasp push` → **`create-deployment --deploymentId`** → *baru* migrasi.
+🟢 Larian itu tetap membuktikan sesuatu tanpa dirancang: nama sekolah **enggan** bertukar ·
+`RUJUKAN` kekal 16 baris · tiada sheet berganda ⇒ gerbang benih disahkan **kali kedua**.
+
+### 🆕 TIGA KEPUTUSAN — lubang dalam SPEC, bukan idea baharu (spec §2.4)
+
+Ditemui dengan **membaca spec bersebelahan kod Hirisan 1 yang sudah hidup**, sebelum menulis kod.
+
+- **#22 `GAMBAR_FILE_ID_2` kolum berasingan di HUJUNG (Q).** #18 benarkan 2 gambar tetapi model
+  data ada **satu** ruang ⇒ gambar kedua **hilang senyap** semasa Edit. 🔴 Kedudukan HUJUNG wajib:
+  `jalankanSetup()` menulis **seluruh** baris header, jadi menyisip di tengah menggeser header
+  tetapi **bukan** data ⇒ header `EMAIL_GURU` atas data `NAMA_GURU`, tanpa satu ralat pun.
+- **#23 kaunter `KAUNTER_<tahun>` dalam `TETAPAN`, NAIK SAHAJA.** Kaunter ikut bilangan baris
+  **mengitar semula** nombor selepas Padam (Fasa 2) ⇒ ID bertembung, PDF lama **ditulis ganti**.
+- **#24 logo dimuat naik dalam skrin Persediaan, PILIHAN.** Tutup drift #16.
+
+🔑 **Master TOLAK syor aku** (`;` dipisah seperti `NILAI`) dan pilih dua kolum. Sebabnya sah: sheet
+ini antara muka yang pentadbir sekolah lain **buka dan baca**. Aku menilai dari sudut **kod**;
+master menilai dari sudut **orang yang membacanya**.
+
+### 🔑 PEPIJAT DALAM PELAN — ditangkap oleh self-review pelan itu sendiri
+
+Draf pertama Task 10 menyuruh **PINDAHKAN** `kiraHari` ke `Kongsi.html` (client perlukannya —
+PDF dijana di **browser**). 🔴 `Kongsi.html` masuk frontend via `include()`; ia **TIDAK** wujud
+dalam runtime `.gs` ⇒ `ReportService.gs` kehilangannya pada **runtime**.
+
+**Ia akan lolos SETIAP pagar:** `node --check` lulus (pengenal tak-terisytihar = sintaks **sah**) ·
+`node --test` lulus (tiada ujian sentuh `ReportService`) · kegagalan pertama = **klik HANTAR
+pertama guru**. Kelas **sama** dengan `oauthScopes` tidur sejak hari pertama.
+Dibetulkan jadi **kembar dipolis suite** (`tests/hari-kembar.test.js`, 8 tarikh).
+➡️ **"Pindahkan fungsi ini" mesti sentiasa disusuli: fail itu berjalan di runtime yang MANA?**
 
 ### 🔑 SATU CORAK YANG BERKESAN PAGI INI — ramalan DAHULU, baru perhati
 
@@ -44,10 +95,10 @@ Kedua-duanya ditemui dengan **membaca kod sebelum menulis runbook**, bukan semas
 Menolak dengan **LANTANG** memang didengar. Tidak membatalkan sentinel `{berganda:true}` — di sana
 kita mahu gagal **TERTUTUP**.
 
-### ⏭️ SAMBUNG — **Fasa 1 Hirisan 2** (*buat kerja*)
-Borang · `Validate.gs` · `ReportService.gs` · **`DriveService.gs`** · PDF di browser ·
-`bacaRujukan()` · `jana ID` · `kira HARI`.
-🔴 **Mulakan dengan `plan`.** 🔴 Keputusan **#19** (resize 800px) **belum wujud dalam kod**.
+### ~~⏭️ SAMBUNG — **Fasa 1 Hirisan 2**~~ ✅ **PELAN DITULIS 2026-08-14 10:0x** *(rekod sejarah)*
+Skop: borang · `Validate.gs` · `ReportService.gs` · **`DriveService.gs`** · PDF di browser ·
+`bacaRujukan()` · `jana ID` · `kira HARI`. Kini pecah jadi **11 task** — lihat blok aktif di ATAS.
+🔴 Keputusan **#19** (resize 800px) mendarat dalam **Task 10**, masih **belum wujud dalam kod**.
 
 ### ~~⏭️ SAMBUNG — ujian penerimaan LANGKAH 10~~ ✅ **SELESAI 2026-08-14, 14/14** *(rekod sejarah)*
 
