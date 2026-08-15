@@ -4,19 +4,85 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-14 (08:29→10:1x) — 📋 **`opr-insaniah`: PELAN HIRISAN 2 SIAP,
-KOD BELUM MULA.** Branch **`fasa1/hirisan-2`** @ `9511e84` (4 commit, **SEMUA `docs/`**).
-Pagi ini: Hirisan 1 di-merge (`master` @ `8ebbb70`, 38/38, deploy `@8`, penerimaan 14/14) →
-spec §2.4 keputusan **#22–#24** → pelan **11 task**.
-**Last Work Activity**: 2026-08-14 (~10:1x — kemas memory selepas master tangguh pelaksanaan)
+**Current Session**: 2026-08-14 23:04 → 2026-08-15 10:1x — 🟢 **`opr-insaniah` HIRISAN 2:
+TASK 1–8 SIAP.** Branch **`fasa1/hirisan-2`** @ `3e16bb2` · 15 commit · tree bersih ·
+suite **68/68/0** (masuk dengan 38). Dilaksana **Subagent-Driven** (pilihan master).
+**Last Work Activity**: 2026-08-15 (~10:1x — kemas memory selepas Task 1–8 tamat)
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
 
-### ⏭️ SAMBUNG — laksana pelan Hirisan 2, mula **Task 1**
+### ⏭️ SAMBUNG — **Task 9** (borang `form.html`), ATAU tunggu keputusan deploy master
+
+Aku berhenti di Task 8 kerana **master hadkan skop** ("teruskan sampai task 8"), dan kerana
+Task 9 ke atas memerlukan `clasp push` + `create-deployment` ke web app **HIDUP sekolah**.
+Kod Task 9–10 boleh ditulis **tanpa deploy**; hanya langkah pengesahannya perlu deploy.
+
+🔴 **URUTAN WAJIB bila sambung:** tukar kod → `clasp push` → `create-deployment --deploymentId`
+→ **baru** migrasi Sheet 16→17. Terbalik ⇒ setup menulis semula 16 di atas 16 sambil melapor
+*"Selesai"*. Sudah pernah berlaku 2026-08-14 10:0x.
+
+🔑 Ledger penuh + 16 ruling + kontrak wiring Task 10:
+`.superpowers/sdd/2026-08-14-opr-insaniah-fasa1-hirisan2/` (gitignored, kekal di disk).
+
+### 🔴 DUA SOALAN TERBUKA UNTUK MASTER
+
+1. **`GAMBAR` wajib atau pilihan?** Spec §8 tanda **wajib**; kod laksana **pilihan**. Spec §13
+   item #2 sendiri gelar ia *"satu baris untuk dilonggarkan"*. Aku pilih pilihan — guru tersekat
+   di HANTAR kerana tiada foto lebih teruk daripada laporan tanpa foto. **Master putuskan.**
+2. **Kos muat halaman belum diukur.** `mulakanSesi()` kini ambil blob Drive logo **tanpa syarat
+   setiap muat**. `Setup.gs:95-97` merekod keputusan lama yang **menjauhkan** Drive daripada
+   laluan ini (6.3s diukur). ➡️ **PERHATIKAN masa muat semasa ujian penerimaan Task 11.**
+
+### 🔴 SATU CRITICAL DITEMUI DAN DIBAIKI — Lock 2 tanpa `catch`
+
+`ciptaLaporanUntuk` Lock 2 ada `finally` tetapi **tiada `catch`**. Kalau `kemasKiniFailId` campak,
+baris **sudah** ditulis dan PDF + gambar **sudah** dalam Drive — tetapi pengecualian terlepas
+sampul `{ok,kunci,mesej}`. Guru nampak ralat mentah **tanpa ID**, hantar semula ⇒ **laporan KEDUA**.
+
+🔑 **Pagar yang baik di satu lapisan MENDEDAHKAN lubang di lapisan atasnya.** Pencetusnya
+dipertajam oleh pagar yang kita sendiri tambah dalam Task 5. Lubang itu **sudah sedia ada** —
+cuma tersembunyi di sebalik kegagalan `getRange(baris, NaN)` yang lebih kelam-kabut.
+→ [[feedback_pagar_dedah_lapisan_atas]] (BARU)
+
+### 🔑 PENGAJARAN BESAR — mutasi boleh hasilkan kod yang MASIH BETUL
+
+Mutasi pagar zon waktu yang **aku** arahkan kekal **HIJAU**. Puncanya bukan ujian lemah: menukar
+`Date.UTC`+`getUTC*` ke waktu tempatan pada **kedua-dua** belah adalah **simetri** — offset batal,
+jadi mutan itu **setara**, bukan rosak. Aku tukar API tanpa tukar **tingkah laku**.
+
+➡️ Sebelum menyimpul *"ujian tak menangkapnya"*, tanya: **adakah versi bermutasi ini sebenarnya
+SALAH?** Mutasi betul = **asimetri** (`getUTCDay()` → `getDay()` sahaja) ⇒ MERAH pada Midway.
+🟢 Yang menyelamatkannya: arahan mutasi ditulis dengan **hijau dinyatakan sebagai keputusan yang
+LEBIH penting**, jadi pelaksana melapor jujur dan bukan mereka fix untuk memaksa merah.
+→ [[feedback_guard_mutation_test]] (dikemas)
+
+### 🔴 PELAN ADA TIGA DEFEK — ditemui SEBELUM satu baris kod ditulis
+
+1. **Mutasi Task 1 & 10 guna `git checkout` untuk pulih** — commit ialah langkah **selepasnya**,
+   jadi ia memadam kerja task itu sendiri. Pelan menaakul **tracked**; sifat yang penting ialah
+   **committed**. Task 2 betul hanya **secara kebetulan** (fail baharu ⇒ dua-dua sifat palsu).
+2. **Task 10 panggil fungsi yang tiada task pun menulis** — `kutipBorang()`, `nilaiDipilih()`,
+   `SESI`, seluruh wiring borang. Placeholder secara **KETIADAAN**, lebih sukar dilihat daripada
+   `TODO`. Ditutup dengan `task-10-wiring-contract.md`.
+3. **`node --check` tolak fail `.gs`** (`ERR_UNKNOWN_FILE_EXTENSION`).
+
+### 🆕 DUA KEPUTUSAN MASTER 2026-08-14 malam *(calon spec #25/#26)*
+
+- **Gambar >2 ⇒ TOLAK + kosongkan input + minta pilih semula**, bukan "ambil 2 pertama".
+  Sebab master: *"pertama"* ikut susunan fail, bukan guru — gambar penting tercicir senyap.
+- **Nilai tersuai ⇒ checkbox baharu yang terus bertanda**, bukan chip dengan ✕. Guru belajar
+  **satu** mekanisme buang, bukan dua.
+
+### 📦 15 COMMIT
+
+`5a76f82` `075acfc` `7a2ab63` T1 · `fea150a` `ef56667` T2 · `e889864` T3 · `8051f55` `4eca6f0` T4 ·
+`90a70e2` `9e1c2a4` T5 · `ca0f7ac` T6 · `49d2ee1` `faeea07` T7 · `857b40a` T8 · `3e16bb2` docs.
+
+---
+
+### ~~⏭️ SAMBUNG — laksana pelan Hirisan 2, mula Task 1~~ ✅ **TASK 1–8 SIAP** *(rekod sejarah)*
 
 `docs/superpowers/plans/2026-08-14-opr-insaniah-fasa1-hirisan2.md`
-Master pilih **tangguh** ("simpan dulu, kita jalankan plan nanti"). Bila sambung: pilih
-**Subagent-Driven** atau **Inline**, kemudian Task 1 (`Utils.gs` — `janaIdOpr` + `kiraHari`).
-🔴 **Jangan ulang migrasi Sheet dahulu** — lihat gotcha di bawah.
+Master pilih **Subagent-Driven** pada 2026-08-14 23:0x.
 
 ### 🔴 GOTCHA 10:0x — MIGRASI DIJALANKAN SEBELUM KOD, gejalanya "TIADA APA-APA BERLAKU"
 

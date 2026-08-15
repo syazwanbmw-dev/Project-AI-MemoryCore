@@ -5,16 +5,28 @@
 
 ## Terbuka
 
-- **`opr-insaniah` — mula Fasa 1 HIRISAN 2** *(dibuka 2026-08-14 pagi)*
-  `master` @ `8ebbb70` · 38/38 · deploy `@8`. Hirisan 1 (setup + auth + senarai) **SIAP**.
-  Hirisan 2 = *buat kerja*: borang · `Validate.gs` · `ReportService.gs` · **`DriveService.gs`**
-  (fail pertama yang menulis ke Drive) · jana PDF di browser · `bacaRujukan()` · `jana ID` ·
-  `kira HARI`.
-  🔴 **Mulakan dengan `plan`** — pipeline Kata, dan master **menyemak** gerbang itu (2026-08-12).
-  🔴 Keputusan **#19** (`gambarB64` resize client 800px JPEG 0.85) belum wujud dalam kod —
-  ia mendarat dalam Hirisan 2.
-  🟡 Backlog terbuka: #2 `GAMBAR` wajib · #4 gerbang muat frontend sahaja · #8 tab `Sheet1` ·
-  #9 `papahRalat()` tak sorok `skrinUtama`. Semuanya kosmetik atau diterima sedar.
+- **`opr-insaniah` — sambung Fasa 1 HIRISAN 2 di TASK 9** *(dikemas 2026-08-15 10:1x)*
+  🟢 **Task 1–8 SIAP.** `fasa1/hirisan-2` @ `3e16bb2` · 15 commit · suite **68/68/0**.
+  Backend lengkap: `Utils.gs` · `Validate.gs` · kolum ke-17 · `DriveService.gs` · `Database.gs` ·
+  setup logo · `ReportService.gs` · `mulakanSesi`.
+  ⏳ **Tinggal Task 9** (`form.html` + nod A4) · **Task 10** (`app.js.html` — resize 800px,
+  gerbang muat 1 muka, jana PDF, hantar) · **Task 11** (penerimaan master).
+  🔴 **Task 9 ke atas perlu `clasp push` + `create-deployment` ke web app HIDUP** — gerbang
+  master. Kod Task 9–10 boleh ditulis tanpa deploy; hanya pengesahannya perlu deploy.
+  🔴 **URUTAN:** kod → `clasp push` → `create-deployment --deploymentId` → **baru** migrasi
+  Sheet 16→17. Terbalik ⇒ setup tulis semula 16 di atas 16 sambil lapor *"Selesai"*.
+  🔑 Keputusan **#19** (resize 800px) masih **belum wujud dalam kod** — ia mendarat di Task 10.
+  🔑 Kontrak wiring Task 10 sudah ditulis (pelan tertinggal 7 bahagian kod):
+  `.superpowers/sdd/2026-08-14-opr-insaniah-fasa1-hirisan2/task-10-wiring-contract.md`
+
+- **`opr-insaniah` — DUA soalan menunggu keputusan master** *(dibuka 2026-08-15)*
+  1. **`GAMBAR` wajib atau pilihan?** Spec §8 tanda wajib; kod laksana pilihan. Spec §13 #2
+     sendiri gelar ia *"satu baris untuk dilonggarkan"*. Murah kedua-dua arah.
+  2. **Kos muat halaman belum diukur** — `mulakanSesi()` ambil blob Drive logo setiap muat.
+     ➡️ **PERHATIKAN masa muat semasa ujian penerimaan Task 11**, jangan buru dari awal.
+  🟡 Backlog kekal: #4 gerbang muat frontend sahaja · #8 tab `Sheet1` · #9 `papahRalat()` tak
+  sorok `skrinUtama`. Semuanya kosmetik atau diterima sedar.
+  🟡 Lima perkara di-park dengan sebab penuh dalam `opr-insaniah/MEMORY.md`.
 
 ---
 
