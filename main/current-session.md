@@ -4,10 +4,17 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-15 12:57 → 22:4x — 🎉 **`opr-insaniah` FASA 1 TAMAT, DI-MERGE.**
-`master` @ **`4a36a44`** (merge `--no-ff`, 47 commit) · suite **102/102/0** · deploy **`@20`**
-pada ID kekal, **disahkan mata 4/4** oleh master.
-**Last Work Activity**: 2026-08-15 (~22:4x — merge selesai, memory dikemas)
+**Current Session**: 2026-08-15 12:57 → **2026-08-16 00:4x** — 🎉 **`opr-insaniah` FASA 1 TAMAT,
+DI-MERGE** · 🔬 **FASA 2 spike SIAP, kod BELUM.**
+
+- **Fasa 1:** `master` @ **`b470698`** (merge `4a36a44` `--no-ff`, 47 commit) · suite **102/102/0**
+  · deploy **`@20`** pada ID kekal, **disahkan mata 4/4** oleh master
+- **Fasa 2:** branch **`fasa2/spike-pdf`** @ **`74ce096`** · spike hidup pada **HEAD sahaja**
+  (URL `/dev`) · `@20` yang guru guna **tidak disentuh** · **4 keputusan master** dibuat
+- 🔴 **KONTEKS BARU:** app ini **SEORANG pengguna sahaja** — lihat blok Fasa 2 di bawah
+
+**Last Work Activity**: 2026-08-16 (~00:4x — spike Fasa 2 selesai, semua keputusan disimpan)
+⏭️ **SAMBUNG:** kemas kini **spec + `CLAUDE.md` DAHULU**, sebelum kod pautan Drive.
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
 
 ### 🔴 PEPIJAT TERBESAR MALAM INI DITEMUI **MASTER**, BUKAN 102 UJIAN
