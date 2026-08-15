@@ -4,22 +4,89 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-15 12:57 → 20:5x — ✅ **`opr-insaniah` FASA 1 KOD SIAP, Task 1–11.**
-Branch **`fasa1/hirisan-2`** @ **`48744e0`** · tree bersih · suite **98/98/0** (masuk dengan 84) ·
-deploy **`@19`** pada ID kekal (`@12`→`@19` hari ini).
-**Last Work Activity**: 2026-08-15 (~20:5x — master pilih *"keraskan sekarang, lepas tu berhenti"*)
+**Current Session**: 2026-08-15 12:57 → 22:4x — 🎉 **`opr-insaniah` FASA 1 TAMAT, DI-MERGE.**
+`master` @ **`4a36a44`** (merge `--no-ff`, 47 commit) · suite **102/102/0** · deploy **`@20`**
+pada ID kekal, **disahkan mata 4/4** oleh master.
+**Last Work Activity**: 2026-08-15 (~22:4x — merge selesai, memory dikemas)
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
+
+### 🔴 PEPIJAT TERBESAR MALAM INI DITEMUI **MASTER**, BUKAN 102 UJIAN
+
+Master: *"Senarai laporan tak pernah dipapar selepas laporan dihantar. Aku ingat akan dibuat pada
+fasa lain."* — **ia sudah siap sejak Hirisan 1.** `senaraiLaporan()` + `muatSenarai()` berfungsi
+penuh dan senarai **memang** dimuat semula selepas setiap hantar. Tetapi kad senarai duduk
+**~1,200px di ATAS** butang Hantar (pratonton A4 sahaja 1123px) dan **tiada butang menutup borang**.
+
+🔑 **Tiada ujian boleh menangkapnya:** suite menguji fungsi; tiada satu pun tahu **di mana skrin
+pengguna sedang berada**. Setiap semakan *"ciri itu ada?"* menjawab **YA** — yang hilang ialah
+**laluan manusia sampai kepadanya**.
+🔑 **Master melaporkannya sebagai soalan SKOP, bukan pepijat.** Jawapan yang salah — *"ya, itu Fasa
+2"* — akan menguburkan ciri yang sudah siap. ➡️ Bila master kata sesuatu *"belum dibina"*,
+**semak kod dahulu**. → [[feedback_ujian_buta_skrin]] (BARU)
+
+### 🔴 TIGA PEPIJAT, SATU TEMPAT: selepas guru tekan HANTAR
+
+1. Borang tiada jalan keluar (atas) — fix: butang **Batal** + `tutupBorang()` + banner hijau
+2. **`"Belum ada laporan."` tidak pernah disorok** — *toggle SEBELAH*: setiap cabang hanya
+   **MENUNJUK**, tiada satu pun menyorok yang lain. Menggigit tepat pada laluan guna **KALI
+   PERTAMA setiap sekolah** — laluan yang ujian tak pernah lalui sebab tapak ujian sentiasa
+   **sudah ada baris**. → [[feedback_toggle_sebelah]] (BARU)
+3. Nilai tersuai berulang kini **DITANDAKAN**, bukan ditolak (keputusan master). Satu mesej yang
+   melayan **dua** sebab dipisahkan; kotak taip kosong **tidak buat apa-apa** (keputusan master)
+
+🔴 **URUTAN WAJIB: `tamatHantar()` SEBELUM `tutupBorang()`.** Pada borang `display:none`,
+`nodA4.offsetWidth` = **0** dan `kiraDimensiPdf()` **campak** — **DI DALAM** `withSuccessHandler`,
+jadi `sedangHantar` tak pernah ditutup dan butang Hantar **MATI kekal**. Laporan sudah selamat
+tersimpan ⇒ **tiada apa dalam sistem yang mengadu**. Dikunci ujian (mutasi M2).
+
+### 🟢 MUTASI M5 MENDEDAHKAN UJIAN **AKU SENDIRI** LONGGAR
+
+`\.jaya\b` **PADAN** dengan `.jaya-header` — `-` ialah **sempadan perkataan**. Ujian kekal HIJAU
+sepanjang rule dinamakan semula dan `#senaraiStatus` tidak bergaya. Ditukar kepada padanan **SET
+token penuh**.
+🔑 Mutasi bukan untuk cari pepijat dalam **kod** — ia untuk cari **ujian yang berpura-pura menjaga**.
+Tanpa M5 aku akan lapor *"5 pagar baharu, 102 hijau"* sedangkan satu daripadanya kosong.
+
+### 🟢 PENGESAHAN `@20` — 4/4, dan TIGA daripadanya PERCUMA
+
+🔑 **Butang Batal memanggil `tutupBorang()` yang SAMA PERSIS dengan laluan hantar-berjaya** ⇒
+aliran tutup + tatal diuji **tanpa menulis satu baris pun ke Sheet**. Hanya soalan ke-4 berbayar.
+🟢 **`window.scrollTo(0,0)` MEMANG berkesan dalam iframe Apps Script** — satu-satunya bahagian
+yang aku tak dapat ramal, kini fakta yang **diperhatikan**. Fasa 2 akan perlukan corak sama.
+🟢 Soalan 4 membuktikan sesuatu yang **tidak dirancang**: `senaraiLaporan()` + `esc()` + peta
+header berjalan pada baris **SEBENAR pertama** sistem ini.
+
+### 🟡 `git merge` TIDAK terima `-F -` (stdin) — berbeza daripada `git commit`
+
+`error: could not read file '-'`. Checkout **berlaku**, merge **tidak** ⇒ gejalanya berada pada
+`master` dengan kod LAMA dan suite 38/38. ➡️ Tulis mesej ke **fail**, `git merge -F <fail>`.
+
+### ⏭️ SAMBUNG — DUA perkara
+
+1. 🧹 **BERSIH:** `OPR-2026-0001` dimakan ujian penerimaan. Padam baris `OPR` + PDF/gambar Drive +
+   kunci **`KAUNTER_2026`** dalam `TETAPAN` (kunci tiada ⇒ `naikkanKaunter()` baca `|| 0` ⇒ mula
+   semula `0001`). **Master belum putuskan** sama ada nak pulihkan atau biar `0002` jadi yang pertama
+2. 🆕 **Fasa 2 (Edit + Padam)** — pelan **belum ditulis**. Fasa 3 = panel admin + cari/tapis, dan ia
+   **gerbang pengedaran**: sebelum itu sekolah lain tak boleh tambah guru tanpa menyunting Sheet
+
+---
+
+## ~~Sesi 2026-08-15 petang (blok lama)~~ *(rekod sejarah)*
 
 ### ✅ PEMBERSIHAN SIAP · SEMUA DEPLOY DISAHKAN MATA (21:0x)
 
 Sheet `OPR` kosong · fail Drive dipadam · `KAUNTER_2026` dipadam. **Sekolah mula bersih pada
 `OPR-2026-0001`.** `@15` `@17` `@18` `@19` kesemuanya disahkan mata oleh master.
 
-### ⏭️ SAMBUNG — **review + merge sahaja**
+### ~~⏭️ SAMBUNG — review + merge sahaja~~ ✅ **SELESAI 2026-08-15 22:4x**
 
-`sight-hone` → `safi` → `convergence` → izin master → merge `fasa1/hirisan-2` ke `master`.
-🔴 Merge **tidak** menukar apa yang berjalan (deploy melalui `clasp push`, bukan dari `master`).
-Risikonya ialah **tidak** merge: Fasa 2 bercabang daripada pokok tanpa borang/PDF/`DriveService`.
+`sight-hone` (3 isu, semua dibaiki) → `safi` (1 fix, 2 advisory) → `convergence` **FULL** →
+izin master → merge `--no-ff` ke `master` @ **`4a36a44`**.
+🟢 Ramalan *"merge tidak menukar apa yang berjalan"* **disahkan** — `@20` sudah menjalankan kod
+itu sebelum merge. Sebab merge kekal seperti yang ditulis: Fasa 2 tidak bercabang daripada pokok
+tanpa borang/PDF/`DriveService`.
+🔴 Tetapi review itu **bukan** yang menemui pepijat terbesar — **master yang menemuinya, dengan
+menggunakan sistem.** Lihat blok atas.
 
 ### 🔑 PENGESAHAN VISUAL TIDAK PERLU MENGHANTAR LAPORAN — aku lambat sedar
 
