@@ -4,27 +4,187 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-15 10:52 → 12:1x — 🟢 **`opr-insaniah` HIRISAN 2: TASK 9 SIAP DAN
-DISAHKAN HIDUP.** Branch **`fasa1/hirisan-2`** @ `4230cf6` · **9 commit sesi ini** · tree bersih ·
-suite **84/84/0** (masuk dengan 68) · deploy **`@11`** pada ID kekal.
-**Last Work Activity**: 2026-08-15 (~12:1x — kemas memory selepas Task 9 disahkan master)
+**Current Session**: 2026-08-15 12:57 → 20:5x — ✅ **`opr-insaniah` FASA 1 KOD SIAP, Task 1–11.**
+Branch **`fasa1/hirisan-2`** @ **`48744e0`** · tree bersih · suite **98/98/0** (masuk dengan 84) ·
+deploy **`@19`** pada ID kekal (`@12`→`@19` hari ini).
+**Last Work Activity**: 2026-08-15 (~20:5x — master pilih *"keraskan sekarang, lepas tu berhenti"*)
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
 
-### ⏭️ SAMBUNG — **Task 10** (wiring: resize 800px, jana PDF, gerbang muat-satu-muka)
+### ✅ PEMBERSIHAN SIAP · SEMUA DEPLOY DISAHKAN MATA (21:0x)
 
-🔴 **Step 0 kontrak DAHULU**, sebelum Step 1 pelan —
-`.superpowers/sdd/2026-08-14-opr-insaniah-fasa1-hirisan2/task-10-wiring-contract.md`
-(gitignored, kekal di disk). Tanpanya Task 10 memanggil fungsi yang **tiada task pun menulis**.
+Sheet `OPR` kosong · fail Drive dipadam · `KAUNTER_2026` dipadam. **Sekolah mula bersih pada
+`OPR-2026-0001`.** `@15` `@17` `@18` `@19` kesemuanya disahkan mata oleh master.
 
-**DUA hutang yang Task 10 MESTI tutup** — kedua-duanya sudah dikunci dalam `MEMORY.md` projek:
-1. **UBAH** pendengar `btnBorangBaharu` sedia ada (tambah `lukisPratonton()`) — **JANGAN** tambah
-   pendengar **kedua** pada butang sama. Dua pendengar = dua laluan yang kedua-duanya berjalan.
-2. **Tulis ganti `#hintGambar`** daripada `SESI.peraturanGambar`. Teks statik *"(wajib — 1 hingga
-   2 keping)"* ialah **satu-satunya** tempat borang menduakan `PERATURAN_GAMBAR`. Had yang
-   menyimpang daripada apa yang guru **BACA** menolak dengan betul sambil **menipu** sebabnya.
+### ⏭️ SAMBUNG — **review + merge sahaja**
 
-🔴 **URUTAN WAJIB:** tukar kod → `clasp push` → `create-deployment --deploymentId` → **baru**
-migrasi Sheet 16→17. Terbalik ⇒ setup menulis semula 16 di atas 16 sambil melapor *"Selesai"*.
+`sight-hone` → `safi` → `convergence` → izin master → merge `fasa1/hirisan-2` ke `master`.
+🔴 Merge **tidak** menukar apa yang berjalan (deploy melalui `clasp push`, bukan dari `master`).
+Risikonya ialah **tidak** merge: Fasa 2 bercabang daripada pokok tanpa borang/PDF/`DriveService`.
+
+### 🔑 PENGESAHAN VISUAL TIDAK PERLU MENGHANTAR LAPORAN — aku lambat sedar
+
+Pratonton A4 pada skrin **ITULAH** PDF: `html2canvas` merakam nod `.a4` yang sama persis.
+Soalan **susun atur** boleh dijawab dengan **memandang borang** — tanpa baris, tanpa fail Drive,
+tanpa menaikkan kaunter. Empat daripada lima pusingan pengesahan malam ini mengotorkan sheet
+**tanpa perlu**, dan setiap satu memaksa pembersihan tambahan.
+➡️ Tanya **pratonton** untuk susun atur; simpan klik **Hantar** untuk menguji **laluan simpan**.
+
+### 🟢 UJIAN PEMALSUAN `EMAIL_GURU` — LULUS
+
+Borang hantar `penyerang@contoh.com`; yang mendarat = emel master. `AuthService.gs:75` guna
+`Session.getActiveUser()` (**pelawat**), bukan `getEffectiveUser()` (pemilik).
+
+🔴 **DELIMa SEKAT DevTools** — dan akaun bukan-DELIMa **bukan** jalan keluar: tersekat dua kali
+**sebelum** konsol dicapai (`Anyone within domain` menolak pada peringkat platform; emel tiada
+dalam `USERS`). Melonggarkan kepada *"Anyone"* memecahkan keputusan #1.
+🟢 **Jalan betul: fungsi sementara dalam editor Apps Script.** Dan ia SELAMAT — `clasp push` tulis
+ke **HEAD**, deployment bernombor hidangkan snapshotnya sendiri. Sifat yang biasanya menyusahkan
+kita menjadi **pagar percuma**. ⚠️ Syaratnya: **jangan** `create-deployment` selagi fail ujian ada.
+
+### 🔴 PEPIJAT KEHILANGAN DATA — ditemui master dengan menaip `mmmm` tanpa henti
+
+Teks tanpa ruang melepasi tepi kanan A4 dan **dipotong oleh `overflow:hidden`** — hilang daripada
+PDF tanpa ralat. 🔴 **Gerbang muat-satu-muka BUTA:** `semakMuat()` baca `scrollHeight` = **TINGGI**;
+limpahan **MENDATAR** tidak menaikkan tinggi ⇒ gerbang lapor *"muat ✓"* sambil ayat guru lenyap.
+
+🟢 `overflow-wrap:break-word` **memulangkan liputan gerbang**: limpahan mendatar bertukar jadi
+baris **tambahan** (tinggi), yang gerbang memang pandai tangkap.
+🔑 **Lolos SEMUA ujian sampai malam ini kerana setiap perenggan ujian kita di-PASTE** — teks paste
+ada **ruang**. Ujian tidak lemah; ia tidak pernah menaip seperti manusia tergesa-gesa.
+🔑 Tempat **kedua** (`MASA`, jadual meta) ditemui dengan **BERTANYA** *"di mana LAGI teks tanpa
+ruang boleh masuk?"* — bukan menunggu ia pecah. `@19` = `table-layout:fixed` + `overflow-wrap`;
+**kedua-duanya wajib** (satu menahan **bekas**, satu menahan **kandungan**).
+🔴 Ertinya `18/30/20/32` **baru sekarang** boleh dipercayai — sebelum `@19` ia cuma cadangan, dan
+**setiap ujian lebar tetap lulus** kerana ia baca **CSS**, bukan susun atur **terhasil**.
+
+⚠️ `Set-Content -Encoding utf8` **merosakkan emoji** semasa mutasi. Guna alat `Edit`, atau
+`Copy-Item` untuk salinan pulih.
+
+### 🔑 SOALAN PENDAPAT vs SOALAN PEMERHATIAN — corak paling berguna malam ini
+
+Deploy `@15`, master jana PDF 18 minit kemudian — **keluar versi LAMA** (tab pelayar basi).
+Perubahan CSS tulen **tiada penanda kandungan**, jadi *"nampak sama"* dan *"tidak terpakai"* beri
+skrin yang **serupa**.
+🟢 Selesai dengan menukar *"nampak lain tak?"* (pendapat) kepada **"kotak `Hari` lebih lebar
+daripada `Tarikh`?"** (pemerhatian) — kerana versi lama kunci **kedua-duanya 16%**, jadi jawapan
+"ya" **mustahil** pada versi lama.
+➡️ Untuk perubahan visual tanpa penanda, cari **hubungan yang TERBALIK** antara dua versi.
+
+### ~~⏭️ SAMBUNG — SATU ujian + bersih~~ ✅ *(rekod sejarah — SELESAI 2026-08-15 malam)*
+
+🔴 **Ujian pemalsuan `EMAIL_GURU`** — kod konsol siap-taip ada dalam `opr-insaniah/MEMORY.md`
+blok STATUS SEMASA. Jangkaan `{ok:true}` + kolum `EMAIL_GURU` = **emel master**.
+Kriteria bunuh: emel penyerang muncul ⇒ setiap pagar `bolehEdit`/`bolehPadam` **Fasa 2 sudah
+runtuh sebelum ia ditulis**.
+
+🧹 **Bersih:** padam `OPR-2026-0001` `0003` `0004` daripada sheet + Drive, **dan `KAUNTER_2026`
+dalam `TETAPAN`** — disemak dalam kod: `naikkanKaunter()` baca `|| 0`, jadi kunci yang tiada
+memberi laporan sebenar pertama `OPR-2026-0001`. Sekolah mula bersih.
+
+⚠️ **JURANG BUKTI:** pengesahan visual `@14` belum dilaporkan. Master jalankan ujian kaunter
+selepas deploy tanpa mengadu — itu **ketiadaan aduan, bukan pemerhatian**. Belum disahkan mata:
+**"Elemen Teras"** satu baris atau pecah dua · lajur meta sejajar.
+
+### ✅ SIAP SESI INI
+
+| Perkara | Hasil |
+|---|---|
+| Task 10 | **SIAP** — 5 commit, 3 round fix, Spec ✅ / Quality Approved, **0 parked** |
+| Suite | 84 → **96** |
+| Deploy | `@12` → `@13` (label) → `@14` (lebar jadual), semua ID kekal |
+| Task 11 | deploy · migrasi 16→17 · 4 gerbang · **kaunter naik-sahaja** — semua LULUS |
+
+### 🔴 TIGA PENEMUAN — semuanya satu bentuk: DUA FAIL MESTI BERSETUJU, TIADA APA MERAPATKAN
+
+1. **`index.html` tidak pernah `include()` pustaka PDF.** Wujud sejak Task 0, dimuat naik oleh
+   setiap `clasp push` — jadi setiap semakan *"pustaka itu ada?"* menjawab **YA**. Yang tiada
+   ialah **sambungan**. Bertahan Task 0→9. Kegagalan pertama = klik HANTAR pertama guru.
+2. **`nilaiGerbang()` pulangkan kelas CSS yang `style.html` tiada peraturan untuknya.** Suite
+   94/94 hijau sepanjang masa lencana tolak tidak bergaya.
+3. **Lajur jadual A4 tidak muat label baharu.** Commit label semak **enam** tempat perkataan itu
+   hidup, **sifar** tempat yang mesti **memuatkannya**. → [[feedback_teks_tukar_ruang]] (BARU)
+
+🔴 **Punca #1 ialah aku.** Aku taip dalam dispatch subagent bahawa pustaka *"dimuatkan oleh
+index.html"* **tanpa semak**, sambil menyemak brief warisan dengan teliti (9 percanggahan
+dijumpai). **Brief ada gerbang; ayat yang aku karang sendiri tiada.**
+🟢 Diselamatkan oleh satu ayat dalam dispatch yang sama: *"berhenti dan beritahu aku, jangan
+teka"*. → [[feedback_konteks_dispatch_tak_disemak]] (BARU)
+
+### 🔴 PDF PROJEK INI HANYA BOLEH DISAHKAN OLEH MATA — kekal
+
+`pdftoppm` tiada · `pdftotext` pulangkan **kosong** — dan kosong itu **bukan kegagalan alat**:
+PDF kita ialah satu imej JPEG daripada `html2canvas`. Memasang poppler **tidak** akan membantu.
+➡️ **Minta master hantar tangkap layar.** Itulah yang menemui pepijat lebar lajur hari ini.
+🟢 Tangkap layar itu juga membuktikan `19/08/2026` → **Rabu** ⇒ kembar `kiraHari` berfungsi
+hujung-ke-hujung pada laluan sebenar.
+
+### 🎯 DUA KEPUTUSAN MASTER
+
+- **13:11 butang Hantar MATI bila gambar tiada.** Gerbang kini tolak atas TIGA sebab; dua
+  daripadanya arahan **BERTENTANGAN**. Mesej salah **tidak campak ralat** — guru pendekkan teks
+  selama-lamanya. Jadi `nilaiGerbang()` diletak dalam **`Kongsi.html`** (tulen, boleh diuji).
+- **13:22 `kosongkanBorang()` masuk skop** — tanpanya guru klik *+ Laporan Baharu*, nampak data
+  yang baru dihantar, tukar tajuk, hantar ⇒ **laporan KEDUA**.
+- **16:11 label** *"Nilai Murni"* → **Nilai** · *"Elemen"* → **Elemen Teras** (6 tempat).
+
+### 📊 KIRAAN TASK PROJEK — dijawab untuk master 12:5x
+
+| Peringkat | Task | Status |
+|---|---|---|
+| Task 0 Spike | 5 (`0.1`–`0.5`) | ✅ |
+| Fasa 1 Hirisan 1 | 7 | ✅ |
+| Fasa 1 Hirisan 2 | 11 | 9 siap · **Task 10 berjalan** · Task 11 tinggal |
+| **Dirancang** | **23** | **21 siap** |
+
+Fasa 2 (Edit+Padam) dan Fasa 3 (panel admin + cari/tapis) **belum ada bilangan task** — pelan
+sengaja belum ditulis. 🔴 Fasa 3 = **gerbang pengedaran**; sebelum itu sekolah lain tak boleh
+tambah guru tanpa menyunting Sheet terus.
+
+### 🔴 PENEMUAN BESAR 13:27 — PUSTAKA PDF TIDAK PERNAH DIMUATKAN
+
+`LibHtml2canvas.html` + `LibJspdf.html` wujud sejak Task 0 dan dimuat naik oleh **setiap** `clasp
+push`. Tetapi `index.html` cuma ada **empat** `include()`: `style` · `Kongsi` · `form` · `app.js`.
+Bertahan **Task 0 → Task 9** tanpa dikesan. Klik HANTAR pertama guru ⇒ `html2canvas is not defined`.
+
+🔑 Lebih sukar dilihat daripada `oauthScopes`: di sana nilainya **salah**; di sini setiap nilai
+**betul** dan yang tiada ialah **sambungan**. Semakan *"pustaka itu ada?"* menjawab **YA**.
+➡️ Soalan yang menangkapnya: **"apa yang MEMUATKANNYA?"**
+
+🔴 **Puncanya aku.** Aku taip dalam dispatch bahawa pustaka *"dimuatkan oleh index.html"* **tanpa
+semak** — sambil menyemak brief warisan dengan teliti (9 percanggahan dijumpai). Brief ada
+gerbang; ayat yang aku karang sendiri **tiada**.
+🟢 Diselamatkan oleh satu ayat dalam dispatch yang sama: *"berhenti dan beritahu aku, jangan teka"*.
+→ [[feedback_konteks_dispatch_tak_disemak]] (BARU) · [[feedback_izin_bukan_peraturan]] (varian 2)
+
+### ✅ DUA KEPUTUSAN MASTER SESI INI
+
+1. **13:11 — butang Hantar MATI bila gambar tiada** (pilihan a). Gerbang kini tolak atas TIGA
+   sebab; dua daripadanya arahan **BERTENTANGAN** (*"tambah gambar"* lawan *"pendekkan teks"*).
+   Mesej salah **tidak campak ralat** — guru pendekkan teks selama-lamanya. Jadi `nilaiGerbang()`
+   diletak dalam **`Kongsi.html`** (tulen, boleh diuji), bukan `app.js.html` (DOM).
+   🔴 Gambar disemak **DAHULU** — gambar menaikkan `scrollHeight`, jadi tinggi akhir belum
+   diketahui; menyuruh tala teks dahulu = tala terhadap sasaran bergerak.
+2. **13:22 — `kosongkanBorang()` masuk skop Task 10** (pilihan A, dibentang berasingan).
+   Tanpanya guru klik *+ Laporan Baharu*, nampak data yang baru dihantar, tukar tajuk, hantar ⇒
+   **laporan KEDUA**. Ia sengaja **tidak** panggil `semakGerbang()` — itu akan cat lencana MERAH
+   sebelah mesej *"Tersimpan: OPR-2026-0012"*.
+
+### ⏭️ SAMBUNG SELEPAS SUBAGENT SIAP
+
+Review package → task reviewer → fix loop → **Task 11**.
+
+🔴 **URUTAN WAJIB Task 11:** tukar kod → `clasp push` → `create-deployment --deploymentId` →
+**baru** migrasi Sheet 16→17. Terbalik ⇒ setup menulis semula 16 di atas 16 sambil melapor
+*"Selesai"*.
+🔴 **Kos muat halaman belum diukur** — dan kini ~550 KB pustaka ditambah inline. Perhati masa
+muat semasa ujian penerimaan Task 11.
+
+### ~~⏭️ SAMBUNG — Task 10~~ *(rekod sejarah — brief disemak semula 13:1x)*
+
+Sepuluh percanggahan brief ditutup sebelum/semasa dispatch. Tiga paling berbahaya:
+`git checkout` memadam kembar · pendengar **kedua** pada `btnBorangBaharu` · kontrak dilabel
+"Step 0" tetapi memanggil fungsi Step 1. Ledger penuh:
+`.superpowers/sdd/2026-08-14-opr-insaniah-fasa1-hirisan2/progress.md`
 
 ### ✅ KEPUTUSAN MASTER — **`GAMBAR` WAJIB, minimum 1** *(`1cefb86`)*
 
