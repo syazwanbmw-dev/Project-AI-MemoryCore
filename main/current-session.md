@@ -4,33 +4,105 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-14 23:04 → 2026-08-15 10:1x — 🟢 **`opr-insaniah` HIRISAN 2:
-TASK 1–8 SIAP.** Branch **`fasa1/hirisan-2`** @ `3e16bb2` · 15 commit · tree bersih ·
-suite **68/68/0** (masuk dengan 38). Dilaksana **Subagent-Driven** (pilihan master).
-**Last Work Activity**: 2026-08-15 (~10:1x — kemas memory selepas Task 1–8 tamat)
+**Current Session**: 2026-08-15 10:52 → 12:1x — 🟢 **`opr-insaniah` HIRISAN 2: TASK 9 SIAP DAN
+DISAHKAN HIDUP.** Branch **`fasa1/hirisan-2`** @ `4230cf6` · **9 commit sesi ini** · tree bersih ·
+suite **84/84/0** (masuk dengan 68) · deploy **`@11`** pada ID kekal.
+**Last Work Activity**: 2026-08-15 (~12:1x — kemas memory selepas Task 9 disahkan master)
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
 
-### ⏭️ SAMBUNG — **Task 9** (borang `form.html`), ATAU tunggu keputusan deploy master
+### ⏭️ SAMBUNG — **Task 10** (wiring: resize 800px, jana PDF, gerbang muat-satu-muka)
 
-Aku berhenti di Task 8 kerana **master hadkan skop** ("teruskan sampai task 8"), dan kerana
-Task 9 ke atas memerlukan `clasp push` + `create-deployment` ke web app **HIDUP sekolah**.
-Kod Task 9–10 boleh ditulis **tanpa deploy**; hanya langkah pengesahannya perlu deploy.
+🔴 **Step 0 kontrak DAHULU**, sebelum Step 1 pelan —
+`.superpowers/sdd/2026-08-14-opr-insaniah-fasa1-hirisan2/task-10-wiring-contract.md`
+(gitignored, kekal di disk). Tanpanya Task 10 memanggil fungsi yang **tiada task pun menulis**.
 
-🔴 **URUTAN WAJIB bila sambung:** tukar kod → `clasp push` → `create-deployment --deploymentId`
-→ **baru** migrasi Sheet 16→17. Terbalik ⇒ setup menulis semula 16 di atas 16 sambil melapor
-*"Selesai"*. Sudah pernah berlaku 2026-08-14 10:0x.
+**DUA hutang yang Task 10 MESTI tutup** — kedua-duanya sudah dikunci dalam `MEMORY.md` projek:
+1. **UBAH** pendengar `btnBorangBaharu` sedia ada (tambah `lukisPratonton()`) — **JANGAN** tambah
+   pendengar **kedua** pada butang sama. Dua pendengar = dua laluan yang kedua-duanya berjalan.
+2. **Tulis ganti `#hintGambar`** daripada `SESI.peraturanGambar`. Teks statik *"(wajib — 1 hingga
+   2 keping)"* ialah **satu-satunya** tempat borang menduakan `PERATURAN_GAMBAR`. Had yang
+   menyimpang daripada apa yang guru **BACA** menolak dengan betul sambil **menipu** sebabnya.
+
+🔴 **URUTAN WAJIB:** tukar kod → `clasp push` → `create-deployment --deploymentId` → **baru**
+migrasi Sheet 16→17. Terbalik ⇒ setup menulis semula 16 di atas 16 sambil melapor *"Selesai"*.
+
+### ✅ KEPUTUSAN MASTER — **`GAMBAR` WAJIB, minimum 1** *(`1cefb86`)*
+
+Soalan terbuka #1 **DITUTUP**. Sebab master: **laporan tanpa gambar bukan bukti program itu
+berlaku.** Spec §8 tanda wajib; kod Task 7 laksana **pilihan** — dan aku pilih sendiri tanpa
+tanya. Punca drift: satu ayat spec §13 #2, *"satu baris untuk dilonggarkan"*.
+
+🔑 **Ayat itu ialah JEMPUTAN BERTULIS untuk membatalkan keputusan tanpa sedar ia satu keputusan.**
+Bila dua ayat spec bercanggah, yang **paling longgar** menang — ia tidak perlukan sesiapa membuat
+keputusan. → [[feedback_prosa_menjemput_pembatalan]] (BARU)
+
+`validasiGambar()` + `PERATURAN_GAMBAR {min:1, maks:2}` dalam **`Validate.gs`** (bukan
+`ReportService.gs` — fail itu sentuh Sheets/Drive/Lock, pagarnya **tak boleh diuji** di sana; sebab
+sama dengan `pilihPengguna()` keputusan #21). Nota anti-undur bertarikh di **TIGA** tempat.
+🔴 `GAMBAR_TIADA` ≠ `GAMBAR_TERLALU_BANYAK` — dua arahan **BERTENTANGAN** kepada guru.
+
+### 🟢 TASK 9 — DISAHKAN HIDUP, dan DUA pindaan kepada brief
+
+Master sahkan pada laptop: butang · borang muncul · **A4 bersebelahan** · tiada tatal mendatar.
+
+Kedua-dua pindaan ditemui dengan **mengira lebar sebenar**, bukan mempercayai lakaran:
+1. **`.bekas` 1000px → 1280px.** A4 `794px` + lajur borang perlu ~1154px; pada 1000px ia **tidak
+   pernah** boleh muat. Brief sembunyikannya di sebalik `overflow:auto` ⇒ master menatal
+   **mendatar** untuk lihat pratonton yang sepatutnya berkata *"inilah PDF anda"*.
+2. **`flex-wrap:wrap`** — A4 tak boleh dikecutkan **dan** tak boleh diskalakan.
+
+🔴 **`transform:scale()` DILARANG dan kini dipolis ujian.** Ia pembaikan paling **jelas** dan
+paling **merosakkan**: html2canvas rakam apa yang ada pada skrin, moyang ditransformasi ⇒ kanvas
+bersaiz **SALAH** ⇒ `kiraDimensiPdf()` kira mm daripada nombor salah ⇒ **gerbang muat-satu-muka
+jadi PEMBOHONG**.
+
+### 🟢 DIUKUR DALAM SANDBOX — penemuan paling bernilai hari ini
+
+```
+iframe=1536  bekas=1280  kad=1246  ada=1204  perlu=1154  (baki 50px)
+nodA4 = 794 × 1123   ← DISAHKAN di dalam iframe Apps Script
+```
+
+🔴 Nombor terakhir **bebas** daripada soalan susun atur: `TOLERANSI_MM = 0.5` **ditala kepada**
+lebihan `0.016mm` yang `794×1123` hasilkan. Kalau sandbox ubah saiz nod, gerbang jadi pembohong
+**senyap** sampai PDF keluar terpotong. **Tidak pernah disemak dalam sandbox sebelum ini.**
+🟢 Google **TIDAK** hadkan lebar iframe — kebimbangan asal aku tidak berasas.
+
+### 🔑 "KEGAGALAN" PERTAMA IALAH PAGAR YANG BERFUNGSI — aku hampir tersilap
+
+Master lapor *"A4 turun ke bawah"* = tepat kriteria bunuh aku. Aku catat ramalan **SALAH** dan mula
+rancang pembetulan CSS. 🔴 Sebenarnya master buka pada **TELEFON mod desktop-site**.
+
+Susun atur **tidak pernah rosak** — itu `flex-wrap` **berfungsi**, dan `flex-wrap` **tiada dalam
+brief**. Menala CSS untuk "membaiki"nya akan **memecahkan laptop yang sedang berfungsi**.
+🟢 Yang selamatkan: aku **enggan meneka** dan pasang pengukur dahulu. Nombornya serta-merta tidak
+konsisten dengan "skrin gagal". → [[feedback_laporan_manual_peranti]] (BARU)
+
+### 🟡 GOTCHA — `clasp list-deployments` boleh BASI
+
+`create-deployment` lapor `@9`; `list-deployments` serta-merta selepasnya papar `@8` keterangan
+**lama**. Larian kedua betul. ➡️ Sahkan dengan `npx clasp list-versions` (tak pernah basi) atau baca
+**dua kali**. Bahayanya bukan kelewatan — ia **kesimpulan**: memburu deploy yang berjaya, atau
+deploy semula dan naikkan versi tanpa sebab. → [[reference_clasp_gotcha]] (gotcha ke-5)
+
+### 🔴 SATU SOALAN TERBUKA KEKAL
+
+**Kos muat halaman belum diukur.** `mulakanSesi()` ambil blob Drive logo **tanpa syarat setiap
+muat**. `Setup.gs:95-97` rekod keputusan lama yang **menjauhkan** Drive daripada laluan ini (6.3s
+diukur). ➡️ **PERHATIKAN masa muat semasa ujian penerimaan Task 11.**
+
+### 📦 9 COMMIT SESI INI
+
+`1cefb86` GAMBAR wajib · `1fe16dd` memory · `a0b257d` **T9 form.html** · `b323a38` memory ·
+`9de938a` pembuka butang · `1837b92` gotcha clasp · `aa8eff4` diagnostik · `fcab249` buang
+diagnostik · `4230cf6` memory.
+
+---
+
+### ~~⏭️ SAMBUNG — Task 9~~ ✅ **SIAP 2026-08-15 12:1x** *(rekod sejarah)*
 
 🔑 Ledger penuh + 16 ruling + kontrak wiring Task 10:
 `.superpowers/sdd/2026-08-14-opr-insaniah-fasa1-hirisan2/` (gitignored, kekal di disk).
-
-### 🔴 DUA SOALAN TERBUKA UNTUK MASTER
-
-1. **`GAMBAR` wajib atau pilihan?** Spec §8 tanda **wajib**; kod laksana **pilihan**. Spec §13
-   item #2 sendiri gelar ia *"satu baris untuk dilonggarkan"*. Aku pilih pilihan — guru tersekat
-   di HANTAR kerana tiada foto lebih teruk daripada laporan tanpa foto. **Master putuskan.**
-2. **Kos muat halaman belum diukur.** `mulakanSesi()` kini ambil blob Drive logo **tanpa syarat
-   setiap muat**. `Setup.gs:95-97` merekod keputusan lama yang **menjauhkan** Drive daripada
-   laluan ini (6.3s diukur). ➡️ **PERHATIKAN masa muat semasa ujian penerimaan Task 11.**
 
 ### 🔴 SATU CRITICAL DITEMUI DAN DIBAIKI — Lock 2 tanpa `catch`
 
