@@ -61,13 +61,61 @@ header berjalan pada baris **SEBENAR pertama** sistem ini.
 `error: could not read file '-'`. Checkout **berlaku**, merge **tidak** ⇒ gejalanya berada pada
 `master` dengan kod LAMA dan suite 38/38. ➡️ Tulis mesej ke **fail**, `git merge -F <fail>`.
 
+### 🔬 FASA 2 DIMULAKAN (00:0x–00:3x) — brainstorm + spike SIAP, kod BELUM
+
+🔴 **KONTEKS BARU YANG MENGUBAH BANYAK PERKARA: `opr-insaniah` digunakan SEORANG sahaja.**
+Master sahkan 00:2x. Hujah risiko perkongsian Drive yang aku bentang seluruhnya berdiri atas
+**guru lain** — yang tidak wujud. Risiko itu bukan kecil; ia **TIADA**.
+🔑 Ia juga menjelaskan kenapa peranan `ADMIN`/`GURU` dan pagar Fasa 2b **belum menanggung beban
+apa-apa**. ⚠️ Penanda: guru **kedua** masuk `USERS` ⇒ keputusan pautan Drive kena ditengok semula.
+
+**Empat keputusan master:** Fasa 2 = **buka PDF sahaja** (Edit+Padam → Fasa 2b) · senarai
+**terkini di ATAS** · **pautan Drive**, keputusan #7 dipinda **bersyarat** · kongsi per-FAIL,
+`Viewer`, `DOMAIN_WITH_LINK`.
+
+**Spike muktamad — aku salah pada KEDUA-DUA ramalan:** papar PDF dalam bingkai **GAGAL** pada
+telefon **dan** laptop (mustahil dalam sandbox ⇒ spec §7.3 terbukti salah); muat turun **LULUS**
+di kedua-duanya, walaupun dicetuskan skrip (⇒ pendekatan `doGet` berparameter dipadam sebelum
+ditulis).
+
+### 🔴 KALI KEDUA: LAPORAN MANUAL TANPA PERANTI MENYESATKAN AKU
+
+Master lapor *"1 nampak dan ada button open"* → aku terima sebagai LULUS. **Tangkap layar**
+tunjuk sebaliknya: itu **kad ganti Chrome Android** (ikon PDF + UUID blob + butang `Open`), bukan
+laporan. Master pada **telefon**; aku anggap laptop dan **tidak pernah tanya**.
+Aku juga tersilap arah **bertentangan**: master mula-mula lapor tiada muat turun (semak folder
+salah) dan aku terus tulis dengan **yakin** *"sandbox sekat `<a download>` sepenuhnya"*.
+🔑 Setiap soalan aku boleh dijawab **"ya" pada telefon** dan bermaksud benda lain.
+➡️ Susun soalan supaya **"ya" MUSTAHIL** pada keadaan gagal. *"Nampak PDF?"* lemah — kad ganti pun
+ada perkataan PDF. *"Nampak nama sekolah dalam bingkai?"* kuat.
+
+### 🟢 PENEMUAN ALAT — `@HEAD` + URL `/dev` ialah MAKMAL
+
+Spike diuji pada sistem sebenar, data sebenar, **tanpa menyentuh `@20` yang guru guna**. Sifat
+yang selama ini kita rekod sebagai **bahaya** (*"push tak update web app"*) juga memberi
+**persekitaran pementasan percuma**, dan ia sudah ada sejak hari pertama.
+🟡 Gotcha kecil: nama fail Apps Script **RATA merentas jenis** — `SpikePdf.gs` + `SpikePdf.html`
+⇒ `clasp push` tolak **keseluruhan** push. → [[reference_clasp_gotcha]] (gotcha 6 & 7)
+
 ### ⏭️ SAMBUNG — DUA perkara
 
 1. 🧹 **BERSIH:** `OPR-2026-0001` dimakan ujian penerimaan. Padam baris `OPR` + PDF/gambar Drive +
    kunci **`KAUNTER_2026`** dalam `TETAPAN` (kunci tiada ⇒ `naikkanKaunter()` baca `|| 0` ⇒ mula
    semula `0001`). **Master belum putuskan** sama ada nak pulihkan atau biar `0002` jadi yang pertama
-2. 🆕 **Fasa 2 (Edit + Padam)** — pelan **belum ditulis**. Fasa 3 = panel admin + cari/tapis, dan ia
-   **gerbang pengedaran**: sebelum itu sekolah lain tak boleh tambah guru tanpa menyunting Sheet
+2. 🔬 **Fasa 2 — sambung ikut URUTAN INI:**
+   1. 🔴 **Kemas kini spec + `CLAUDE.md` DAHULU, sebelum kod.** Keputusan #7 jadi bersyarat; spec
+      §7.3 ditulis semula. Kalau kod mendarat dulu, `CLAUDE.md` berkata *"jangan hidangkan pautan
+      Drive"* sambil kod menghidangkannya
+   2. 🔬 Spike kecil: sahkan **`setSharing(DOMAIN_WITH_LINK)`** benar-benar jadi pada akaun DELIMa.
+      `moe-dl.edu.my` domain Workspace jadi ia *sepatutnya* jadi — tetapi *"sepatutnya"* bukan
+      *"diperhatikan"*. Spike sedia hidup pada HEAD, tambah satu fungsi
+   3. Kod: `ciptaLaporanUntuk` pasang perkongsian · cari baris ikut `ID_OPR` ·
+      `dapatkanPautanPdf(id)` · butang per baris + `window.open` · senarai terkini di atas
+   4. 🧹 **BUANG fail spike** (`SpikeBacaPdf.gs`, `SpikePdf.html`, satu baris `include`) **sebelum**
+      sebarang `create-deployment` — kalau tidak ia sampai kepada pengguna
+   🔑 Laporan **lama** belum dikongsi (perkongsian dipasang semasa cipta). Syor: pasang
+   **secara MALAS** semasa klik ⇒ satu laluan kod untuk lama dan baharu, bukan dua.
+   Fasa 2b = Edit + Padam. Fasa 3 = panel admin + cari/tapis (**gerbang pengedaran**)
 
 ---
 
