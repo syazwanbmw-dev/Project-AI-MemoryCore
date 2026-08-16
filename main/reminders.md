@@ -5,14 +5,29 @@
 
 ## Terbuka
 
-- **`opr-insaniah` — FASA 2b (Edit + Padam) belum dirancang** *(dibuka 2026-08-16)*
-  🔴 **RANJAU SUDAH TERPASANG:** sheet `OPR` ada **TIGA** kolum tarikh — `TARIKH`, `TIMESTAMP`,
+- **`opr-insaniah` — FASA 2b (Edit): spec SIAP, PELAN belum ditulis** *(dikemas 2026-08-16 petang)*
+  Spec `6a341cd` — §2.7 keputusan `#31`–`#36`, §7.4 ditulis semula, §7.5 langkah 0a–0c.
+  **Fasa 2b = Edit sahaja; Padam jadi Fasa 2c** (keputusan #31).
+  ⏭️ Langkah seterusnya: master baca spec §2.7/§7.4/§7.5, kemudian tulis pelan pelaksanaan.
+  🔴 **RANJAU KEKAL:** sheet `OPR` ada **TIGA** kolum tarikh — `TARIKH`, `TIMESTAMP`,
   `UPDATED_AT`. `dapatkanLaporan(id)` memulangkan baris **PENUH** ⇒ dua yang belum dibalut akan
   membunuh `google.script.run` **senyap**, sama seperti pepijat 16 Ogos. Guna `tarikhSheetKeTeks()`
   pada **ketiga-tiganya**.
-  🔴 §7.5 (ganti PDF) mesti **pasang semula perkongsian** pada fail gantian — File ID berubah,
-  pautan lama mati. Gejalanya: *"tadi boleh buka, sekarang tak boleh"*.
-  🟡 Keputusan #29/#30 **BERSYARAT** — guru **kedua** masuk `USERS` ⇒ tengok semula.
+  🔴 Juga: `tamatHantar()` **SEBELUM** `tutupBorang()` · `naikkanKaunter()` **tidak boleh** muncul
+  dalam `kemasKiniLaporan()` · `TIMESTAMP` tidak disentuh.
+  ✅ ~~§7.5 mesti pasang semula perkongsian pada fail gantian~~ **DIBATALKAN 2026-08-16 petang** —
+  amaran itu ditulis daripada membaca **spec**, bukan **kod**. `dapatkanPautanPdf()` baca
+  `PDF_FILE_ID` pada masa klik dan pasang perkongsian **secara malas** di situ juga ⇒ sudah
+  berfungsi tanpa kod tambahan. Yang betul-betul pecah hanya pautan yang sudah **disalin keluar**
+  (keputusan #32: dibiar mati, pautan baharu dipapar).
+  🟡 Keputusan #29/#30/#32/#36 **BERSYARAT** — guru **kedua** masuk `USERS` ⇒ tengok semula.
+
+- **`opr-insaniah` — pagar kolum `USERS` SIAP tetapi BELUM HIDUP** *(dibuka 2026-08-16 petang)*
+  `03061cb` · suite **123/123/0** · **belum `clasp push`, belum deploy** — master pilih bundle
+  dengan Fasa 2b. Guru masih atas `@22`, kod tanpa pagar.
+  🔴 **Belum diperhati pada sistem sebenar.** Kriteria bunuh: rosakkan sel header `EMAIL` dalam
+  sheet `USERS`, muat semula ⇒ mesti papar `Ralat sistem` + *"KOLUM_HILANG semasa baca sheet
+  USERS: EMAIL"*, **bukan** *"Akaun anda tiada dalam senarai pengguna"*. Betulkan header selepas.
 
 - **`opr-insaniah` — dua item DIPERHATI, bukan dikejar**
   1. **Kos muat halaman belum diukur** — `mulakanSesi()` ambil blob Drive logo setiap muat +

@@ -4,8 +4,71 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-16 09:12 → 11:4x pagi — 🎉 **`opr-insaniah` FASA 2 TAMAT, DI-MERGE,
-DI-DEPLOY.**
+**Current Session**: 2026-08-16 12:1x → 13:0x petang — **`opr-insaniah`: pagar kolum `USERS`
+mendarat, dan spec Fasa 2b siap.**
+
+`master` bersih @ **`8806adf`** · suite **114 → 123**, 0 gagal · **belum di-push ke Apps Script,
+belum di-deploy** (guru masih atas `@22`, kod tanpa pagar) — master pilih bundle dengan Fasa 2b.
+
+**Empat commit:** `03061cb` kod+ujian · `b5532e7` memory · `6a341cd` spec §2.7 · `8806adf` memory.
+
+### 🔴 ANGGARAN "3 BARIS + 1 UJIAN" SALAH — dan sebabnya berbaloi diingat
+
+Nota pagi menganggarkan pagar `semakKolumAda` pada `USERS` sebagai tiga baris. Membaca kod
+sebelum menulis mendedahkan **dua** masalah: `bacaSemua()` duduk dalam `Database.gs` yang tidak
+boleh dimuatkan `node --test` (pagar tak boleh dibuktikan gagal), **dan** ia pulang awal pada
+`nilai.length < 2` — **sebelum** header pernah dilihat.
+
+🔑 Masalah kedua ialah keluarga yang **SAMA** dengan `"Belum ada laporan."` dan pepijat `Date`:
+pepijat yang hanya muncul pada **BARIS PERTAMA sistem**. **Tiga kali dalam satu minggu.**
+➡️ Ia patut jadi soalan tetap: *"apa berlaku bila sheet ini masih KOSONG?"*
+
+### 🟢 TIGA MUTASI, TIGA SET BERBEZA — M3 yang paling mendidik
+
+`M1` buang pagar → 2 ujian mati · `M2` pagar dipindah ke bawah pulang-awal → **tepat 1** (ujian
+titik buta) · `M3` buang argumen dalam `penggunaSemasa()` → **tepat 1** (ujian wiring), **tiada
+yang lain**.
+
+🔑 **M2 membuktikan KEPUTUSAN REKA BENTUK**, bukan mencari pepijat: versi ringkas yang master
+hampir pilih memang **buta** kepada sheet kosong — sebagai ujian merah, bukan sebagai teori.
+🔑 **M3 mendedahkan jurang yang ujian tulen TIDAK boleh tutup.** Lapan ujian membuktikan pagar
+**berfungsi**; tiada satu pun membuktikan sesiapa **memanggilnya**. Buang argumen ⇒ lapan-lapan
+kekal **HIJAU**. Kelas sama dengan `index.html` yang tak pernah `include()` pustaka PDF (Task
+0→9). Ditutup dengan ujian yang membaca **sumber**, corak `tests/borang-kontrak.test.js`.
+⚠️ Jujur: 8 ujian pagar **RED dahulu**; ujian wiring ditulis **selepas** kod, dibuktikan M3 sahaja.
+
+### 🟢 SATU AMARAN KITA SENDIRI DIBATALKAN — ditulis dari SPEC, bukan KOD
+
+`MEMORY.md` **dan** reminder kedua-duanya kata Fasa 2b *"mesti pasang semula perkongsian pada
+fail gantian"*. **Salah separuh.** `dapatkanPautanPdf()` baca `PDF_FILE_ID` **pada masa klik** dan
+`pautanKongsiFail()` pasang perkongsian **secara malas** di situ juga ⇒ butang Buka PDF berfungsi
+pada fail baharu **tanpa satu baris tambahan**.
+🔑 Keputusan *"pasang MALAS"* dibuat untuk sebab **berlainan sepenuhnya**, dan ia membayar masalah
+ini **sebelum masalah ini wujud**.
+➡️ **Ranjau yang kita tulis untuk diri sendiri mesti disemak terhadap KOD sebelum dipercayai.**
+Yang ini menuntut kerja yang tidak wujud.
+
+### 🎯 ENAM KEPUTUSAN MASTER — Fasa 2b (penuh dalam spec §2.7, jangan salin)
+
+`#31` **2b = Edit, 2c = Padam** · `#32` pautan lama dibiar **mati** + pautan baharu dipapar ·
+`#33` gambar dimuat turun semula dari Drive · `#34` gambar **dikekalkan** melainkan guru pilih
+fail baharu · `#35` tukar **TAHUN** ditolak · `#36` `EMAIL_GURU` tidak pernah berubah.
+
+🔴 **`#35` dan `#36` ialah LUBANG LAMA, bukan idea baharu** — kedua-duanya ditemui dengan
+**MEMBACA spec bersebelahan kod**, cara yang sama `#22`/`#23`/`#24` ditemui 14 Ogos.
+`#35`: `janaId()` ambil tahun daripada `TARIKH` ⇒ ID ialah **janji tentang tahun**; guru yang
+taip `2027` pada Januari dapat `OPR-2027-0001`, naikkan `KAUNTER_2027` (**naik sahaja** ⇒ hangus),
+dan membetulkan tarikh meninggalkan laporan 2026 memegang ID 2027 tanpa satu aduan pun.
+`#36`: kod cipta ambil `EMAIL_GURU` dari **sesi** ⇒ menyalin corak itu bermakna admin yang
+betulkan typo **merampas** laporan guru lain.
+
+⏭️ **SAMBUNG:** **pelan pelaksanaan Fasa 2b** (spec siap, pelan BELUM). Master **belum baca**
+spec §2.7/§7.4/§7.5 sendiri. Ranjau untuk kriteria terima ada dalam `opr-insaniah/MEMORY.md`
+blok STATUS SEMASA.
+
+---
+
+## ~~Sesi 2026-08-16 pagi (09:12 → 11:4x)~~ *(rekod sejarah)* — 🎉 **`opr-insaniah` FASA 2 TAMAT, DI-MERGE, DI-DEPLOY.**
 
 - `master` @ **`12d1361`** (merge `--no-ff`, 13 fail) · suite **114/114/0** · deploy **`@22`**
   pada ID kekal · `sight-hone` **CLEAR**
