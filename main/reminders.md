@@ -5,19 +5,14 @@
 
 ## Terbuka
 
-- **`opr-insaniah` — FASA 2 sedang berjalan (buka semula PDF)** *(dikemas 2026-08-16 pagi)*
-  ✅ Dokumen SIAP: spec §2.5/§2.6, §7.3 ditulis semula, `CLAUDE.md` dipinda.
-  ⏭️ **Seterusnya ikut urutan:** (1) spike `setSharing(DOMAIN_WITH_LINK)` pada DELIMa —
-  spec §13 **#10** · (2) kod (`dapatkanPautanPdf`, butang per baris, senarai terkini di atas) ·
-  (3) 🔴 **BUANG `SpikeBacaPdf.gs` + `SpikePdf.html` + baris `include` SEBELUM sebarang
-  `create-deployment`** — kalau tidak kod spike sampai kepada guru · (4) deploy + penerimaan.
-  🟡 **Keputusan #29/#30 BERSYARAT** — sah kerana app ini seorang pengguna sahaja. Guru **kedua**
-  masuk `USERS` ⇒ tengok semula sebelum diaktifkan.
-
-- **`opr-insaniah` — 🧹 PULIHKAN `OPR-2026-0001`** *(diputus master 2026-08-16 pagi)*
-  Data ujian penerimaan memakan nombor pertama. Padam: baris `OPR` · PDF + gambar dalam Drive ·
-  kunci **`KAUNTER_2026`** dalam `TETAPAN` (`naikkanKaunter()` baca `|| 0`, jadi kunci yang tiada
-  bermula semula pada `0001`). Runbook penuh dalam `opr-insaniah/MEMORY.md`.
+- **`opr-insaniah` — FASA 2b (Edit + Padam) belum dirancang** *(dibuka 2026-08-16)*
+  🔴 **RANJAU SUDAH TERPASANG:** sheet `OPR` ada **TIGA** kolum tarikh — `TARIKH`, `TIMESTAMP`,
+  `UPDATED_AT`. `dapatkanLaporan(id)` memulangkan baris **PENUH** ⇒ dua yang belum dibalut akan
+  membunuh `google.script.run` **senyap**, sama seperti pepijat 16 Ogos. Guna `tarikhSheetKeTeks()`
+  pada **ketiga-tiganya**.
+  🔴 §7.5 (ganti PDF) mesti **pasang semula perkongsian** pada fail gantian — File ID berubah,
+  pautan lama mati. Gejalanya: *"tadi boleh buka, sekarang tak boleh"*.
+  🟡 Keputusan #29/#30 **BERSYARAT** — guru **kedua** masuk `USERS` ⇒ tengok semula.
 
 - **`opr-insaniah` — dua item DIPERHATI, bukan dikejar**
   1. **Kos muat halaman belum diukur** — `mulakanSesi()` ambil blob Drive logo setiap muat +
@@ -28,6 +23,14 @@
 ---
 
 ## Selesai
+
+- ✅ **`opr-insaniah` — FASA 2 TAMAT** *(ditutup 2026-08-16 11:4x)*
+  Merge `master` @ `12d1361` · deploy **`@22`** · suite **114/114/0** · `sight-hone` CLEAR.
+  Guru boleh buka semula PDF melalui pautan Drive.
+  ✅ `OPR-2026-0001` **ditebus** — laporan sebenar pertama sekolah kini sah memegang nombor itu.
+  🔴 Sepanjang jalan ditemui pepijat **lima hari**: objek `Date` membunuh `google.script.run`
+  secara senyap ⇒ jadual senarai **tidak pernah** dipapar sejak Fasa 1. Hanya laporan **sebenar
+  pertama** boleh menemuinya.
 
 - ✅ **`opr-insaniah` — FASA 1 TAMAT** *(ditutup 2026-08-15 22:4x)*
   Merge `--no-ff` ke `master` @ `4a36a44` (47 commit) · suite **102/102/0** · deploy **`@20`**
