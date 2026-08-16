@@ -45,8 +45,9 @@
 *(dikemas 2026-08-07 — senarai lama lapuk: `my-pwa` sudah DIPADAM, `erpm-cf`/`myportfolio` kurang aktif)*
 
 - 🆕 `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
-  bukan Hono/Workers. **Fasa 1 Hirisan 1 KOD SIAP 2026-08-13** — branch `fasa1/hirisan-1`, 38/38,
-  deploy `@7`, skrin utama hidup. Seterusnya: ujian penerimaan **langkah 4–15**)
+  bukan Hono/Workers. **FASA 1 + FASA 2 TAMAT 2026-08-16** — `master` @ `12d1361`, suite 114/114,
+  deploy `@22`. Sekolah **sudah menggunakannya**: laporan sebenar pertama `OPR-2026-0001` hidup.
+  Seterusnya: **Fasa 2b** Edit+Padam, belum dirancang)
 - `mypwa-v2` (eNilai — per-SEKOLAH, live production)
 - `erph` (sekolah RENDAH) · `erph-menengah-v2`
 - `celiksains`
@@ -146,7 +147,31 @@ _(akan diisi bila master share)_
   itu sendiri — selalunya *"yang mana boleh silap, dan silapnya susah dipulihkan?"* — dan tawarkan
   bahagian selamat sebagai pilihan ketiga. Bahagian itu selalunya siap penuh, bukan separuh.
 
+- **Master ambil KESEMUA 5 penemuan review — dan itu BUKAN percanggahan dengan corak 2026-08-10**
+  (2026-08-16). Pada 10 Ogos master ambil **1 daripada 5** penemuan kod dan tolak empat. Hari ini
+  master ambil **4/4** fix kod tanpa teragak-agak. Bezanya bukan mood: setiap penemuan hari ini
+  dibentang dengan **cerita kegagalan BERNAMA** — *"`getFileById` berjaya untuk fail dalam sampah,
+  jadi guru dapat skrin Google 'item in trash' dan bukan mesej kita, dan kunci `PDF_HILANG_DRIVE`
+  tidak pernah menyala"* — bukan sebagai *"pembaikan kecil"*.
+  ➡️ **Yang master timbang ialah AKIBAT, bukan saiz diff.** Penemuan tanpa cerita kegagalan
+  dibaca sebagai kemasan dan ditolak; penemuan dengan cerita dibaca sebagai risiko dan diambil.
+  Sambungan langsung [[feedback_soalan_reka_bentuk_contoh]].
+
 ## Kekuatan master yang Lucy patut manfaatkan
+
+- **🔴 TANYA "PERNAH KE IA BERFUNGSI?" — master memegang sejarah yang tiada dalam kod**
+  (2026-08-16). Satu ayat sampingan master — *"jadual laporan yang pernah dihantar memang tidak
+  pernah keluar sebelum ni"* — **memusingkan siasatan 180°**. Sebelum itu Lucy sedang memburu kod
+  yang ditulisnya **pagi yang sama**, kerana itulah yang berubah; kod itu memang elok sepenuhnya.
+  Ayat itu memindahkan siasatan daripada *"apa yang aku rosakkan?"* kepada *"apa yang tidak pernah
+  berfungsi?"* — dan jawapannya ialah pepijat **lima hari** yang 102 ujian tidak boleh tangkap.
+  ➡️ **Bila sesuatu didapati rosak, soalan PERTAMA bukan *"apa yang berubah?"* tetapi *"master,
+  benda ni pernah berfungsi ke sebelum ni?"*** Lucy secara semula jadi mengesyaki perubahan
+  terbaharu — itu bias, bukan penaakulan. Master ialah **satu-satunya** sumber untuk sejarah
+  penggunaan; git menyimpan sejarah **kod**, bukan sejarah **apa yang pernah dilihat berjalan**.
+  🔑 Corak yang sama menemui pepijat borang-tiada-jalan-keluar (2026-08-15) dan header `USERS`
+  rosak (pagi 2026-08-16): **master menemuinya dengan MENGGUNAKAN sistem**, bukan Lucy dengan
+  membaca kod. → [[feedback_ujian_buta_skrin]]
 
 - **Keputusan VISUAL master datang daripada MELIHAT, bukan daripada berbincang** (2026-08-13).
   Spec projek `opr-insaniah` tercatat *"format OPR sebenar cuma 1 keping gambar"* — ditulis

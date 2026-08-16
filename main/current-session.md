@@ -4,18 +4,95 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-15 12:57 → **2026-08-16 00:4x** — 🎉 **`opr-insaniah` FASA 1 TAMAT,
-DI-MERGE** · 🔬 **FASA 2 spike SIAP, kod BELUM.**
+**Current Session**: 2026-08-16 09:12 → 11:4x pagi — 🎉 **`opr-insaniah` FASA 2 TAMAT, DI-MERGE,
+DI-DEPLOY.**
 
-- **Fasa 1:** `master` @ **`b470698`** (merge `4a36a44` `--no-ff`, 47 commit) · suite **102/102/0**
-  · deploy **`@20`** pada ID kekal, **disahkan mata 4/4** oleh master
-- **Fasa 2:** branch **`fasa2/spike-pdf`** @ **`74ce096`** · spike hidup pada **HEAD sahaja**
-  (URL `/dev`) · `@20` yang guru guna **tidak disentuh** · **4 keputusan master** dibuat
-- 🔴 **KONTEKS BARU:** app ini **SEORANG pengguna sahaja** — lihat blok Fasa 2 di bawah
+- `master` @ **`12d1361`** (merge `--no-ff`, 13 fail) · suite **114/114/0** · deploy **`@22`**
+  pada ID kekal · `sight-hone` **CLEAR**
+- **Guru boleh buka semula PDF** melalui pautan Drive — disahkan mata master pada laporan
+  **SEBENAR pertama** sekolah (`OPR-2026-0001`, *latihan hoki*)
+- ✅ `OPR-2026-0001` **ditebus** pagi ini sebelum kerja bermula; laporan sebenar pertama sekolah
+  kini **sah** memegang nombor itu
+- 🔴 **Pepijat 5 hari ditemui:** objek `Date` membunuh `google.script.run` **SENYAP** ⇒ jadual
+  senarai **tidak pernah** dipapar sejak Fasa 1
 
-**Last Work Activity**: 2026-08-16 (~00:4x — spike Fasa 2 selesai, semua keputusan disimpan)
-⏭️ **SAMBUNG:** kemas kini **spec + `CLAUDE.md` DAHULU**, sebelum kod pautan Drive.
+**Last Work Activity**: 2026-08-16 11:4x — Fasa 2 di-merge + reminder Fasa 2b dibuka
+⏭️ **SAMBUNG:** Fasa 2b (Edit + Padam) — **belum dirancang**. Baca ranjau tarikh dahulu.
 🔵 **mypwa-v2 TIDAK disentuh** — blok sesi 2026-08-10 kekal utuh di bawah.
+
+### 🔴 PEPIJAT TERBESAR PROJEK — dan ujian TIDAK MUNGKIN menangkapnya
+
+`senaraiLaporan()` menghantar `TARIKH` sebagai objek `Date` daripada Sheets. `google.script.run`
+tidak dapat menyeberangkannya dan mati **tanpa memanggil `withSuccessHandler` MAHUPUN
+`withFailureHandler`**. Frontend menunggu selama-lamanya; tiada ralat di mana-mana.
+
+🔑 **Dibuktikan dengan TIGA panggilan serentak dari halaman yang SAMA** — saluran, rangkaian dan
+kebenaran identik, jadi satu-satunya pemboleh ubah ialah **muatan**: `'pong'` balik · senarai
+dengan `TARIKH` **teks** balik · senarai dengan `TARIKH` **`Date`** tidak pernah balik.
+
+🔴 **Hanya boleh ditemui oleh laporan SEBENAR pertama sekolah.** Setiap ujian berjalan atas sheet
+**kosong**, di mana cabang kosong `return` **sebelum** muatan itu dibina. 102 ujian hijau, dua
+deploy yang kita sahkan *"4/4"*, lima hari — tiada apa dalam sistem yang pernah mengadu.
+🔴 Enam medan lain sudah dibalut `String()`. `TARIKH` **satu-satunya** yang terlepas.
+🔴 Pembaikan guna zon waktu **SKRIP bukan UTC**: sel 16 Ogos disimpan sebagai
+`2026-08-15T16:00:00Z`; UTC memberi *"15/08"* — laporan hari ini bertarikh **semalam**, dan ia
+kelihatan munasabah sepenuhnya. `HARI` dalam sheet (**Ahad**) ialah saksi yang membezakan.
+
+### 🔴 DAKWAAN KITA SENDIRI TERBUKTI PALSU — dibatalkan hari ini
+
+`MEMORY.md` bertulis pengesahan `@20` *"membuktikan `senaraiLaporan()` + `esc()` + peta header
+berjalan pada baris SEBENAR pertama"*. Yang **diperhatikan** malam itu ialah **banner hijau** —
+laluan **SIMPAN**, bukan laluan **PAPAR**. Jadual tidak pernah dilihat oleh sesiapa.
+➡️ Ujinya: **apa sebenarnya yang MASUK KE MATA seseorang?**
+
+### 🔑 TIGA KALI, AYAT MASTER YANG MENGGERAKKAN SIASATAN — bukan analisis aku
+
+1. *"Header email tu terpadam jadi 0"* — master jumpa punca `TIADA_AKAUN` sebelum aku mencarinya
+2. *"Jadual memang tidak pernah keluar sebelum ni"* — **memusingkan siasatan 180°**. Aku sedang
+   menyiasat kod yang aku tulis **pagi itu**, kerana itu yang berubah. Kod itu memang elok
+3. Master sanggup reload berkali-kali sambil aku **salah dua kali berturut-turut** (teori senarai
+   kosong; teori pengecualian senyap) — kedua-duanya munasabah, kedua-duanya mati bila diuji
+
+➡️ Puncanya satu: aku menaakul daripada **KOD**, sedangkan yang diperlukan ialah **PEMERHATIAN
+daripada sistem yang berjalan**.
+
+### 🔧 BILA DevTools DISEKAT — teknik yang berkesan
+
+1. **Jejak boleh-lihat pada skrin** (`<p id="jejak">` + tambah teks setiap langkah). Ia turut
+   berganda sebagai **penanda versi**: jejak yang tidak muncul = halaman basi
+2. **Fungsi diagnostik dalam editor Apps Script** — kebal daripada cache pelayar sepenuhnya
+3. **Bandingkan panggilan yang berbeza pada SATU pemboleh ubah sahaja**
+
+### 🟢 SPIKE `setSharing` — LULUS DUA ARAH, dan arah TUTUP yang paling bernilai
+
+`PRIVATE/NONE` → `DOMAIN_WITH_LINK/VIEW` → `PRIVATE/NONE` pada Drive sebenar. Arah **tutup**
+mengamankan Fasa 3: menyahaktifkan guru mesti boleh **tarik balik** akses, bukan sekadar berhenti
+mengeluarkan pautan baharu. Sistem yang boleh **buka** tetapi tidak boleh **tutup** akan ditemui
+pada hari seorang guru berpindah sekolah — hari paling teruk untuk menemuinya.
+🟢 Diuji pada fail yang spike **cipta dan padam sendiri** — soalan ini ialah **dasar domain**, dan
+dasar tidak melihat saiz mahupun jenis fail. Menghantar laporan sebenar untuk menjawabnya akan
+menaikkan kaunter dan mencipta semula kerja pembersihan yang baru siap.
+🟢 `window.open` **DIBENARKAN** dalam sandbox — laluan satu klik. Cabang `<a>` **tidak pernah
+dilalui**; jangan dakwa teruji.
+
+### 🔍 `sight-hone` — 5 isu, master ambil KESEMUANYA
+
+`isTrashed` (getFileById **berjaya** untuk fail sampah ⇒ `PDF_HILANG_DRIVE` tidak pernah menyala) ·
+`tab.opener = null` · `selPdf` → `Kongsi.html` + 5 ujian (mutasi **M3** bunuh tepat 2 ujian escape) ·
+**komen `window.open` yang masih kata "belum diperhatikan"** — kesilapan yang SAMA yang kita
+habiskan pagi itu membaikinya, ditulis semula 40 minit kemudian.
+
+### 🔴 RANJAU FASA 2b — ditulis SEBELUM ia meledak
+
+Sheet `OPR` ada **TIGA** kolum tarikh: `TARIKH` · `TIMESTAMP` · `UPDATED_AT`. Hanya `TARIKH`
+menyeberang hari ini. `dapatkanLaporan(id)` Fasa 2b memulangkan baris **PENUH** ⇒ dua lagi akan
+membunuh panggilan **dengan cara yang sama persis**, senyap, pada skrin Edit.
+🔴 Juga: §7.5 ganti PDF ⇒ File ID berubah ⇒ **pautan lama mati** ⇒ mesti pasang semula perkongsian.
+
+### 📏 DIUKUR, BELUM DIBAIKI
+
+Muat halaman **7–8 saat** (item terbuka spec §13 #11). `mulakanSesi()` ambil blob Drive logo
+tanpa syarat setiap muat + ~550 KB pustaka inline.
 
 ### 🔴 PEPIJAT TERBESAR MALAM INI DITEMUI **MASTER**, BUKAN 102 UJIAN
 
