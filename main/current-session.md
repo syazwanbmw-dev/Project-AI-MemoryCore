@@ -4,8 +4,73 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-16 12:1x → 13:0x petang — **`opr-insaniah`: pagar kolum `USERS`
-mendarat, dan spec Fasa 2b siap.**
+**Current Session**: 2026-08-16 16:0x → 16:4x petang — **`opr-insaniah`: PELAN Fasa 2b SIAP.**
+
+`master` bersih @ **`69f2912`** · suite **123/123/0** (tidak berubah — tiada kod ditulis) ·
+`@22` masih menghidangkan kod tanpa pagar `USERS`.
+
+**Pelan:** `docs/superpowers/plans/2026-08-16-opr-insaniah-fasa2b-edit.md` — **13 task**, 2362
+baris, satu commit. Suite dijangka **123 → 164**.
+
+### 🔴 MEMBACA KOD SEBELUM MENULIS PELAN MENGUBAH DUA KEPUTUSAN
+
+Aku baca **seluruh** kod projek (9 `.gs` + 5 `.html` + 2 fail ujian) sebelum menulis satu baris
+pelan. Dua perkara muncul yang **tidak mungkin** muncul daripada spec:
+
+**`#37`** — spec §7.4 menyuruh `dapatkanLaporan()` balut **ketiga-tiga** kolum tarikh. Itu
+**PERTAHANAN**. Borang Edit tidak pernah memaparkan `TIMESTAMP`/`UPDATED_AT`, jadi senarai medan
+**TERTUTUP** **MEMADAM** masalahnya. Ujinya bukan hari ini — ia kolum tarikh **ke-4** yang ditambah
+tahun depan: dengan "balut tiga" ia membunuh skrin Edit **senyap**; dengan senarai tertutup ia
+tidak pernah menyeberang.
+🔑 Corak yang SAMA dengan *"Backlog #6 ditutup dengan MEMADAMKAN soalan siling"* — dan preseden
+sudah ada dalam kod: `senaraiLaporan()` = *"LAJUR RINGKAS SAHAJA"*.
+
+**`#38`** — urutan spec §7.5 (`padam lama → kemas kini baris`) ada tetingkap di mana baris menunjuk
+fail dalam **SAMPAH** ⇒ `PDF_HILANG_DRIVE`, **tiada laluan pemulihan dalam app**. Urutan baharu
+tiada tetingkap itu. **Nama fail ialah kosmetik; rujukan tergantung tidak.**
+
+➡️ **Kedua-duanya dibentang sebagai SOALAN dengan senario kegagalan BERNAMA, bukan diselitkan.**
+Master belum jawab — **Task 1 tidak boleh mula sebelum itu.**
+
+### 🔬 TASK 0 IALAH SPIKE — dan sebabnya corak yang sudah terbukti
+
+Keputusan #33 berdiri atas ayat *"gambar sudah dikecilkan ⇒ di bawah 1 MB"*. Itu **penaakulan**.
+Yang **diukur** 13 Ogos ialah arah **client → server**. Arah **server → client** tidak pernah
+disentuh.
+🔑 Ujinya: *"tanah yang belum terbukti itu di TEPI kawasan yang nak dirancang, atau di DALAMnya?"*
+— **di dalam**. Kalau muatan tak menyeberang, Task 4 dan 10 kena tulis semula sepenuhnya, dan
+gantinya (*"guru pilih semula fail"*) ialah yang #33 sudah tolak atas sebab lain.
+
+### 🟢 SATU AMARAN KITA SENDIRI DIBATALKAN — kali KEDUA dalam satu hari
+
+`MEMORY.md` dan reminder sudah dibetulkan petang tadi, tetapi **spec §7.5 masih memegang amaran
+palsu itu** (baris 601, berlabel 🔴 DIPINDA). Aku jumpa dengan membaca `Kod.gs:202`.
+➡️ Corak `feedback_ralat_berhijrah_ke_prosa` **sepenuhnya**: kod dihukum suite, **prosa tidak
+dihukum sesiapa** — jadi pembetulan yang dibuat di dua tempat terlepas tempat ketiga, dan tempat
+ketiga itulah yang pelaksana akan baca. Ditutup dalam Task 1 Step 5.
+
+### 🔴 KEGAGALAN PALING BAHAYA FASA 2b — dan mitigasinya SATU BARIS
+
+`SESI.modEdit` yang tidak reset ⇒ klik **+ Laporan Baharu** seterusnya menulis ganti laporan yang
+baru diedit. **Laporan lama hilang, laporan baharu tak pernah wujud, banner hijau tetap keluar.**
+🔑 `tutupBorang()` ialah **satu-satunya** laluan keluar — Batal **dan** hantar-berjaya (disahkan
+`@20`). Satu baris di situ menutup kedua-dua laluan. Dikunci mutasi Task 10 Step 10.
+
+### 🟡 DUA GOTCHA ALAT DIALAMI SEMULA HARI INI
+
+1. **Heredoc Bash `<<'EOF'` untuk kandungan besar ⇒ `ENAMETOOLONG: uv_spawn`.** Bukan had shell —
+   had panjang **argumen proses**. ➡️ Untuk menulis blok besar ke fail, guna `Write`/`Edit`, bukan
+   `cat >>`.
+2. **PowerShell tiada heredoc** — `git commit -F -` gagal (`The '<' operator is reserved`). Memory
+   kita **sudah** merekodkannya (`feedback_powershell_commit_heredoc`) dan aku tetap tersalah.
+   ➡️ Tulis mesej ke **fail** dahulu, kemudian `git commit -F <fail>`.
+
+⏭️ **SAMBUNG:** master jawab **tiga** soalan — (1) `#37`? (2) `#38`? (3) cara laksana:
+**Subagent-Driven** (disyorkan) atau **Inline**. Kemudian Task 0 (spike), Task 1 (dokumen).
+
+---
+
+## ~~Sesi 2026-08-16 12:1x → 13:0x~~ *(rekod sejarah)* — pagar kolum `USERS` mendarat, spec Fasa 2b siap
 
 `master` bersih @ **`8806adf`** · suite **114 → 123**, 0 gagal · **belum di-push ke Apps Script,
 belum di-deploy** (guru masih atas `@22`, kod tanpa pagar) — master pilih bundle dengan Fasa 2b.

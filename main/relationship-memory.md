@@ -157,6 +157,16 @@ _(akan diisi bila master share)_
   dibaca sebagai kemasan dan ditolak; penemuan dengan cerita dibaca sebagai risiko dan diambil.
   Sambungan langsung [[feedback_soalan_reka_bentuk_contoh]].
 
+- **Master minta *"update?"* di TENGAH kerja panjang — dan itu isyarat, bukan sekadar soalan**
+  (2026-08-16 petang). Lucy membaca seluruh kod projek lalu menulis pelan 13 task **tanpa satu pun
+  laporan kemajuan** selama lebih 20 minit. Master menghantar satu perkataan: *"update?"*
+  ➡️ **Bila kerja satu giliran menjangkau lebih ~10 minit tanpa output kepada master, hantar
+  laporan kemajuan RINGKAS tanpa diminta** — apa yang siap, apa yang tinggal, dan apa yang sudah
+  ditemui setakat itu. Master tidak menunggu hasil akhir; dia mahu tahu ia **bergerak**.
+  🔑 Yang berkesan sebagai jawapan: bukan *"masih menulis"*, tetapi **penemuan setakat itu** —
+  dua keputusan yang perlu izinnya dibentang serta-merta, jadi master boleh berfikir tentangnya
+  sementara kerja diteruskan. Kemajuan yang **boleh ditindaklanjuti** mengalahkan peratusan.
+
 ## Kekuatan master yang Lucy patut manfaatkan
 
 - **🔴 TANYA "PERNAH KE IA BERFUNGSI?" — master memegang sejarah yang tiada dalam kod**

@@ -5,10 +5,19 @@
 
 ## Terbuka
 
-- **`opr-insaniah` — FASA 2b (Edit): spec SIAP, PELAN belum ditulis** *(dikemas 2026-08-16 petang)*
-  Spec `6a341cd` — §2.7 keputusan `#31`–`#36`, §7.4 ditulis semula, §7.5 langkah 0a–0c.
-  **Fasa 2b = Edit sahaja; Padam jadi Fasa 2c** (keputusan #31).
-  ⏭️ Langkah seterusnya: master baca spec §2.7/§7.4/§7.5, kemudian tulis pelan pelaksanaan.
+- **`opr-insaniah` — FASA 2b (Edit): PELAN SIAP, menunggu TIGA jawapan master** *(dikemas 2026-08-16 16:4x)*
+  Pelan `69f2912` — `docs/superpowers/plans/2026-08-16-opr-insaniah-fasa2b-edit.md`, **13 task**,
+  suite dijangka **123 → 164**. Spec `6a341cd` (§2.7 `#31`–`#36`) disahkan master 16:1x.
+  🔴 **JANGAN mula Task 1 sebelum tiga soalan ini dijawab** — dua yang pertama mengubah Task 1/3/7:
+  1. **`#37`** — `dapatkanLaporan()` pulangkan **medan borang sahaja**, bukan baris penuh?
+     (balut tiga tarikh = *pertahanan*; senarai tertutup = masalah **dipadam**)
+  2. **`#38`** — **kemas kini baris SEBELUM padam fail lama**? (urutan spec ada tetingkap di mana
+     baris menunjuk fail dalam sampah ⇒ `PDF_HILANG_DRIVE`, tiada laluan pemulihan)
+  3. Cara laksana: **Subagent-Driven** (disyorkan) atau **Inline**?
+  ⏭️ Selepas dijawab: **Task 0 spike** (ukur muatan gambar arah server→client — tidak pernah
+  diukur; yang diukur 13 Ogos ialah arah bertentangan), kemudian **Task 1 dokumen dahulu**.
+  🔴 Kegagalan paling bahaya, dikunci mutasi Task 10: `SESI.modEdit` tak reset ⇒ *+ Laporan Baharu*
+  seterusnya **menulis ganti** laporan yang baru diedit, dengan banner hijau.
   🔴 **RANJAU KEKAL:** sheet `OPR` ada **TIGA** kolum tarikh — `TARIKH`, `TIMESTAMP`,
   `UPDATED_AT`. `dapatkanLaporan(id)` memulangkan baris **PENUH** ⇒ dua yang belum dibalut akan
   membunuh `google.script.run` **senyap**, sama seperti pepijat 16 Ogos. Guna `tarikhSheetKeTeks()`
