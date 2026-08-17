@@ -4,7 +4,99 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-16 16:0x → 16:4x petang — **`opr-insaniah`: PELAN Fasa 2b SIAP.**
+**Current Session**: 2026-08-17 09:07 → 12:3x — 🎉 **`opr-insaniah` FASA 2b SIAP, LIVE, 13/13.**
+
+`master` bersih @ **`26aeba0`** · suite **123 → 164/164/0** · deploy **`@23`** pada ID yang SAMA ·
+ujian penerimaan **13/13 disahkan mata master pada laptop** · **13 task dalam satu sesi**.
+
+Tiga keputusan master pagi ini: `#37` diluluskan · `#38` diluluskan · cara laksana
+**Subagent-Driven** (Task 1 dan 6 dibuat inline — menyalin teks yang pelan sudah tulis penuh).
+
+### 🔴 ENAM DEFEK DALAM PELAN YANG KITA TULIS SENDIRI SEMALAM
+
+Kesemuanya hanya kelihatan dengan membaca **KOD yang pelan itu rujuk** — tidak pernah dengan
+membaca pelan lebih teliti. Pelan itu 2362 baris dan setiap keputusannya berhujah.
+
+1. `muat('X.gs')` tanpa argumen kedua **CAMPAK** (Task 2, 3, 5) — `tests/muat.js:30` panggil
+   `namaFungsi.join()` tanpa pengawal. Pelaksana yang percaya pelan boleh pergi "membaiki" pemuat
+   yang **semua** ujian bergantung padanya
+2. Kiraan mutasi Task 2 namakan **dua**, sebenarnya **tiga** mati — 🔑 corak baharu **"buang
+   panggilan, hilang campakan warisan"**: ujian yang nampak menguji **MESEJ** sebenarnya menghukum
+   **LALUAN PANGGILAN**
+3. `K.` yang tidak pernah wujud (Task 9) — fail itu **destructure**
+4. Tetingkap hirisan 1200 (Task 10) — **DIUKUR**: penanda mendarat pada **1480**, ditolak ke sana
+   oleh blok komen yang pelan **sendiri** suruh tambah ⇒ MERAH atas kod yang **betul sepenuhnya**
+5. Pelan suruh **BUANG pagar** (Task 11) — ujian ke-5 ialah **subset ketat** ujian sedia ada.
+   Andaiannya (*"kiraan `tamatHantar()` berubah bila bercabang"*) tidak berlaku: cabang berkongsi
+   **satu** pasangan handler
+6. Pelan dakwa soalan penerimaan 5 *"tidak menulis ke Sheet"* — ia **menulis**, dan soalan 6
+   menyuruh master periksa Sheet selepasnya
+
+➡️ Arah kesilapan #5 **terbalik** daripada yang lain: bukan menuntut terlalu sedikit, tetapi
+menuntut kerja yang **MEMUSNAHKAN** liputan sedia ada — atas andaian yang kedengaran munasabah
+sepenuhnya dan tidak benar.
+🔑 **Pelan ialah prosa, dan prosa tidak dihukum oleh sesiapa.** Pelan yang salah kelihatan sama
+persis dengan pelan yang betul sehingga seseorang menjalankannya.
+
+### 🔴 PENEMUAN TERBESAR — ujian dipuaskan oleh KOMEN
+
+Mutasi Task 7 mendedahkan gerbang TAHUN boleh dipadam **SEPENUHNYA** sambil suite kekal
+**152/152 HIJAU**. `assert.match(badan, /tahunPadanId\(/)` dipuaskan oleh perkataan itu dalam
+**komen yang MENERANGKAN gerbang tersebut**. Semakin baik komen, semakin besar lubangnya.
+
+Rosak **DUA arah**: positif **lulus** atas komen (senyap, bahaya); negatif **GAGAL** atas komen
+(kod betul dilaporkan rosak ⇒ orang yang membaikinya akan **MELONGGARKAN** ujian).
+
+Ditutup di **SUMBER** (`badanFungsi()` buang komen — lindungi kesembilan-sembilan) **dan**
+diperketat di tapak (tuntut **BENTUK** `if (!x(`, bukan nama). Dibuktikan mutasi yang sengaja
+**MENGEKALKAN** komen ⇒ tepat 1 mati. Skop disemak penuh: 1/9 rosak, 8 selamat kerana **kebetulan
+ayat komen**. → [[feedback_ujian_sumber_komen]] (BARU, disimpan ke memory global)
+
+🔑 **Task 10 hampir memasangnya semula** — pelan suruh salin `badanFungsi()` ke fail ujian kedua,
+dan pelan ditulis **sebelum** kita tahu. Ditangkap dengan bertanya *"pelan ini ditulis bila, dan
+apa yang kita belajar selepas itu?"*
+
+### 🟢 DUA BELAS MUTASI, BILANGAN TEPAT SETIAP KALI KECUALI SATU
+
+T2→3 · T3A→2 · T3B→2 · T4→1 · T5→1 · T7A→1 · **T7B→0 (defek ditemui)** · T8→1 · T9→2 · T10→1 ·
+T11A→2 · T11B→1. Satu-satunya yang meleset ialah yang mendedahkan pagar palsu.
+
+### 🟢 MAKMAL `/dev` DIPAKAI TIGA KALI DALAM SATU HARI
+
+Spike muatan gambar · pagar `USERS` · lima soalan penerimaan **sebelum** deploy. `clasp push`
+menulis ke **HEAD**; deployment bernombor hidangkan snapshotnya sendiri. Sifat yang kita rekod
+sebagai **bahaya** memberi persekitaran pementasan **percuma** bila arahnya dibalik.
+🔑 Master pilih urutan ini sendiri (*"ikut urutan yang lucy syor"*) selepas mula-mula kata
+*"push dan deploy dulu"* — jadi guru tidak pernah melihat keadaan yang belum disahkan.
+
+### 🔬 TASK 0 — DIUKUR, dan ayat aku sendiri melebihi bukti
+
+`bilangan=1 setiapKB=[180] masaMs=1255`. Kes terburuk 2 gambar ≈ **360 KB** lawan kriteria bunuh
+2000 KB ⇒ lulus dengan lebar.
+🔴 Tetapi pelan menulis soalannya sebagai *"bolehkah muatan menyeberang ke pelayar?"* — dan
+menjalankannya **dalam editor tidak menyeberangi sempadan itu langsung**. Jawapan sebenar datang
+dari tempat lain: **`Kod.gs:116` hantar `logoB64` sebagai data URI pada SETIAP muat halaman**,
+dalam production sejak Fasa 1. ➡️ Spike beri **nombor**; `logoB64` beri **pemerhatian**.
+🟡 Larian **pertama** spike hilang sepenuhnya — fungsi `return` string, dan editor Apps Script
+**tidak memaparkan nilai pulangan**. Guna `Logger.log()`. Kos: satu pusingan penuh master.
+
+### 🧹 BERSIH TERTUNGGAK — dua perkara
+
+1. 🔴 **Fail Drive yatim `OPR-2026-0002`** — master padam BARIS manual semasa soalan 11, jadi tiada
+   kod berjalan dan tiada `padamFail()`. PDF + gambar kemungkinan besar kekal tanpa baris yang
+   merujuknya. 🔑 **Hujah terkuat setakat ini untuk Fasa 2c (Padam).**
+2. 🔴 **`OPR-2026-0001` memegang nilai UJIAN** — tajuk dan gambar ditukar semasa soalan 5 dan 10.
+   Ia laporan **SEBENAR pertama** sekolah (*latihan hoki*).
+
+**Kaunter kini 3.** `OPR-2026-0002` hangus — diterima master secara sedar sebelum ujian.
+📏 Muat halaman **6.58 saat** (lebih baik daripada 7–8 saat 15 Ogos). Direkod, tidak dibaiki.
+🟡 Bahagian *"skrin melompat ke atas"* soalan 4 **tidak disahkan** — tidak dicatat sebagai lulus.
+
+⏭️ **SAMBUNG:** dua item bersih di atas, kemudian **Fasa 2c (Padam)** — belum dirancang.
+
+---
+
+## ~~Sesi 2026-08-16 16:0x → 16:4x petang~~ *(rekod sejarah)* — **PELAN Fasa 2b SIAP.**
 
 `master` bersih @ **`69f2912`** · suite **123/123/0** (tidak berubah — tiada kod ditulis) ·
 `@22` masih menghidangkan kod tanpa pagar `USERS`.

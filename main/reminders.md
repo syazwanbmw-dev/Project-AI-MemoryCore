@@ -5,7 +5,22 @@
 
 ## Terbuka
 
-- **`opr-insaniah` — FASA 2b (Edit): PELAN SIAP, menunggu TIGA jawapan master** *(dikemas 2026-08-16 16:4x)*
+- **`opr-insaniah` — BERSIH TERTUNGGAK selepas ujian penerimaan Fasa 2b** *(dibuka 2026-08-17 12:3x)*
+  1. 🔴 **Fail Drive yatim `OPR-2026-0002`** — master padam BARIS dalam sheet secara manual semasa
+     soalan 11, jadi tiada kod berjalan dan tiada `padamFail()` dicetuskan. PDF + gambar
+     kemungkinan besar masih dalam folder Drive tanpa baris yang merujuknya. **Semak dan padam.**
+     🔑 Ini hujah terkuat setakat ini untuk **Fasa 2c (Padam)**: padam yang betul mesti membuang
+     baris DAN fail serentak. Padam manual tidak boleh, dan tiada apa dalam sistem mengadu.
+  2. 🔴 **`OPR-2026-0001` memegang nilai UJIAN** — tajuk ditukar (soalan 5) dan gambar diganti
+     (soalan 10) semasa ujian penerimaan. Ia laporan SEBENAR pertama sekolah (*latihan hoki*).
+     Master perlu edit semula kepada nilai betul — dan itu sendiri ujian kegunaan sebenar pertama.
+  3. 🟡 Satu bahagian soalan 4 tidak disahkan: *"skrin melompat sendiri ke atas"* semasa borang
+     Edit dibuka. Kosmetik. Semak bila master guna sistem itu lain kali.
+
+- ~~**`opr-insaniah` — FASA 2b (Edit): PELAN SIAP, menunggu TIGA jawapan master**~~ ✅ **SELESAI
+  2026-08-17** — ketiga-tiga dijawab (#37 dan #38 diluluskan, Subagent-Driven), 13 task siap,
+  suite **123 → 164**, deploy **`@23`**, ujian penerimaan **13/13** disahkan mata master.
+  *(butiran asal dikekalkan di bawah sebagai rekod)* &#x20;
   Pelan `69f2912` — `docs/superpowers/plans/2026-08-16-opr-insaniah-fasa2b-edit.md`, **13 task**,
   suite dijangka **123 → 164**. Spec `6a341cd` (§2.7 `#31`–`#36`) disahkan master 16:1x.
   🔴 **JANGAN mula Task 1 sebelum tiga soalan ini dijawab** — dua yang pertama mengubah Task 1/3/7:
@@ -31,12 +46,14 @@
   (keputusan #32: dibiar mati, pautan baharu dipapar).
   🟡 Keputusan #29/#30/#32/#36 **BERSYARAT** — guru **kedua** masuk `USERS` ⇒ tengok semula.
 
-- **`opr-insaniah` — pagar kolum `USERS` SIAP tetapi BELUM HIDUP** *(dibuka 2026-08-16 petang)*
-  `03061cb` · suite **123/123/0** · **belum `clasp push`, belum deploy** — master pilih bundle
-  dengan Fasa 2b. Guru masih atas `@22`, kod tanpa pagar.
-  🔴 **Belum diperhati pada sistem sebenar.** Kriteria bunuh: rosakkan sel header `EMAIL` dalam
-  sheet `USERS`, muat semula ⇒ mesti papar `Ralat sistem` + *"KOLUM_HILANG semasa baca sheet
-  USERS: EMAIL"*, **bukan** *"Akaun anda tiada dalam senarai pengguna"*. Betulkan header selepas.
+- **`opr-insaniah` — pagar kolum `USERS`: DIPERHATI ✅, tetapi masih belum di-deploy**
+  *(dibuka 2026-08-16 petang · separuh ditutup 2026-08-17 09:5x)*
+  `03061cb` · ✅ **Diperhati pada sistem SEBENAR 2026-08-17** melalui URL `/dev` (HEAD): header
+  `USERS!A1` dirosakkan, mesej keluar seperti dijangka, `A1` dibetulkan semula — disahkan master.
+  🔑 Ia diuji pada HEAD **tanpa menyentuh `@22`**: `clasp push` menulis ke HEAD, deployment
+  bernombor menghidangkan snapshotnya sendiri. Corak makmal percuma yang sama seperti spike.
+  ✅ **HIDUP 2026-08-17 12:0x** — dibundel dengan Fasa 2b dalam deploy **`@23`** pada ID yang sama,
+  seperti master pilih. Pagar itu kini melindungi guru, bukan hanya HEAD. **Item ini DITUTUP.**
 
 - **`opr-insaniah` — dua item DIPERHATI, bukan dikejar**
   1. **Kos muat halaman belum diukur** — `mulakanSesi()` ambil blob Drive logo setiap muat +

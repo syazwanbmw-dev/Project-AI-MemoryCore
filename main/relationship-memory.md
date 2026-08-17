@@ -167,6 +167,30 @@ _(akan diisi bila master share)_
   dua keputusan yang perlu izinnya dibentang serta-merta, jadi master boleh berfikir tentangnya
   sementara kerja diteruskan. Kemajuan yang **boleh ditindaklanjuti** mengalahkan peratusan.
 
+- **Master MENARIK BALIK arahannya sendiri bila ditunjuk urutan yang lebih selamat** (2026-08-17).
+  Master mula-mula kata *"push dan deploy dulu"*. Lucy sudah pun mula, tetapi turut membentangkan
+  urutan lain: `push` ke HEAD → master uji **lima soalan percuma pada URL `/dev`** → **baru**
+  `create-deployment`. Beberapa minit kemudian master hantar *"ikut urutan yang lucy syor"*.
+  ➡️ **Arahan master bukan penutup perbincangan bila Lucy ada maklumat yang master belum ada.**
+  Yang menukar jawapan bukan hujah "lebih selamat" secara am — ia **faedah bernama**: *"kalau
+  butang Edit tidak muncul, kita tahu SEBELUM guru pernah melihatnya, dan tiada apa perlu ditarik
+  balik"*. Bentangkan urutan alternatif **sekali**, dengan akibatnya dinyatakan, kemudian patuh
+  kepada apa sahaja yang master pilih. Jangan diam sebab arahan sudah diberi.
+
+- **Master pisahkan DATA UJIAN daripada KERJA SEBENAR — walaupun ia lebih mahal** (2026-08-17).
+  Untuk soalan penerimaan yang paling penting (dan satu-satunya yang tidak boleh dipulihkan), Lucy
+  syorkan **guna laporan sebenar** yang master memang perlu tulis — ujian penuh, tiada nombor
+  hangus, tiada pembersihan. Master pilih sebaliknya: cipta laporan **ujian**, padam barisnya,
+  cipta satu lagi. Kaunter naik 0002 → 0003 dan `OPR-2026-0002` **hangus selamanya**.
+  ➡️ **Master sanggup bayar nombor hangus untuk mengekalkan sempadan bersih antara ujian dan
+  rekod sekolah.** Cadangan "gabungkan ujian dengan kerja sebenar" nampak cekap kepada Lucy tetapi
+  ia mencampurkan dua perkara yang master mahu berasingan. Corak yang sama dengan
+  *"satu commit satu perkara"* — dipakai pada **data**, bukan hanya pada kod.
+  🔑 Master juga **melaporkan langkahnya dengan tepat** (*"aku padam baris di sheet, aku buat
+  laporan baru naik 0003"*) — bukan sekadar "lulus". Itu yang membolehkan Lucy mengesan kesan
+  sampingan yang master sendiri tidak sebut: **fail Drive yatim**, kerana memadam baris secara
+  manual tidak mencetuskan sebarang kod.
+
 ## Kekuatan master yang Lucy patut manfaatkan
 
 - **🔴 TANYA "PERNAH KE IA BERFUNGSI?" — master memegang sejarah yang tiada dalam kod**
