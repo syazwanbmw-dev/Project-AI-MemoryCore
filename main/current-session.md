@@ -4,7 +4,67 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-17 09:07 → 13:4x — 🎉 **Fasa 2b LIVE 13/13**, kemudian **DUA fix
+**Current Session**: 2026-08-17 15:5x → 16:4x — 🔬 **Fasa 2c (Padam) DIRANCANG.** Spec siap dan
+di-commit; **kod belum ditulis**.
+
+`opr-insaniah` `master` bersih @ **`03c1a27`** · suite **165/165/0** (tiada kod disentuh) ·
+deploy kekal **`@25`**.
+
+### 🎯 EMPAT KEPUTUSAN MASTER — spec §2.8 baharu
+
+`#39` fail dipadam **DAHULU**, baris **KEMUDIAN** · `#40` sahkan dengan taip **4 digit akhir** ·
+`#41` butang dalam **jadual senarai sahaja** · `#42` **ikon SVG tong sampah** (ditulis tangan).
+
+🔑 **#39 TERBALIK daripada #38, dan itu bukan percanggahan.** Dalam Edit, baris tidak boleh
+menunjuk fail mati kerana laporan **mesti terus boleh dipakai**. Dalam Padam laporan itu memang
+akan hilang ⇒ keutamaan bertukar kepada *"kegagalan mesti KELIHATAN dan boleh diulang"*. Gagal
+separuh jalan ⇒ baris kekal dalam senarai, `PDF_HILANG_DRIVE` menyala, klik Padam sekali lagi
+**SELAMAT** (`padamFail()` senyap untuk fail yang sudah tiada) ⇒ **idempoten**.
+🔴 Sesiapa yang "menyelaraskan" §7.5 dan §7.6 supaya sama sedang memulangkan pepijat fail yatim.
+
+🔑 **#40 — apa yang kotak itu SEBENARNYA tangkap:** bukan *"guru tak sedar Padam memusnahkan"*,
+tetapi **klik pada BARIS YANG SALAH**. `OK/Batal` langsung tidak menangkapnya kerana guru sudah
+**percaya** dia betul. Awalan `OPR-2026-` sama untuk semua laporan tahun itu ⇒ geseran tulen.
+
+### 🟢 SOALAN "MUAT KE?" TIDAK BOLEH DI-GREP — pratonton scratchpad, kali ke-3 dan ke-4
+
+Master tanya *"muat ke 3 button dalam kolum tindakan?"*. Itu soalan **RUANG**. Dua fail HTML dibina
+dalam **scratchpad** dengan CSS disalin **tepat** daripada `style.html` @25 — 5 lebar skrin + kes
+seksa, kemudian 3 calon ikon dizum + dalam baris sebenar. **Kos sifar**: tiada fail projek
+disentuh, tiada deploy, tiada tulisan ke Sheet.
+🔴 Chrome extension **masih tidak tersambung** ⇒ aku **nyatakan** aku belum lihat sendiri, dan
+tidak mendakwa telah mengesahkan. Mata master yang jadi buktinya.
+🔑 Master tolak calon ikon bulatan-silang **tanpa aku perlu tanya** — aku sudah tolaknya dahulu
+dalam pratonton dengan sebab bertulis (*bulatan-silang bermaksud tutup/batal di mana-mana*).
+
+### 🔴 PENEMUAN SAMPINGAN — `anywhere` diwarisi masuk ke dalam BUTANG (kali KETIGA kelas sama)
+
+`#jadualSenarai td { overflow-wrap:anywhere; }` kena pada **semua** kandungan sel termasuk teks
+dalam `.btn-kecil` ⇒ `Buka PDF` boleh patah jadi `Buka P` / `DF`.
+🔑 Kita baiki **TAPAK**, dan soalan *"di mana LAGI ini menggigit?"* tidak pernah ditanya ke atas
+**kandungan butang**. Pepijat 15 Ogos (A4), 17 Ogos pagi (sel jadual), 17 Ogos petang (butang).
+🟡 **Pepijat sedia ada, bukan milik 2c** ⇒ commit **berasingan**, deploy **dibundel** dengan 2c.
+CSS tulen tiada penanda kandungan ⇒ deploy berasingan = satu pusingan pengesahan penuh untuk satu
+baris. Preseden: pagar kolum `USERS` 16 Ogos, master pilih bundle atas sebab yang **sama**.
+
+### 🔴 DUA DRIFT PROSA — ditemui semakan sendiri, bukan oleh suite
+
+`#27` masih kata *"kotak pengesahan **taip-ID**"* (pembaca yang terlepas #40 akan bina kotak ID
+penuh) · `§12` kata ketiga-tiganya hilang **"serentak"** (perkataan itu **membatalkan #39**).
+➡️ `feedback_ralat_berhijrah_ke_prosa` **sekali lagi**: membetulkan §2.8 sahaja **tidak cukup** —
+pembetulan mesti diletak pada **setiap** tempat yang pelaksana akan baca.
+
+### ⏭️ SAMBUNG
+
+1. 🟡 **Master semak spec** — §2.8 · §7.6 (jadual 3 kunci ralat) · §13 item 12–13
+2. 🔬 Selepas lulus: **`writing-plans`**. Anggaran **5–7 task**, satu sesi, suite **165 → ~183**
+3. 🔴 Ujian mesti **ujian SUMBER** (`padamBarisOpr` sentuh `SpreadsheetApp`) — guna `badanFungsi()`
+   yang **buang komen**, tuntut **BENTUK** `if (!bolehPadam(`, bukan nama
+4. 🚫 Luar skop dengan sengaja: fail yatim sedia ada (master bersih **manual**) · telefon (backlog)
+
+---
+
+## ~~Sesi 2026-08-17 09:07 → 13:4x~~ *(rekod sejarah)* — 🎉 **Fasa 2b LIVE 13/13**, kemudian **DUA fix
 lebar lajur senarai** (`@24` → `@25` dalam 15 minit).
 
 `master` bersih @ **`78edca3`** · suite **164 → 165/165/0** · deploy **`@25`** pada ID yang SAMA.

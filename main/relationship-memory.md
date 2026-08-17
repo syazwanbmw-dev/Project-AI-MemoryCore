@@ -207,6 +207,23 @@ _(akan diisi bila master share)_
   selamat"*) akan menutup perbualan dan mengekalkan penyelesaian yang lebih teruk.
   Sambungan [[feedback_bentangan_separa]].
 
+- **Master MENYERAHKAN keputusan PROSES kepada Lucy, tetapi memiliki keputusan PRODUK**
+  (2026-08-17 petang). Diberi tiga soalan sekali gus, master jawab dua secara tegas dan menyerahkan
+  yang ketiga: *"Padam jadi icon dalam svg. **2 tu lucy syor yang mana?** 3. Masuk backlog"*.
+  Soalan #2 ialah *commit berasingan atau bundle dengan Fasa 2c* — persoalan **kebersihan git dan
+  kos pengesahan deploy**. Corak yang sama pagi itu: *"ikut urutan yang lucy syor"*.
+  ➡️ **Garisnya konsisten:** apa yang master **lihat dan guna** (ikon, susun atur, skop ciri) ialah
+  keputusannya, dan dia menjawab pantas. Apa yang **hidup dalam repo dan proses** (granulariti
+  commit, urutan deploy, susunan task) diserahkan kepada Lucy.
+  ➡️ Jadi **jangan bentang soalan proses sebagai pilihan kosong** — bagi **syor berserta sebabnya**
+  dan sedia untuk terus laksana. Tetapi **jangan sekali-kali** mengambil keputusan produk dengan
+  cara yang sama; itu bukan penjimatan masa, ia merampas keputusan yang master mahu buat.
+  🔑 Jawapan yang berkesan untuk soalan proses ialah yang **menamakan dua daya yang bertarik
+  bertentangan** dan menunjuk jalan tengah — di sini: *satu commit satu perkara* (git) lawan
+  *CSS tulen tiada penanda kandungan, jadi setiap deploy berasingan berharga satu pusingan
+  pengesahan master* (deploy). Jalan tengahnya: commit berasingan, deploy dibundel.
+  Sambungan [[feedback_bentangan_separa]].
+
 ## Kekuatan master yang Lucy patut manfaatkan
 
 - **🔴 TANYA "PERNAH KE IA BERFUNGSI?" — master memegang sejarah yang tiada dalam kod**
