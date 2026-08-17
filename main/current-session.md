@@ -80,15 +80,33 @@ dalam production sejak Fasa 1. ➡️ Spike beri **nombor**; `logoB64` beri **pe
 🟡 Larian **pertama** spike hilang sepenuhnya — fungsi `return` string, dan editor Apps Script
 **tidak memaparkan nilai pulangan**. Guna `Logger.log()`. Kos: satu pusingan penuh master.
 
-### 🧹 BERSIH TERTUNGGAK — dua perkara
+### 🔴 DUA PEMBETULAN DARIPADA MASTER — satu daripadanya membatalkan "fakta" lama kita
 
-1. 🔴 **Fail Drive yatim `OPR-2026-0002`** — master padam BARIS manual semasa soalan 11, jadi tiada
-   kod berjalan dan tiada `padamFail()`. PDF + gambar kemungkinan besar kekal tanpa baris yang
-   merujuknya. 🔑 **Hujah terkuat setakat ini untuk Fasa 2c (Padam).**
-2. 🔴 **`OPR-2026-0001` memegang nilai UJIAN** — tajuk dan gambar ditukar semasa soalan 5 dan 10.
-   Ia laporan **SEBENAR pertama** sekolah (*latihan hoki*).
+**1. `OPR-2026-0001` BUKAN laporan sebenar — ia dummy juga.** Memory kita mencatatnya berulang
+kali sebagai *"laporan SEBENAR pertama sekolah (latihan hoki)"*, malah meraikan ia *"ditebus"*
+pada 16 Ogos. **Salah.** Sistem ini **belum pernah** memegang satu pun laporan sebenar.
+➡️ Ia mula sebagai andaian (*"ada dalam sheet ⇒ tentu guru hantar"*) dan mengeras menjadi fakta
+melalui **pengulangan**. Tiada catatan pernah menyebut **siapa** yang mengesahkannya.
+🔑 Kesannya bukan kosmetik: sepanjang pagi aku menimbang setiap keputusan pembersihan seolah-olah
+sheet itu memegang rekod sekolah, termasuk bimbang ujian "mengotorkan laporan sebenar".
 
-**Kaunter kini 3.** `OPR-2026-0002` hangus — diterima master secara sedar sebelum ujian.
+**2. Fail Drive yatim DISAHKAN WUJUD** — aku ramal, master semak: *"file pdf dan gambar masih ada
+dalam folder"*. Memadam baris melalui sheet tidak menjalankan sebarang kod ⇒ `padamFail()` tidak
+pernah dicetuskan. 🔑 Ini jadi **keperluan bertulis Fasa 2c dalam ayat master sendiri**: *"aku
+harap padam melalui sistem akan padam sekali gambar dan pdf"*.
+
+Master bersihkan **semuanya** (sheet + `PDF/` + `GAMBAR/`); sistem bermula semula pada `0001`.
+
+### 🔴 AMARAN KAUNTER — diberi SEBELUM master selesai bersih
+
+Kaunter **tidak** dikira daripada bilangan baris. Ia hidup dalam sheet **`TETAPAN`** sebagai kunci
+**`KAUNTER_2026`**, dan `naikkanKaunter()` baca `|| 0` (`Database.gs:175`). Nilainya **3** selepas
+ujian. Memadam semua baris dan semua fail **tidak menyentuhnya** ⇒ tanpa memadam kunci itu,
+laporan seterusnya keluar **`OPR-2026-0004`**, bukan `0001`.
+✅ Gerbang pengesahan **satu langkah**: hantar laporan seterusnya dan lihat nombornya.
+🔴 Urutan: padam kunci **SELEPAS** baris `OPR` — kalau tidak, kaunter kosong menjana `0001` **kedua**
+dan menulis ganti PDF sedia ada. Senarai semak tiga langkah lengkap ada dalam `opr-insaniah/MEMORY.md`.
+⚠️ Ada **folder Drive** juga bernama `TETAPAN` (logo) — kaunter dalam **sheet**, bukan folder.
 📏 Muat halaman **6.58 saat** (lebih baik daripada 7–8 saat 15 Ogos). Direkod, tidak dibaiki.
 🟡 Bahagian *"skrin melompat ke atas"* soalan 4 **tidak disahkan** — tidak dicatat sebagai lulus.
 

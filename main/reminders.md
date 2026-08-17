@@ -5,17 +5,31 @@
 
 ## Terbuka
 
-- **`opr-insaniah` — BERSIH TERTUNGGAK selepas ujian penerimaan Fasa 2b** *(dibuka 2026-08-17 12:3x)*
-  1. 🔴 **Fail Drive yatim `OPR-2026-0002`** — master padam BARIS dalam sheet secara manual semasa
-     soalan 11, jadi tiada kod berjalan dan tiada `padamFail()` dicetuskan. PDF + gambar
-     kemungkinan besar masih dalam folder Drive tanpa baris yang merujuknya. **Semak dan padam.**
-     🔑 Ini hujah terkuat setakat ini untuk **Fasa 2c (Padam)**: padam yang betul mesti membuang
-     baris DAN fail serentak. Padam manual tidak boleh, dan tiada apa dalam sistem mengadu.
-  2. 🔴 **`OPR-2026-0001` memegang nilai UJIAN** — tajuk ditukar (soalan 5) dan gambar diganti
-     (soalan 10) semasa ujian penerimaan. Ia laporan SEBENAR pertama sekolah (*latihan hoki*).
-     Master perlu edit semula kepada nilai betul — dan itu sendiri ujian kegunaan sebenar pertama.
-  3. 🟡 Satu bahagian soalan 4 tidak disahkan: *"skrin melompat sendiri ke atas"* semasa borang
-     Edit dibuka. Kosmetik. Semak bila master guna sistem itu lain kali.
+- **`opr-insaniah` — SAHKAN kaunter selepas pembersihan** *(dibuka 2026-08-17 12:4x)*
+  🔴 Master bersihkan sheet `OPR` + folder `PDF/` + `GAMBAR/` selepas ujian penerimaan. Tetapi
+  kaunter **tidak** dikira daripada baris — ia hidup dalam sheet **`TETAPAN`** sebagai kunci
+  **`KAUNTER_2026`**, dan `naikkanKaunter()` baca `|| 0` (`Database.gs:175`). Nilainya **3**.
+  **Tanpa memadam kunci itu, laporan seterusnya keluar `OPR-2026-0004`, bukan `0001`.**
+  ✅ **Gerbang pengesahan — satu langkah, tiada semakan lain perlu:** hantar laporan seterusnya dan
+  lihat nombornya. `OPR-2026-0001` ⇒ bersih. `OPR-2026-0004` ⇒ kunci masih ada.
+  🔴 Urutan: padam kunci **SELEPAS** baris `OPR`, bukan sebelum — kalau laporan masuk antara dua
+  langkah, kaunter kosong menjana `OPR-2026-0001` **kedua** dan menulis ganti PDF sedia ada.
+  ⚠️ Jangan keliru: ada **folder Drive** juga bernama `TETAPAN` (tempat logo). Kaunter dalam **sheet**.
+  🟡 Belum disahkan juga: *"skrin melompat sendiri ke atas"* semasa borang Edit dibuka (bahagian
+  soalan 4 yang master tidak sebut). Kosmetik — semak bila master guna sistem lain kali.
+
+- **`opr-insaniah` — KEPERLUAN Fasa 2c, dalam ayat master sendiri** *(2026-08-17)*
+  *"aku harap padam melalui sistem akan padam sekali gambar dan pdf"* — dan ini **DIPERHATI**,
+  bukan diteori: memadam baris melalui sheet meninggalkan PDF + gambar **yatim** dalam Drive,
+  kerana tiada kod berjalan dan `padamFail()` tidak pernah dicetuskan. Fasa 2c mesti membuang
+  baris **DAN** fail serentak, dan padam separuh mesti tidak mungkin.
+
+- 🔴 **DAKWAAN LAMA DIBATALKAN 2026-08-17: `OPR-2026-0001` BUKAN laporan sebenar sekolah.**
+  Memory kita mencatatnya berulang kali sebagai *"laporan SEBENAR pertama sekolah (latihan hoki)"*
+  dan meraikan ia *"ditebus"* pada 16 Ogos. Master sahkan ia **dummy juga**. Sistem ini **belum
+  pernah** memegang satu pun laporan sebenar. ➡️ Andaian (*"ada dalam sheet ⇒ tentu guru hantar"*)
+  mengeras menjadi "fakta" melalui pengulangan; tiada catatan pernah menyebut **siapa** yang
+  mengesahkannya.
 
 - ~~**`opr-insaniah` — FASA 2b (Edit): PELAN SIAP, menunggu TIGA jawapan master**~~ ✅ **SELESAI
   2026-08-17** — ketiga-tiga dijawab (#37 dan #38 diluluskan, Subagent-Driven), 13 task siap,
