@@ -191,6 +191,22 @@ _(akan diisi bila master share)_
   sampingan yang master sendiri tidak sebut: **fail Drive yatim**, kerana memadam baris secara
   manual tidak mencetuskan sebarang kod.
 
+- **Master MENERIMA fix, kemudian menyoal HARGANYA — dan harga itu nyata** (2026-08-17 petang).
+  Master sahkan fix jadual senarai (*"ada 8 lajur"*), luluskan deploy, dan `@24` mendarat. Lima
+  belas minit kemudian: *"tapi kenapa yang tadi jika ditaip dengan space, nampak lagi cantik"*.
+  Lucy telah menyelesaikan *"jadual pecah"* dengan `table-layout:fixed`, iaitu **membuang
+  kepandaian susun atur AUTO** — lajur tidak lagi mengecil bila isinya pendek — dan **tidak
+  menyebutnya langsung**. Jawapan yang betul (`overflow-wrap:anywhere`) mengekalkan AUTO dan
+  menutup pepijat itu dengan **satu baris**, dan ia wujud sepanjang masa.
+  ➡️ **Bila satu pembaikan menukar tingkah laku yang pengguna SUKA, itu bahagian penyelesaian
+  yang wajib DISEBUT** — bukan disembunyikan di bawah *"masalah selesai"*. Ujinya: *"apa yang
+  sistem ini BOLEH buat semalam yang ia tidak boleh buat selepas fix aku?"* Kalau ada jawapan,
+  bentangkan sebagai pilihan sebelum deploy.
+  🔑 Master menyoalnya sebagai **soalan ingin tahu**, bukan aduan — sama seperti dia melaporkan
+  pepijat "borang tiada jalan keluar" sebagai **soalan skop**. Jawapan malas (*"sebab fixed lebih
+  selamat"*) akan menutup perbualan dan mengekalkan penyelesaian yang lebih teruk.
+  Sambungan [[feedback_bentangan_separa]].
+
 ## Kekuatan master yang Lucy patut manfaatkan
 
 - **🔴 TANYA "PERNAH KE IA BERFUNGSI?" — master memegang sejarah yang tiada dalam kod**

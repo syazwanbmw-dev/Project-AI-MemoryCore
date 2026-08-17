@@ -4,7 +4,94 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-17 09:07 → 12:3x — 🎉 **`opr-insaniah` FASA 2b SIAP, LIVE, 13/13.**
+**Current Session**: 2026-08-17 09:07 → 13:4x — 🎉 **Fasa 2b LIVE 13/13**, kemudian **DUA fix
+lebar lajur senarai** (`@24` → `@25` dalam 15 minit).
+
+`master` bersih @ **`78edca3`** · suite **164 → 165/165/0** · deploy **`@25`** pada ID yang SAMA.
+
+### 🔴 PEPIJAT DITEMUI MASTER DENGAN MENGGUNAKAN SISTEM — kali KEEMPAT
+
+Master taip tajuk panjang **tanpa ruang**, hantar, lihat senarai. Lajur `TAJUK` melebar mengikut
+perkataan itu sehingga jadual melepasi lebar halaman.
+
+🔴 **Yang master TIDAK sebut, dan lebih besar daripada rupa:** lapan lajur menjadi **empat** yang
+kelihatan. `TINDAKAN` — tempat butang **Buka PDF** dan **Edit** duduk — ditolak keluar skrin. Ciri
+Edit yang mendarat **pagi yang sama** menjadi tidak kelihatan sebaik guru menaip tajuk panjang.
+Master laporkannya sebagai *kolum tak kemas*; ia sebenarnya masalah **kebolehcapaian**.
+
+🔑 **Puncanya: kita membaiki TAPAK, bukan KELAS.** Pepijat sama persis dibaiki pada pratonton A4
+pada **15 Ogos**, dan soalan yang menemui tempat KEDUA malam itu (*"di mana LAGI teks tanpa ruang
+boleh masuk?"*) **tidak pernah ditanya ke atas skrin senarai**. Bertahan dua hari.
+
+🔴 **TIGA lajur** boleh mencetuskannya (`Validate.gs`, disemak bukan diagak): `TAJUK` maks 150 ·
+`NILAI` 50 aksara setiap satu **tanpa had bilangan** · `GURU` daripada `USERS` tanpa had.
+
+### 🔴 FIX PERTAMA BETUL, DAN TETAP SALAH — master yang menemui harganya
+
+`@24` = `table-layout:fixed` + lebar `11/9/7/20/13/13/12/15`. Kebal, lulus semua ujian, disahkan
+mata master (**8 lajur**). Lima belas minit kemudian master tanya:
+
+> *"tapi kenapa yang tadi jika ditaip dengan space, nampak lagi cantik"*
+
+🔑 **Aku menyelesaikan masalah dengan MEMBUANG keupayaan, dan tidak menyebutnya.** AUTO bukan lemah
+— ia mengecilkan lajur ikut isi sebenar. Ia runtuh kerana **satu** sebab: perkataan tanpa ruang tak
+boleh dipatahkan ⇒ min-content lajur = 1140px penuh ⇒ AUTO **wajib** memberinya. `fixed`
+menyelesaikannya dengan membuang AUTO **sepenuhnya**.
+➡️ Jawapan betul: **buang KEADAAN yang meruntuhkan AUTO, bukan buang AUTO.**
+
+| | Patah perkataan gergasi? | Kurangkan **min-content**? |
+|---|---|---|
+| `overflow-wrap:break-word` | Ya | **TIDAK** — betulkan RUPA, bukan SUSUN ATUR |
+| `overflow-wrap:anywhere` | Ya | **YA** — AUTO boleh dikekalkan |
+
+`@25` = **satu baris CSS**: `#jadualSenarai td { overflow-wrap:anywhere; }`. Lebar
+`11/9/7/20/13/13/12/15` **dibuang** — ia milik pendekatan `fixed`, dan blok C yang master pandang
+memang tiada lebar langsung. Dibentang sebagai **keputusan dibatalkan**, bukan terlepas pandang.
+
+🔑 **Pengajaran lebih luas daripada CSS:** bila satu pembaikan menukar tingkah laku yang pengguna
+**suka**, itu bahagian penyelesaian yang mesti **DISEBUT** — bukan disembunyikan di bawah *"masalah
+selesai"*. → [[feedback_fix_yang_buang_keupayaan]] (BARU)
+
+### 🟢 MUTASI — dan satu daripadanya SATU-SATUNYA yang penting
+
+`anywhere`→`break-word` **1 mati** · rule dipadam **1** · `+break-all` **1** · rule→KOMEN: MERAH
+dengan pembuang komen, **HIJAU PALSU 24/0** tanpanya.
+🔴 Mutasi pertama itu sebab ujian **menolak `break-word` secara eksplisit**: ia akan lulus **setiap
+semakan manual**, kerana tajuk yang manusia taip secara normal ada RUANG untuk dipatahkan.
+🟡 AUTO **sengaja tidak dihukum** ujian — menukarnya kembali kepada `fixed` **KELIHATAN** pada
+skrin. Yang dihukum hanyalah kegagalan **senyap**.
+
+### 🟢 PRATONTON TEMPATAN MEMADAMKAN PUSINGAN DEPLOY
+
+Dua kali aku bina fail HTML dalam **scratchpad** (bukan fail projek) dengan CSS sebenar + kes seksa,
+dan hantar kepada master. Pusingan 1: master ubah **Tajuk 19→20, Guru 13→12**. Pusingan 2: master
+banding **tiga** pilihan bersebelahan dan pilih C.
+🔑 Kedua-dua keputusan **mustahil** daripada perbualan — dan kosnya sifar risiko: tiada fail projek
+disentuh, tiada deploy, tiada tulisan ke Sheet.
+🔴 Sambungan chrome extension **tidak tersambung** (`Browser extension is not connected`) — jadi aku
+tak dapat sahkan `anywhere` sendiri. Mata master yang jadi buktinya.
+
+### 🟡 GOTCHA ALAT — DUA KALI dalam satu sesi
+
+`node -e "..."` dengan regex ber-escape dalam **double-quote Bash** gagal ganti apa-apa, **senyap**.
+Kali 1 dikesan hanya kerana `grep -c` = **0**; kali 2 kerana skrip sudah `throw`.
+➡️ **Mutasi: tulis skrip ke FAIL, jalankan `node fail.js`.** Setiap skrip mesti **sahkan
+penggantian berlaku** — kalau tidak "larian kedua" ialah larian pertama sekali lagi, dan kedua-dua
+nombor kelihatan meyakinkan.
+🟡 Pengawal sendiri boleh silap: `includes(RULE)` **campak palsu** pada mutasi yang menukar rule
+jadi **komen yang mengandungi rule itu**. Semak terhadap teks **tanpa komen**.
+
+### ⏭️ SAMBUNG
+
+1. 🟡 Master sahkan `@25` pada app sebenar (`Ctrl+Shift+R` — CSS tulen tiada penanda kandungan).
+   Undur = `create-deployment --deploymentId <ID guru> --versionNumber 24`
+2. 🟡 Ujian jumlah lebar lajur — **tidak lagi relevan** selepas `@25` (lebar dibuang)
+3. 🟡 `Utils.gs` 330 baris · 🟡 tatalan soalan 4 Fasa 2b belum disahkan
+4. 🔬 **Fasa 2c (Padam)** — belum dirancang. Fail Drive yatim disahkan wujud
+
+---
+
+## ~~Sesi 2026-08-17 09:07 → 12:3x~~ *(rekod sejarah)* — 🎉 **`opr-insaniah` FASA 2b SIAP, LIVE, 13/13.**
 
 `master` bersih @ **`26aeba0`** · suite **123 → 164/164/0** · deploy **`@23`** pada ID yang SAMA ·
 ujian penerimaan **13/13 disahkan mata master pada laptop** · **13 task dalam satu sesi**.
