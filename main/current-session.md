@@ -4,7 +4,7 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-23 19:5x–21:3x — 🟢 **Projek BAHARU `opr-program`: brainstorming → spec pusingan 2 (Opus review) → pelan Fasa 1 siap.**
+**Current Session**: 2026-08-23 19:5x–22:3x — 🟢 **Projek BAHARU `opr-program`: brainstorming → spec pusingan 2 (Opus review) → pelan Fasa 1 siap → Task 0-10 DILAKSANA (Subagent-Driven), 41/41 lulus. ⏸️ Final review dihentikan master, ditangguh.**
 
 ### Sesi ni (petang → malam, `opr-program`)
 
@@ -43,8 +43,24 @@ Inline Execution (soalan masih terbuka bila sesi ni berhenti).
 Butiran penuh: `opr-program/docs/superpowers/specs/2026-08-23-opr-program-design.md` +
 `project_opr_program.md` (memory Claude Code).
 
+**Pelaksanaan Fasa 1** (petang→malam, sambungan sesi): master pilih **Subagent-Driven**. Lucy
+setup worktree berasingan (`.claude\worktrees\opr-program-fasa1-setup-cipta`), buat scan konflik
+pra-terbang (bersih), lalu dispatch subagent implementer+reviewer BERASINGAN untuk setiap 11 task
+(0-10) — Haiku untuk task mekanikal, Sonnet untuk task kompleks/sensitif-keselamatan (Setup admin
+pertama, ReportService lock, sharing tier Drive, Kod.gs canonical ralat/balas). Setiap task lulus
+review sebelum sambung — 2 review tangkap bug Critical SEBENAR (bukan nitpick): Task 6 punya
+`ralat`/`balas` sendiri berlanggar bentuk dgn Task 9, dan Task 10 punya `index.html` tak
+`include()` library PDF (pepijat asal dari BRIEF/pelan sendiri, bukan pelaksana) — kedua-duanya
+dibetulkan + disahkan semula. Suite akhir **41/41**.
+
+**Master hentikan final whole-branch review (Opus) di tengah jalan** — *"Jap.. Jgn review opus tu
+lg"* — bukan tolak kerja, tapi tangguh (*"kita review ni nnti"*). Kemungkinan sebab kos Opus utk
+review besar (13 commit, ratusan KB diff termasuk lib vendor).
+
 ### ⏭️ Bila sambung
 
-Tunggu jawapan master: Subagent-Driven atau Inline Execution untuk laksana Fasa 1. Lepas Fasa 1
-disahkan (Task 11 smoke test manual), fasa seterusnya ikut urutan: senarai/carian → edit → padam →
-panel admin+tetapan → migrasi 100 rekod (TERAKHIR, bukan awal).
+Master akan minta review semula (mungkin bukan Opus — cadangkan Sonnet untuk jimat kos). Lepas
+review bersih: `finishing-a-development-branch` (worktree perlu digabung balik ke repo utama
+`opr-program`) → Task 11 (deploy `clasp` + smoke test manual, master sahaja — perlu log masuk
+Google) → Fasa 2 (senarai/carian) → edit → padam → panel admin+tetapan → migrasi 100 rekod
+(TERAKHIR, bukan awal).
