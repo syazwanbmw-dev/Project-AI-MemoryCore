@@ -4,63 +4,52 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-23 19:5x–22:3x — 🟢 **Projek BAHARU `opr-program`: brainstorming → spec pusingan 2 (Opus review) → pelan Fasa 1 siap → Task 0-10 DILAKSANA (Subagent-Driven), 41/41 lulus. ⏸️ Final review dihentikan master, ditangguh.**
+**Current Session**: 2026-08-24 petang — 🟡 **Projek BAHARU `Digital Hub` (portal akses semua sistem sekolah): brainstorming architectural SEDANG JALAN, belum sampai spec/plan.**
 
-### Sesi ni (petang → malam, `opr-program`)
+### Sesi ni (petang, `Digital Hub`)
 
-Master mula dengan soalan spike: *"aku ada project opr sekolah yang dibuat guna appsheet, boleh ke
-aku nak revamp/migrate ke appscript"*. Lucy fetch struktur Sheet AppSheet sebenar (WebFetch selepas
-master tukar sharing ke "Anyone with link"), dapat gambaran: 1 jadual `LAPORAN` (100 baris/18
-lajur) + 3 jadual rujukan (`DATA GURU` 42, `DATA KATEGORI` 6, `DATA PENGANJUR` 20). Master kongsi
-screenshot PDF sebenar "One Page Report" SK Salor.
+Master nak satu **portal/landing page** untuk akses pantas semua sistem digital sekolah —
+`mypwa-v2` (eNilai, perlu login), `opr-program`, `takwim-digital` (dua-dua login ikut email
+berdaftar), `sijil generator`, dan kemungkinan projek lain akan datang. Paparan utama **public**
+(tak perlu login), admin je perlu log masuk untuk uruskan nama sekolah/logo/warna tema/tambah
+button sistem baharu.
 
-**Brainstorming architectural (superpowers)**: soal-jawab pelbagai pusingan (skop 1 sekolah, 2
-peranan Guru/Admin, gambar wajib 1-4, Buku Program = upload PDF simpanan sahaja bukan jana, QR ke
-Buku Program, header/branding admin boleh tukar semua, carian+tapis+susun senarai) → pendekatan
-dipilih: projek BAHARU `opr-program`, salin fail INFRASTRUKTUR terbukti dari `opr-insaniah`
-(DriveService/Setup/Utils/lib PDF), tulis fail bentuk-data baharu.
+**Klasifikasi:** architectural (projek baharu) → brainstorming superpowers, soal-jawab satu-satu.
 
-🔑 **Lucy sendiri tersilap, sedar, dan betulkan sendiri**: spec pusingan 1 ditulis TERUS oleh sesi
-Sonnet — melanggar gerbang `kata` SKILL.md Lv.6 (*"fasa /plan WAJIB dispatch subagent model: opus"*).
-Lucy perasan, tanya master, dispatch Opus review susulan → jumpa **8 isu KRITIKAL + 10 sederhana**,
-kebanyakan KESENYAPAN: tiada storan ROLE/STATUS (panel admin mustahil dibina), tiada Setup/admin
-pertama (42 guru import = sifar admin = terkunci hari 1), percanggahan skop Sheet (skrip terikat
-Sheet BAHARU vs Sheet AppSheet lama utk migrasi), gambar 4 slot tak diresize (opr-insaniah dulu
-1 gambar mentah = 9MB/19saat), papar-semula PDF tak disebut (opr-insaniah dulu gagal iframe 2
-peranti), akibat "PDF client-side" tak dijejak ke migrasi (100 PDF lama tak boleh jana semula).
-3 keputusan master baharu selepas review: QR untuk SESIAPA (bukan dalam-domain), PDF lama KEKAL
-asal bila header ditukar, Jawatan snapshot sejarah. Spec pusingan 2 ditulis + commit (`6571188`).
+**Keputusan setakat ini** (belum sampai tahap tulis spec lagi):
+- Skop: **SATU sekolah sahaja** (bukan multi-tenant/SaaS) — mudah, admin = master sendiri
+- Projek **baharu berasingan** (bukan tambah route dalam mypwa-v2 sedia ada)
+- Nama projek: **"Digital Hub"** (folder cadangan `digital-hub`, sama level projek lain dalam
+  `Documents\code`)
+- Admin login: **password tunggal** (bukan sistem akaun/email macam opr-program) — JWT dalam
+  header `Authorization: Bearer` disimpan di localStorage, **bukan cookie**, supaya CSRF auto
+  kalis (ikut standard sedia ada dalam `reference_security_checklist.md`)
+- Logo sekolah: **URL sahaja** (admin taip link, tak payah setup R2/upload)
+- Warna tema: admin **pilih dari 7 palet siap-pakai** (`reference_palet_warna_ui.md`), bukan color
+  picker bebas — elak kombinasi tak sedap mata
+- Button sistem: **Nama + URL + Ikon/emoji**, boleh susun turutan & toggle aktif/sorok tanpa delete
 
-Pembetulan kecil susulan: KAUNTER dilipat masuk `TETAPAN` (bukan sheet berasingan) supaya padan
-pola terbukti `naikkanKaunter_()` — commit `6d5ef4f`.
+🔑 **Storan: Cloudflare KV, BUKAN D1** — master sendiri yang perasan isu ni pertengahan brainstorm
+(*"resources.cloudflare kan bagi 10 db je untuk free tier"*), lepas mula-mula tanya pasal Google
+Sheets (ditolak sendiri sebab sama sebab — kuota). Lucy sahkan KV memang **lebih sesuai secara
+teknikal** juga (bukan sekadar workaround kuota) sebab data portal ni cuma 2 blob config
+(`settings` + senarai `buttons`), bukan data relational yang perlukan query/JOIN. Backup: tak
+perlu sistem formal — KV Cloudflare replicated + data kecil senang re-enter manual; optional
+butang "Eksport Setting" (download JSON) sebagai jaring keselamatan ringan sahaja.
 
-**Pelan Fasa 1** (Setup + Cipta Laporan, `writing-plans`) ditulis + commit (`dea97c3`) — 12 task,
-kod diadaptasi LANGSUNG daripada fail SEBENAR `opr-insaniah` (Lucy baca kod sumber dulu, bukan
-reka), TDD penuh untuk fungsi tulen. **Belum dilaksana** — tunggu master pilih Subagent-Driven vs
-Inline Execution (soalan masih terbuka bila sesi ni berhenti).
-
-`opr-program` — git local sahaja (`C:\Users\user\Documents\code\opr-program`), tiada remote lagi.
-Butiran penuh: `opr-program/docs/superpowers/specs/2026-08-23-opr-program-design.md` +
-`project_opr_program.md` (memory Claude Code).
-
-**Pelaksanaan Fasa 1** (petang→malam, sambungan sesi): master pilih **Subagent-Driven**. Lucy
-setup worktree berasingan (`.claude\worktrees\opr-program-fasa1-setup-cipta`), buat scan konflik
-pra-terbang (bersih), lalu dispatch subagent implementer+reviewer BERASINGAN untuk setiap 11 task
-(0-10) — Haiku untuk task mekanikal, Sonnet untuk task kompleks/sensitif-keselamatan (Setup admin
-pertama, ReportService lock, sharing tier Drive, Kod.gs canonical ralat/balas). Setiap task lulus
-review sebelum sambung — 2 review tangkap bug Critical SEBENAR (bukan nitpick): Task 6 punya
-`ralat`/`balas` sendiri berlanggar bentuk dgn Task 9, dan Task 10 punya `index.html` tak
-`include()` library PDF (pepijat asal dari BRIEF/pelan sendiri, bukan pelaksana) — kedua-duanya
-dibetulkan + disahkan semula. Suite akhir **41/41**.
-
-**Master hentikan final whole-branch review (Opus) di tengah jalan** — *"Jap.. Jgn review opus tu
-lg"* — bukan tolak kerja, tapi tangguh (*"kita review ni nnti"*). Kemungkinan sebab kos Opus utk
-review besar (13 commit, ratusan KB diff termasuk lib vendor).
+➡️ **Corak master sesi ni:** dia fikir merentas SEMUA projek (kuota akaun Cloudflare), bukan
+hanya projek yang sedang dibincang — walaupun tak formal bertanya, dia perasan sendiri constraint
+infra sebelum Lucy sempat. (Lihat juga corak sedia ada: master pentingkan konsistensi
+stack/keputusan merentas projek.)
 
 ### ⏭️ Bila sambung
 
-Master akan minta review semula (mungkin bukan Opus — cadangkan Sonnet untuk jimat kos). Lepas
-review bersih: `finishing-a-development-branch` (worktree perlu digabung balik ke repo utama
-`opr-program`) → Task 11 (deploy `clasp` + smoke test manual, master sahaja — perlu log masuk
-Google) → Fasa 2 (senarai/carian) → edit → padam → panel admin+tetapan → migrasi 100 rekod
-(TERAKHIR, bukan awal).
+Belum siap bentang **design penuh** dalam chat (route API, skema KV tepat, mapping ke 7 ancaman
+security checklist). Urutan seterusnya (ikut skill `brainstorming`):
+1. Bentang design penuh (arkitektur, data flow, security) → approval master
+2. Tulis spec ke `digital-hub/docs/superpowers/specs/2026-08-24-digital-hub-design.md` + commit
+3. Self-review spec, minta master semak fail
+4. `writing-plans` → implementation plan
+5. Baru boleh mula kod (projek belum wujud secara fizikal lagi — folder belum dicipta)
+
+Tiada kod ditulis lagi. Semua di atas keputusan **perbualan sahaja**.

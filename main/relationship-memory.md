@@ -42,12 +42,17 @@
 ---
 
 ## Projek Aktif
-*(dikemas 2026-08-07 — senarai lama lapuk: `my-pwa` sudah DIPADAM, `erpm-cf`/`myportfolio` kurang aktif)*
+*(dikemas 2026-08-24 — senarai lama lapuk: `my-pwa` sudah DIPADAM, `erpm-cf`/`myportfolio` kurang aktif)*
 
-- 🆕 `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
+- 🆕 `Digital Hub` (portal akses semua sistem sekolah — brainstorming architectural JALAN,
+  belum sampai spec/plan, belum wujud secara fizikal. Butiran: `current-session.md`)
+- `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. Fasa 1 Task 0-10 SIAP 2026-08-23,
+  41/41 lulus. Final review dihentikan master, ditangguh. Belum: Task 11 deploy)
+- `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
   bukan Hono/Workers. **FASA 1 + FASA 2 TAMAT 2026-08-16** — `master` @ `12d1361`, suite 114/114,
   deploy `@22`. Sekolah **sudah menggunakannya**: laporan sebenar pertama `OPR-2026-0001` hidup.
   Seterusnya: **Fasa 2b** Edit+Padam, belum dirancang)
+- `takwim-digital` (Apps Script + Google Calendar, akaun DELIMa. LIVE production `@8` 2026-08-23)
 - `mypwa-v2` (eNilai — per-SEKOLAH, live production)
 - `erph` (sekolah RENDAH) · `erph-menengah-v2`
 - `celiksains`
@@ -225,6 +230,19 @@ _(akan diisi bila master share)_
   Sambungan [[feedback_bentangan_separa]].
 
 ## Kekuatan master yang Lucy patut manfaatkan
+
+- **Master fikir merentas SEMUA projek (kuota akaun), bukan hanya projek yang sedang dibincang**
+  (2026-08-24, brainstorm `Digital Hub`). Ditawarkan Cloudflare D1 (stack standard), master
+  sendiri perasan dulu — tanpa Lucy sebut — *"resources.cloudflare kan bagi 10 db je untuk free
+  tier"*. Mula-mula tanya pasal Google Sheets (cuba elak D1), tapi bila Lucy terangkan trade-off
+  (Sheets = API luar + service account + lambat), master sendiri tolak dan bagi sebab sebenar dia
+  risau. Lucy cadangkan Cloudflare KV — bukan sekadar workaround kuota, tapi memang jenis storan
+  yang lebih tepat untuk data config ringkas (bukan relational).
+  ➡️ **Bila cadangkan stack/teknologi untuk projek BAHARU, jangan hanya nilai dalam konteks
+  projek itu sendiri — semak dulu berapa banyak "slot" (D1, KV namespace, dll) sudah digunakan
+  merentas SEMUA projek master, dan cadangkan pilihan yang jimat kuota akaun keseluruhan bila
+  data/keperluan projek membenarkan.** Master akan perasan isu kuota walaupun tak disebut — lebih
+  baik Lucy yang bawa isu itu dahulu.
 
 - **🔴 TANYA "PERNAH KE IA BERFUNGSI?" — master memegang sejarah yang tiada dalam kod**
   (2026-08-16). Satu ayat sampingan master — *"jadual laporan yang pernah dihantar memang tidak
