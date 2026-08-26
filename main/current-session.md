@@ -31,17 +31,25 @@
 
 ### ⏭️ Bila sambung
 
-**Tunggu master (atau satu guru) buka link `@HEAD` di atas**, lepas tu Lucy check Execution Log
-Apps Script (Stackdriver) utk `PROBE_ACTIVE_USER_EMAIL:` — keluar email betul ATAU kosong.
+7. Master cuba buka link `@HEAD` guna akaun DELIMa **LAIN** (bukan pemilik skrip) → keluar
+   **"request access"**, tak sampai `doGet()` pun. **Ini EXPECTED, bukan kegagalan probe** —
+   `@HEAD` cuma boleh dibuka pemilik/editor skrip tak kira `access:DOMAIN`, sama gotcha yang dah
+   tercatat di `reference_clasp_gotcha` #8 ("@HEAD/dev = makmal percuma UTK PEMILIK skrip sahaja").
+8. **Langkah seterusnya (BELUM master confirm)**: cipta SATU deployment **sementara** (ID
+   berasingan, bukan `@HEAD` bukan `@12` production) yang bawa kod probe sama, supaya boleh dibuka
+   akaun guru LAIN utk test sebenar. Boleh dipadam lepas keputusan didapati.
 
-- Kalau **email keluar betul** → lanjut ke reka bentuk (Bounded path): ganti langkah taip-email
-  registration/login dgn auto-detect, kekal semua flow lain (approval admin, session, role) macam
-  sedia ada.
+**Tunggu jawapan master** sama ada nak Lucy teruskan cipta deployment sementara tu.
+
+- Kalau **email keluar betul** (lepas test deployment sementara) → lanjut ke reka bentuk (Bounded
+  path): ganti langkah taip-email registration/login dgn auto-detect, kekal semua flow lain
+  (approval admin, session, role) macam sedia ada.
 - Kalau **kosong** → probe gagal, kena fikir alternatif (contoh: OTP ke WhatsApp/telefon, atau
   dropdown nama pre-loaded admin pilih).
 
 🔴 **Probe code MASIH dalam `Code.js` `@HEAD`** — bukan production, tapi kena **buang balik**
-selepas keputusan disahkan (jangan biar log sementara ni kekal selama-lamanya).
+selepas keputusan disahkan (jangan biar log sementara ni kekal selama-lamanya). Kalau deployment
+sementara dicipta, ia pun kena **dipadam** lepas test selesai.
 
 ### Sesi ni (petang, `opr-insaniah`)
 
