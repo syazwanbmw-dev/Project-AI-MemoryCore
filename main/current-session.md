@@ -4,7 +4,44 @@
 ---
 
 ## Session RAM Status
-**Current Session**: 2026-08-25 petang — 🟢 **Projek `opr-insaniah`: siri fix PDF + Senarai Laporan, LIVE production `@44`.**
+**Current Session**: 2026-08-26 petang — 🟡 **Projek `takwim-digital`: spike "auto-detect email guru" (ganti taip email OTP), probe SEDANG BERJALAN, belum keputusan.**
+
+### Sesi ni (petang, `takwim-digital`)
+
+1. Push 5 commit tertinggal (`970aaf4`→`c43500f`) ke GitHub backup — berjaya, local/remote sync.
+2. Master lapor masalah: guru **tak ingat email** semasa daftar staff (flow OTP sedia ada perlu
+   taip email tepat). Tanya "boleh buat login with Google ke?"
+3. **Insight utama**: `appsscript.json` dah `access:"DOMAIN"` — guru **dah terpaksa** log masuk
+   akaun Google `moe-dl.edu.my` sebelum boleh buka webapp langsung pun. Jadi tak perlu button
+   "Sign in with Google" (OAuth) berasingan — cukup guna `Session.getActiveUser().getEmail()`
+   utk auto-detect email, ZERO klik tambahan.
+4. **Risiko diketahui**: `Session.getActiveUser().getEmail()` boleh pulang **string kosong senyap**
+   (bukan ralat) kalau admin DELIMa sekat scope "lihat email akaun Google" domain-wide. WAJIB
+   disahkan dgn probe sebelum design, bukan andaian.
+5. Master tanya lanjut: "nama pun boleh auto sekali tak?" — Lucy jawab: **email** boleh (Cara A,
+   passive, murah) tapi **nama** perlukan flow "Sign in with Google" button betul (Cara B — OAuth
+   Client ID + consent screen + verify token), lebih kerja + risiko disekat DELIMa. Master pilih
+   teruskan Cara A dulu (cukup selesaikan punca masalah sebenar — guru tak ingat EMEL, bukan nama).
+6. **Klasifikasi brainstorming**: Spike (soalan feasibility). Probe dijalankan:
+   - Tambah log sementara dlm `doGet()` (Code.js) — `Logger.log('PROBE_ACTIVE_USER_EMAIL: ' +
+     Session.getActiveUser().getEmail())`, dibalut try/catch.
+   - `clasp push --force` ke `@HEAD` SAHAJA (bukan production) — berjaya.
+   - URL testing (access DOMAIN, JANGAN guna `/dev` biasa — gotcha lama):
+     `https://script.google.com/a/macros/moe-dl.edu.my/s/AKfycbx9-4N8GgMoyM4T_RVxQQU5oVP713C297qhCRp88sBj/exec`
+
+### ⏭️ Bila sambung
+
+**Tunggu master (atau satu guru) buka link `@HEAD` di atas**, lepas tu Lucy check Execution Log
+Apps Script (Stackdriver) utk `PROBE_ACTIVE_USER_EMAIL:` — keluar email betul ATAU kosong.
+
+- Kalau **email keluar betul** → lanjut ke reka bentuk (Bounded path): ganti langkah taip-email
+  registration/login dgn auto-detect, kekal semua flow lain (approval admin, session, role) macam
+  sedia ada.
+- Kalau **kosong** → probe gagal, kena fikir alternatif (contoh: OTP ke WhatsApp/telefon, atau
+  dropdown nama pre-loaded admin pilih).
+
+🔴 **Probe code MASIH dalam `Code.js` `@HEAD`** — bukan production, tapi kena **buang balik**
+selepas keputusan disahkan (jangan biar log sementara ni kekal selama-lamanya).
 
 ### Sesi ni (petang, `opr-insaniah`)
 
