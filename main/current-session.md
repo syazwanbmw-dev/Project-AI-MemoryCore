@@ -5,79 +5,55 @@
 
 ## Session Context
 **Session Type**: Work
-**Current Project**: `opr-program` (bertukar dari `digital-hub` tengah hari 2026-08-29)
-**Status**: Fasa 1 kod SIAP + MERGED ke `master` @ `409e4c6`. Final whole-branch review (Opus) +
-2 fix round selesai. SETERUSNYA: **Task 11** (master buat sendiri di laptop — deploy `clasp` +
-smoke test, perlu login Google interaktif). Master remote by phone bila update ni ditulis.
-**Session**: 2026-08-29 pagi–petang
+**Current Project**: `opr-program`
+**Status**: Deploy `@1` SIAP · Triage Fasa 2 SELESAI · Plan Fasa 2 SIAP (`7bbbeab`) — TUNGGU master lulus
+**Session**: 2026-08-29 malam → 2026-08-30 ~00:36, master di **PHONE** sepanjang sesi.
 
 ## Current Focus
-- **Primary Task**: opr-program Fasa 1 — final review disambung → Tier 1 fixes → merge → Task 11.
-- **Progress**:
-  - Final review (Opus): NEEDS FIXES — 2 Critical (app tak render langsung), 4 High, 6 Med, 3 Low.
-  - Fix Round 1 (subagent impl+review, APPROVED W/ NOTES): C1, C2, H1, H2, H3, H4.
-  - Fix Round 2 (APPROVED W/ NOTES): P1 (pulih preview yg H2 buang), N1 (btnHantar transport-fail).
-  - Merge fast-forward → `master` `409e4c6` (21 commit fix/feat + 1 `.gitignore`). Suite 41/41.
-  - Worktree + branch `worktree-opr-program-fasa1-setup-cipta` DIBUANG (lock basi di-unlock).
-  - Ledger SDD disalin ke `opr-program/.superpowers/sdd/` (gitignored). Butiran penuh +
-    checklist Task 11 + senarai M/L tangguh → `project_opr_program.md`.
+- **Primary Task**: opr-program Fasa 2 — plan siap, belum diluluskan, belum dilaksana.
+- **Progress (sesi ni):**
+  1. `clasp create-deployment --description "Fasa 1"` → deployment **`@1`**
+     `AKfycbyd85qpBT44P3kbVwy7RyyaCzn6eO82mnOoczDXw8eAAkwOiaXknx0YlGJt08Zi5LPY`.
+     URL guru (domain-scoped, `access:DOMAIN`):
+     `https://script.google.com/a/macros/moe-dl.edu.my/s/AKfycbyd85qpBT44P3kbVwy7RyyaCzn6eO82mnOoczDXw8eAAkwOiaXknx0YlGJt08Zi5LPY/exec`
+     ⏳ Master belum sahkan URL `/exec` buka betul di phone.
+  2. Triage 11 item tertunggak Fasa 2 — SELESAI, master lulus skop.
+  3. Brainstorm reka bentuk Fasa 2 (4 keputusan) — master lulus. Butiran penuh:
+     `project_opr_program.md` blok "Status 2026-08-29 ~23:48".
+  4. Subagent **Opus** tulis plan Fasa 2 — 2 commit (`f9d42c6` pinda spec + `7bbbeab` plan
+     9 task/81 langkah/3072 baris). TIADA kod dilaksana.
 
 ## Working Memory
 
-### Active Context
-- **opr-program Task 11 (master, di laptop):** langkah operasi ringkas dalam
-  `project_opr_program.md` §Seterusnya. Semak akaun `clasp login --status` dulu (@moe-dl.edu.my).
-  Skrip container-bound pada Sheet. `clasp create-script` MENIMPA `appsscript.json` — salin dulu.
-  Lucy jadi co-pilot: master taip `! clasp ...` dalam sesi, Lucy tafsir + sahkan dapatan smoke
-  vs checklist H1/H2/H3.
-- **Tangguh ke triage Fasa 2:** M1-M6, L1-L2 (senarai penuh `project_opr_program.md`).
-- `digital-hub`: tiada kerja tertunggak (main=test=`3b978cc`, prod+test live). Backlog low-prio:
-  Turnstile login (F5), bump `compatibility_date`, try/catch `muatTurunEksport`, naik versi
-  GitHub Action Node, buang secret bootstrap `ADMIN_PASSWORD_AWAL --env production`.
+### Active Context — SAMBUNG SINI
+1. **Master perlu LULUS plan Fasa 2** (`docs/superpowers/plans/2026-08-29-opr-program-fasa2-senarai.md`).
+   4 perkara subagent tambah luar triage — master kena putus (butiran `project_opr_program.md`
+   blok "Status 2026-08-30 ~00:30"):
+   - **A** jurang auth (`ciptaLaporan` cuma semak `adalahAktif`) — Lucy syor KEKAL Fasa 2
+   - **B** `#pratontonWrap` alih ke `<body>` — WAJIB (kesan restructure 3-skrin)
+   - **C** `pautanKongsiDomain()` dipadam — Lucy setuju
+   - **D** gambar dapat `.jpg` — ambil (boleh veto)
+2. Lepas lulus → `work-plan` jadikan checklist → laksana subagent-driven (macam Fasa 1).
+3. Master boleh semak plan penuh di LAPTOP dulu (3072 baris, tak sesuai phone).
+4. Prod: `clasp create-deployment` SIAP. Buang projek+Sheet TEST (`19BzUiRH...`/`1PlvMMh5...`)
+   lepas prod disahkan STABIL sahaja.
 
-### Forge sesi ni (2026-08-29 petang)
-- Master bagi `github.com/affaan-m/ECC` sebagai "ilmu baru". Fokus: **Plan Canvas**.
-- **work-plan Lv.2 → Lv.3 "Plan Review Sebelum Kod"** (OPT-IN, trigger "review plan" /
-  "plan canvas"). DUA laluan selepas kawan master amaran "Artifact token kuat":
-  - **Laluan A (LALAI, ~200–500 tok):** `cp` plan `.md` → `memory/plans/` → commit+push →
-    master baca RENDERED di github.com (Mermaid auto-render mobile) → feedback dalam chat →
-    Lucy Edit dua tempat + recommit → "approve" → copy plan biasa.
-  - **Laluan B (ESKALASI, ~10–20K tok, hanya bila master minta tunjuk-dan-klik):** render
-    → HTML (`work-plan/references/plan-artifact-template.html`) → `Artifact` + comment
-    thread. 4 disiplin token (jangan load artifact-design, jangan read sendiri, edit diff
-    kecil, tiada capabilities).
-- Keputusan md+git > Artifact: `main/decisions.md` 2026-08-29 (+ decision-log skill).
-- `kata/SKILL.md` nota rujukan dikemas ke Laluan A (tiada Lv bump).
-- Template HTML: dry-run render 12/12 lulus. **Test publish + comment sebenar TANGGUH** —
-  hanya perlu kalau master pilih Laluan B satu hari nanti.
-- Memory: `reference_ecc_plan_canvas.md` + pointer MEMORY.md (harness memory).
-- Backlog idea ECC: AgentShield (audit config agent sendiri), rules per-bahasa.
-
-### Gotcha/silap direkod sesi ni
-- `commit-seal` ter-invoke untuk opr-program tapi ia bentuk CF Workers (Playwright, wrangler) —
-  tak padan projek GAS + ini merge lokal bukan push. Padanan seal = `node --test` (41/41 ✅).
-- `finishing-a-development-branch`: worktree opr-program berkunci dgn lock basi (pid mati, sesi
-  SDD 6 hari lepas). `git worktree unlock` → `remove` (tanpa force) berjaya. SDD ledger disalin
-  keluar DULU (gitignored, hilang bila worktree dibuang).
+### Catatan sesi
+- Master di phone — Lucy tak boleh guna claude-in-chrome (Chrome DELIMa sekat extension).
+  Semua ujian visual dipandu teks, master sahkan sendiri.
+- Repo opr-program LOCAL sahaja, tiada remote — deploy = `clasp push`, tiada `git push`.
+- 🔴 Ujian projek ni: `node --test` **BOGEL** (bukan `node --test tests/` — yang GAGAL pada
+  Node v22.14 walau kod elok). Plan Fasa 1 tulis arahan salah.
+- `.clasp.json` tunjuk PROD (`1KEW-whh...`). Backup: `.superpowers/clasp-{prod,test}-backup.json`.
 
 ## Session Recap (For AI Restart)
-- **Previous Session Summary**: 2026-08-28 petang — digital-hub SDD SELESAI + DEPLOYED.
-- **Where We Left Off**: opr-program Fasa 1 MERGED ke `master` `409e4c6`, 41/41. Task 11 = master
-  di laptop (belum buat — master remote by phone).
-- **Detour petang 2026-08-29**: Master bagi ECC ("ilmu baru") → forge `work-plan` Lv.3 (Plan
-  Review Sebelum Kod, md+git lalai). Pushed `e3cb646` ke repo memory. Tiada kesan pada
-  opr-program.
-- **User's Current State**: Master minta update session + memory (housekeeping). Task 11 masih
-  langkah seterusnya bila depan laptop.
-
-## Quick Context for Next Session
-- **Where We Left Off**: `opr-program` `master` @ `409e4c6`, Fasa 1 kod siap+merged. Task 11
-  (deploy clasp + smoke) BELUM — master buat di laptop, Lucy co-pilot.
-- **What's Working**: Suite 41/41. 3 lapisan review kod bebas dah lalu (Opus whole-branch + 2×
-  Sonnet fix-round). Risiko tinggal = VISUAL (preview, PDF output) — hanya Task 11 boleh sahkan.
-- **What Needs Attention**: Task 11 checklist WAJIB (tiada ujian automasi): app render (C1/C2),
-  H1 `PDF_FILE_ID` tak kosong, H2 PDF A4 penuh visual, H3 banner ralat kelihatan. Lepas Task 11
-  → triage Fasa 2 (M1-M6, L1-L2).
+- **Previous**: 2026-08-29 malam — PRODUCTION smoke 6/6 lulus + 2 fix visual, `master` @ `50106f8`.
+- **This session**: deployment `@1` dicipta (URL guru stabil) → triage Fasa 2 → brainstorm reka
+  bentuk Fasa 2 (4 keputusan, master lulus) → subagent Opus tulis plan Fasa 2 (`f9d42c6` +
+  `7bbbeab`).
+- **Left off**: plan Fasa 2 SIAP, tunggu master lulus (+ putus 4 perkara A/B/C/D). Belum
+  `work-plan`, belum laksana. Prod `@1` tunggu master sahkan `/exec` di phone.
+- **State master**: di phone, tengah MALAM (00:36) — mod tenang. Sesi panjang ~6 jam berpecah.
 
 ---
-*Session updated: 2026-08-29, ~14:20 petang (forge: work-plan Lv.3 md+git lalai; memory sync)*
+*Session updated: 2026-08-30, ~00:36 malam (plan Fasa 2 siap `7bbbeab`, tunggu master lulus)*
