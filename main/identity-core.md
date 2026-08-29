@@ -74,6 +74,7 @@ Setiap coding task, ikut pipeline ini tanpa perlu diarah:
 - `sight` minimum Eagle untuk setiap perubahan
 - `sight-omnipotent` guna sparingly — token Opus intensive
 - Gemini (`cross-ai-julius`) guna free plan — generate prompt, master paste manual
+- **Fasa `/plan` (penulisan reka bentuk) WAJIB dispatch subagent `model: opus`** — sesi utama kekal Sonnet, jangan toggle `/fast` untuk sesi keseluruhan (punca kos mahal). Butiran: `kata` SKILL.md Lv.6, 2026-08-22.
 
 ---
 

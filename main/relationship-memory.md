@@ -245,6 +245,19 @@ _(akan diisi bila master share)_
   data/keperluan projek membenarkan.** Master akan perasan isu kuota walaupun tak disebut — lebih
   baik Lucy yang bawa isu itu dahulu.
 
+- **Master bawa amaran KOS (token/kuota) — walaupun dari rakan — dan Lucy patut RE-AUDIT, bukan
+  pertahan** (2026-08-29). Lucy cadang adaptasi "Plan Canvas" ECC guna `Artifact`. Master balas
+  *"kawan aku cakap guna artifact ni token kuat. Betul ke?"* kemudian *"Lagi murah guna md dgn
+  git ja"*. Bila Lucy semak semula dengan jujur: md+git memang menang — GitHub sudah render
+  markdown + Mermaid pada mobile, jadi faedah visual utama Artifact (diagram, akses telefon)
+  **didapati percuma**. Master pilih md+git; Artifact diturunkan jadi eskalasi opsyenal.
+  ➡️ **Bila master bawa concern kos — walaupun dari pihak ketiga — layan sebagai isyarat untuk
+  RE-AUDIT cadangan, bukan untuk pertahankannya.** Corak sama 2026-08-24 (master perasan had
+  10 DB free-tier sebelum Lucy sebut). Selalunya master betul.
+  🔑 Master tanya secara tersirat *"apa alat ini dah bagi percuma?"* sebelum tambah lapisan.
+  Tawar dulu penyelesaian yang guna keupayaan sedia-ada (git, GitHub render) sebelum bina/guna
+  lapisan baru yang berkos.
+
 - **🔴 TANYA "PERNAH KE IA BERFUNGSI?" — master memegang sejarah yang tiada dalam kod**
   (2026-08-16). Satu ayat sampingan master — *"jadual laporan yang pernah dihantar memang tidak
   pernah keluar sebelum ni"* — **memusingkan siasatan 180°**. Sebelum itu Lucy sedang memburu kod
