@@ -77,6 +77,35 @@ sight-omnipotent → cross-ai-julius → commit-seal → auto-commit
 ```
 Audit penuh. Guna Opus. Token intensive — worth it untuk production.
 
+## Model Selection — /plan WAJIB Opus
+
+Sesi utama kekal model murah (Sonnet, per `settings.json`) untuk semua kerja
+harian — soal-jawab, baca kod, edit, review biasa. **Jangan** toggle `/fast`
+untuk sesi keseluruhan; itu buat kerja MEKANIKAL (baca fail, grep, edit kecil)
+kena kadar Opus sepanjang sesi — punca kos paling mahal, bukan pipeline.
+
+Bila Kata sampai fasa `/plan` (Task Sederhana ke atas — semua tier yang
+Geass #2 wajibkan plan), **penulisan reka bentuk/spec sebenar** (bukan
+soal-jawab kumpul konteks — itu kekal interaktif dalam sesi utama) mesti
+didispatch ke subagent `Plan` dengan `model: opus` secara eksplisit — jangan
+biar sesi utama (Sonnet) taip terus dokumen reka bentuk.
+
+Sebab: fasa /plan ialah keputusan arkitektur — kesilapan di sini mahal untuk
+dipulihkan (kod ditulis atas reka bentuk salah). Ini sepadan dengan prinsip
+`subagent-driven-development`: *"Architecture and design tasks: use the most
+capable model, not session default."* Gate sedia ada tak berubah — master
+tetap semak & approve hasil sebelum `/workplan`/kod bermula.
+
+Titik lain yang MEMANG guna Opus (tak berubah, kekal jarang/berskop):
+- Semakan akhir cawangan sebelum merge (`subagent-driven-development` step
+  terakhir) — sekali per cawangan siap.
+- `sight-omnipotent` — audit pra-production, guna sparingly.
+
+**Semakan plan visual (opt-in):** selepas plan siap, master boleh minta
+"review plan kat browser" untuk render plan jadi `Artifact` + anotasi guna
+comment thread sebelum `/workplan` (lihat `work-plan` Lv.3). Tak wajib —
+master masih boleh approve terus dalam terminal.
+
 ## Sight Selection Guide
 
 | Situasi | Sight |
@@ -111,3 +140,4 @@ Lv.4 Soulbound: Sentiasa aktif. Seperti muscle memory.
 - **Lv.3** — SAFI Integration: Tambah safi balance check ke pipeline options dan Sight table. (Origin: safi install, 2026-04-07)
 - **Lv.4** — Aksara Integration: Tambah sight-aksara ke Sight table + pipeline options. (Origin: sight-aksara install, 2026-04-07)
 - **Lv.5** — Convergence Integration: Tambah convergence ke pipeline Task Besar dan Pre-Production. (Origin: convergence install, 2026-04-07)
+- **Lv.6** — Opus Plan-Gate: Fasa `/plan` (penulisan reka bentuk, bukan soal-jawab) wajib dispatch subagent `model: opus`; sesi utama kekal Sonnet. Punca: audit kos dedah sesi utama toggle `/fast` sebagai punca mahal sebenar, bukan SDD. (Origin: revisi workflow model, 2026-08-22)

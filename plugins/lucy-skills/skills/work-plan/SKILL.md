@@ -2,10 +2,12 @@
 name: work-plan
 description: "MUST use when user says 'copy plan', 'append plan', 'resume plan',
              'load plan', 'start the plan', 'continue the plan', 'execute plan',
-             'run the plan', 'pick up where we left off', or when the AI exits
-             plan mode and needs to transfer the plan into execution format. This
-             skill manages the full lifecycle of project plans — from plan output
-             to tracked checkbox execution with per-todo commits."
+             'run the plan', 'pick up where we left off', 'review plan kat browser',
+             'review kat browser', 'buka artifact', 'plan canvas', 'tunjuk plan
+             visual', or when the AI exits plan mode and needs to transfer the plan
+             into execution format. This skill manages the full lifecycle of project
+             plans — from plan output through optional visual artifact review to
+             tracked checkbox execution with per-todo commits."
 ---
 
 # Work — Plan Execution Skill
@@ -95,6 +97,70 @@ Next Task: [deskripsi task seterusnya]
 ### Step 4: Resume Execute
 - [ ] Jalankan **Shared Execution Loop** dari item pending seterusnya
 
+## Plan Artifact Review (Lv.3 — Visual Review, OPT-IN)
+
+Semakan plan secara VISUAL dalam browser sebelum `copy plan`. **Opt-in sahaja** —
+tidak menggantikan semakan terminal. Master masih boleh approve terus dalam
+terminal tanpa buka artifact langsung.
+
+Diadaptasi dari konsep "Plan Canvas" projek ECC (github.com/affaan-m/ECC). ECC
+guna loopback CLI (`ecc-plan-canvas`, `127.0.0.1:4517`); kita ganti dengan
+`Artifact` supaya master boleh review dari telefon (master selalu remote).
+
+### Bila Aktif
+
+Hanya bila master sebut salah satu:
+- "review plan kat browser" / "review kat browser"
+- "buka artifact" / "plan canvas"
+- "tunjuk plan visual"
+
+Prasyarat: ada plan `.md` siap di `C:\Users\user\.claude\plans\` (baru keluar
+`/plan`, belum `copy plan`). Kalau tiada → "Tiada plan ditemui. Masuk plan mode dulu."
+
+Output pertama: `"Rendering plan to artifact..."`
+
+### Loop
+
+**Step 1 — Render**
+- [ ] Baca plan `.md` terbaru di `C:\Users\user\.claude\plans\`
+- [ ] Render markdown → HTML guna `references/plan-artifact-template.html`
+- [ ] Setiap heading dapat `id` anchor (slug dari teks heading)
+- [ ] Blok ` ```mermaid ` → tukar jadi `<pre class="mermaid">...</pre>` (Artifact render native — JANGAN load library mermaid)
+- [ ] `<title>` = nama plan; teks data guna `#1e293b` / `#334155` (jangan `--text-muted`)
+
+**Step 2 — Publish**
+- [ ] `Artifact` publish fail HTML → bagi master URL
+- [ ] favicon `🗺️` (kekal sepanjang hayat artifact — jangan tukar masa republish)
+- [ ] Simpan URL dalam `current-session.md` (recovery bila context reset)
+
+**Step 3 — Listen**
+- [ ] `Artifact action:"comments"` — baca thread master
+- [ ] Thread yang master aktifkan `@claude` → balas DALAM thread (`action:"reply"`)
+- [ ] Komen umum / mesej chat biasa → balas dalam chat
+- [ ] Tiada komen lagi → tunggu. JANGAN andai approve.
+
+**Step 4 — Revise**
+- [ ] Sunting plan `.md` (SOURCE OF TRUTH — bukan HTML)
+- [ ] Re-render → `Artifact` republish ke **fail path yang SAMA** (URL kekal)
+- [ ] Balas thread berkenaan: nyatakan apa yang diubah
+- [ ] `action:"resolve"` thread yang sudah ditangani
+
+**Step 5 — Ulang Step 3-4**
+Sampai master taip "approve" / "ok proceed" / "boleh proceed".
+
+**Step 6 — Approve**
+- [ ] Jalankan **Copy Plan** (Step 1-4) macam biasa — plan `.md` → `project-plan.md`
+- [ ] Artifact kekal sebagai rujukan; tak perlu padam
+
+### Rules Tambahan (Lv.3)
+
+1. **Plan `.md` = source.** HTML cuma paparan. Jangan edit kandungan dalam HTML.
+2. **Republish ke path sama** — jangan cipta artifact baru setiap pusingan; URL kena kekal.
+3. **Tak wajib.** Master boleh approve dalam terminal tanpa buka artifact.
+4. **URL ke `current-session.md`** — supaya context reset tak hilang jejak.
+5. **Mermaid native** — `<pre class="mermaid">`, JANGAN `<script>` mermaid dari CDN.
+6. **Aliran hilir tak berubah** — selepas approve: Copy Plan → Shared Execution Loop → per-todo commit, sama macam biasa.
+
 ## Command Dispatch
 
 | Command | Bila Guna | Output Pertama |
@@ -102,6 +168,7 @@ Next Task: [deskripsi task seterusnya]
 | **copy plan** | Plan baru dari plan mode | "Copying plan to execution format..." |
 | **append plan** | Tambah tasks ke plan sedia ada | "Appending to existing plan..." |
 | **resume plan** | Sambung selepas context reset | "Resuming plan execution..." |
+| **review plan kat browser** | Semakan visual sebelum copy plan (opt-in) | "Rendering plan to artifact..." |
 
 ## Shared Execution Loop (Lv.1 — Sequential)
 
@@ -169,3 +236,4 @@ Plan file direka bentuk sebagai **recovery mechanism**. Bila context reset berla
 
 - **Lv.1** — Base: Tiga commands (copy/append/resume) + shared execution loop + per-todo commit chain + line rotation + recovery mechanism + checkpoint saves. (Origin: Fasa 4 install, 2026-03-27)
 - **Lv.2** — Wave Execution: Dependency-aware grouping, parallel task execution dengan wave barriers, Command Dispatch table, Recovery Context section.
+- **Lv.3** — Plan Artifact Review: Semakan plan visual OPT-IN via `Artifact` + comment threads sebelum `copy plan`. Render plan `.md` → HTML (Mermaid native `<pre class="mermaid">`, heading anchor, `references/plan-artifact-template.html`); master anotasi guna comment thread; Lucy revise `.md` + republish ke URL sama sampai "approve". Aliran hilir tak berubah. Diadaptasi dari "Plan Canvas" projek ECC (github.com/affaan-m/ECC) — loopback CLI ECC diganti `Artifact` supaya master boleh review dari telefon. (Origin: master bagi ECC sebagai "ilmu baru", 2026-08-29)
