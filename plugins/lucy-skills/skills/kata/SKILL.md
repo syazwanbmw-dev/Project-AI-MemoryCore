@@ -101,10 +101,11 @@ Titik lain yang MEMANG guna Opus (tak berubah, kekal jarang/berskop):
   terakhir) — sekali per cawangan siap.
 - `sight-omnipotent` — audit pra-production, guna sparingly.
 
-**Semakan plan visual (opt-in):** selepas plan siap, master boleh minta
-"review plan kat browser" untuk render plan jadi `Artifact` + anotasi guna
-comment thread sebelum `/workplan` (lihat `work-plan` Lv.3). Tak wajib —
-master masih boleh approve terus dalam terminal.
+**Semakan plan sebelum kod (opt-in):** selepas plan siap, master boleh minta
+"review plan" — Lucy `cp` plan `.md` ke `memory/plans/` + push, master baca
+rendered di github.com (Mermaid auto-render mobile), feedback dalam chat
+(lihat `work-plan` Lv.3, Laluan A). Eskalasi ke Artifact HTML hanya bila
+master minta tunjuk-dan-klik. Tak wajib — approve dalam terminal pun boleh.
 
 ## Sight Selection Guide
 

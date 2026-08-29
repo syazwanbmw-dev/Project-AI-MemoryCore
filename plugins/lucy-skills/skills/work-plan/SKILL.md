@@ -97,69 +97,78 @@ Next Task: [deskripsi task seterusnya]
 ### Step 4: Resume Execute
 - [ ] Jalankan **Shared Execution Loop** dari item pending seterusnya
 
-## Plan Artifact Review (Lv.3 — Visual Review, OPT-IN)
+## Plan Review Sebelum Kod (Lv.3 — OPT-IN)
 
-Semakan plan secara VISUAL dalam browser sebelum `copy plan`. **Opt-in sahaja** —
-tidak menggantikan semakan terminal. Master masih boleh approve terus dalam
-terminal tanpa buka artifact langsung.
+Semakan plan sebelum `copy plan`. **Opt-in sahaja** — tidak menggantikan semakan
+terminal. Master masih boleh approve terus dalam chat.
 
-Diadaptasi dari konsep "Plan Canvas" projek ECC (github.com/affaan-m/ECC). ECC
-guna loopback CLI (`ecc-plan-canvas`, `127.0.0.1:4517`); kita ganti dengan
-`Artifact` supaya master boleh review dari telefon (master selalu remote).
+Diadaptasi dari konsep "Plan Canvas" projek ECC (github.com/affaan-m/ECC) — ECC
+guna loopback CLI (`ecc-plan-canvas`); kita guna **md + git** (murah, GitHub render
+Mermaid natively pada mobile), dengan Artifact HTML sebagai eskalasi opsyenal.
 
 ### Bila Aktif
 
-Hanya bila master sebut salah satu:
-- "review plan kat browser" / "review kat browser"
-- "buka artifact" / "plan canvas"
+Master sebut salah satu:
+- "review plan" / "review plan kat browser" / "plan canvas"
 - "tunjuk plan visual"
 
 Prasyarat: ada plan `.md` siap di `C:\Users\user\.claude\plans\` (baru keluar
 `/plan`, belum `copy plan`). Kalau tiada → "Tiada plan ditemui. Masuk plan mode dulu."
 
-Output pertama: `"Rendering plan to artifact..."`
+### Laluan A — md + git (LALAI)
 
-### Loop
+Kos ~200–500 token/kitaran. Guna ini melainkan master minta eskalasi.
 
-**Step 1 — Render**
-- [ ] Baca plan `.md` terbaru di `C:\Users\user\.claude\plans\`
-- [ ] Render markdown → HTML guna `references/plan-artifact-template.html`
-- [ ] Setiap heading dapat `id` anchor (slug dari teks heading)
-- [ ] Blok ` ```mermaid ` → tukar jadi `<pre class="mermaid">...</pre>` (Artifact render native — JANGAN load library mermaid)
-- [ ] `<title>` = nama plan; teks data guna `#1e293b` / `#334155` (jangan `--text-muted`)
+Output pertama: `"Publishing plan to git for review..."`
 
-**Step 2 — Publish**
-- [ ] `Artifact` publish fail HTML → bagi master URL
-- [ ] favicon `🗺️` (kekal sepanjang hayat artifact — jangan tukar masa republish)
-- [ ] Simpan URL dalam `current-session.md` (recovery bila context reset)
+**Step 1 — Terbit**
+- [ ] `cp` plan `.md` terbaru → `C:\Users\user\Documents\code\memory\plans\YYYY-MM-DD-<topik>.plan.md`
+- [ ] `git add` + commit (`plan: <topik> untuk review`) + push `origin master`
+- [ ] Bagi master pautan `github.com/syazwanbmw-dev/Project-AI-MemoryCore/blob/master/plans/<fail>`
+- [ ] Catat path fail dalam `current-session.md` (recovery)
 
-**Step 3 — Listen**
-- [ ] `Artifact action:"comments"` — baca thread master
-- [ ] Thread yang master aktifkan `@claude` → balas DALAM thread (`action:"reply"`)
-- [ ] Komen umum / mesej chat biasa → balas dalam chat
-- [ ] Tiada komen lagi → tunggu. JANGAN andai approve.
+**Step 2 — Dengar**
+- [ ] Master baca RENDERED di GitHub (markdown + Mermaid auto-render pada mobile)
+- [ ] Feedback master datang dalam **chat** (bukan komen GitHub — elak perlu PR)
+- [ ] Tiada feedback lagi → tunggu. JANGAN andai approve.
 
-**Step 4 — Revise**
-- [ ] Sunting plan `.md` (SOURCE OF TRUTH — bukan HTML)
-- [ ] Re-render → `Artifact` republish ke **fail path yang SAMA** (URL kekal)
-- [ ] Balas thread berkenaan: nyatakan apa yang diubah
-- [ ] `action:"resolve"` thread yang sudah ditangani
+**Step 3 — Revise**
+- [ ] `Edit` plan `.md` DUA tempat: sumber (`.claude\plans\`) + salinan (`memory\plans\`)
+- [ ] commit + push salinan — nyatakan apa yang diubah dalam mesej commit
+- [ ] Beritahu master "dah push, refresh GitHub"
 
-**Step 5 — Ulang Step 3-4**
-Sampai master taip "approve" / "ok proceed" / "boleh proceed".
+**Step 4 — Ulang Step 2-3** sampai master taip "approve" / "ok proceed".
 
-**Step 6 — Approve**
-- [ ] Jalankan **Copy Plan** (Step 1-4) macam biasa — plan `.md` → `project-plan.md`
-- [ ] Artifact kekal sebagai rujukan; tak perlu padam
+**Step 5 — Approve**
+- [ ] Jalankan **Copy Plan** macam biasa — plan `.md` → `project-plan.md`
+- [ ] Salinan `memory\plans\` kekal sebagai rekod; tak perlu padam
 
-### Rules Tambahan (Lv.3)
+### Laluan B — Artifact HTML (ESKALASI, hanya bila master minta)
 
-1. **Plan `.md` = source.** HTML cuma paparan. Jangan edit kandungan dalam HTML.
-2. **Republish ke path sama** — jangan cipta artifact baru setiap pusingan; URL kena kekal.
-3. **Tak wajib.** Master boleh approve dalam terminal tanpa buka artifact.
-4. **URL ke `current-session.md`** — supaya context reset tak hilang jejak.
-5. **Mermaid native** — `<pre class="mermaid">`, JANGAN `<script>` mermaid dari CDN.
-6. **Aliran hilir tak berubah** — selepas approve: Copy Plan → Shared Execution Loop → per-todo commit, sama macam biasa.
+Guna HANYA bila master sebut "guna artifact" / "nak tunjuk-dan-klik" ATAU plan
+berdiagram berat yang perlu anotasi pin-point. Kos ~10–20K token/kitaran.
+
+- [ ] Render plan `.md` → HTML guna `references/plan-artifact-template.html`
+      (Mermaid → `<pre class="mermaid">`, heading dapat `id` anchor, `<title>` = nama plan)
+- [ ] `Artifact` publish → bagi URL; favicon `🗺️`; simpan URL dalam `current-session.md`
+- [ ] `Artifact action:"comments"` baca thread → balas dalam thread (`action:"reply"`),
+      `action:"resolve"` bila ditangani
+- [ ] Revise: `Edit` plan `.md` → re-render → `Artifact` republish ke **path fail SAMA** (URL kekal)
+- [ ] "approve" → Copy Plan biasa
+
+**Disiplin token Laluan B:**
+1. **JANGAN load skill `artifact-design`** — guna template terus, jangan calibrate design
+2. **JANGAN `Artifact action:"read"` artifact sendiri** — plan `.md` sentiasa source of truth
+3. **Revise guna `Edit` (diff kecil) + republish** — jangan tulis semula HTML penuh
+4. **JANGAN isytihar `capabilities`** — plan review statik, tiada runtime
+
+### Rules Am Lv.3
+
+1. **Plan `.md` = source of truth.** HTML / salinan git cuma paparan.
+2. **Tak wajib.** Master boleh approve dalam chat tanpa Laluan A atau B.
+3. **Path/URL review ke `current-session.md`** — context reset tak hilang jejak.
+4. **Aliran hilir tak berubah** — selepas approve: Copy Plan → Shared Execution Loop → per-todo commit.
+5. **Salinan `memory\plans\` BUKAN plan eksekusi** — `project-plan.md` tetap lahir dari Copy Plan, kekal local (Rule Wajib #2).
 
 ## Command Dispatch
 
@@ -168,7 +177,7 @@ Sampai master taip "approve" / "ok proceed" / "boleh proceed".
 | **copy plan** | Plan baru dari plan mode | "Copying plan to execution format..." |
 | **append plan** | Tambah tasks ke plan sedia ada | "Appending to existing plan..." |
 | **resume plan** | Sambung selepas context reset | "Resuming plan execution..." |
-| **review plan kat browser** | Semakan visual sebelum copy plan (opt-in) | "Rendering plan to artifact..." |
+| **review plan** | Semakan plan sebelum copy plan (opt-in, Laluan A md+git) | "Publishing plan to git for review..." |
 
 ## Shared Execution Loop (Lv.1 — Sequential)
 
@@ -236,4 +245,4 @@ Plan file direka bentuk sebagai **recovery mechanism**. Bila context reset berla
 
 - **Lv.1** — Base: Tiga commands (copy/append/resume) + shared execution loop + per-todo commit chain + line rotation + recovery mechanism + checkpoint saves. (Origin: Fasa 4 install, 2026-03-27)
 - **Lv.2** — Wave Execution: Dependency-aware grouping, parallel task execution dengan wave barriers, Command Dispatch table, Recovery Context section.
-- **Lv.3** — Plan Artifact Review: Semakan plan visual OPT-IN via `Artifact` + comment threads sebelum `copy plan`. Render plan `.md` → HTML (Mermaid native `<pre class="mermaid">`, heading anchor, `references/plan-artifact-template.html`); master anotasi guna comment thread; Lucy revise `.md` + republish ke URL sama sampai "approve". Aliran hilir tak berubah. Diadaptasi dari "Plan Canvas" projek ECC (github.com/affaan-m/ECC) — loopback CLI ECC diganti `Artifact` supaya master boleh review dari telefon. (Origin: master bagi ECC sebagai "ilmu baru", 2026-08-29)
+- **Lv.3** — Plan Review Sebelum Kod: Semakan plan OPT-IN sebelum `copy plan`, dua laluan. **Laluan A (lalai, ~200–500 token):** `cp` plan `.md` → `memory/plans/`, commit + push, master baca RENDERED di github.com (Mermaid auto-render mobile), feedback dalam chat, Lucy Edit + recommit sampai "approve". **Laluan B (eskalasi, ~10–20K token, hanya bila master minta):** render → HTML (`references/plan-artifact-template.html`) → `Artifact` publish + comment thread; ada 4 rule disiplin token. Aliran hilir tak berubah. Diadaptasi dari "Plan Canvas" ECC (github.com/affaan-m/ECC); loopback CLI diganti md+git sebab GitHub dah render Mermaid pada mobile & feedback master memang konkrit-berteks. (Origin: master bagi ECC sebagai "ilmu baru" + amaran kawan "Artifact token kuat", 2026-08-29. decision-log: 2026-08-29.)
