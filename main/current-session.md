@@ -6,54 +6,49 @@
 ## Session Context
 **Session Type**: Work
 **Current Project**: `opr-program`
-**Status**: Deploy `@1` SIAP · Triage Fasa 2 SELESAI · Plan Fasa 2 SIAP (`7bbbeab`) — TUNGGU master lulus
-**Session**: 2026-08-29 malam → 2026-08-30 ~00:36, master di **PHONE** sepanjang sesi.
+**Status**: Fasa 2 SEMUA 9 task subagent-driven SIAP (123/123 lulus) · Remote GitHub dicipta ·
+Deploy `@2` LIVE production · Tunggu master smoke manual sebelum plan dianggap selesai
+**Session**: 2026-08-31 petang→malam, master di **LAPTOP** sepanjang sesi.
 
 ## Current Focus
-- **Primary Task**: opr-program Fasa 2 — plan siap, belum diluluskan, belum dilaksana.
+- **Primary Task**: opr-program Fasa 2 — laksana plan `7bbbeab` (3072 baris) subagent-driven, master pilih "terus approve" tanpa baca semua sendiri.
 - **Progress (sesi ni):**
-  1. `clasp create-deployment --description "Fasa 1"` → deployment **`@1`**
-     `AKfycbyd85qpBT44P3kbVwy7RyyaCzn6eO82mnOoczDXw8eAAkwOiaXknx0YlGJt08Zi5LPY`.
-     URL guru (domain-scoped, `access:DOMAIN`):
-     `https://script.google.com/a/macros/moe-dl.edu.my/s/AKfycbyd85qpBT44P3kbVwy7RyyaCzn6eO82mnOoczDXw8eAAkwOiaXknx0YlGJt08Zi5LPY/exec`
-     ⏳ Master belum sahkan URL `/exec` buka betul di phone.
-  2. Triage 11 item tertunggak Fasa 2 — SELESAI, master lulus skop.
-  3. Brainstorm reka bentuk Fasa 2 (4 keputusan) — master lulus. Butiran penuh:
-     `project_opr_program.md` blok "Status 2026-08-29 ~23:48".
-  4. Subagent **Opus** tulis plan Fasa 2 — 2 commit (`f9d42c6` pinda spec + `7bbbeab` plan
-     9 task/81 langkah/3072 baris). TIADA kod dilaksana.
+  1. Master kongsi tip pasal disable Artifact tool (settings.json/CLI flag/env var) — Lucy sahkan via `claude-code-guide`, semua 3 cara SAH tapi angka penjimatan token TAK rasmi. Master nak test cara #1 (`--disallowed-tools`) lain kali sendiri, tak jadi sekarang.
+  2. Sambung `opr-program` Fasa 2 → dispatch `superpowers:subagent-driven-development` (bukan `lucy-skills:work-plan` — projek ni tak pernah pakai folder `Project Resources/`).
+  3. Detour: cipta remote GitHub `syazwanbmw-dev/opr-program` (private) — backup+sejarah sahaja, deploy tetap manual `clasp` (bukan CI/CD, credential OAuth Apps Script terlalu berisiko utk GitHub Secret).
+  4. Master tanya "AppScript boleh trigger deploy macam Cloudflare?" — Lucy jawab (boleh tapi risiko credential + `clasp push` ≠ update deployment), master putuskan **manual je**, topic diabaikan.
+  5. 9 task Fasa 2 dilaksana: implementer+reviewer subagent berasingan setiap satu, SEMUA review clean pusingan pertama (tiada fix-loop). 2 task security (Task 3 kongsi PDF, Task 5 sanitize formula) — reviewer reproduce mutation-test SENDIRI, bukan percaya report je.
+  6. Task 8 (skrin UI, paling berisiko) — implementer DONE_WITH_CONCERNS 2 perkara, reviewer sahkan bebas: (1) test-anchor rosak sedia ada, dibetulkan betul; (2) form+pratonton mungkin bertindan menegak — Lucy TAK fix-loop CSS buta, masuk checklist smoke.
+  7. Task 9: checklist keselamatan 7 ancaman (semua ✅) → deploy `@1`→`@2` → `CLAUDE.md`+`MEMORY.md` projek dicipta (jurang sejak 29 Ogos).
 
 ## Working Memory
 
 ### Active Context — SAMBUNG SINI
-1. **Master perlu LULUS plan Fasa 2** (`docs/superpowers/plans/2026-08-29-opr-program-fasa2-senarai.md`).
-   4 perkara subagent tambah luar triage — master kena putus (butiran `project_opr_program.md`
-   blok "Status 2026-08-30 ~00:30"):
-   - **A** jurang auth (`ciptaLaporan` cuma semak `adalahAktif`) — Lucy syor KEKAL Fasa 2
-   - **B** `#pratontonWrap` alih ke `<body>` — WAJIB (kesan restructure 3-skrin)
-   - **C** `pautanKongsiDomain()` dipadam — Lucy setuju
-   - **D** gambar dapat `.jpg` — ambil (boleh veto)
-2. Lepas lulus → `work-plan` jadikan checklist → laksana subagent-driven (macam Fasa 1).
-3. Master boleh semak plan penuh di LAPTOP dulu (3072 baris, tak sesuai phone).
-4. Prod: `clasp create-deployment` SIAP. Buang projek+Sheet TEST (`19BzUiRH...`/`1PlvMMh5...`)
-   lepas prod disahkan STABIL sahaja.
+1. **⏳ GERBANG TERAKHIR:** master jalankan smoke manual 26 soalan (25 dari plan + 1 extra Lucy
+   pasal layout borang) — di **telefon (potret)** DAN **laptop**. Chrome DELIMa sekat
+   `claude-in-chrome`, jadi Lucy TAK boleh tolong guna browser tool.
+2. Senarai soalan penuh: `docs/superpowers/plans/2026-08-29-opr-program-fasa2-senarai.md` Task 9
+   Step 5 (soalan 1-22 UI/senarai, 23-25 suntikan formula M4).
+3. Selepas master lapor keputusan smoke (sebut PERANTI + nombor soalan gagal kalau ada) →
+   Task 9 selesai → workspace ledger `.superpowers/sdd/2026-08-29-opr-program-fasa2-senarai/`
+   boleh dipadam (`rm -rf`) — git history dah jadi rekod.
+4. Kalau smoke jumpa bug: **task baharu** dengan ujian sendiri, JANGAN tampal senyap dalam Task 9.
 
 ### Catatan sesi
-- Master di phone — Lucy tak boleh guna claude-in-chrome (Chrome DELIMa sekat extension).
-  Semua ujian visual dipandu teks, master sahkan sendiri.
-- Repo opr-program LOCAL sahaja, tiada remote — deploy = `clasp push`, tiada `git push`.
-- 🔴 Ujian projek ni: `node --test` **BOGEL** (bukan `node --test tests/` — yang GAGAL pada
-  Node v22.14 walau kod elok). Plan Fasa 1 tulis arahan salah.
-- `.clasp.json` tunjuk PROD (`1KEW-whh...`). Backup: `.superpowers/clasp-{prod,test}-backup.json`.
+- Master di laptop sepanjang sesi ni (lain dari sesi 29-30 Ogos yang phone).
+- Repo `opr-program` kini ADA remote (`github.com/syazwanbmw-dev/opr-program`, private) —
+  push selepas setiap task review clean.
+- Deployment ID kekal SAMA sepanjang Fasa 1→2 (`AKfycbyd85qpBT44P3kbVwy7RyyaCzn6eO82mnOoczDXw8eAAkwOiaXknx0YlGJt08Zi5LPY`)
+  — hanya nombor versi naik `@1`→`@2`. URL guru tak berubah.
 
 ## Session Recap (For AI Restart)
-- **Previous**: 2026-08-29 malam — PRODUCTION smoke 6/6 lulus + 2 fix visual, `master` @ `50106f8`.
-- **This session**: deployment `@1` dicipta (URL guru stabil) → triage Fasa 2 → brainstorm reka
-  bentuk Fasa 2 (4 keputusan, master lulus) → subagent Opus tulis plan Fasa 2 (`f9d42c6` +
-  `7bbbeab`).
-- **Left off**: plan Fasa 2 SIAP, tunggu master lulus (+ putus 4 perkara A/B/C/D). Belum
-  `work-plan`, belum laksana. Prod `@1` tunggu master sahkan `/exec` di phone.
-- **State master**: di phone, tengah MALAM (00:36) — mod tenang. Sesi panjang ~6 jam berpecah.
+- **Previous**: 2026-08-30 ~01:03 — master berhenti (di phone), plan Fasa 2 `7bbbeab` siap, A/B/C/D settle, tunggu review laptop.
+- **This session**: master buka laptop → pilih "terus approve" plan → remote GitHub dicipta →
+  9 task Fasa 2 dilaksana subagent-driven (semua clean) → deploy production `@2` → docs projek
+  dicipta → tunggu smoke manual master.
+- **Left off**: Lucy baru siap Task 9 Step 1-4+7-8 (checklist+deploy+docs). Step 5-6 (smoke +
+  rekod keputusan) milik master, belum dimulakan lagi masa catatan ni ditulis.
+- **State master**: di laptop, petang→malam — mod kerja/penyelesaian masalah.
 
 ---
-*Session updated: 2026-08-30, ~00:36 malam (plan Fasa 2 siap `7bbbeab`, tunggu master lulus)*
+*Session updated: 2026-08-31 malam (Fasa 2 deploy `@2` LIVE, tunggu smoke manual master)*
