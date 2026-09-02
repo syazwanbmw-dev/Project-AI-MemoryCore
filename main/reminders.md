@@ -7,10 +7,24 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 
 ## Terbuka
 
-- **`takwim-digital`** — Screen putih lepas Log Keluar (`logoutUI()` → `location.reload()`
-  tersekat, perlu refresh manual). Kod lama, belum disiasat puncanya.
-- **`opr-program`** — Final review dihentikan master (ditangguh). Task 0-10 siap 41/41 lulus.
-  Belum: Task 11 deploy.
+- **`takwim-digital`** — ✅ **TIADA item terbuka.** Screen putih logout SELESAI (LIVE `@19`
+  2026-09-01 malam — punca: `location.reload()` dalam iframe HtmlService; fix: pane +
+  flag `sessionStorage`).
+- **`opr-program`** — Fasa 2 + C1/I5 SIAP (suite 128/128), **deployed `@5`** (2026-09-01).
+  Tunggu master smoke `@5` (laptop + telefon potret — senarai A–E dibagi). Kalau PASS → tutup
+  branch (`finishing-a-development-branch` + buang workspace SDD). I2/I3/M-b → Fasa 2b.
+  **DIHOLD 2026-09-01** (master di iPad, tak boleh smoke sekarang) — sambung `digital-hub`.
+- **`opr-insaniah`** — 🔒 C1 (Critical) SAMA seperti opr-program: fungsi global tanpa `_` boleh
+  dipanggil terus via `google.script.run` → pintas auth. Deployed `@44`, tapi **BELUM launch
+  rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan lama "LIVE harian" SALAH, sudah
+  dibetulkan merentas memory). C1-rename murah (tiada re-consent) → buat bila sambung semula.
+  I5 (`oauthScopes`) di sana perlu tetingkap cuti sekolah (re-consent semua guru). (dari
+  keputusan skop master 2026-08-31, Pilihan A) — **DIHOLD 2026-09-01**, sambung `digital-hub`.
+- **`digital-hub`** — Tiada tugasan kod terbuka (4 perubahan LIVE prod `54b593a` 2026-09-02).
+  🔑 Master: di telefon Android yang DAH install PWA, ikon masih lama — **uninstall + Chrome
+  site settings → Delete data + reinstall** untuk dapat ikon jata sekolah (Chrome cache
+  manifest ~24j). Backlog design-stage (belum brainstorm): audit log · kategori button
+  (Pengurusan/Kurikulum/HEM/Kokur) · strip pengumuman.
 - **`celiksains`** — Hardening anti-tipu: spec + plan SIAP, BELUM mula kod.
 - **`idme-pajsk-ext`** — Task 7 gated — tunggu master bekal selector borang sebenar
   `idme.moe.gov.my`.
@@ -26,6 +40,19 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 
 ## Selesai baru-baru ini (ringkasan sahaja — baca `project_<nama>.md` untuk butiran penuh)
 
+- ✅ `digital-hub` — Import Setting (POST /api/admin/import, ganti semua, atomik) + PWA
+  installable: nama app "Digital SKS", ikon PNG same-origin 192/512, service worker minimal
+  network-first, `GET /api/public/icon` redirect ke logo. LIVE prod `54b593a`, suite
+  197u/70e (2026-09-02).
+- ✅ `takwim-digital` — Logout skrin putih FIXED (`location.reload` iframe → pane + flag) +
+  cetak laporan bg putih + ikon custom via URL (https-only) + label dashboard lebih gelap.
+  LIVE `@19`, commit `91f371c`+`ed8aff0` (2026-09-01 malam).
+- ✅ `takwim-digital` — Responsive iPad: kalendar dashboard + topbar tak lagi terhimpit (grid3
+  runtuh 2-kolom `≤1200px` / 1-kolom `≤900px`, topbar flex-wrap `≤960px`). LIVE `@18`, commit
+  `6367008` (2026-09-01).
+- ✅ `digital-hub` — Slogan portal custom + headline 2-baris (nama_baris2) + fix visual
+  (kontras slogan, outline button, label Headline 1/2). LIVE production `46aa5c8`, suite
+  169u/56e hijau (2026-09-01).
 - ✅ `digital-hub` — Icon URL button + banner jadi hero band LIVE prod+test (`3b978cc`,
   suite 153u/51e hijau) (2026-08-29).
 - ✅ `takwim-digital` — Auto-login + pendaftaran satu-langkah (buang OTP) + Button Delete User.

@@ -49,10 +49,11 @@
 - `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. Fasa 1 Task 0-10 SIAP 2026-08-23,
   41/41 lulus. Final review dihentikan master, ditangguh. Belum: Task 11 deploy)
 - `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
-  bukan Hono/Workers. Sekolah **sudah menggunakannya** aktif harian. **2026-08-25:** siri 4 fix
-  guna sistem sebenar (fon PDF tak konsisten, tab blank iPhone Chrome, jadual Senarai Laporan
-  terpicit iPad menegak, warna label kelabu) — deploy `@37→@44`, suite 526/526. Fasa 2b
-  Edit+Padam laporan masih belum dirancang. Butiran penuh: `opr-insaniah/MEMORY.md`)
+  bukan Hono/Workers. **BELUM launch rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan
+  lama "sekolah sudah guna aktif harian" SALAH). **2026-08-25:** siri 4 fix guna sistem sebenar
+  (fon PDF tak konsisten, tab blank iPhone Chrome, jadual Senarai Laporan terpicit iPad menegak,
+  warna label kelabu) — deploy `@37→@44`, suite 526/526. Fasa 2b Edit+Padam laporan masih belum
+  dirancang. Butiran penuh: `opr-insaniah/MEMORY.md`)
 - `takwim-digital` (Apps Script + Google Calendar, akaun DELIMa. LIVE production `@8` 2026-08-23)
 - `mypwa-v2` (eNilai — per-SEKOLAH, live production)
 - `erph` (sekolah RENDAH) · `erph-menengah-v2`
