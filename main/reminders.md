@@ -20,7 +20,7 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
   dibetulkan merentas memory). C1-rename murah (tiada re-consent) → buat bila sambung semula.
   I5 (`oauthScopes`) di sana perlu tetingkap cuti sekolah (re-consent semua guru). (dari
   keputusan skop master 2026-08-31, Pilihan A) — **DIHOLD 2026-09-01**, sambung `digital-hub`.
-- **`digital-hub`** — Tiada tugasan kod terbuka (4 perubahan LIVE prod `54b593a` 2026-09-02).
+- **`digital-hub`** — Tiada tugasan kod terbuka (5 perubahan LIVE prod `a312f79` 2026-09-02).
   🔑 Master: di telefon Android yang DAH install PWA, ikon masih lama — **uninstall + Chrome
   site settings → Delete data + reinstall** untuk dapat ikon jata sekolah (Chrome cache
   manifest ~24j). Backlog design-stage (belum brainstorm): audit log · kategori button
@@ -42,8 +42,8 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 
 - ✅ `digital-hub` — Import Setting (POST /api/admin/import, ganti semua, atomik) + PWA
   installable: nama app "Digital SKS", ikon PNG same-origin 192/512, service worker minimal
-  network-first, `GET /api/public/icon` redirect ke logo. LIVE prod `54b593a`, suite
-  197u/70e (2026-09-02).
+  network-first, `GET /api/public/icon` redirect ke logo. LIVE prod `a312f79`, suite
+  197u/71e (2026-09-02).
 - ✅ `takwim-digital` — Logout skrin putih FIXED (`location.reload` iframe → pane + flag) +
   cetak laporan bg putih + ikon custom via URL (https-only) + label dashboard lebih gelap.
   LIVE `@19`, commit `91f371c`+`ed8aff0` (2026-09-01 malam).

@@ -6,9 +6,9 @@
 ## Session Context
 **Session Type**: Work
 **Current Project**: `digital-hub`
-**Status**: digital-hub — 4 perubahan fungsi + 1 doc **LIVE PRODUCTION**. `main` = `test`
-= HEAD `54b593a`. Semua CI SUCCESS + smoke prod OK. Suite unit 197/197, e2e 70/70.
-Tiada backlog terbuka untuk 4 perubahan ni.
+**Status**: digital-hub — 5 perubahan fungsi + 1 doc **LIVE PRODUCTION**. `main` = `test`
+= HEAD `a312f79`. Semua CI SUCCESS + smoke prod OK. Suite unit 197/197, e2e 71/71.
+Tiada backlog terbuka untuk 5 perubahan ni.
 **Session**: 2026-09-02 pagi (~10:00–11:0x), master di PC + uji install di telefon Android.
 
 ## Current Focus
@@ -35,7 +35,7 @@ Tiada backlog terbuka untuk 4 perubahan ni.
 ## Working Memory
 
 ### Active Context — SAMBUNG SINI
-- **digital-hub: 4 perubahan LIVE PROD**, `main`=`test`=`54b593a`, unit 197/197, e2e 70/70.
+- **digital-hub: 5 perubahan LIVE PROD**, `main`=`test`=`a312f79`, unit 197/197, e2e 71/71.
   Tiada baki untuk perubahan ni.
 - ✅ Master sahkan di telefon: prompt **"Install app" penuh MUNCUL**, tajuk "Digital SKS".
 - 🔑 **Telefon master yang DAH install**: ikon masih `favicon.svg` lama (Chrome cache
@@ -66,7 +66,7 @@ Tiada backlog terbuka untuk 4 perubahan ni.
 - **Previous**: 2026-09-01 malam — takwim-digital `@19` LIVE; digital-hub hero fix round 2
   merged prod.
 - **This session**: digital-hub — dari "apa lagi perlu ada" → Import Setting + PWA
-  installable ("Digital SKS", ikon PNG + service worker), 4 perubahan fungsi, semua TDD
+  installable ("Digital SKS", ikon PNG + service worker), 5 perubahan fungsi, semua TDD
   penuh → merge → LIVE prod. Diakhiri kemas memory + cipta `reference_pwa_manifest_chrome`.
 - **Left off**: semua siap + LIVE. Master perlu clear data + reinstall PWA di telefon untuk
   dapat ikon logo sekolah. Backlog digital-hub #3–#5 belum brainstorm.
@@ -74,4 +74,4 @@ Tiada backlog terbuka untuk 4 perubahan ni.
 
 ---
 *Session updated: 2026-09-02 ~11:0x (digital-hub Import Setting + PWA installable LIVE prod,
-`54b593a`; memory + reference_pwa_manifest_chrome dikemas)*
+`a312f79`; memory + reference_pwa_manifest_chrome dikemas)*
