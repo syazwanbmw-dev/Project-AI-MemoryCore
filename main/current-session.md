@@ -6,78 +6,78 @@
 ## Session Context
 **Session Type**: Work
 **Current Project**: `opr-program`
-**Status**: **Fasa 2b Edit — pelan DIREKONSILIASI dgn kod post-2c, di-commit `cfc11a4`.**
-Pelaksanaan (loop SDD 8 task) BELUM mula. Fasa 2c Padam = TUTUP RASMI, LIVE `@7`
-(siap sesi sebelum ni).
-**Session**: 2026-09-03 ~23:16 → 2026-09-04 ~00:28, master di PC, mod malam.
+**Status**: **Fasa 2b Edit — loop SDD BERMULA. Task 1 & 2 SIAP (review bersih).
+Task 3 SUDAH DI-COMMIT (`4fcefeb`) tapi REVIEW BELUM SELESAI** — reviewer opus
+kena session limit sebelum buat kerja. Task 3 mid-loop.
+**Session**: 2026-09-04 ~00:32 → ~04:00, master di PC, mod malam. Master keluar
+~01:20 (opus limit), balik ~03:58 → "update session dan memory, then stop".
 
 ## Current Focus
-- **Primary Task**: opr-program Fasa 2b Edit Laporan — pelan `58e4fdb` (2810 baris) ditulis
-  SEBELUM Fasa 2c mendarat, jadi lapuk di kawasan gerbang auth/C1. Sesi ni = pas
-  rekonsiliasi + patch, BUKAN kod lagi.
-- **🔴 KEPUTUSAN TERGANTUNG (untuk sesi depan):**
-  1. **Branch:** kekal `master` (ikut Fasa 1/2/2c) ATAU branch `fasa-2b-edit`? Skill
-     `subagent-driven-development` minta izin eksplisit sebelum implement atas `master`.
-     Master belum jawab.
-  2. **Mula Task 1 sekarang?** Master pilih "update session dan memory" = berhenti malam ni.
+- **Primary Task**: opr-program Fasa 2b Edit Laporan — pelaksanaan loop
+  `subagent-driven-development`, 8 task, atas branch `master` (master izin).
+  Workspace: `.superpowers/sdd/2026-09-03-opr-program-fasa2b-edit/`
+  (`progress.md` = ledger penuh, `recon-report.md`, `task-*-brief.md`).
+
 - **Aliran sesi ni:**
-  1. "sambung opr program fasa 2b, guna subagent" → baca konteks penuh (CLAUDE.md, MEMORY.md,
-     git, pelan 2b).
-  2. Lucy kenal pasti 3 percanggahan + pelan lapuk 2 fasa → syor: subagent Opus buat pas
-     rekonsiliasi dulu (bukan terus kod). Master: "ikut syor lucy".
-  3. Subagent Opus recon (read-only) → `recon-report.md` (678 baris): verdict = pelan lapuk
-     STRUKTUR tapi kerosakan tertumpu Task 3/4/5 + nombor; Task 1/2/6 + reka bentuk produk
-     SAH SEPENUHNYA; ~66 item patch + 2 spec.
-  4. Master putus 3 keputusan reka bentuk (AskUserQuestion) — semua ikut syor recon:
-     DQ1 serap pembaca+penulis padam 2c · DQ2 corak butang 2c (`pasangButangKad`) ·
-     DQ3 pinda spec `KEMASKINI_GAGAL`.
-  5. Subagent sonnet apply 68/68 patch → 2 fail `.md` sahaja, `node --test` 189/189.
-  6. Lucy spot-check + jumpa/betulkan 1 residual (spec baris 494-495 bercanggah dgn DQ3).
-     Commit `cfc11a4`. BELUM push.
-  7. Master: "update session dan memory" → berhenti.
+  1. Session-briefing + baca konteks penuh (CLAUDE.md, MEMORY.md, git, ledger, pelan).
+  2. Master izin branch `master` (syor Lucy, "Ok"). BASE Task 1 = `47cb3df`, baseline 189/189.
+  3. **Task 1** (`validasiMuatanLaporan()` — satu validator cipta+edit): implementer sonnet
+     → `1b313c6`, 197/197. Reviewer sonnet → Spec ✅, APPROVED. 3 minor ditangguh. COMPLETE.
+  4. **Task 2** (2 gerbang TULEN `bolehEditLaporan_` + `tahunSama_`): implementer sonnet
+     → `0914d6a`, 205/205. Reviewer sonnet → Spec ✅, APPROVED. 3 minor ditangguh. COMPLETE.
+  5. **Task 3** (lapisan Sheets `bacaSatuBarisLaporan_` + `kemasKiniBarisLaporan_`,
+     serap pembaca+penulis padam 2c — sentuh kod padam LIVE `@7`):
+     - Implementer cubaan 1 → **BLOCKED** (betul): `tests/padam-baris.test.js` (Fasa 2c, 9 ujian)
+       terikat pada simbol yang Step 6b/6c buang — tak disebut pelan/spec/recon.
+     - Master putus (AskUserQuestion): **"Benarkan fail ke-6, terus jalan"**. Ruling direkod:
+       rewrite `padam-baris.test.js` ke bentuk delegate, pindah liputan ke `baris-laporan.test.js`,
+       KEKAL `test('TIADA fail .gs memanggil deleteRow')` verbatim.
+     - Implementer cubaan 2 → **DONE_WITH_CONCERNS** → `4fcefeb` (6 fail, +339/-197), **216/216**.
+       Concern: kod verbatim brief pecah 2 ujian dalam `wiring-senarai.test.js` (fail ke-7) —
+       false positive (kelemahan `badanFungsi()` + regex bertingkap). Implementer betulkan
+       DALAM `Database.gs` sahaja (susun pembaca bersebelahan + alih `var MEDAN_EDIT` bawah).
+       Lucy terima sebagai adaptasi dalam-skop (Ruling 2, direkod).
+     - **Reviewer opus DISPATCH → GAGAL** (session rate limit 429, reset 3:10am) sebelum
+       buat apa-apa. **Tiada verdict review untuk Task 3.**
+  6. Master: "update session dan memory" → berhenti.
 
 ## Working Memory
 
 ### Active Context — SAMBUNG SINI
-- **Pelan Fasa 2b sudah selari dgn kod HEAD `ae3f5ac`.** Commit `cfc11a4` (docs sahaja,
-  +425/-112). Working tree bersih. Suite 189/189. **`cfc11a4` akan di-push** (docs, remote
-  backup-only, selamat).
-- **Loop SDD BELUM mula.** Workspace + ledger: `.superpowers/sdd/2026-09-03-opr-program-fasa2b-edit/`
-  - `progress.md` — ledger (rulings DQ1/DQ2/DQ3, spot-check, residual, pre-flight scan)
-  - `recon-report.md` — laporan Opus penuh (verdict, §7 senarai patch, §8 soalan terbuka)
-- **Langkah seterusnya sesi depan:** (a) master putus branch `master` vs `fasa-2b-edit`,
-  (b) mula `subagent-driven-development` di Task 1 (ekstrak `validasiMuatanLaporan()` —
-  Task 1 disahkan recon SAH sepenuhnya, tiada patch diperlukan).
-- **3 percanggahan + resolusi (dah dalam pelan):**
-  1. `BUKAN_PEMILIK` (Setup.gs:87 = "bukan pemilik FAIL SKRIP") → kunci baharu
-     `TIADA_KEBENARAN_EDIT` (berpasangan `TIADA_KEBENARAN_PADAM`; elak awalan yg `grep` silap-padan).
-     Spec §9 SUDAH melarang guna-semula secara bertulis — pelan lama melanggar spec.
-  2. Gerbang `belumDipadam` (Utils.gs, 2c) pada enjin edit + endpoint bacaan, urutan
-     WUJUD→DIPADAM→PEMILIK→TAHUN. `MEDAN_EDIT` +`'STATUS'` (kalau tak, gerbang "mati tapi
-     hijau"). Bocoran BACAAN baru: `bacaFailB64_` (DriveService.gs:70) tiada `isTrashed()` →
-     tanpa gerbang, endpoint bacaan hidangkan semula gambar murid dari Drive Sampah.
-  3. `ALLOW` pagar C1: **6→8** (bukan 5→7); `padamLaporan` KEKAL (blok ganti lama memadamnya
-     → pagar C1 merah namakan `padamLaporan` → cetuskan syarat BERHENTI pelan di tengah Task 5).
-- **Item terburuk (baru ditemui recon):** ujian Task 3 sendiri (`hanya Database.gs sebut
-  SHEET.LAPORAN`) kini MUSTAHIL hijau — `tandaLaporanDipadam_` (2c) duduk `ReportService.gs`.
-  Task 3 WAJIB serap penulis padam 2c (2c tinggal nota hutang `ReportService.gs:212-217`
-  namakan Fasa 2b pembayar). DQ1 = serap pembaca JUGA.
-- **Residual pelan yg DIBIAR** (non-blocking, implementer/reviewer tangani): nota CSS
-  specificity `.btn-edit` (premis "urutan sumber menentukan" mungkin silap); spec §16
-  baris 793 (peraturan larangan masih betul).
+- **Task 3 review MASIH TERHUTANG.** `4fcefeb` sudah di-commit, suite 216/216, tree bersih,
+  3 commit ahead `origin/master`, **BELUM push** (kod belum review + sentuh laluan padam LIVE).
+- **Langkah pertama sesi depan:** re-dispatch reviewer Task 3 — **guna SONNET** (opus limit yang
+  gagalkan tadi; sonnet cukup dgn 7 named-risk check dieja jelas dalam ledger). Input sama:
+  `task-3-brief.md`, `task-3-symbol-map.md`, dua ruling (dalam ledger), `task-3-report.md`,
+  diff sedia ada `review-0914d6a..4fcefeb.diff`.
+- **7 named-risk paling kritikal:** (a) tingkah laku laluan padam LIVE `Kod.gs` tak berubah
+  selain tukar pembaca; (b) `wiring-senarai.test.js` §11.4 masih menggigit atas layout
+  `Database.gs` baru; (c) `var MEDAN_EDIT` bawah pembacanya = runtime-safe; (d) `ReportService.gs`
+  SIFAR `SHEET.LAPORAN`; (e) `cariIndeksBarisLaporan_` 1 decl + 1 caller; (f) guard `deleteRow`
+  kekal verbatim; (g) `selamatkanTeksSel` pada SINK.
+- **Lepas Task 3 complete:** Task 4 → 8. Task 4 dispatch mesti bawa pointer ke "Task 1 minor:
+  eager `bacaSenaraiRujukan_()`" — Task 4 `kemaskiniLaporanUntuk_` ulang corak eager sama
+  (brief baris 283), konsisten, untuk whole-branch review.
+
+### Ledger rulings setakat ni (untuk senarai "Rulings" akhir kepada master)
+1. **Branch:** kerja atas `master` (ikut Fasa 1/2/2c; deploy `clasp` bukan git; master izin "Ok").
+2. **Task 3 fail ke-6:** `tests/padam-baris.test.js` dibenarkan + rewrite (master putus eksplisit).
+3. **Task 3 Ruling 2:** susun semula pembaca/const dalam `Database.gs` diterima (adaptasi
+   implementer dalam-skop, betulkan false-positive fail ke-7, sifar perubahan tingkah laku).
 
 ### Selepas Fasa 2b Edit
 - Fasa 3: panel admin + header/logo/QR + migrasi 100 rekod AppSheet + C1/I5 sibling
   `opr-insaniah` (DIHOLD).
 
 ## Session Recap (For AI Restart)
-- **Previous**: 2026-09-03 malam — Fasa 2c Padam TUTUP RASMI, deployed `@7`, suite 189/189.
-- **This session** (2026-09-03 malam → 2026-09-04 tengah malam): rekonsiliasi pelan Fasa 2b
-  Edit dgn kod post-2c. Recon subagent Opus (read-only) → 68 patch → subagent sonnet apply →
-  commit `cfc11a4`. 3 keputusan reka bentuk diputus master (DQ1/DQ2/DQ3, semua ikut syor recon).
-- **Left off**: pelan 2b selari dgn kod; loop SDD BELUM mula. `cfc11a4` belum push (akan push).
-- **State master**: PC, tengah malam (~00:28), pilih berhenti ("update session dan memory").
+- **Previous**: 2026-09-03 malam — Fasa 2c Padam TUTUP RASMI `@7`; pelan 2b direkonsiliasi `cfc11a4`.
+- **This session** (2026-09-04 ~00:32→04:00): loop SDD Fasa 2b bermula atas `master`.
+  Task 1 (`1b313c6`) + Task 2 (`0914d6a`) SIAP, review bersih. Task 3 (`4fcefeb`, 216/216)
+  di-commit selepas 1 BLOCKED sah + ruling master (fail ke-6) + 1 adaptasi dalam-skop —
+  **tapi review Task 3 GAGAL dispatch (opus session limit), verdict belum ada.**
+- **Left off**: Task 3 mid-loop (implemented, review terhutang). 3 commit belum push.
+- **State master**: PC, lewat malam (~04:00), pilih berhenti selepas update memory.
 
 ---
-*Session updated: 2026-09-04 ~00:28 (opr-program Fasa 2b — pelan direkonsiliasi `cfc11a4`;
-loop SDD belum mula; tergantung: branch choice + mula Task 1)*
+*Session updated: 2026-09-04 ~04:00 (opr-program Fasa 2b — Task 1&2 complete, Task 3 committed
+`4fcefeb` tapi review belum jalan; sambung: re-dispatch reviewer Task 3 guna sonnet)*
