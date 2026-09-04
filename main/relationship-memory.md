@@ -46,8 +46,10 @@
 
 - 🆕 `Digital Hub` (portal akses semua sistem sekolah — brainstorming architectural JALAN,
   belum sampai spec/plan, belum wujud secara fizikal. Butiran: `current-session.md`)
-- `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. Fasa 1 Task 0-10 SIAP 2026-08-23,
-  41/41 lulus. Final review dihentikan master, ditangguh. Belum: Task 11 deploy)
+- `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. **2026-09-04: Fasa 2b Edit +
+  Fasa 2c Padam dua-dua LIVE PRODUCTION** (`@9`), suite 270/270, baki kod SIFAR. Smoke telefon
+  2b tertangguh (telefon master dibaiki) sebelum 2b tutup rasmi. **Fasa 3 dipecah 3a/3b/3c** —
+  brainstorm 3a (Tetapan & Branding) separuh jalan. Butiran: `opr-program/MEMORY.md`)
 - `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
   bukan Hono/Workers. **BELUM launch rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan
   lama "sekolah sudah guna aktif harian" SALAH). **2026-08-25:** siri 4 fix guna sistem sebenar
