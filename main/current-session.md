@@ -6,13 +6,13 @@
 ## Session Context
 **Session Type**: Work
 **Current Project**: `opr-program`
-**Status**: **Fasa 2b Edit Laporan — KE-7 TASK SIAP + whole-branch review READY TO DEPLOY.**
-Loop `subagent-driven-development` selesai. Suite 267/0, 9 fail anti-regresi 84/84.
-`master` 8 commit ahead `origin/master` (`d695c29`→`145d2ac`), **BELUM push, BELUM deploy**.
-Tunggu master pilih laluan seterusnya (cleanup / ship as-is / Gemini).
-**Session**: 2026-09-04 ~04:05 (master "sambung opr program") → ~08:41. Master di PC, pagi
-(NIGHT→MORNING). Master: "sambung" → "tunggu review siap, proceed until task 8" →
-"wait for whole-branch review, update session and memory" (checkpoint ni).
+**Status**: **Fasa 2b Edit Laporan — KOD SIAP + whole-branch READY TO DEPLOY + CLEANUP + PUSHED.**
+Loop `subagent-driven-development` selesai. Suite **269/0**. `master` @ **`1853761`** ==
+`origin/master` (semua di-push, seal PASS). **BELUM deploy.** Tunggu MASTER jalan Task 8
+Step 2-8 (`clasp` deploy + smoke 26 soalan 2 peranti).
+**Session**: 2026-09-04 ~04:05 (master "sambung opr program") → ~09:00. Master di PC, pagi
+(NIGHT→MORNING). Master: "sambung" → "proceed until task 8" → "wait for whole-branch review,
+update session and memory" → **"A"** (cleanup pass).
 
 ## Current Focus
 - **Primary Task**: opr-program Fasa 2b Edit Laporan — 8 task, loop SDD atas branch `master`.
@@ -44,33 +44,33 @@ Tunggu master pilih laluan seterusnya (cleanup / ship as-is / Gemini).
 ## Working Memory
 
 ### Active Context — SAMBUNG SINI
-- **KOD Fasa 2b Edit SIAP. Whole-branch verdict: READY TO DEPLOY.** Tiada blocker.
-- **Master belum putus laluan seterusnya.** 3 pilihan direkod dalam `opr-program/MEMORY.md`
-  STATUS blok + ledger "RESUME OPTIONS":
-  - **A. Cleanup pass** — 1 commit atomik: rename `pasangButangPadam`→`pasangButangKad`
-    (+ call site app.js.html + `padam-client.test.js:39,48`) + optionally sentinel `berganda`
-    fix (2 caller) + `huraiTarikhIso` try/catch + `dedah-global.test.js:22` "enam"→"lapan".
-    Lepas: commit-seal + push + serah Task 8 deploy master.
-  - **B. Ship as-is** — commit-seal HEAD `145d2ac`, push, master jalan Task 8 clasp deploy +
-    smoke 26 soalan. Cleanup → follow-up Fasa 2b.1.
-  - **C. `cross-ai-julius` (Gemini)** second opinion sebelum A/B.
-- **Task 8 Step 2-8 = kerja MASTER** (bukan Lucy): `clasp push --force` → uji `/dev` →
-  `create-deployment --deploymentId AKfycbyd85qp...08Zi5LPY --description "Fasa 2b - edit laporan"`
-  → `@7`→`@8` → smoke 26 soalan **telefon potret + laptop** (Edge utk console #24-26, Chrome
-  DELIMa sekat). `appsscript.json` tak disentuh → tiada re-consent. Soalan #25 = ujian
-  keselamatan TERAS. Lepas smoke → update MEMORY STATUS + commit.
+- **KOD Fasa 2b Edit SIAP + whole-branch READY TO DEPLOY + cleanup pass SIAP + SEMUA PUSHED.**
+  `master` @ `1853761` == `origin/master`. Suite 269/0. Tree bersih. Tiada blocker.
+- **Cleanup pass (master pilih "A") — 3 commit, semua push:**
+  - `66c0c40` rename `pasangButangPadam`→`pasangButangKad` (Ruling 4 selesai).
+  - `8f48c42` sentinel `{berganda:true}` → `ralat('ID_BERGANDA')` sebelum gerbang `!baris`
+    dalam `kemaskiniLaporanUntuk_` + `bacaLaporanUntukEdit` (+2 ujian, mutasi disahkan menggigit).
+  - `547f176` try/catch `huraiTarikhIso` dalam handler jaya edit + `dedah-global.test.js:22`
+    "enam"→"lapan".
+- **🔴 SEKARANG: TASK 8 Step 2-8 = kerja MASTER** (Lucy dah habis bahagiannya):
+  `clasp push --force` (sahkan `clasp status` = 18 fail) → master uji `/dev` (`@HEAD`, pemilik)
+  → `clasp create-deployment --deploymentId AKfycbyd85qp...08Zi5LPY --description "Fasa 2b - edit laporan"`
+  → `@7`→`@8` → **smoke 26 soalan telefon potret + laptop** (Edge utk console #24-26; Chrome
+  DELIMa sekat). `appsscript.json` tak disentuh → tiada re-consent (kalau muncul, BERHENTI + lapor).
+  **Soalan #25** = ujian keselamatan TERAS (endpoint bacaan tolak ID guru lain → `TIADA_KEBENARAN_EDIT`).
+  **Soalan #26** = gerbang `belumDipadam` (laporan dipadam → `LAPORAN_TIADA`, bukan gambar Drive Sampah).
+  Lepas smoke → update `opr-program/MEMORY.md` STATUS + commit.
 
-### 4 nota follow-up whole-branch (BUKAN blocker — dalam opr-program/MEMORY.md)
-1. Sentinel `{berganda:true}` tak dikendali — `ReportService.gs:158` + `Kod.gs:249`. Fail-closed.
-2. `huraiTarikhIso` tak berpagar `app.js.html:518` (handler jaya).
-3. `muatan-laporan.test.js` — passthrough buku bukan-kosong tak di-assert (jurang liputan).
-4. `dedah-global.test.js:22` prosa "enam" → "lapan".
+### Baki follow-up (1 sahaja, risiko RENDAH)
+- `muatan-laporan.test.js` — passthrough `bukuProgramDataUri` bukan-kosong tak di-assert (jurang
+  liputan; tolak jenis buku salah MEMANG diuji). Tambah 1 assert bila sentuh fail itu lagi.
+- (3 nota lain SELESAI dalam cleanup pass; selebihnya reviewer kata "bukan isu".)
 
-### RULINGS Fasa 2b (senarai akhir untuk master)
+### RULINGS Fasa 2b (senarai akhir)
 1. Branch = `master` (master "Ok").
 2. Task 3 fail ke-6 `padam-baris.test.js` dibenarkan + rewrite (master putus eksplisit).
 3. Task 3 susun semula `Database.gs` (adaptasi implementer dalam-skop).
-4. Task 7 `pasangButangPadam` dikembangkan di-tempat, TAK di-rename (rename → cleanup atomik).
+4. Task 7 `pasangButangPadam` dikembangkan di-tempat → rename SELESAI cleanup `66c0c40`.
 
 ### Selepas Fasa 2b Edit deploy
 - Fasa 3: panel admin + header/logo/QR + migrasi 100 rekod AppSheet + C1/I5 sibling
@@ -79,13 +79,15 @@ Tunggu master pilih laluan seterusnya (cleanup / ship as-is / Gemini).
 ## Session Recap (For AI Restart)
 - **Previous**: 2026-09-04 ~00:32→04:00 — loop SDD Fasa 2b bermula, Task 1&2 siap, Task 3
   committed `4fcefeb` tapi review gagal (opus limit).
-- **This session** (2026-09-04 ~04:05→08:41): Task 3 review APPROVED (sonnet). Loop autonomous
+- **This session** (2026-09-04 ~04:05→09:00): Task 3 review APPROVED (sonnet). Loop autonomous
   Task 4→7 semua COMPLETE + review individu. Whole-branch review READY TO DEPLOY. Task 8 Step 1
-  PASS. Suite 189→267. 8 commit belum push, belum deploy.
-- **Left off**: KOD SIAP + review lulus, tunggu master pilih (A cleanup / B ship / C Gemini),
-  kemudian master jalan Task 8 deploy + smoke pada peranti sebenar.
-- **State master**: PC, pagi (~08:41), minta checkpoint (update session + memory).
+  PASS. Master pilih "A" → cleanup pass 3 commit (rename `pasangButangKad`, sentinel `berganda`,
+  `huraiTarikhIso` try/catch). commit-seal PASS. **SEMUA PUSHED** `master` @ `1853761` ==
+  `origin/master`. Suite 189→269.
+- **Left off**: Fasa 2b Edit KOD SIAP + review lulus + cleanup + pushed. **Tunggu MASTER jalan
+  Task 8 Step 2-8** (`clasp` deploy `@7`→`@8` + smoke 26 soalan telefon potret + laptop).
+- **State master**: PC, pagi (~09:00), minta update session + memory selepas cleanup.
 
 ---
-*Session updated: 2026-09-04 ~08:41 (opr-program Fasa 2b Edit — ke-7 task SIAP + whole-branch
-review READY TO DEPLOY; sambung: master pilih cleanup/ship/Gemini, lepas tu master deploy Task 8)*
+*Session updated: 2026-09-04 ~09:00 (opr-program Fasa 2b Edit — KOD SIAP + whole-branch READY +
+cleanup pass PUSHED `1853761`; sambung: MASTER deploy Task 8 clasp + smoke 26 soalan 2 peranti)*
