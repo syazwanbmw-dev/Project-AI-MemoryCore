@@ -6,78 +6,86 @@
 ## Session Context
 **Session Type**: Work
 **Current Project**: `opr-program`
-**Status**: **Fasa 2b Edit — loop SDD BERMULA. Task 1 & 2 SIAP (review bersih).
-Task 3 SUDAH DI-COMMIT (`4fcefeb`) tapi REVIEW BELUM SELESAI** — reviewer opus
-kena session limit sebelum buat kerja. Task 3 mid-loop.
-**Session**: 2026-09-04 ~00:32 → ~04:00, master di PC, mod malam. Master keluar
-~01:20 (opus limit), balik ~03:58 → "update session dan memory, then stop".
+**Status**: **Fasa 2b Edit Laporan — KE-7 TASK SIAP + whole-branch review READY TO DEPLOY.**
+Loop `subagent-driven-development` selesai. Suite 267/0, 9 fail anti-regresi 84/84.
+`master` 8 commit ahead `origin/master` (`d695c29`→`145d2ac`), **BELUM push, BELUM deploy**.
+Tunggu master pilih laluan seterusnya (cleanup / ship as-is / Gemini).
+**Session**: 2026-09-04 ~04:05 (master "sambung opr program") → ~08:41. Master di PC, pagi
+(NIGHT→MORNING). Master: "sambung" → "tunggu review siap, proceed until task 8" →
+"wait for whole-branch review, update session and memory" (checkpoint ni).
 
 ## Current Focus
-- **Primary Task**: opr-program Fasa 2b Edit Laporan — pelaksanaan loop
-  `subagent-driven-development`, 8 task, atas branch `master` (master izin).
-  Workspace: `.superpowers/sdd/2026-09-03-opr-program-fasa2b-edit/`
-  (`progress.md` = ledger penuh, `recon-report.md`, `task-*-brief.md`).
+- **Primary Task**: opr-program Fasa 2b Edit Laporan — 8 task, loop SDD atas branch `master`.
+  Workspace: `.superpowers/sdd/2026-09-03-opr-program-fasa2b-edit/` (`progress.md` = ledger
+  penuh, semua task-N-brief/report, review diffs).
 
 - **Aliran sesi ni:**
-  1. Session-briefing + baca konteks penuh (CLAUDE.md, MEMORY.md, git, ledger, pelan).
-  2. Master izin branch `master` (syor Lucy, "Ok"). BASE Task 1 = `47cb3df`, baseline 189/189.
-  3. **Task 1** (`validasiMuatanLaporan()` — satu validator cipta+edit): implementer sonnet
-     → `1b313c6`, 197/197. Reviewer sonnet → Spec ✅, APPROVED. 3 minor ditangguh. COMPLETE.
-  4. **Task 2** (2 gerbang TULEN `bolehEditLaporan_` + `tahunSama_`): implementer sonnet
-     → `0914d6a`, 205/205. Reviewer sonnet → Spec ✅, APPROVED. 3 minor ditangguh. COMPLETE.
-  5. **Task 3** (lapisan Sheets `bacaSatuBarisLaporan_` + `kemasKiniBarisLaporan_`,
-     serap pembaca+penulis padam 2c — sentuh kod padam LIVE `@7`):
-     - Implementer cubaan 1 → **BLOCKED** (betul): `tests/padam-baris.test.js` (Fasa 2c, 9 ujian)
-       terikat pada simbol yang Step 6b/6c buang — tak disebut pelan/spec/recon.
-     - Master putus (AskUserQuestion): **"Benarkan fail ke-6, terus jalan"**. Ruling direkod:
-       rewrite `padam-baris.test.js` ke bentuk delegate, pindah liputan ke `baris-laporan.test.js`,
-       KEKAL `test('TIADA fail .gs memanggil deleteRow')` verbatim.
-     - Implementer cubaan 2 → **DONE_WITH_CONCERNS** → `4fcefeb` (6 fail, +339/-197), **216/216**.
-       Concern: kod verbatim brief pecah 2 ujian dalam `wiring-senarai.test.js` (fail ke-7) —
-       false positive (kelemahan `badanFungsi()` + regex bertingkap). Implementer betulkan
-       DALAM `Database.gs` sahaja (susun pembaca bersebelahan + alih `var MEDAN_EDIT` bawah).
-       Lucy terima sebagai adaptasi dalam-skop (Ruling 2, direkod).
-     - **Reviewer opus DISPATCH → GAGAL** (session rate limit 429, reset 3:10am) sebelum
-       buat apa-apa. **Tiada verdict review untuk Task 3.**
-  6. Master: "update session dan memory" → berhenti.
+  1. Session-briefing + baca konteks penuh. Task 3 review masih terhutang (opus gagal sesi lepas).
+  2. **Task 3 review** (re-dispatch SONNET) → **APPROVED**, 0 Critical/Important, 7 risiko-bernama
+     semua PASS. Task 3 COMPLETE (`4fcefeb`, 216/216).
+  3. Push Task 1-3 + docs ke `origin/master` (`d695c29`) selepas commit-seal.
+  4. Master: "proceed until task 8". Loop autonomous:
+     - **Task 4** (`kemaskiniLaporanUntuk_` enjin edit) → impl `1d096a3` → review APPROVED. 233/0.
+     - **Task 5** (2 endpoint + ALLOW C1 6→8 + gerbang bacaan) → impl `7ef6369` → review
+       APPROVED_WITH_NITS. 242/0. Pagar C1 disahkan masih menanggung beban selepas 6→8.
+     - **Task 6** (pisah `htmlGridGambar` vs `htmlGridGambarSunting`) → impl `45166df` → review
+       APPROVED. 251/0. Ranjau `#pratontonGambar.outerHTML` tutup.
+     - **Task 7** (mod edit client — `MOD_EDIT`, `praIsiBorang`, butang Edit, gerbang tahun) →
+       impl `e1f941f` DONE_WITH_CONCERNS → review APPROVED_WITH_NITS + **Ruling 4**. 267/0.
+       Concern: `pasangButangPadam` tak di-rename (fail ujian 2c di luar skop) — dikembangkan
+       di-tempat, Lucy TERIMA, rename tangguh ke cleanup.
+  5. **Whole-branch review** (SONNET) gabungan delta `47cb3df..HEAD` → **READY TO DEPLOY**.
+     8 semakan integrasi PASS. 1 isu cross-task fail-closed (sentinel `berganda` tak dikendali
+     dalam 2 caller edit → `TIADA_KEBENARAN_EDIT` bukan `ID_BERGANDA`; hanya via edit manual
+     sheet). Senarai nit tertangguh dinilai — tiada must-fix.
+  6. **Task 8 Step 1** (checklist 7 ancaman grep) — Lucy jalan read-only → **PASS**.
+  7. Master: "update session and memory" → checkpoint.
 
 ## Working Memory
 
 ### Active Context — SAMBUNG SINI
-- **Task 3 review MASIH TERHUTANG.** `4fcefeb` sudah di-commit, suite 216/216, tree bersih,
-  3 commit ahead `origin/master`, **BELUM push** (kod belum review + sentuh laluan padam LIVE).
-- **Langkah pertama sesi depan:** re-dispatch reviewer Task 3 — **guna SONNET** (opus limit yang
-  gagalkan tadi; sonnet cukup dgn 7 named-risk check dieja jelas dalam ledger). Input sama:
-  `task-3-brief.md`, `task-3-symbol-map.md`, dua ruling (dalam ledger), `task-3-report.md`,
-  diff sedia ada `review-0914d6a..4fcefeb.diff`.
-- **7 named-risk paling kritikal:** (a) tingkah laku laluan padam LIVE `Kod.gs` tak berubah
-  selain tukar pembaca; (b) `wiring-senarai.test.js` §11.4 masih menggigit atas layout
-  `Database.gs` baru; (c) `var MEDAN_EDIT` bawah pembacanya = runtime-safe; (d) `ReportService.gs`
-  SIFAR `SHEET.LAPORAN`; (e) `cariIndeksBarisLaporan_` 1 decl + 1 caller; (f) guard `deleteRow`
-  kekal verbatim; (g) `selamatkanTeksSel` pada SINK.
-- **Lepas Task 3 complete:** Task 4 → 8. Task 4 dispatch mesti bawa pointer ke "Task 1 minor:
-  eager `bacaSenaraiRujukan_()`" — Task 4 `kemaskiniLaporanUntuk_` ulang corak eager sama
-  (brief baris 283), konsisten, untuk whole-branch review.
+- **KOD Fasa 2b Edit SIAP. Whole-branch verdict: READY TO DEPLOY.** Tiada blocker.
+- **Master belum putus laluan seterusnya.** 3 pilihan direkod dalam `opr-program/MEMORY.md`
+  STATUS blok + ledger "RESUME OPTIONS":
+  - **A. Cleanup pass** — 1 commit atomik: rename `pasangButangPadam`→`pasangButangKad`
+    (+ call site app.js.html + `padam-client.test.js:39,48`) + optionally sentinel `berganda`
+    fix (2 caller) + `huraiTarikhIso` try/catch + `dedah-global.test.js:22` "enam"→"lapan".
+    Lepas: commit-seal + push + serah Task 8 deploy master.
+  - **B. Ship as-is** — commit-seal HEAD `145d2ac`, push, master jalan Task 8 clasp deploy +
+    smoke 26 soalan. Cleanup → follow-up Fasa 2b.1.
+  - **C. `cross-ai-julius` (Gemini)** second opinion sebelum A/B.
+- **Task 8 Step 2-8 = kerja MASTER** (bukan Lucy): `clasp push --force` → uji `/dev` →
+  `create-deployment --deploymentId AKfycbyd85qp...08Zi5LPY --description "Fasa 2b - edit laporan"`
+  → `@7`→`@8` → smoke 26 soalan **telefon potret + laptop** (Edge utk console #24-26, Chrome
+  DELIMa sekat). `appsscript.json` tak disentuh → tiada re-consent. Soalan #25 = ujian
+  keselamatan TERAS. Lepas smoke → update MEMORY STATUS + commit.
 
-### Ledger rulings setakat ni (untuk senarai "Rulings" akhir kepada master)
-1. **Branch:** kerja atas `master` (ikut Fasa 1/2/2c; deploy `clasp` bukan git; master izin "Ok").
-2. **Task 3 fail ke-6:** `tests/padam-baris.test.js` dibenarkan + rewrite (master putus eksplisit).
-3. **Task 3 Ruling 2:** susun semula pembaca/const dalam `Database.gs` diterima (adaptasi
-   implementer dalam-skop, betulkan false-positive fail ke-7, sifar perubahan tingkah laku).
+### 4 nota follow-up whole-branch (BUKAN blocker — dalam opr-program/MEMORY.md)
+1. Sentinel `{berganda:true}` tak dikendali — `ReportService.gs:158` + `Kod.gs:249`. Fail-closed.
+2. `huraiTarikhIso` tak berpagar `app.js.html:518` (handler jaya).
+3. `muatan-laporan.test.js` — passthrough buku bukan-kosong tak di-assert (jurang liputan).
+4. `dedah-global.test.js:22` prosa "enam" → "lapan".
 
-### Selepas Fasa 2b Edit
+### RULINGS Fasa 2b (senarai akhir untuk master)
+1. Branch = `master` (master "Ok").
+2. Task 3 fail ke-6 `padam-baris.test.js` dibenarkan + rewrite (master putus eksplisit).
+3. Task 3 susun semula `Database.gs` (adaptasi implementer dalam-skop).
+4. Task 7 `pasangButangPadam` dikembangkan di-tempat, TAK di-rename (rename → cleanup atomik).
+
+### Selepas Fasa 2b Edit deploy
 - Fasa 3: panel admin + header/logo/QR + migrasi 100 rekod AppSheet + C1/I5 sibling
   `opr-insaniah` (DIHOLD).
 
 ## Session Recap (For AI Restart)
-- **Previous**: 2026-09-03 malam — Fasa 2c Padam TUTUP RASMI `@7`; pelan 2b direkonsiliasi `cfc11a4`.
-- **This session** (2026-09-04 ~00:32→04:00): loop SDD Fasa 2b bermula atas `master`.
-  Task 1 (`1b313c6`) + Task 2 (`0914d6a`) SIAP, review bersih. Task 3 (`4fcefeb`, 216/216)
-  di-commit selepas 1 BLOCKED sah + ruling master (fail ke-6) + 1 adaptasi dalam-skop —
-  **tapi review Task 3 GAGAL dispatch (opus session limit), verdict belum ada.**
-- **Left off**: Task 3 mid-loop (implemented, review terhutang). 3 commit belum push.
-- **State master**: PC, lewat malam (~04:00), pilih berhenti selepas update memory.
+- **Previous**: 2026-09-04 ~00:32→04:00 — loop SDD Fasa 2b bermula, Task 1&2 siap, Task 3
+  committed `4fcefeb` tapi review gagal (opus limit).
+- **This session** (2026-09-04 ~04:05→08:41): Task 3 review APPROVED (sonnet). Loop autonomous
+  Task 4→7 semua COMPLETE + review individu. Whole-branch review READY TO DEPLOY. Task 8 Step 1
+  PASS. Suite 189→267. 8 commit belum push, belum deploy.
+- **Left off**: KOD SIAP + review lulus, tunggu master pilih (A cleanup / B ship / C Gemini),
+  kemudian master jalan Task 8 deploy + smoke pada peranti sebenar.
+- **State master**: PC, pagi (~08:41), minta checkpoint (update session + memory).
 
 ---
-*Session updated: 2026-09-04 ~04:00 (opr-program Fasa 2b — Task 1&2 complete, Task 3 committed
-`4fcefeb` tapi review belum jalan; sambung: re-dispatch reviewer Task 3 guna sonnet)*
+*Session updated: 2026-09-04 ~08:41 (opr-program Fasa 2b Edit — ke-7 task SIAP + whole-branch
+review READY TO DEPLOY; sambung: master pilih cleanup/ship/Gemini, lepas tu master deploy Task 8)*
