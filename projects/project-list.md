@@ -6,7 +6,7 @@
 
 | # | Project | Status ringkas | Last touched |
 |---|---------|-----------------|---------------|
-| 1 | `takwim-digital` | 🟢 LIVE `@17` — auto-login + daftar 1-langkah (buang OTP) + Delete User proper | 2026-08-27 |
+| 1 | `takwim-digital` | 🟢 LIVE `@22` — reminder aktiviti jadi email digest H-1/2/3 + Guru Penerima + notifikasi admin pendaftaran. Trigger dicipta 2026-09-06. Tiada backlog | 2026-09-06 |
 | 2 | `opr-insaniah` | 🟢 LIVE `@44` — suite 526/526. `/dev` TAK BOLEH uji akaun kedua (had platform) | 2026-08-25 |
 | 3 | `digital-hub` | 🟡 Brainstorming architectural — keputusan storan(KV)/tema/login siap, belum spec/plan, belum wujud fizikal | 2026-08-24 |
 | 4 | `opr-program` | 🟡 Fasa 1 Task 0-10 SIAP (41/41 lulus, 2 Critical ditangkap). Final review dihentikan master — Task 11 deploy belum jalan | 2026-08-23 |

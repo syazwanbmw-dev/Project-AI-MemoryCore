@@ -325,10 +325,9 @@ tak masuk projek Apps Script.
 ## Aliran seterusnya
 
 1. ✅ Spec diluluskan master 2026-09-06. Rev.1 (dua checkbox saluran) diluluskan malam sama.
-2. 🔄 Plan pelaksanaan (`PLAN-telegram-gchat-digest.md`, local, 14 task) sedang direvise
-   untuk Rev.1.
-3. ⛔ **Keputusan terbuka master:** (a) benarkan fail baharu `selftest-node.js`? (b) sahkan
-   tetapan digest di System Settings sahaja (bukan Setup Wizard) — plan andaikan ya.
+2. ✅ **Keputusan terbuka DISELESAIKAN 2026-09-06 malam:** (a) fail baharu `selftest-node.js`
+   **DILULUSKAN**; (b) tetapan digest **System Settings sahaja** (bukan Setup Wizard) — sah.
+3. 🔄 Plan pelaksanaan (`PLAN-telegram-gchat-digest.md`, local, ~14 task) direvise untuk Rev.1.
 4. Kod ikut pipeline Kata (sederhana-besar): kod → `sight-hone` → `cross-ai-julius` →
    `commit-seal` → push → `clasp push -f` ke `@HEAD` → smoke master → **deploy production
    atas arahan jelas master sahaja**.
