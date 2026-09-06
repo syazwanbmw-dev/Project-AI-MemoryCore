@@ -7,9 +7,11 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 
 ## Terbuka
 
-- **`takwim-digital`** — ✅ **TIADA item terbuka.** Screen putih logout SELESAI (LIVE `@19`
-  2026-09-01 malam — punca: `location.reload()` dalam iframe HtmlService; fix: pane +
-  flag `sessionStorage`).
+- **`takwim-digital`** — ⏳ **Deploy tertunggak.** Notifikasi admin bila ada pendaftaran akses
+  baru (`notifyAdminNewRegistration_`) — commit `462d4d2` push `origin/master`, **BELUM deploy
+  Apps Script** (master kena jalan `clasp push -f` + `clasp create-deployment` sendiri — gotcha
+  classifier). Nota: notifikasi KELULUSAN pendaftaran dah wujud sejak lama (`sendApprovalEmail_`).
+  🟡 Backlog: Peringatan AKTIVITI berjadual (email digest — perlu time-driven trigger, ditangguh).
 - **`opr-program`** — Fasa 2 + C1/I5 SIAP (suite 128/128), **deployed `@5`** (2026-09-01).
   Tunggu master smoke `@5` (laptop + telefon potret — senarai A–E dibagi). Kalau PASS → tutup
   branch (`finishing-a-development-branch` + buang workspace SDD). I2/I3/M-b → Fasa 2b.
