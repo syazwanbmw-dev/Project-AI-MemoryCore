@@ -7,14 +7,16 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 
 ## Terbuka
 
-- **`takwim-digital`** — ✅ Tiada tugasan terbuka. Reminder aktiviti (email digest H-1/H-2/H-3
-  + Guru Penerima + waktu hantar boleh set) LIVE `@22` (2026-09-06 malam), trigger
-  `sendActivityReminders_` dicipta (master klik Simpan Tetapan 2026-09-06 ~20:34). Notifikasi
-  admin pendaftaran baru (`notifyAdminNewRegistration_`) LIVE `@21` + disahkan masuk inbox.
-- **`opr-program`** — Fasa 2 + C1/I5 SIAP (suite 128/128), **deployed `@5`** (2026-09-01).
-  Tunggu master smoke `@5` (laptop + telefon potret — senarai A–E dibagi). Kalau PASS → tutup
-  branch (`finishing-a-development-branch` + buang workspace SDD). I2/I3/M-b → Fasa 2b.
-  **DIHOLD 2026-09-01** (master di iPad, tak boleh smoke sekarang) — sambung `digital-hub`.
+- **`takwim-digital`** — ✅ Tiada tugasan terbuka. LIVE `@24` (2026-09-08: admin boleh pilih
+  cuti Google mana nak dikongsi ke digest Telegram/Google Chat via checklist System Settings —
+  master confirm test production "dah test dan ok"). Digest Mingguan Telegram+Google Chat
+  (`@23`, 2026-09-07) + reminder aktiviti email H-1/H-2/H-3 (`@22`) kekal LIVE.
+- **`opr-program`** — 🟢 Fix prestasi hantar/kemas kini laporan (cache folder Drive per-hantaran +
+  batch write) — **6 task kod SIAP + review akhir Opus bersih** (suite 391→425, commit
+  `bf0f6da`..`ac6c00a`, `master` @ `4ae1b5f` 9 commit depan origin). Deployment UJIAN `@17` dibuat
+  (guru KEKAL `@16`). **SAMBUNG: master smoke 9 langkah** pada URL ujian `@17` (Task 7 Step 8 pelan).
+  Kalau PASS → deploy guru + padam `@17` + push origin. TIADA deploy tanpa izin. (2026-09-10)
+  Fasa 2 + C1/I5 SIAP lama (suite 128/128), deployed `@5` — smoke `@5` DIHOLD berasingan.
 - **`opr-insaniah`** — 🔒 C1 (Critical) SAMA seperti opr-program: fungsi global tanpa `_` boleh
   dipanggil terus via `google.script.run` → pintas auth. Deployed `@44`, tapi **BELUM launch
   rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan lama "LIVE harian" SALAH, sudah
@@ -41,6 +43,9 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 
 ## Selesai baru-baru ini (ringkasan sahaja — baca `project_<nama>.md` untuk butiran penuh)
 
+- ✅ `takwim-digital` — Cuti Google dikongsi ke digest (checklist System Settings, padanan
+  EXACT nama dari Google, bukan cikgu taip) + fix teks lapuk SETUP.md/.html §8.4 OAuth. LIVE
+  `@24`, commit `b967e22`+`89fb4c0`, suite 100/0 (2026-09-08).
 - ✅ `digital-hub` — Import Setting (POST /api/admin/import, ganti semua, atomik) + PWA
   installable: nama app "Digital SKS", ikon PNG same-origin 192/512, service worker minimal
   network-first, `GET /api/public/icon` redirect ke logo. LIVE prod `a312f79`, suite

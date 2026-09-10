@@ -9,7 +9,7 @@
 | 1 | `takwim-digital` | 🟢 LIVE `@22` — reminder aktiviti jadi email digest H-1/2/3 + Guru Penerima + notifikasi admin pendaftaran. Trigger dicipta 2026-09-06. Tiada backlog | 2026-09-06 |
 | 2 | `opr-insaniah` | 🟢 LIVE `@44` — suite 526/526. `/dev` TAK BOLEH uji akaun kedua (had platform) | 2026-08-25 |
 | 3 | `digital-hub` | 🟡 Brainstorming architectural — keputusan storan(KV)/tema/login siap, belum spec/plan, belum wujud fizikal | 2026-08-24 |
-| 4 | `opr-program` | 🟡 Fasa 1 Task 0-10 SIAP (41/41 lulus, 2 Critical ditangkap). Final review dihentikan master — Task 11 deploy belum jalan | 2026-08-23 |
+| 4 | `opr-program` | 🟢 Fix prestasi hantar laporan (cache folder Drive + batch write) — 6 task kod SIAP + review akhir Opus bersih (suite 391→425). Deployment ujian `@17`, tunggu smoke master | 2026-09-10 |
 | 5 | `mypwa-v2` (eNilai) | 🟢 LIVE production. Kumpulan Intervensi suite 58/0/2, feature mendarat MATI (`guna_kumpulan=0` semua item) — admin belum hidupkan | 2026-08-10 |
 | 6 | `erph` (RENDAH) | 🔄 RPT Sains Tahun 5 separuh jalan | 2026-08-05 |
 | 7 | `celiksains` | 🟡 Fasa 1a live staging. Hardening anti-tipu: spec+plan siap, BELUM kod | 2026-07-25 |

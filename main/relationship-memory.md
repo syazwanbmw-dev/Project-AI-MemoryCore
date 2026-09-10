@@ -59,7 +59,9 @@
   (fon PDF tak konsisten, tab blank iPhone Chrome, jadual Senarai Laporan terpicit iPad menegak,
   warna label kelabu) — deploy `@37→@44`, suite 526/526. Fasa 2b Edit+Padam laporan masih belum
   dirancang. Butiran penuh: `opr-insaniah/MEMORY.md`)
-- `takwim-digital` (Apps Script + Google Calendar, akaun DELIMa. LIVE production `@8` 2026-08-23)
+- `takwim-digital` (Apps Script + Google Calendar, akaun DELIMa. LIVE production `@23`
+  2026-09-07 — Digest Mingguan Telegram + Google Chat SIAP PENUH, diuji hujung-ke-hujung dgn
+  mesej Telegram sebenar. Butiran: `takwim-digital/MEMORY.md`)
 - `mypwa-v2` (eNilai — per-SEKOLAH, live production)
 - `erph` (sekolah RENDAH) · `erph-menengah-v2`
 - `celiksains`
