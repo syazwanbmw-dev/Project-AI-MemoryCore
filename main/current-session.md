@@ -4,44 +4,76 @@
 ---
 
 ## Session Context
-**Session Type**: Manual smoke test + deploy (guided walkthrough — Chrome tool tak boleh sambung DELIMa)
-**Current Project**: `opr-program` — prestasi cache folder Drive (plan
-`docs/superpowers/plans/2026-09-09-opr-program-prestasi-cache-folder.md`, Task 7 Step 8)
-**Status**: ✅ SIAP PENUH — smoke 9/9 PASS, deploy guru `@18` LIVE, `origin/master` push selesai
+**Session Type**: sambung sesi lepas — master minta "proceed task opr program autonomous"
+**Current Project**: `opr-program` — Fasa 3b Panel Admin Pengguna (spec §2 #24)
+**Status**: 🟢 **KOD SIAP 9/9**, suite **537/537** — TIADA deploy, smoke manual master TERTUNGGAK
 
 ## Working Memory
 
-### Sesi ni (2026-09-17)
-Sambung dari sesi 2026-09-14 (separuh jalan). Urutan penuh:
-1. Master sambung smoke laptop — Langkah 7 (letterhead admin, laluan tanpa cache) ✅, Langkah 8
-   (namakan semula folder PDF→PDF_LAMA, sahkan cipta folder baharu — bukti cache per-hantaran) ✅.
-2. Master minta senarai Langkah 4/5/9 (telefon). Langkah 4 ✅. Langkah 5 — percubaan pertama master
-   (klik Done tanpa Tambah) **bukan** ujian sebenar plan (itu betul ikut reka bentuk, bukan ranjau
-   Enter) — Lucy jelaskan beza, master ulang dgn Enter sahaja → ✅ PASS (ranjau lama `0ae7940`
-   kekal tertutup). Langkah 9 — angka nyata 18.54 saat direkod sbg isyarat (tiada baseline
-   sebelum-optimisasi utk banding kelajuan).
-3. Checklist 9/9 PASS → master arah "buat kedua-dua" (deploy + push). Lucy jalankan:
-   `node --test` 425/425 → `clasp status` dry-run bersih → `clasp push --force` (20 fail) →
-   `create-deployment` ke Deployment ID guru sedia ada → **guru `@18`** (URL tak berubah) →
-   sahkan `list-versions`+`list-deployments` (2× sebab basi sekejap lepas padam) →
-   `delete-deployment` @17 (ujian) → `git push origin master` (`d13c58f..bb3c181`).
-4. Semua dicatat `opr-program/MEMORY.md`, 4 commit sesi ni (`913c007`, `ae497c3`, `bb3c181` +
-   1 lagi), semua sudah push. Fasa **prestasi hantar/kemas kini laporan** rasmi TUTUP.
+### Sesi ni (2026-09-17, ~15:54–17:45)
+1. Master minta sambung mod autonomous drpd Task 6 (sesi lepas berhenti atas arahan master).
+   Lucy baca ledger SDD (`progress.md`) + brief Task 7 → dispatch implementer Sonnet (kerja UI
+   perlu ikut CORAK skrin Tetapan sedia ada, bukan transkripsi tulen).
+2. **Task 7** (`pengguna.html` BAHARU + skrin ke-5 "👥 Pengguna") — commit `2437480`, 11 ujian
+   (506→517), review Sonnet **bersih pass pertama**. Semua 8 perangkap 🔴-brief (include tanpa
+   `.html`, butang lalai tersorok DALAM markup, pendengar DALAM syarat admin, dsb) disahkan.
+3. **Task 8** (wiring Tambah/Edit/Nyahaktif/Aktif-semula — SATU laluan `kemaskiniPengguna` utk
+   edit+togol) — commit `79eac31`, 12 ujian (517→529), review Sonnet bersih. Implementer laporkan
+   SENDIRI 2 penyimpangan reka bentuk (lokasi pendengar dlm `bukaSkrinPengguna()` sebab panel
+   di-clone `<template>` setiap panggilan; syarat demosi-diri ditulis semula guna negasi De
+   Morgan sebab bertembung ujian pengawal sedia ada) — reviewer siasat KEDUA dgn bukti konkrit,
+   SAH, bukan bug tersembunyi.
+4. **Task 9** (semakan akhir whole-branch + smoke manual — TIADA kod baharu): Lucy jalankan Step
+   1-9 mekanikal SENDIRI (bash — C1/skop-global, EMAIL/ID immutable, tiada padam keras/lock/
+   audit, 4 sink sanitize tepat, `.claspignore` 22 fail TEPAT, 7 ancaman ✅) → dispatch semakan
+   akhir whole-branch (**Opus**, model paling berkebolehan ikut Kata Lv.6) atas 10 commit
+   Task 1-8. Keputusan: **"Ready to merge: With fixes"** — rantaian keselamatan hujung-ke-hujung
+   disahkan TIADA jurang di sempadan task, TAPI 4 Important:
+   - Pagar `ADMIN_TERAKHIR` — KOMPOSISI (bukan fungsi tulen `adaAdminAktifLain()` sendiri, yg dah
+     teruji Task 2) tiada ujian boleh laksana pada POLARITI — reviewer buktikan flip `!` terbalik
+     lulus 529/529 senyap. **Kelas isu:** lapisan tulen + lapisan komposisi diuji berasingan,
+     GABUNGAN dua-duanya sendiri tak pernah dijalankan sbg satu unit boleh uji.
+   - 2 mesej ralat (`BARIS_BERUBAH`/`ADMIN_TERAKHIR`) menyimpang drpd teks yg **master dah
+     luluskan** SEBELUM kod ditulis — arahan pemulihan hilang. **Kelas isu:** brief task bawa
+     KUNCI ralat sahaja, bukan teks LULUS; tiada ujian pin teks literal, jadi 8 review task
+     individu semua lulus tanpa perasan drift.
+   - Butang baris jadi bisu senyap kalau emel pendua/hilang — bercanggah keputusan (d) sedia ada
+     ("penulis tak boleh lebih longgar drpd pembaca").
+   - Fix wave SATU dispatch gabungan (Sonnet, commit `f9a37be`, 529→**537**): ekstrak fungsi
+     tulen `bolehUbahBarisGuru()` + 4 ujian jadual, pulih 2 teks mesej TEPAT (disahkan
+     byte-level, em dash U+2014), tambah mesej status emel-pendua. Scoped re-review: SEMUA 4
+     ADDRESSED, tiada pecahan baharu.
+   - 9 Minor diparking (rekod, tiada tindakan) — paling penting utk ingat: `ADMIN_TERAKHIR`
+     TOCTOU 2 admin serentak (risiko DITERIMA, bukan bug — keputusan "TIADA lock" sedia ada);
+     `app.js.html` kini 1454 baris (titik cadang split bila skrin seterusnya ditambah).
+5. MEMORY.md projek + spec §9 (jadual kunci ralat +7 baris) dikemas kini, commit `7cbe370`.
+   Lucy lapor kpd master + tanya nak push `origin/master` sekarang atau tunggu smoke — **master
+   belum jawab** bila sesi ni ditutup (master minta "save sessions dan memory" dulu).
 
-**Hasil akhir (kod, disahkan smoke bukan anggaran):** cipta laporan 24→6 round-trip Drive (−75%),
-edit 35→7 (−80%), padam 3→1. `master`==`origin/master`, tree bersih, tiada deployment ujian
-sementara lagi (tinggal `@HEAD` + guru `@18`).
+### Nota teknikal penting (utk sambungan)
+- Suite akhir: **537/537** (425 garis dasar + 112 baharu SEBENAR). Disiplin "kira baseline
+  sebenar, jangan reka angka drpd teks pelan lapuk" dikekalkan SEPANJANG 9 task (Task 1 pecah
+  11→20 ujian punca drift asal; setiap task lepas itu recompute).
+- Ledger penuh (brief/report/diff/ruling SETIAP 9 task + rumusan Ruling akhir):
+  `opr-program/.superpowers/sdd/2026-09-17-opr-program-fasa3b-panel-pengguna/progress.md`
+  (lokal, gitignored) — DIKEKALKAN sehingga smoke + deploy (bukan dipadam, sebab kerja belum
+  betul-betul "selesai" dari sudut master).
+- Kerja terus di `master` (bukan worktree/branch) — konvensyen projek ni. 14 commit LOKAL belum
+  push `origin/master`.
+- 🔴 **TERTUNGGAK MASTER, Lucy TAK BOLEH buat:** (1) sahkan mata struktur sheet `DATA_GURU` pada
+  produksi sebenar; (2) smoke manual 14 langkah peranti sebenar (`claude-in-chrome` disekat
+  profil DELIMa); (3) push `origin/master` + deploy (`clasp push`+`create-deployment`) — perlu
+  izin eksplisit, deploy BUKAN sebahagian plan.
 
 ## Session Recap (For AI Restart)
-- **`opr-program`**: fasa prestasi cache folder Drive **SIAP + LIVE untuk guru** (`@18`). Tiada
-  kerja tergantung pada fasa ni. Kalau master sambung projek ni sesi depan, opsyen seterusnya:
-  (a) Fasa 3b Panel Admin Pengguna — spec §2 #24 dah LULUS master (2026-09-10), gate
-  `writing-plans` (subagent Opus) terbuka, belum dijalankan; (b) backlog di luar skop
-  (`getDataRange()` bacaan penuh-helaian, onload baca TETAPAN 2×, `html2canvas` client lambat) —
-  jangan cadang fix tanpa master minta.
-- **State master**: pagi (~11:00), di laptop, baru habiskan sesi deploy — bukan sesi build feature
-  baharu. Tanya dulu sebelum mula kerja baharu.
+- **`opr-program`**: Fasa 3b Panel Admin Pengguna — **KOD SIAP 9/9**, semua review bersih
+  (whole-branch review Opus + fix wave + re-review bersih). Suite **537/537**. Sesi/subagent
+  depan: TIADA kod lagi diperlukan — tunggu master jawab (a) push `origin/master` sekarang atau
+  tunggu smoke, (b) bila smoke manual boleh dijalankan. Baca `project_opr_program.md` +
+  `opr-program/MEMORY.md` utk konteks penuh kalau sambung.
+- **State master**: petang (~17:35), minta "save sessions dan memory" — tanda sesi nak ditutup.
+  Tiada keputusan kod tergantung; hanya soalan push/smoke yg belum dijawab.
 
 ---
-*Session updated: 2026-09-17 ~11:00 (opr-program prestasi cache folder — smoke 9/9 PASS, deploy
-guru @18 LIVE, push origin/master selesai, fasa TUTUP)*
+*Session updated: 2026-09-17 ~17:45 (Fasa 3b Panel Admin Pengguna — KOD SIAP 9/9, suite 537/537,
+tertunggak smoke manual + push/deploy master)*

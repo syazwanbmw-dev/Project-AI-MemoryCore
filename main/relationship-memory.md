@@ -46,13 +46,12 @@
 
 - 🆕 `Digital Hub` (portal akses semua sistem sekolah — brainstorming architectural JALAN,
   belum sampai spec/plan, belum wujud secara fizikal. Butiran: `current-session.md`)
-- `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. **2026-09-06: Anjuran/Tempat
-  checkbox berbilang LIVE `@11`, fix visual (letterhead full-width + checkbox mobile) LIVE
-  `@13`** — fix pertama `@12` ada 2 SILAP (master tangkap kedua-duanya lepas smoke telefon),
-  dibetulkan selepas semak git history sebenar + minta screenshot. Suite 365/365. Fasa 3a Tetapan
-  & Branding (letterhead upload) LIVE sejak `@10`. **Fasa 3 dipecah 3a/3b/3c** — 3a SIAP, 3b
-  (Panel Pengguna & Rujukan) + 3c (Migrasi) belum mula. Smoke manual master utk `@13` TERTUNGGAK.
-  Butiran: `opr-program/MEMORY.md`)
+- `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. LIVE production `@18` (prestasi
+  cache-folder Drive). **2026-09-17: Fasa 3b Panel Admin Pengguna — KOD SIAP 9/9** (mod
+  autonomous, suite 537/537, semakan akhir whole-branch bersih) — **TERTUNGGAK master**: smoke
+  manual 14 langkah peranti sebenar + push `origin/master` (14 commit) + deploy (izin
+  berasingan). Fasa 3a Tetapan & Branding LIVE sejak `@10`. Butiran: `opr-program/MEMORY.md`,
+  `current-session.md`)
 - `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
   bukan Hono/Workers. **BELUM launch rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan
   lama "sekolah sudah guna aktif harian" SALAH). **2026-08-25:** siri 4 fix guna sistem sebenar
