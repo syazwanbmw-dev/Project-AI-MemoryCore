@@ -4,37 +4,52 @@
 ---
 
 ## Session Context
-**Session Type**: master "sambung opr program" → bersih ukuran → pra-muat + cache → deploy `@28` → ukur hantar laporan (2026-09-19, ~10:39–13:15)
-**Current Project**: `opr-program`
-**Status**: 🟢 Guru LIVE `@28`, suite 594/594, tree bersih, `master`==`origin/master`. 🟡 Pagar saiz client Buku Program BELUM dibina — menunggu "ya" master.
+**Session Type**: brainstorm bounded → implement feature swipe kalendar `takwim-digital` (2026-09-20, ~14:00–15:00)
+**Current Project**: `takwim-digital`
+**Status**: 🟢 LIVE production `@25`. Suite 100/0, `master`==`origin/master`. Tiada tugasan terbuka untuk feature ni.
 
 ## Working Memory
 
-### Sesi ni (2026-09-19 tengah hari)
-1. **A siap:** kod ukuran dipulih, `Ukur.gs` dipadam, HEAD bersih, deployment ujian `@27` dipadam & disahkan 2× (gotcha `list-deployments` basi).
-2. **B(2) `f1024c5`:** `praMuatSenarai()` hantar `senaraiLaporan()` serentak dgn `mulakanSesi()`; `SENARAI_PRA` dimakan SEKALI; hanya `ok:true` digunakan (gagal senyap → panggilan segar). +3 ujian, 3 mutasi ditangkap.
-3. **B(3) TETAPAN 2× — SKIP** (0.1–0.2 s, sentuh gerbang setup).
-4. **(4) cache rujukan `857dc18`:** `bacaSenaraiRujukanSesi_()` `CacheService` TTL **120 s** (master pilih A + 2 min). Gerbang simpan `ReportService` ×2 KEKAL sheet segar. +9 ujian (ambil TEKS fungsi + `new Function` dgn CacheService palsu), 4 mutasi ditangkap.
-5. **Deploy `@28`** atas "Deploy" master (ID guru sama). Master: "rasa lebih laju".
-6. **Ukur hantar laporan** (Apps Script Executions, percuma): 2 gambar = 16–17 s, pelayan `ciptaLaporan` ~3 s ⇒ ~11–12 s telefon+muat naik. 4 gambar + Buku 177 MB ⇒ telefon **CRASH**.
-7. **Punca crash:** had 10 MB hanya di pelayan; client tak pernah guna `hadBukuProgramBait` (dihantar `Kod.gs:94`); `readAsDataURL` 177 MB→~236 MB memori.
-8. Memory ditulis: `opr-program/MEMORY.md` (commit `5804f5a`), `project_opr_program.md`, `feedback_ukur_sebelum_optimum.md` (+Executions), **baharu** `feedback_nilai_dihantar_tak_dipakai.md`, indeks.
+### Sesi ni (2026-09-20 petang)
+1. Master pilih feature dari backlog idea sedia ada (`takwim-digital/MEMORY.md`) — bukan idea
+   #2-4 yang disenarai, tapi idea BAHARU: swipe kalendar tukar bulan. Idea #1 (Google Chat)
+   disahkan master dah berjaya haritu (bukan sesi ni) — ditanda ✅ dalam MEMORY.md.
+2. **Swipe asas (commit `b3beb5a`):** delegated touch listener kat `document` (bukan attach
+   terus `.monthGrid` sebab `renderCal()` tulis semula innerHTML tiap tukar bulan). Reuse
+   `changeMonth(delta)` sedia ada — swipe kat dashCalendar/fullCalendar auto sync sebab `CAL`
+   state dikongsi. Bounded path (brainstorming skill), 1 soalan diklarifikasi (swipe kat mana —
+   jawapan: kedua-dua tempat).
+3. Smoke master #1: swipe fungsi tapi "tiada animation menunjukkan calendar di swipe" — tawar
+   pilihan (tambah animasi vs backlog), master pilih tambah.
+4. **Animasi slide (bahagian commit `6153dee`):** `CAL_DIR` (arah pertukaran terakhir) simpan
+   next/prev, `renderCal()` tambah class `slide-next`/`slide-prev`, CSS `@keyframes` fade+translateX
+   ~0.2s.
+5. Smoke master #2: "feel dia macam eh boleh slide tak ni? sebab 2 second lepas slide baru
+   tunjuk" — puncanya BUKAN animasi (0.2s), tapi jurang senyap ~2s tunggu `getMonthData` (2
+   panggilan Calendar API berturutan, server-side, Apps Script synchronous). Disahkan baca kod
+   `Code.js` dulu sebelum cadang fix — TAK sentuh caching (skop swipe, risiko kesegaran data).
+6. **Isyarat loading (bahagian commit `6153dee`):** `dimCalendarGrids()` pudar grid SERTA-MERTA
+   (opacity .35) sebelum respons server sampai, dipanggil dari `changeMonth`+`goToday`. Fix
+   client-side murah untuk masalah server-side yang tak leh dikejar dalam skop ni.
+7. Deploy production: commit → push git → `clasp deploy --deploymentId <ID SEDIA ADA>` (WAJIB,
+   sama gotcha `opr-program` — kalau tidak URL guru bertukar) → `@25`. Disahkan `clasp
+   deployments` + `clasp versions`.
+8. `takwim-digital/MEMORY.md` + `relationship-memory.md` dikemas kini, commit `4adcbfc` push.
 
-### 🔴 SAMBUNG (menunggu "ya" master — pelan sudah dibentang)
-1. Pagar saiz client Buku Program (commit sendiri; deploy cepat disyor — crash boleh kena guru sebenar).
-2. Mesej peringkat hantar ("Menjana PDF…"→"Memuat naik…"→"Menyimpan…").
-3. 3 PDF contoh Edge headless (2×/0.92 kini, 1.5×/0.85, 1.5×/0.75) → lapor saiz+rupa → master pilih (harga: kurang tajam dizum/cetak).
-Smoke telefon `@28` penuh (Cuba Semula/padam/edit segar, dropdown ≤2 min, kategori dibuang ditolak) belum disahkan lengkap.
-
-### Nota teknikal
-- `app.js.html` + `*.gs` **CRLF**; `tests/*.js` LF. Edit tool boleh campur LF → normalkan `replace(/\r?\n/g,"\r\n")`, sahih `git diff --stat` cuma tambahan. `grep -c $'\r'` TAK boleh dipercayai — semak dgn node `includes("\r\n")`.
-- `git`/`clasp` pesan commit: guna `-F fail` (scratchpad), bukan here-string PowerShell.
-- Ujian fungsi sentuh API Google: ambil TEKS fungsi + `new Function` dgn kebergantungan palsu.
-- Master pilih penyelesaian VISUAL (kualiti PDF) daripada MELIHAT contoh, bukan perbincangan.
+### Pattern brainstorming yang berkesan (rujukan sesi depan)
+- Bounded task 3 pusingan refinement (swipe → animasi → loading) SEMUA melalui gate approval
+  eksplisit sebelum implement — tiada skip walaupun perubahan kecil. Master beri "Ok" ringkas
+  tiap kali selepas Lucy bentang punca+cadangan (bukan cuma "nak fix ke tak").
+- Bila master laporkan symptom UX kabur ("eh boleh slide tak ni?"), JANGAN terus cadang fix —
+  siasat KOD dulu (baca `getMonthData`) untuk cari punca sebenar (server latency, bukan animasi)
+  sebelum bentang pilihan. Elak fix yang salah sasaran.
 
 ## Session Recap (For AI Restart)
-- Tunggu jawapan master atas pelan 3 langkah. Jangan mula kod tanpa "ya" (gerbang `plan` master kuatkuasakan).
-- Master mengesahkan dgn **ukuran & guna sistem**; soal ketepatan kaedah ukur ("tepat ke jam randik?") — jawab jujur, sebut had.
+- Feature swipe kalendar `takwim-digital` SIAP PENUH + LIVE `@25`. Tiada sambungan tertunggak.
+- Baki backlog idea `takwim-digital` (tak diminta, tak mula): feed `.ics`/`webcal://`, import
+  pukal cuti KPM, laman awam baca-sahaja.
+- Konteks projek lain (opr-program dll) — rujuk `MEMORY.md` projek masing-masing, bukan fail ni
+  (sesi ni fokus takwim-digital sahaja, tiada kerja opr-program berlaku).
 
 ---
-*Session updated: 2026-09-19 ~13:15 (opr-program hantar laporan diukur)*
+*Session updated: 2026-09-20 ~15:00 (takwim-digital swipe kalendar LIVE @25)*

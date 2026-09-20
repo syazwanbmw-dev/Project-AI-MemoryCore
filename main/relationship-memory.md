@@ -46,21 +46,20 @@
 
 - 🆕 `Digital Hub` (portal akses semua sistem sekolah — brainstorming architectural JALAN,
   belum sampai spec/plan, belum wujud secara fizikal. Butiran: `current-session.md`)
-- `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. LIVE production `@18` (prestasi
-  cache-folder Drive). **2026-09-17: Fasa 3b Panel Admin Pengguna — KOD SIAP 9/9** (mod
-  autonomous, suite 537/537, semakan akhir whole-branch bersih) — **TERTUNGGAK master**: smoke
-  manual 14 langkah peranti sebenar + push `origin/master` (14 commit) + deploy (izin
-  berasingan). Fasa 3a Tetapan & Branding LIVE sejak `@10`. Butiran: `opr-program/MEMORY.md`,
-  `current-session.md`)
+- `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. **2026-09-20: LIVE guru `@29`**
+  — pagar saiz client Buku Program (elak crash telefon 177MB) + mesej peringkat hantar, suite
+  610/610. Smoke telefon `@29` TERTUNGGAK master. Backlog: 3 PDF contoh kualiti (langkah 3/3
+  pelan crash Buku Program). Butiran: `opr-program/MEMORY.md`, `current-session.md`)
 - `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
   bukan Hono/Workers. **BELUM launch rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan
   lama "sekolah sudah guna aktif harian" SALAH). **2026-08-25:** siri 4 fix guna sistem sebenar
   (fon PDF tak konsisten, tab blank iPhone Chrome, jadual Senarai Laporan terpicit iPad menegak,
   warna label kelabu) — deploy `@37→@44`, suite 526/526. Fasa 2b Edit+Padam laporan masih belum
   dirancang. Butiran penuh: `opr-insaniah/MEMORY.md`)
-- `takwim-digital` (Apps Script + Google Calendar, akaun DELIMa. LIVE production `@23`
-  2026-09-07 — Digest Mingguan Telegram + Google Chat SIAP PENUH, diuji hujung-ke-hujung dgn
-  mesej Telegram sebenar. Butiran: `takwim-digital/MEMORY.md`)
+- `takwim-digital` (Apps Script + Google Calendar, akaun DELIMa. **2026-09-20: LIVE production
+  `@25`** — swipe kalendar (Dashboard + tab Calendar Interaktif) tukar bulan + animasi slide +
+  isyarat loading (getMonthData server ~2s, dua panggilan Calendar API berturutan). Google Chat
+  disahkan master berjaya hujung-ke-hujung. Suite 100/100. Butiran: `takwim-digital/MEMORY.md`)
 - `mypwa-v2` (eNilai — per-SEKOLAH, live production)
 - `erph` (sekolah RENDAH) · `erph-menengah-v2`
 - `celiksains`
