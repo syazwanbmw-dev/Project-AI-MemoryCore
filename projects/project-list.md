@@ -7,7 +7,7 @@
 | # | Project | Status ringkas | Last touched |
 |---|---------|-----------------|---------------|
 | 1 | `certificate-generator` | 🟢 LIVE `syazwanbmw-dev.github.io/Certificate-Generator` (GitHub Pages, fork Kiyoraka, static 100%). Redesign "Ruang Kerja Bersih" siap. ⚠️ push TAK auto-deploy — `gh workflow run static.yml` manual. Tiada backlog | 2026-09-28 |
-| 2 | `opr-program` | 🟢 LIVE guru `@30` (suite 617) — rangka muat (skeleton) ganti skrin putih, atas `@29` (pagar saiz Buku Program + mesej peringkat). 🔴 Telefon TERTUNGGAK master: rangka `@30` + smoke `@29`. Backlog: 3 PDF contoh kualiti (langkah 3/3), Fasa 4 Migrasi | 2026-09-28 |
+| 2 | `opr-program` | 🟢 LIVE guru `@30` (suite 617) — rangka muat (skeleton) ganti skrin putih, atas `@29` (pagar saiz Buku Program + mesej peringkat). 📱 Master: masih putih sekejap sebelum rangka (HTML ~670 KB, 82% pustaka PDF) — SAMBUNG: tunggu "ya" utk deployment UKUR. Smoke `@29` tertunggak. Backlog: 3 PDF contoh kualiti (langkah 3/3), Fasa 4 Migrasi | 2026-09-28 |
 | 3 | `takwim-digital` | 🟢 LIVE `@25` — swipe kalendar tukar bulan + animasi slide + isyarat loading. Digest Telegram+Google Chat LIVE. Suite 100/0. Tiada backlog | 2026-09-20 |
 | 4 | `opr-insaniah` | 🟡 Deployed `@44`, suite 526/526, **BELUM launch rasmi**. C1+I5 belum dibaiki (DIHOLD). Onload lambat disiasat, belum dibaiki | 2026-09-18 |
 | 5 | `digital-hub` | 🟢 LIVE prod `digitalhubsks.celikguru.my` @`a312f79` — Import Setting + PWA installable + Open Graph. Unit 197 / e2e 71. Backlog: audit log · kategori button · strip pengumuman · WAF rate-limit | 2026-09-02 |

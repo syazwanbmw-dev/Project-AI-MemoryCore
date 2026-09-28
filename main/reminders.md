@@ -7,9 +7,12 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 
 ## Terbuka
 
-- **`opr-program`** — 🔴 **TELEFON tertunggak (master):** (a) rangka muat `@30` (LIVE 2026-09-28, suite 617,
-  `origin/master` @ `f506e46`) — muncul cukup AWAL atau masih putih dulu? Jawapan tentukan sama ada perlu
-  tangguh pustaka PDF (UKUR dulu); (b) smoke `@29` (LIVE sejak 2026-09-20). 3 langkah smoke `@29`: (1) pilih Buku Program >10MB →
+- **`opr-program`** — 🟡 **SAMBUNG: menunggu "ya" master** utk deployment UKUR sementara (bukan URL
+  guru). Rangka muat `@30` LIVE 2026-09-28 (suite 617); master lapor di telefon "putih dulu sekejap
+  baru rangka" — putih = SEBELUM HTML diurai. HTML ~670 KB, 82% pustaka PDF yang cuma dipakai masa
+  Hantar tapi diurai SEBELUM `app.js` (melambatkan `mulakanSesi()`). Belum diukur — nombor tentukan
+  pilihan (muat turun / urai / `doGet` dominan). Master sebut PERANTI bila baca nombor.
+  🔴 **TERTUNGGAK MASTER:** smoke `@29` (LIVE sejak 2026-09-20). 3 langkah smoke `@29`: (1) pilih Buku Program >10MB →
   mesti ditolak SERTA-MERTA (lencana + butang Hantar mati) sebelum cuba muat naik; (2) hantar laporan
   biasa → status "Menjana PDF…" → "Memuat naik…" → "Menyimpan…"; (3) tutup wifi tengah proses →
   status kosong semula + banner ralat biasa, bukan terperangkap. Buku Program 177MB belum diuji

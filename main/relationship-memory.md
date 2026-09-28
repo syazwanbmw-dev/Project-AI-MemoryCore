@@ -46,10 +46,11 @@
 
 - 🆕 `Digital Hub` (portal akses semua sistem sekolah — brainstorming architectural JALAN,
   belum sampai spec/plan, belum wujud secara fizikal. Butiran: `current-session.md`)
-- `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. **2026-09-20: LIVE guru `@29`**
-  — pagar saiz client Buku Program (elak crash telefon 177MB) + mesej peringkat hantar, suite
-  610/610. Smoke telefon `@29` TERTUNGGAK master. Backlog: 3 PDF contoh kualiti (langkah 3/3
-  pelan crash Buku Program). Butiran: `opr-program/MEMORY.md`, `current-session.md`)
+- `opr-program` (migrate AppSheet OPR SK Salor → Apps Script. **2026-09-28: LIVE guru `@30`**
+  — rangka muat (skeleton) ganti skrin putih, suite 617/617. Master di telefon: masih "putih dulu
+  sekejap baru rangka" — putih itu SEBELUM HTML diurai (HTML ~670 KB, 82% pustaka PDF yang cuma
+  dipakai masa Hantar). SAMBUNG: menunggu "ya" utk deployment UKUR sementara. Smoke `@29`
+  tertunggak. Backlog: 3 PDF contoh kualiti. Butiran: `opr-program/MEMORY.md`, `current-session.md`)
 - `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
   bukan Hono/Workers. **BELUM launch rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan
   lama "sekolah sudah guna aktif harian" SALAH). **2026-08-25:** siri 4 fix guna sistem sebenar
@@ -235,6 +236,25 @@ _(akan diisi bila master share)_
   *CSS tulen tiada penanda kandungan, jadi setiap deploy berasingan berharga satu pusingan
   pengesahan master* (deploy). Jalan tengahnya: commit berasingan, deploy dibundel.
   Sambungan [[feedback_bentangan_separa]].
+
+- **Master minta drift dokumen dibetulkan DULU, serta-merta — dan Lucy patut BAWA isu drift itu
+  sendiri** (2026-09-28). Brief sesi menyebut `reminders.md`/`project-list.md` lapuk (opr-program
+  `@17` padahal `@29`); master jawab satu baris *"Betulkan yang lapuk tu dulu"*, kemudian *"Ya commit
+  push"* — tiada minta plan. Sokong corak 2026-08-10 (dokumen dibundle, murah). Semakan git sebelum
+  menulis menemui LAGI tiga kesilapan yang master tak tunjuk (takwim `@22`→`@25`, digital-hub
+  "brainstorming"→LIVE, baris insaniah "C1 DIHOLD sama" yang sudah dibetulkan 2026-09-18).
+  ➡️ Bila brief menemui satu drift, **audit fail sejenis lain sekali** lawan `git log`, bukan hanya
+  yang disebut. Dan ia terpakai pada auto-memory index juga, bukan hanya fail Lucy.
+
+- **Master memilih DEPLOY dan LIHAT di telefon, bukan ukur dulu — dan hasilnya memang berguna**
+  (2026-09-28). Ditawar dua jalan (deploy `@30` sekarang / ukur dulu), master jawab *"Ok deploy 30"*.
+  Hasil satu ayat: *"keluar skrin putih dulu sekejap baru ada kad kelabu"* — mengesahkan bahagian
+  yang Lucy sudah amaran (skeleton tak boleh sentuh masa sebelum HTML diurai) dan memberi satu
+  fakta yang tak boleh diperoleh dari kod: putih itu BETUL-BETUL wujud pada peranti master.
+  ➡️ Sambungan [[feedback_soalan_reka_bentuk_contoh]] / keputusan visual dari MELIHAT: untuk
+  perubahan berisiko rendah dan boleh diundur, deploy dahulu ialah cara termurah mendapat
+  kebenaran dari telefon. Master lapor **tanpa sebut peranti** — Lucy patut minta peranti
+  SEKALI masa menyerahkan tugasan smoke (sudah dibuat), bukan tunggu.
 
 ## Kekuatan master yang Lucy patut manfaatkan
 
