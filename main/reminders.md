@@ -7,8 +7,9 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 
 ## Terbuka
 
-- **`opr-program`** — 🔴 **SMOKE TELEFON `@29` tertunggak (master).** `@29` LIVE guru sejak 2026-09-20
-  (suite 610/610, `origin/master` @ `6007298`). 3 langkah smoke: (1) pilih Buku Program >10MB →
+- **`opr-program`** — 🔴 **TELEFON tertunggak (master):** (a) rangka muat `@30` (LIVE 2026-09-28, suite 617,
+  `origin/master` @ `f506e46`) — muncul cukup AWAL atau masih putih dulu? Jawapan tentukan sama ada perlu
+  tangguh pustaka PDF (UKUR dulu); (b) smoke `@29` (LIVE sejak 2026-09-20). 3 langkah smoke `@29`: (1) pilih Buku Program >10MB →
   mesti ditolak SERTA-MERTA (lencana + butang Hantar mati) sebelum cuba muat naik; (2) hantar laporan
   biasa → status "Menjana PDF…" → "Memuat naik…" → "Menyimpan…"; (3) tutup wifi tengah proses →
   status kosong semula + banner ralat biasa, bukan terperangkap. Buku Program 177MB belum diuji
@@ -54,6 +55,7 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 
 - ✅ `certificate-generator` — Hosting standalone GitHub Pages + redesign UI "Ruang Kerja Bersih"
   (putih+emerald, Inter+Manrope) LIVE, commit `00a4692` (2026-09-27/28).
+- ✅ `opr-program` — Rangka muat (skeleton) ganti skrin putih. LIVE `@30`, suite 617 (2026-09-28).
 - ✅ `opr-program` — Pagar saiz client Buku Program (elak crash telefon 177MB) + mesej peringkat
   hantar. LIVE `@29`, suite 610 (2026-09-20).
 - ✅ `takwim-digital` — Swipe kalendar tukar bulan + animasi slide + isyarat loading. LIVE `@25`,
