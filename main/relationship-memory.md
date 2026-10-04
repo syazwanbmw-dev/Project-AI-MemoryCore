@@ -58,9 +58,9 @@
   warna label kelabu) — deploy `@37→@44`, suite 526/526. Fasa 2b Edit+Padam laporan masih belum
   dirancang. Butiran penuh: `opr-insaniah/MEMORY.md`)
 - `takwim-digital` (Apps Script + Google Calendar, akaun DELIMa. **2026-09-20: LIVE production
-  `@25`** — swipe kalendar (Dashboard + tab Calendar Interaktif) tukar bulan + animasi slide +
-  isyarat loading (getMonthData server ~2s, dua panggilan Calendar API berturutan). Google Chat
-  disahkan master berjaya hujung-ke-hujung. Suite 100/100. Butiran: `takwim-digital/MEMORY.md`)
+  `@26`** (2026-10-04) — butang "Hantar Sekarang" di System Settings (admin sahaja) utk hantar digest
+  manual bila terlupa tanda Kongsi; sebelum itu `@25` swipe kalendar + animasi. Google Chat
+  disahkan berjaya. Suite 124/124. Butiran: `takwim-digital/MEMORY.md`)
 - `mypwa-v2` (eNilai — per-SEKOLAH, live production)
 - `erph` (sekolah RENDAH) · `erph-menengah-v2`
 - `celiksains`
@@ -255,6 +255,21 @@ _(akan diisi bila master share)_
   perubahan berisiko rendah dan boleh diundur, deploy dahulu ialah cara termurah mendapat
   kebenaran dari telefon. Master lapor **tanpa sebut peranti** — Lucy patut minta peranti
   SEKALI masa menyerahkan tugasan smoke (sudah dibuat), bukan tunggu.
+
+- **Master betulkan HIPOTESIS Lucy dengan fakta dunia-sebenar yang kod tak simpan** (2026-10-04).
+  Lucy cadang butang manual dan sebut penanda `DGSENT_` mungkin terbakar (kerana 13 Sept). Master
+  jawab satu ayat: *"bukan digest tak berfungsi, cuma aku lupa kongsikan aktiviti minggu ini"* —
+  punca sebenar ialah tiada aktiviti bertanda, bukan penanda. Gejala (Executions ~4s, tiada mesej)
+  SAMA untuk dua punca berbeza. ➡️ Sebelum menyiasat kod, tanya fakta tindakan master
+  ("ada tanda Kongsi?"). Sambungan [[feedback_tanya_pernah_berfungsi]].
+- **Master lapor RUPA dengan soalan pendek, dan Lucy patut baca CSS — bukan agak** (2026-10-04).
+  *"warna button tu memang macam tu ke?"* lalu *"takde pun garis biru"*. Dua pusingan sebab Lucy:
+  (1) guna `class="btn"` tanpa semak `.btn` tiada warna; (2) menerangkan `secondary` sebagai "putih
+  bergaris" tanpa sebut garisnya (#e5ebf3) hampir tak nampak. Jawapan terbaik ialah *"silap saya,
+  sebabnya X"* + 3 pilihan bernama, kemudian master pilih dengan satu angka ("1"). Ujian sumber
+  tak nampak skrin — tuntut kelas/warna dalam ujian. → [[feedback_ujian_buta_skrin]]
+- **Master "Deploy production" selepas uji di `@HEAD` dan puas hati** — dua perkataan eksplisit,
+  tiada soalan lanjut (2026-10-04). Corak sama [[feedback_deploy_confirmation]]: Lucy tunggu frasa itu.
 
 ## Kekuatan master yang Lucy patut manfaatkan
 

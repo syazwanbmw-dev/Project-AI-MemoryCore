@@ -4,40 +4,36 @@
 ---
 
 ## Session Context
-**Session Type**: sambung `celiksains` → brainstorming (architectural) untuk sub-projek 2 (auth email+OTP) → spec ditulis → plan implementasi ditulis
-**Current Project**: `celiksains` (app sains gamified, sekolah rendah)
-**Status**: 🟢 Hardening anti-tipu (sub-projek 1) **SIAP SEPENUHNYA** — Task 5 dah siap (bukan tertunggak lagi), staging live, smoke 17/17. 🟡 Sub-projek 2 (auth email+OTP): **spec + plan siap ditulis & commit**, BELUM mula implementasi — tunggu master pilih kaedah (Subagent-driven / Native) dan sahkan plan.
+**Session Type**: `takwim-digital` — master terlepas digest auto minggu ini → bina butang "Hantar Sekarang" → test `@HEAD` → betulkan warna butang → deploy production
+**Current Project**: `takwim-digital` (Apps Script + Calendar, akaun DELIMa)
+**Status**: 🟢 **SIAP & LIVE `@26`** (2026-10-04 13:06). `master` == `origin/master` @ `9c84006`. Suite **124/0**. Tiada tugasan terbuka.
 
 ## Working Memory
 
-### Sesi ni (urutan)
-1. Master minta "Sambung celiksains" → baca `CLAUDE.md` → `MEMORY.md` → `git log`/`git status` (susunan wajib projek ni). Git bersih @ `efa36f3` — MEMORY.md dah sepadan git (catatan session lama saya PERCANGGAH dgn ni, lihat nota "punca dibetulkan" di bawah).
-2. `MEMORY.md` celiksains dah rekod: Task 5 hardening **SIAP** (migrasi DB test jauh + deploy staging + smoke 17/17, bukan tertunggak macam sesi lepas), DAN 2 keputusan master utk follow-up fix (bukan yang dirancang sesi lepas):
-   - Farm XP/coin → fix **had XP harian per fakta** (BUKAN "ganjaran hanya bila tahap naik" yang dirancang sesi lepas) — BELUM dikod, masuk backlog.
-   - Skrin tamat pusingan + UI login → **DITANGGUH, selari dgn sub-projek 3** (BUKAN tampung cepat inline macam dirancang sesi lepas) — sebab skrin ditulis SEKALI gaya baharu.
-3. Susunan dikunci: **1 hardening ✅ → 2 auth email+OTP (SETERUSNYA) → 3 UI Kids Baca**. Mula sub-projek 2.
-4. `superpowers:brainstorming` → klasifikasi **architectural**. Muat `cloudflare:cloudflare-email-service` skill dulu (rujuk fakta terkini, bukan latihan lapuk) → jumpa **Cloudflare Email Service (Workers binding)** native, TIADA package npm baharu, sesuai stack sedia ada.
-5. 5 `AskUserQuestion` (satu-satu): (a) servis email → **Cloudflare Email Service** (bukan Resend); (b) domain hantar → **celikguru.my**, perlu upgrade `wrangler` ke v4+ (command `email sending` tak wujud di v3.114); (c) 1 email ibu bapa → **1 profil** (bukan family-account); (d) admin → **kekal username+kata laluan** (tak tukar email); (e) akaun murid lama staging → **DELETE terus** (data smoke-test sahaja).
-6. Jumpa isu ketara SENDIRI (bukan tanya): `wrangler dev --local` dgn `remote:true` akan hantar EMAIL SEBENAR setiap larian Playwright E2E (kos + spam + test tak boleh baca kod OTP). Tanya cara uji → master pilih **`MODE_UJIAN` env flag pulangkan `kod_dev` dlm respons JSON** (`.dev.vars` sahaja, sama corak `KUNCI_SETUP`).
-7. Design dibentang 3 bahagian (aliran+endpoint / skema+OTP / ujian+infra+risiko), master **"Ok"** tiap satu → spec ditulis `docs/superpowers/specs/2026-09-29-celiksains-auth-email-otp-design.md`, self-review (fix: alamat `otp@celiksains.celikguru.my` konkrit, disambiguasi cabang `/login` username-vs-email), commit `5d68a44`.
-8. `superpowers:writing-plans` → periksa **ripple effect** SEBELUM tulis plan: `/daftar` tukar semantik (username→email) akan pecahkan **9 fail test sedia ada** (`helper-seed.js` + 8 spec lain) dan **frontend murid tiada skrin login pun** (cuma daftar auto-login). Plan masukkan Task 7 (helper `daftarMurid()` dikongsi, migrasi caller) + Task 8 (UI 2-langkah daftar→OTP, minimal — gaya akhir tunggu sub-projek 3).
-9. Plan (9 task, TDD) ditulis `docs/superpowers/plans/2026-09-29-celiksains-auth-email-otp-plan.md`. Self-review jumpa 2 ujian LEMAH sendiri (dibetulkan SEBELUM tunjuk master): ujian "OTP luput sebenar" asal tak sahkan apa-apa (logik silap — panggil `/daftar` baharu bukan cuba guna kod lama luput); ujian double-submit jangkaan `[201,409]` tak realistik pada miniflare tempatan (sama had macam ujian serentak `sesi-jawab.spec.js` sedia ada) → dilonggarkan ke `[400,409]` dgn nota jujur.
-10. Bentang handoff: cadang **Native** (bukan Subagent-driven) sebab Task 4→5→6 semua ubah fail `src/auth.js` SAMA secara berturutan + Playwright/wrangler tetap perlu saya jalankan utk setiap task tak kira kaedah. **Master tanya "Dah save memory dan session?" — BELUM master jawab kaedah mana.**
-
-### Punca dibetulkan (penting utk sesi depan)
-- Catatan `current-session.md` LAMA (line "2 fix susulan diluluskan") **SILAP/LAPUK** — ia rekod rancangan SEBELUM keputusan akhir master. Keputusan SEBENAR (dlm `celiksains/MEMORY.md`, git-backed) BERBEZA drpd apa yang dirancang. **Iktibar:** RAM session ini kekal betul HANYA sehingga next checkpoint git — kalau ada jurang masa antara sesi, git+MEMORY.md projek MESTI disemak dan menang, bukan RAM lama. Ini bukan sekadar teori [[feedback_andaian_mengeras_jadi_fakta]] — ia SUDAH berlaku sesi ni.
+### Sesi ni (Ahad 2026-10-04, 10:24–13:26)
+1. Master: "terlepas digest ke telegram dan google chat… blast manual atau buat button". Baca `MEMORY.md` + kod `sendWeeklyDigest_`. Bentang dua cara: (1) fungsi sementara `AUTH_SEMENTARA_JANGAN_COMMIT` dlm editor, (2) butang di System Settings.
+2. **Master betulkan hipotesis saya:** digest TIDAK rosak — dia lupa tanda "Kongsi" pada aktiviti minggu ni, jadi trigger keluar senyap (`adaHantar` palsu), bukan penanda `DGSENT_` terbakar macam 13 Sept. Master pilih **Cara 2**.
+3. Keputusan (master "ok" pada syor): butang tulis penanda selepas berjaya (trigger tak hantar dua kali) TAPI tidak bakar bila semua sasaran gagal; tiada pratonton (KISS); label tanpa perkataan "digest".
+4. Dibina: `runDigest_(manual)` teras dikongsi trigger+butang (DRY); `sendDigestNow(token)` gerbang `canManageUsers`; UI butang + `confirm()` + mesej per status. Ujian 100→124, **7 mutasi digigit** (+2 utk warna/garis). Pulih guna `cp` kerana kod baharu belum commit.
+5. Master tanya "test `@HEAD` hantar betul2 ke?" → YA (Script Properties dikongsi semua deployment). Bentang 3 pilihan; master teruskan uji.
+6. **Butang berfungsi, warna salah — 2 pusingan:** (a) `class="btn"` sahaja = kelabu lalai (`.btn` TIADA warna; perlu `primary/secondary/danger`) — silap saya, tak baca CSS; (b) master pilih `secondary` tapi "takde pun garis biru" — `--line` (#e5ebf3) hampir tak nampak atas kad putih, DAN saya salah huraikan ("putih bergaris" tanpa sebut ia nyaris tak kelihatan). Fix: `border:2px solid var(--primary)` inline. Ujian lama TAK tangkap kerana semak `onclick`, bukan rupa.
+7. Master "Deploy production" (eksplisit) → semak git/suite/`list-deployments` → `clasp create-deployment --deploymentId <ID guru>` → `@25`→`@26`, disahkan `list-deployments`.
+8. Commit: `dad96cc` (feature), `23d0cde` (kelas warna), `6f9a606` (garis biru), `0b3dc2d`+`9c84006` (docs).
 
 ### Pattern berkesan (rujukan sesi depan)
-- **Muat skill retrieval (`cloudflare-email-service`) SEBELUM cadang pendekatan teknikal** — elak syor drpd latihan lapuk (Email Service baharu 2025, berubah pantas). Jumpa fakta penting (Workers binding tiada API key) yang terus tentukan Soalan 1.
-- **Semak ripple SEBELUM tulis plan, bukan semasa** — `grep` semua fail test guna `api/daftar`/`username` DULU (9 fail) sebelum reka task, elak plan yang "berfungsi" tapi pecahkan separuh suite sedia ada secara senyap.
-- **Self-review plan tangkap ujian sendiri yang lemah** — dua ujian nampak logik tapi tak sahkan dakwaan sebenar (luput) atau jangka keputusan tak realistik (serentak). Tangkap SEBELUM tunjuk master, bukan lepas dia approve.
+- **Bila master tanya "memang macam tu ke?" tentang rupa — periksa CSS dulu, jangan agak.** Jawapan jujur: "silap saya, sebabnya X" lebih baik drpd pertahan.
+- **Gejala yang sama boleh ada dua punca** (penanda terbakar vs tiada aktiviti bertanda). Tanya master fakta dunia-sebenar ("ada tanda Kongsi?") sebelum siasat kod.
+- **Butang yang menghantar mesej luar mesti pulang keputusan per status**, bukan senyap — senyap nampak macam rosak.
+- **Ujian mesti tuntut RUPA (kelas/warna), bukan sekadar `onclick`** — ujian sumber tak nampak skrin ([[feedback_ujian_buta_skrin]]).
+- Regex ditulis melalui `node -e` dlm shell hilang backslash — guna `Edit` terus untuk regex.
 
 ## Session Recap (For AI Restart)
-- `celiksains` branch `test` @ `5d68a44` (spec+plan sahaja, tiada kod produk berubah lagi). Hardening (sub-projek 1) SIAP + LIVE staging.
-- 🔴 **SAMBUNG:** Master tunggu ditanya — **kaedah eksekusi plan** (Subagent-driven vs Native, Lucy syor Native) DAN **sahkan plan** `docs/superpowers/plans/2026-09-29-celiksains-auth-email-otp-plan.md`. Selepas jawapan, mula Task 1 (skema DB).
-- Task 9 dlm plan (migrasi DB test jauh + deploy staging) perlukan `wrangler` (network) — controller sahaja, sama pattern Task 5 hardening.
-- 🔴 Nota dari spec: "belum disahkan (jangan andai)" — peti mel DELIMa terima email luar drpd `celikguru.my`? Kena UJI (Task 9 Step 4) sebelum promosi laluan "email DELIMa" kpd pengguna sebenar.
-- JANGAN deploy production / merge `main` — ikut CLAUDE.md sedia ada, perlu izin jelas master, terpakai jugak utk kerja auth OTP ni.
+- `takwim-digital` SIAP: butang "Hantar Sekarang" LIVE `@26`. Belum smoke di URL production sebenar (master uji di `@HEAD` sahaja) — nota dlm `takwim-digital/MEMORY.md`. SETUP.md/PANDUAN-GURU.md belum sebut butang (ditawar, master belum jawab).
+- 🔴 **Tertunggak projek LAIN (tidak disentuh sesi ni):**
+  - `celiksains` sub-projek 2 (auth email+OTP): Task 1–8 SIAP @ `b9695c1`; **Task 9** (migrasi jauh + deploy staging + smoke) perlu master — `wrangler login` skop Email, izin `email sending enable`, 3 keputusan tertunggak (had kadar, enumerasi/PDPA, UI login). Email Service = Workers Paid $5 (free: verified-destination sahaja). Butiran: `celiksains/MEMORY.md`.
+  - `mypwa-v2` pelan baiki kuota D1 (`GET /api/ujian` = 81% read): master baca pelan, luluskan T0 + jawab 3 soalan. Butiran: `mypwa-v2/MEMORY.md` blok 🆕.
+  - `opr-program`: menunggu "ya" master utk deployment UKUR sementara; smoke `@29` tertunggak.
+- JANGAN deploy production / merge `main` tanpa izin jelas master.
 
 ---
-*Session updated: 2026-09-29 ~11:39 (celiksains sub-projek 2 auth email+OTP: spec+plan siap, tunggu master pilih kaedah eksekusi)*
+*Session updated: 2026-10-04 13:26 (takwim-digital butang Hantar Sekarang LIVE @26). Sebelum itu: 2026-09-29 ~22:05 (celiksains/mypwa-v2 tertunggak, dibawa ke atas)*
