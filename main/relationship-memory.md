@@ -51,7 +51,7 @@
   sekejap baru rangka" — putih itu SEBELUM HTML diurai (HTML ~670 KB, 82% pustaka PDF yang cuma
   dipakai masa Hantar). SAMBUNG: menunggu "ya" utk deployment UKUR sementara. Smoke `@29`
   tertunggak. Backlog: 3 PDF contoh kualiti. Butiran: `opr-program/MEMORY.md`, `current-session.md`)
-- `opr-insaniah` (**2026-10-05: guru `@48`** — pagar jenis+saiz fail + kecilkanImej tukar format; ujian peranti menunggu master. Langkah 3 lazy-load DITUTUP selepas ukur. Butiran: `opr-insaniah/MEMORY.md`.) Catatan lama: (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
+- `opr-insaniah` (**2026-10-05 22:3x: KELAS branch `medan-kelas` @`3b04b4c`, 689/0 — butang "Papar (N)"+modal ganti cip jadual (keputusan master); belum deploy, T9 menunggu "ya"**; sebelum itu: guru `@48` — pagar jenis+saiz fail + kecilkanImej tukar format; ujian peranti menunggu master. Langkah 3 lazy-load DITUTUP selepas ukur. Butiran: `opr-insaniah/MEMORY.md`.) Catatan lama: (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
   bukan Hono/Workers. **BELUM launch rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan
   lama "sekolah sudah guna aktif harian" SALAH). **2026-08-25:** siri 4 fix guna sistem sebenar
   (fon PDF tak konsisten, tab blank iPhone Chrome, jadual Senarai Laporan terpicit iPad menegak,
@@ -300,6 +300,12 @@ _(akan diisi bila master share)_
   ➡️ Jangan kunci jawapan awal sebagai spec; bentangkan implikasi (jadual "satu vs berbilang") bila ia berubah. Bila master rujuk nama yang tak
   dikenali, grep projek semasa dahulu, lepas itu tanya — jangan reka makna. Master memilih UI yang dia SUDAH BIASA lihat (konsisten antara projek).
   Master juga minta "Save memory dan session dulu" di tengah brainstorming — titik berhenti semula jadi sebelum spec.
+- **Master menilai UI daripada TANGKAPAN SKRIN, dan menolak reka bentuk yang lulus semua ujian** (2026-10-05 malam, KELAS). Suite 676/0 + final review bersih,
+  tetapi lihat jadual desktop dengan 18 cip → *"memang tak ok"*, terus beri penggantinya (butang "Papar" + modal Tutup). Gerbang "master tengok skrin"
+  BERGUNA — ia menangkap apa yang tiada ujian boleh. Master memberi **arahan konkrit** (letak butang di kolum Kelas, modal + butang Tutup), bukan
+  sekadar "tak ok" ⇒ bentang pelan ringkas (jadual sebelum/selepas) + 2 soalan kecil bersyor lalai, tunggu "Proceed". Master juga minta **ukur semula**
+  (telefon 390px) bukannya percaya tangkapan lama — Lucy jumpa tangkapan lama artifak alat (Edge ≥500px) dan sahkan dgn iframe 390px sebenar.
+  → [[feedback_ujian_buta_skrin]]
 
 ## Kekuatan master yang Lucy patut manfaatkan
 
@@ -366,6 +372,16 @@ _(akan diisi bila master share)_
   ➡️ **Bila menimbang pilihan, tanya master "apa yang orang itu nampak?" — bukan cuma bentangkan
   perbandingan teknikal.** Dan bila dua pilihan berkongsi langkah yang paling susah, langkah itu
   **bukan** pembeza; cari beza di tempat lain.
+
+- **Master tak jumpa sesuatu ⇒ biasanya LUCY belum buat langkah prasyarat, atau laluan tersembunyi** (2026-10-06).
+  Dua kali dalam satu sesi: master "tak jumpa tangkapan" (Lucy beri laluan `%TEMP%` dalam `AppData` yang
+  tersembunyi) dan "tak jumpa `migrasiKelas` dalam editor" (Lucy belum `clasp push` — tersilap tertib).
+  ➡️ **Sebelum arahkan master ke sesuatu: pastikan ia WUJUD di tempat itu, dan beri laluan yang boleh DIBUKA
+  (buka Explorer sendiri, bukan taip laluan tersembunyi).** Soalan "tak jumpa" ≠ master silap.
+  🔑 Tabiat baik master yang dikekalkan: beri "ya deploy"/"ya gabung" **jelas** sebelum setiap tindakan keluar;
+  jawapan ujian peranti ringkas ("semua lulus") tanpa sebut peranti — tanya peranti bila perlu catatan.
+  🟡 Classifier auto-mode menolak `clasp push` daripada Lucy; master jalankan sendiri dgn `!` (Git Bash —
+  elak `cd C:\...`). Lucy tak pintas penolakan itu; jelaskan sebab + beri arahan tepat sahaja.
 
 ---
 

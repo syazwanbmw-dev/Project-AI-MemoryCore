@@ -4,9 +4,31 @@
 ---
 
 ## Session Context
-**Session Type**: `opr-insaniah` — sesi petang/malam 2026-10-05 (16:47–19:1x): brainstorming medan KELAS. (Sesi awal hari: deploy `@46`→`@48`, lihat bawah.)
+**Session Type**: `opr-insaniah` — sesi 2026-10-05 22:41 → 2026-10-06 00:05: code-review `3b04b4c` → fix → T9 deploy → ujian peranti → gabung master. (Sesi lebih awal: lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status**: 🟡 Guru **`@48`**. **Medan KELAS: KOD SIAP T1–T8 di branch `medan-kelas` @`5ab0b03` (suite 676/0, final review bersih, TIDAK push/deploy). Menunggu master: tengok skrin + "ya" deploy (T9).** Ujian peranti `@48` masih menunggu.
+**Status**: 🟢 **Medan KELAS Hirisan A SIAP: guru `@49` LIVE, ujian peranti 7 item LULUS (master), `master` @`c5b28b7` (merge --no-ff `medan-kelas`, suite 691/0, dipush).** Tiada tertunggak untuk KELAS. Ujian peranti `@48` lama (5 item) tidak lagi relevan — `@49` menggantikan.
+
+### Sesi 2026-10-05 22:41 → 2026-10-06 00:05 (review → deploy @49 → merge)
+- `/code-review 3b04b4c` (subagent): tiada bug pasti, 3 kelemahan rendah. Master "fix 1 dan 2": (1) ID tak dipangkas dua belah dlm `bukaModalKelasPapar` vs `selKelas()`; (2) modal Papar tiada Escape + fokus tak pulang. Isu 3 (overflow bertindih) dibiar. Komit `19b9a2d`, suite 691/0, 3 mutan dibunuh.
+- Master tak jumpa tangkapan di `%TEMP%` (AppData tersembunyi) → Lucy buka Explorer terus. Master: "enam tangkapan looks good".
+- Master tak jumpa `migrasiKelas` dlm editor → **punca: `clasp push` belum dibuat** (Lucy tersilap susun tertib, langkah 5 sebelum 6). Fix: push dulu.
+- **Classifier auto-mode MENOLAK `clasp push` daripada Lucy** ("Blind Apply") → master jalankan sendiri dgn `!`. Lucy TIDAK cuba pintas. Tertib sebenar: push (19 fail, sah) → migrasi editor ×2 (OK) → `create-deployment --deploymentId` → `list-versions` sahkan v49.
+- 🟡 Gotcha `!` = Git Bash: `cd C:\Users\...` hilang backslash → "No such file". Guna `/c/Users/...` atau tiada `cd` (sesi sudah di folder projek).
+- Master "ya deploy" jelas sebelum `create-deployment`; "ya gabung" sebelum merge. Kedua-dua gerbang dihormati.
+- Belum disahkan eksplisit: semakan Sheet manual (KELAS kolum terakhir, RUJUKAN 18 baris); peranti ujian tak disebut master ("semua lulus" sahaja).
+- Disimpan: opr-insaniah/MEMORY.md (3 komit), relationship-memory, fail ini, auto-memory.
+- **Sambung:** KELAS selesai. Calon seterusnya: Hirisan B (panel admin kelas, mesti halang nama pendua), KAUNTER reset (mesti padam baris ujian + fail Drive yatim dulu), panduan guru (ditangguh), mesej `kemasKiniBarisOpr_`/`padamBarisOpr_` salah-remedi, drift salinan modal ke `opr-program` (Escape/ID-pangkas belum disalin).
+
+### Sesi malam 2026-10-05 22:12–22:35 (Papar kelas)
+- Baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan). Master "tengok tangkapan skrin" → A4, iPad, kad OK tapi **jadual desktop "memang tak ok"** (18 cip = baris ~450px).
+- Master putus: butang **Papar** di kolum Kelas (kad ringkas pun) → modal papar kelas + butang **Tutup**; + tangkap semula telefon ~390px, semak limpah.
+- Lucy bentang pelan (jadual sebelum/selepas + 2 soalan: label "Papar (18)", modal baca-sahaja) → master "Proceed".
+- Siap: `selKelas()` (Kongsi.html, tulen) · modal `#tudungKelasPapar` · cabang aksi 'kelas' dalam pendengar tbody · CSS (`.cip-papar`; buang cip-kelas + max-width 220 + Kelas-disorok-pada-kad). `tests/kelas-papar.test.js` (13), 4 ujian lama dikemas kini (menjaga reka bentuk yang ditolak). 14/14 mutan.
+- **Silap Lucy (ditangkap mutan):** ujian "tiada input dlm modal" menghiris dgn penanda hujung-baris pada fail CRLF ⇒ hirisan kosong ⇒ hijau palsu. Dibetulkan + dicatat `feedback_tetingkap_ujian_sumber` varian ke-3.
+- **Telefon "terpotong" = ARTIFAK** (Edge headless ≥500px, sudah dlm laporan T7). Diukur 390px sebenar (iframe+postMessage): scrollWidth 375/390, tiada limpah; modal 16–374px.
+- Tangkapan: `%TEMP%\opr-kelas\papar-{desktop,desktop-modal,ipad,ipad-modal,telefon,telefon-modal}.png`; penjana `jana-papar.js` EKSTRAK kod sebenar (bukan salinan templat).
+- Komit `3b04b4c` (tempatan). Disimpan: opr-insaniah/MEMORY.md, auto-memory (project + feedback + index), relationship-memory, fail ini.
+- **Sambung:** master tengok tangkapan baharu → (pilihan) `code-review` atas `3b04b4c` — final review opus lama SEBELUM perubahan Papar → "ya" deploy → T9 (clasp push → migrasiKelas() x2 → create-deployment → ujian peranti 5 item, sebut PERANTI). Merge/push branch = keputusan master.
 
 ### Sesi malam 2026-10-05 19:46–20:24 (EXECUTE plan KELAS)
 - Master "mula execute, subagent driven, autonomous" → branch `medan-kelas` dari `master` @`48a01cd`. T1–T8 siap, per-task review (sonnet) + final review (opus) BERSIH. Suite 608→676/0. Komit akhir `5ab0b03`. TIDAK push/deploy/merge.
@@ -68,4 +90,4 @@
 - JANGAN deploy production / merge `main` tanpa izin jelas master (opr-insaniah: izin deploy kekal selagi BELUM ada guru — jangan pindah ke projek yg sudah ada guru).
 
 ---
-*Session updated: 2026-10-05 13:48 (opr-insaniah `@48`: pagar jenis+saiz fail + kecilkanImej; Langkah 3 ditutup). Sebelum itu: 2026-10-05 (rangka muat + onload + C1 `@45`)*
+*Session updated: 2026-10-05 22:35 (opr-insaniah KELAS: butang Papar + modal @`3b04b4c`, 689/0, belum deploy). Sebelum itu: 2026-10-05 20:24 (execute plan KELAS T1–T8)*
