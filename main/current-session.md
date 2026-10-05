@@ -6,7 +6,21 @@
 ## Session Context
 **Session Type**: `opr-insaniah` — sesi petang/malam 2026-10-05 (16:47–19:1x): brainstorming medan KELAS. (Sesi awal hari: deploy `@46`→`@48`, lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status**: 🟡 Guru **`@48`** (tiada kod baharu sesi ini). `master` == `origin/master` @ `2be1489`. Suite 608/0. **Reka bentuk Hirisan A medan KELAS dibentang — MENUNGGU "setuju" master.** Ujian peranti `@48` masih menunggu.
+**Status**: 🟡 Guru **`@48`**. **Medan KELAS: KOD SIAP T1–T8 di branch `medan-kelas` @`5ab0b03` (suite 676/0, final review bersih, TIDAK push/deploy). Menunggu master: tengok skrin + "ya" deploy (T9).** Ujian peranti `@48` masih menunggu.
+
+### Sesi malam 2026-10-05 19:46–20:24 (EXECUTE plan KELAS)
+- Master "mula execute, subagent driven, autonomous" → branch `medan-kelas` dari `master` @`48a01cd`. T1–T8 siap, per-task review (sonnet) + final review (opus) BERSIH. Suite 608→676/0. Komit akhir `5ab0b03`. TIDAK push/deploy/merge.
+- T6 & T7: implementer berhenti/menanda gerbang "master tengok"; controller TANGGUH (komit tempatan) — master WAJIB tengok tangkapan skrin di `%TEMP%opr-kelas` sebelum T9. T7 fix round 1: cip Elemen/Nilai pecah perkataan → had lebar blok cip Kelas; baris 18 kelas ~450px (diterima).
+- Implementer T8 memadam blok MEMORY lebih luas drpd brief (hilang KAUNTER reset/panduan/@48/XSS) → controller pulih. Dua minor palsu dibuang.
+- Ledger + laporan: `opr-insaniah/.superpowers/sdd/2026-10-05-medan-kelas/` (gitignored). `opr-program` dapat komit `d341178` (drift salinan modal+chip), tempatan.
+- **Sambung:** master tengok skrin + putus kad ringkas → "ya" deploy → T9 (clasp push → migrasiKelas() x2 → create-deployment → ujian peranti). Merge/push branch = keputusan master.
+
+### Sesi malam 2026-10-05 19:11–19:45 (spec → plan)
+- Master "Proceed tulis specs" → spec ditulis (baca kod dulu: Setup/Kod/Validate/Database/ReportService/Kongsi/app.js). Master "Setuju" → minta plan ditulis oleh **subagent opus** (arahan master, mengatasi cadangan aku tulis sendiri).
+- Plan `docs/superpowers/plans/2026-10-05-medan-kelas.md`: 9 task (T1 struktur+migrasi · T2 validasi · T3 pelayan · T4 tapis · T5 borang modal+chip · T6 PDF · T7 jadual+penapis · T8 dokumen+jejak · T9 deploy GERBANG MASTER). T6/T7 berhenti utk master tengok.
+- Gotcha jumpa: fungsi `_` tak muncul dlm menu Run editor ⇒ `migrasiKelas()` awam + `ALLOW` 13→14 + gerbang pemilik; `isiBorang` jangan guna `tambahKotak` utk KELAS; lajur ke-7 menganjak `nth-child`.
+- "Ikut syor": subagent-driven; Hantar tak dimatikan di client; Kelas disorok lalai pada kad. Aku BELUM baca plan baris-demi-baris — hanya semak ringkas.
+- **Sambung:** tunggu "mula execute" → `superpowers:subagent-driven-development` atas plan. JANGAN mula/deploy sebelum itu.
 
 ### Sesi malam 2026-10-05 (brainstorming KELAS)
 - Master: reset `KAUNTER` ke 0001 (belum dibuat; mesti padam baris ujian + fail Drive yatim dulu), panduan guru ditangguh.
