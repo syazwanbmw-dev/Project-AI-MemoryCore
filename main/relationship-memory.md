@@ -293,6 +293,14 @@ _(akan diisi bila master share)_
   menulis senarai semak launch (bukan diminta) dan master terus pilih baiki sebelum guru pertama. Corak: bawa isu + keparahan JUJUR (rendah–sederhana) +
   cadangan; jangan bengkakkan atau sembunyikan.
 
+- **Master UBAH jawapan sendiri sebaik melihat pilihan konkrit, dan rujuk fitur projek LAIN dengan nama tempatan** (2026-10-05 malam). Medan KELAS:
+  jawab "satu kelas sahaja", dua soalan kemudian "guru boleh pilih lebih daripada 1" selepas Lucy tunjuk 18 pilihan dikumpul ikut tahun. Kemudian
+  *"kalau buat macam checkbox anjuran?"* — nama itu TIADA dalam projek yang sedang dikerjakan; ia dari `opr-program`. Lucy grep (0 padanan), TANYA
+  dan bukan teka; jawapan: *"medan anjuran tu di projek opr program"* → modal+chip sedia ada.
+  ➡️ Jangan kunci jawapan awal sebagai spec; bentangkan implikasi (jadual "satu vs berbilang") bila ia berubah. Bila master rujuk nama yang tak
+  dikenali, grep projek semasa dahulu, lepas itu tanya — jangan reka makna. Master memilih UI yang dia SUDAH BIASA lihat (konsisten antara projek).
+  Master juga minta "Save memory dan session dulu" di tengah brainstorming — titik berhenti semula jadi sebelum spec.
+
 ## Kekuatan master yang Lucy patut manfaatkan
 
 - **Master fikir merentas SEMUA projek (kuota akaun), bukan hanya projek yang sedang dibincang**

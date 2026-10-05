@@ -4,9 +4,17 @@
 ---
 
 ## Session Context
-**Session Type**: `opr-insaniah` — master "Sambung opr insaniah" → "Proceed 123" → deploy `@46` → ukur onload → pagar fail upload → deploy `@48`
+**Session Type**: `opr-insaniah` — sesi petang/malam 2026-10-05 (16:47–19:1x): brainstorming medan KELAS. (Sesi awal hari: deploy `@46`→`@48`, lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status**: 🟢 Guru **`@48` LIVE** (2026-10-05 ~13:2x). `master` == `origin/master` @ `2be1489`. Suite **608/0**. **Ujian peranti `@48` MENUNGGU master.**
+**Status**: 🟡 Guru **`@48`** (tiada kod baharu sesi ini). `master` == `origin/master` @ `2be1489`. Suite 608/0. **Reka bentuk Hirisan A medan KELAS dibentang — MENUNGGU "setuju" master.** Ujian peranti `@48` masih menunggu.
+
+### Sesi malam 2026-10-05 (brainstorming KELAS)
+- Master: reset `KAUNTER` ke 0001 (belum dibuat; mesti padam baris ujian + fail Drive yatim dulu), panduan guru ditangguh.
+- KELAS: 18 kelas (T1–3 Delima/Nilam/Zamrud; T4–6 Delima/Topaz/Zamrud), wajib min. 1, BERBILANG (master ubah drpd "satu" selepas lihat pilihan),
+  PDF+jadual+penapis, panel admin. UI = modal+chip macam "Anjuran" `opr-program` (master sebut "checkbox anjuran" — aku grep 0 padanan dlm opr-insaniah, TANYA
+  bukan teka; rupanya projek lain). Salinan, tanpa "Tambah". `RUJUKAN` `JENIS=KELAS` ⇒ 0 bacaan Sheet tambahan; lajur `KELAS` di hujung.
+- Classify: architectural → Hirisan A (medan) dulu, Hirisan B (panel admin) kemudian. Sambung: spec → master baca → plan (subagent opus) → kod.
+- Corak sesi: master UBAH keputusan selepas melihat pilihan konkrit (satu→berbilang kelas); sebut rujukan projek lain tanpa nama projek → grep + tanya.
 
 ## Working Memory
 
