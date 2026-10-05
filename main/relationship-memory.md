@@ -270,6 +270,17 @@ _(akan diisi bila master share)_
   tak nampak skrin — tuntut kelas/warna dalam ujian. → [[feedback_ujian_buta_skrin]]
 - **Master "Deploy production" selepas uji di `@HEAD` dan puas hati** — dua perkataan eksplisit,
   tiada soalan lanjut (2026-10-04). Corak sama [[feedback_deploy_confirmation]]: Lucy tunggu frasa itu.
+- **Master deploy SEBELUM uji peranti — bila TIADA pengguna sebenar, dan dia yang nyatakan sebabnya** (2026-10-05).
+  Lucy tawar uji `@HEAD` dahulu; master jawab *"Deploy production dulu pun ok kan. Tiada user lagi"*. Itu izin
+  eksplisit (bukan "Ok" ringkas), dan sebabnya fakta dunia-sebenar yg kod tak simpan (projek BELUM launch rasmi).
+  Selepas deploy master kembali dgn *"1234 ok"* — empat semakan peranti dilaporkan sebagai satu baris.
+  ➡️ Peraturan "tunggu frasa deploy" kekal. Tetapi bila belum ada pengguna, risiko hanya pada master → ia boleh
+  memendekkan urutan. Lucy tetap beri **senarai ujian bernombor** supaya "1234 ok" bermakna sesuatu, dan sediakan
+  jalan balik (`@44`). Jangan anggap izin ini berpindah ke projek yg sudah ada guru.
+- **Master mahu pepijat yang Lucy temui DIBAIKI — bila ditawar sebagai commit berasingan** (2026-10-05).
+  Lucy jumpa `.sorok` kalah `display:` lain semasa kerja lain, TIDAK bundle, tawar berasingan; master: *"Teruskan baiki
+  pepijat"*. Corak 2026-08-09/10 (satu commit satu perkara) bertahan. Imbas KELAS masalah, bukan satu kes: yang kedua
+  (`#jadualSenarai` dlm @media, telefon/iPad sahaja) lebih serius drpd yang nampak dlm screenshot.
 
 ## Kekuatan master yang Lucy patut manfaatkan
 
