@@ -51,7 +51,7 @@
   sekejap baru rangka" — putih itu SEBELUM HTML diurai (HTML ~670 KB, 82% pustaka PDF yang cuma
   dipakai masa Hantar). SAMBUNG: menunggu "ya" utk deployment UKUR sementara. Smoke `@29`
   tertunggak. Backlog: 3 PDF contoh kualiti. Butiran: `opr-program/MEMORY.md`, `current-session.md`)
-- `opr-insaniah` (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
+- `opr-insaniah` (**2026-10-05: guru `@48`** — pagar jenis+saiz fail + kecilkanImej tukar format; ujian peranti menunggu master. Langkah 3 lazy-load DITUTUP selepas ukur. Butiran: `opr-insaniah/MEMORY.md`.) Catatan lama: (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
   bukan Hono/Workers. **BELUM launch rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan
   lama "sekolah sudah guna aktif harian" SALAH). **2026-08-25:** siri 4 fix guna sistem sebenar
   (fon PDF tak konsisten, tab blank iPhone Chrome, jadual Senarai Laporan terpicit iPad menegak,
@@ -281,6 +281,17 @@ _(akan diisi bila master share)_
   Lucy jumpa `.sorok` kalah `display:` lain semasa kerja lain, TIDAK bundle, tawar berasingan; master: *"Teruskan baiki
   pepijat"*. Corak 2026-08-09/10 (satu commit satu perkara) bertahan. Imbas KELAS masalah, bukan satu kes: yang kedua
   (`#jadualSenarai` dlm @media, telefon/iPad sahaja) lebih serius drpd yang nampak dlm screenshot.
+
+- **Master luluskan dengan "ikut syor" — dan itu sah bila syor Lucy sudah dinyatakan berserta sebab** (2026-10-05).
+  Tiga kali dalam satu sesi: pilihan ukuran, plan pagar fail (dua keputusan: logo PNG/JPEG + had 15/5/2 MB), deploy `@48`. Ditawar sebagai
+  *"syor saya X kerana Y"* + soalan produk dipisahkan jelas. Master juga gabungkan jawapan (*"Ya dan proceed a"* = padam deployment + mula plan A).
+  ➡️ Susun mesej: syor ditulis eksplisit supaya "ikut syor" tidak ambigu; soalan produk (logo, had saiz) lain daripada soalan proses (urutan deploy).
+  Tetapi bila mesej ada BANYAK soalan, tafsir "ya/ikut syor" kepada yang berkaitan SAHAJA dan nyatakan tafsiran itu (dibuat sesi ini: "langkah 3 = senarai semak sahaja").
+- **Master memberi data ukuran dengan cepat dan tepat — sertakan PERANTI bila diminta** (2026-10-05). Telefon (Honor 50) dua larian + laptop dua larian
+  dalam ~10 minit. Lucy terlupa minta peranti pada kali pertama (data tanpa peranti tak boleh direkod) — minta SEKALI, di dalam arahan ukuran.
+- **Master tidak menolak penemuan security yang Lucy bawa sendiri — ia terus dijadikan plan** (2026-10-05). Isu `mime` client dipercayai ditemui semasa
+  menulis senarai semak launch (bukan diminta) dan master terus pilih baiki sebelum guru pertama. Corak: bawa isu + keparahan JUJUR (rendah–sederhana) +
+  cadangan; jangan bengkakkan atau sembunyikan.
 
 ## Kekuatan master yang Lucy patut manfaatkan
 
