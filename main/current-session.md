@@ -6,7 +6,18 @@
 ## Session Context
 **Session Type**: `opr-insaniah` — sesi 2026-10-05 22:41 → 2026-10-06 00:05: code-review `3b04b4c` → fix → T9 deploy → ujian peranti → gabung master. (Sesi lebih awal: lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status**: 🟡 **Hirisan B: KOD SIAP T1–T8 + semakan akhir + fix (cabang panel-kelas, suite 850/0), BELUM deploy. Menunggu master tengok tangkapan + "ya" T9. KELAS Hirisan A kekal SIAP (@49).**
+**Status**: 🟡 **Hirisan B: cabang `panel-kelas` @`b9d3663`, suite 866/0. Master tengok tangkapan, putus pelarasan, beri "proceed T9" (14:04). Pra-terbang LULUS; MENUNGGU master `! npx clasp push --force` + `migrasiRujukanStatus()` ×2 -> baru Lucy `create-deployment` (jangkaan @50). Guru kekal @49 sehingga itu.**
+
+### Sesi 2026-10-06 13:14 → 14:10 (Hirisan B: tangkapan -> pelarasan -> T9 bermula)
+- Master "sambung opr insaniah". Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan). Master minta buka folder tangkapan; soalan: "panel telefon 390 tak jadi panjang sangat ke?" -> Lucy BACA tangkapan sendiri (bukan agak): ya, ~3 skrin utk 18 kelas.
+- Master soal 26 kelas / pagination -> Lucy tolak pagination (bercanggah jawapan #2 paparan serta-merta), syor padat + lipat + (cari ditangguh). Master: "1+2 ikut syor".
+- `5ab17d3` lipat NYAHAKTIF dlm `<details>` + baris diketatkan. 🔴 Lucy TERSILAP anggar ~55px; tangkapan 26 kelas tunjuk ~80px (94 -> 80). Dilapor jujur, master pilih "terima".
+- Master: "susun ikut nombor tahun 1..6" -> `260c57f` `bandingKelas()` di pelayan (barisKelas + bacaRujukan_ KELAS), membalikkan "urutan sheet" utk KELAS SAHAJA. Tafsiran "semua paparan" disahkan master 14:04.
+- Ujian: kelas-panel-lipat (7, DOM stub, 6/6 mutan), kelas-susunan (9, 7/7 mutan); 4 ujian lama dikemas kini. Mutasi dgn skrip fail + pulih bait asal (sahkan hash).
+- Master sahkan: benih 18 kelas lulus (semakan Sheet RUJUKAN) -> "proceed t9". Pra-terbang: .claspignore sekat tests/docs/tools/*.md, 20 fail tracked, list-versions 49.
+- Silap kecil Lucy: skrip penjana sementara petikan tunggal bersarang (SyntaxError) -> dibetulkan sendiri; Edge headless ralat task_manager = bunyi dalaman, bukan kegagalan.
+- Tangkapan: `%TEMP%\opr-panel-kelas-v2\telefon-26-{tutup,buka}.png`. Susunan baharu TIDAK nampak pada tangkapan (penjana tanpa pelayan).
+- **Sambung:** master push + migrasi x2 -> Lucy create-deployment `--deploymentId AKfycbxss9...` -> list-versions sahkan v50 -> master uji peranti (SEBUT PERANTI): panel buka/tambah/nyahaktif/aktifkan/padam, lipatan, susunan 1->6 pada panel + modal borang + tapis, Edit laporan lama ber-kelas-nyahaktif, borang tolak nama tanpa huruf. Lepas lulus: merge `panel-kelas` -> master = keputusan master.
 
 ### Sesi 2026-10-06 10:10 → 12:45 (Hirisan B: EXECUTE plan, subagent-driven autonomous)
 - Master: "sambung opr insaniah, execute latest plan using subagent with autonomous execution". Cabang `panel-kelas` dari master f842747. T1–T8 siap (sonnet implementer + reviewer per task, opus semakan akhir). Suite 691 -> 850/0. TIADA push/clasp/deploy.

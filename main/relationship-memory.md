@@ -307,6 +307,14 @@ _(akan diisi bila master share)_
   (telefon 390px) bukannya percaya tangkapan lama — Lucy jumpa tangkapan lama artifak alat (Edge ≥500px) dan sahkan dgn iframe 390px sebenar.
   → [[feedback_ujian_buta_skrin]]
 
+- **Master tanya KEPUTUSAN rupa dengan soalan pendek, dan nombor yang Lucy janji akan DISEMAK terhadap tangkapan** (2026-10-06 petang, panel Kelas).
+  *"panel telefon 390 tu tak jadi panjang sangat ke?"* → Lucy baca tangkapan sendiri (bukan agak). Lucy janji baris ~55px, tangkapan baharu tunjuk ~80px
+  — dilapor JUJUR sebelum master memutuskan; master terima ("1. cuma fix sikit susunan"). Soalan kuantiti ("26 kelas lagi panjang?") dijawab dgn jadual
+  anggaran + syor, bukan pilihan kosong; master ambil "1+2 ikut syor". Master tambah permintaan kecil produk (susun tahun 1→6) tanpa ditanya — Lucy
+  tafsir "semua paparan" dan NYATAKAN tafsiran; master sahkan ("Ya, susun semua paparan"). ➡️ Jangan janji nombor piksel/ukuran sebelum ukur; sebut tafsiran
+  bila arahan kabur, jangan senyap.
+  🔑 Master sahkan Sheet ("benih 18 kelas lulus") dan beri "proceed t9" dlm satu mesej — gerbang deploy jelas, sama corak "ya deploy".
+
 ## Kekuatan master yang Lucy patut manfaatkan
 
 - **Master fikir merentas SEMUA projek (kuota akaun), bukan hanya projek yang sedang dibincang**
