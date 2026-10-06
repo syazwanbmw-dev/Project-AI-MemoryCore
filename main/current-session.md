@@ -6,7 +6,8 @@
 ## Session Context
 **Session Type**: `opr-insaniah` — sesi 2026-10-05 22:41 → 2026-10-06 00:05: code-review `3b04b4c` → fix → T9 deploy → ujian peranti → gabung master. (Sesi lebih awal: lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status**: 🟡 **Hirisan B: cabang `panel-kelas` @`b9d3663`, suite 866/0. Master tengok tangkapan, putus pelarasan, beri "proceed T9" (14:04). Pra-terbang LULUS; MENUNGGU master `! npx clasp push --force` + `migrasiRujukanStatus()` ×2 -> baru Lucy `create-deployment` (jangkaan @50). Guru kekal @49 sehingga itu.**
+**Status**: 🟢 **Hirisan B SIAP (2026-10-06 14:12): guru @50 LIVE, ujian peranti lulus ("semua lulus", peranti tak disebut), `panel-kelas` digabung ke `master` @38b9ed4 (memori e603fa0), suite 866/0, BELUM push origin. Calon seterusnya: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi (keputusan master).**
+- T9 selesai: master push 20 fail -> migrasi x2 (true lalu false) -> Lucy create-deployment @50 -> list-versions sahkan -> uji peranti -> merge. Silap Lucy: `cd` ke folder memory -> `!` master "Project settings not found" (tiada apa naik); pulang ke folder projek + beri `cd /c/Users/...` eksplisit.
 
 ### Sesi 2026-10-06 13:14 → 14:10 (Hirisan B: tangkapan -> pelarasan -> T9 bermula)
 - Master "sambung opr insaniah". Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan). Master minta buka folder tangkapan; soalan: "panel telefon 390 tak jadi panjang sangat ke?" -> Lucy BACA tangkapan sendiri (bukan agak): ya, ~3 skrin utk 18 kelas.
