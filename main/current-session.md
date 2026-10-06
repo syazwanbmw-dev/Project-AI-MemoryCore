@@ -6,8 +6,18 @@
 ## Session Context
 **Session Type**: `opr-insaniah` — sesi 2026-10-05 22:41 → 2026-10-06 00:05: code-review `3b04b4c` → fix → T9 deploy → ujian peranti → gabung master. (Sesi lebih awal: lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status**: 🟢 **Hirisan B SIAP (2026-10-06 14:12): guru @50 LIVE, ujian peranti lulus ("semua lulus"; peranti = LAPTOP, disahkan master 14:14 — telefon/iPad belum diuji utk panel baharu), `panel-kelas` digabung ke `master` @38b9ed4, suite 866/0, DIPUSH origin (master @f3b6363, 14:15). Calon seterusnya: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi (keputusan master).**
+**Status (terkini 2026-10-06 ~17:00)**: 🟢 **Gambar DITAMBAH + butang pratonton/✕: guru `@51` LIVE (`b1cb5a3`, suite 906/0). Baki "gambar hantu" dibaiki commit berasingan `d5939d5` (914/0, 8/8 mutan), BELUM deploy `@52`. Cabang `gambar-tambah` belum digabung/dipush. Ujian peranti `@51` tertunggak (master guna TELEFON).** Butiran blok sesi di bawah.
+**Status sebelumnya**: 🟢 **Hirisan B SIAP (2026-10-06 14:12): guru @50 LIVE, ujian peranti lulus ("semua lulus"; peranti = LAPTOP, disahkan master 14:14 — telefon/iPad belum diuji utk panel baharu), `panel-kelas` digabung ke `master` @38b9ed4, suite 866/0, DIPUSH origin (master @f3b6363, 14:15). Calon seterusnya: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi (keputusan master).**
 - T9 selesai: master push 20 fail -> migrasi x2 (true lalu false) -> Lucy create-deployment @50 -> list-versions sahkan -> uji peranti -> merge. Silap Lucy: `cd` ke folder memory -> `!` master "Project settings not found" (tiada apa naik); pulang ke folder projek + beri `cd /c/Users/...` eksplisit.
+
+### Sesi 2026-10-06 15:44 → ~17:00 (gambar upload: tambah bukan ganti → @51 → baki)
+- Master "jom opr insaniah" → Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan, master bersih @f3b6363). Master minta fix upload gambar: pilih satu-satu MENGGANTI (punca `gambarKecil = senarai`), mahu butang [ikon SVG | N | ✕], klik = pratonton, ✕ = buang daripada laporan.
+- Lucy baca kod dulu, bentang plan + 3 soalan bersyor (lebih had ditolak / 1+2 ditolak sekaligus / ✕ tiada pengesahan). Master "Setuju ikut syor"; tanya "max gambar 2 je ya?" → Lucy SAHKAN dlm kod (`Validate.gs:31` {min:1,maks:2} via SESI.peraturanGambar), bukan agak.
+- Kod: `semakTambahGambar`/`buangGambar`/`IKON_GAMBAR` (Kongsi.html tulen), `jalankanKerjaGambar` (satu rantai Promise tambah+buang), `lukisButangGambar`, modal `#tudungGambarPratonton`. Ujian `gambar-tambah.test.js` (stub DOM jalankan pendengar sebenar), 15/15 mutan. Lucy jumpa sendiri 3 perangkap: ✕ dua kali pantas (indeks basi), dua pilihan bertindih (gerbang buka awal), CSS `.cip-gambar button` (0,1,1) kalah `.cip-gambar-buang` → garis ✕ hilang. Tangkapan `%TEMP%\opr-gambar\*.png`; master "Looks good to me. Ya deploy. Baiki baki tu dalam commit berasingan. Save memory dan session".
+- 🔴 **Deploy: master di TELEFON.** Baris `! clasp push` yang master taip sampai sebagai TEKS (tidak dijalankan). Lucy sahkan dgn `clasp pull` ke folder sementara (0 penanda) → master tanya "Aku guna phone, tk boleh ke?" → Lucy cuba `clasp push --force` sendiri SEKALI (diterima kali ini; sebelum ini classifier menolak), sahkan dgn pull semula, `create-deployment` ⇒ **`@51`**, `list-versions` sahkan.
+- Baki "gambar hantu" (Batal semasa foto diproses) dibaiki `d5939d5`: `generasiGambar` + `gantiSemuaGambar()`. Satu kesilapan kecil Lucy: ujian sumber terlalu lebar (padan `gambarKecil = senarai` dlm gantiSemuaGambar) → disempitkan; `node -e` escape rosak lagi (gotcha lama) → guna Write.
+- Lucy tertinggal baris attribution pada commit pertama → `--amend` (belum push). Disimpan: opr-insaniah/MEMORY.md, auto-memory, relationship-memory, fail ini.
+- **Sambung:** master uji `@51` di telefon (+iPad), SEBUT PERANTI → "ya deploy" utk `@52` (baki; tertib: push → sahkan dgn pull → create-deployment) → keputusan master: gabung `gambar-tambah` ke master + push origin. Calon lain: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi.
 
 ### Sesi 2026-10-06 13:14 → 14:10 (Hirisan B: tangkapan -> pelarasan -> T9 bermula)
 - Master "sambung opr insaniah". Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan). Master minta buka folder tangkapan; soalan: "panel telefon 390 tak jadi panjang sangat ke?" -> Lucy BACA tangkapan sendiri (bukan agak): ya, ~3 skrin utk 18 kelas.
@@ -128,4 +138,4 @@
 - JANGAN deploy production / merge `main` tanpa izin jelas master (opr-insaniah: izin deploy kekal selagi BELUM ada guru — jangan pindah ke projek yg sudah ada guru).
 
 ---
-*Session updated: 2026-10-05 22:35 (opr-insaniah KELAS: butang Papar + modal @`3b04b4c`, 689/0, belum deploy). Sebelum itu: 2026-10-05 20:24 (execute plan KELAS T1–T8)*
+*Session updated: 2026-10-06 ~17:00 (opr-insaniah gambar tambah+pratonton @51 LIVE; baki d5939d5 belum deploy). Sebelum itu: 2026-10-05 22:35 (KELAS Papar)*

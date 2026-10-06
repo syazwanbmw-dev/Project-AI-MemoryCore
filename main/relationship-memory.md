@@ -315,6 +315,17 @@ _(akan diisi bila master share)_
   bila arahan kabur, jangan senyap.
   🔑 Master sahkan Sheet ("benih 18 kelas lulus") dan beri "proceed t9" dlm satu mesej — gerbang deploy jelas, sama corak "ya deploy".
 
+- **Master kerap bekerja daripada TELEFON — arahan `!` shell tidak boleh dijalankan** (2026-10-06 petang). Selepas "ya deploy" Lucy minta master
+  `! clasp push`; master menaip baris itu tetapi ia sampai sebagai TEKS BIASA (tiada output) dan kemudian bertanya *"Aku guna phone, tk boleh ke?"*.
+  ➡️ **Tanya/ingat peranti master SEBELUM memberi langkah yang memerlukan terminal.** Kalau telefon, Lucy yang jalankan (cuba sekali secara biasa;
+  jangan pintas jika ditolak) — dan **SAHKAN tindakan benar-benar berlaku** (pull ke folder sementara, grep penanda) sebelum langkah seterusnya.
+  Kesunyian selepas arahan ≠ kejayaan. Master bertanya soalan "tak boleh ke?" sebagai soalan ingin tahu, bukan aduan.
+- **Master menerima bundle permintaan dalam SATU mesej dan menetapkan tertib:** *"Looks good. Ya deploy. Baiki baki tu dalam commit berasingan. Save memory dan session"*
+  (2026-10-06). Corak "satu commit satu perkara" bertahan: baki yang Lucy tawar sebagai pilihan berasingan diambil, tetapi **deploy kekal bagi
+  fitur yang master LIHAT** — baki menunggu "ya deploy" sendiri (`@52`). Lucy tidak menyelit baki ke dalam deploy yang diluluskan.
+- **Master bertanya soalan pengesahan fakta dalam bahasa ringkas — jawab dengan KOD, bukan ingatan** (2026-10-06): *"Max gambar bagi opr insaniah 2 je ya?"*
+  → Lucy grep `PERATURAN_GAMBAR` dan petik `Validate.gs:31`, serta nyatakan client baca dari `SESI.peraturanGambar`. Sambungan [[feedback_dakwaan_melebihi_bukti]].
+
 ## Kekuatan master yang Lucy patut manfaatkan
 
 - **Master fikir merentas SEMUA projek (kuota akaun), bukan hanya projek yang sedang dibincang**
