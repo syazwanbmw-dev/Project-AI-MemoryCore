@@ -6,10 +6,39 @@
 ## Session Context
 **Session Type**: `opr-insaniah` — sesi 2026-10-05 22:41 → 2026-10-06 00:05: code-review `3b04b4c` → fix → T9 deploy → ujian peranti → gabung master. (Sesi lebih awal: lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status (terkini 2026-10-06 21:5x)**: 🟢 **Gambar DITAMBAH + butang pratonton/✕ + baki gambar-hantu + KOTAK AMARAN lebih-had: guru `@52` LIVE (`2773a70`, suite 923/0, `list-versions` sahkan). Ujian `@51` master (telefon) lulus kecuali penolakan gambar ke-3 disangka senyap → kotak amaran tengah skrin (OK menutup). Cabang `gambar-tambah` DIGABUNG ke master `93aaabb` + DIPUSH origin (22:1x, "Proceed"). Ujian peranti `@52` LULUS di iPad + telefon (master 22:14). Fitur gambar SELESAI sepenuhnya, tiada tertunggak.** Butiran blok sesi di bawah.
+**Status (terkini 2026-10-06 22:56)**: 🟢 **guru `@54` LIVE (ralat Hantar → kotak amaran, `6234e26`, suite 934/0); `@53` = nama program baharu + folder Drive direname. Ujian peranti @54 menunggu master; belum push origin.** Butiran blok sesi 22:17 di bawah.
+**Status TERKINI (2026-10-06 23:52)**: 🟢 **guru `@55` LIVE — input MASA dua pemilih jam (`7a8a31e`, suite 958/0, 16/16 mutan); master dipush origin (`54aa4c1`+). Ujian `@55` "dibuat di iPad" — lulus/gagal TIDAK dinyatakan (tanya master). `@54` lulus iPad.** Butiran blok sesi 23:10 di bawah.
+**Status sebelumnya (22:56)**: `@54` LIVE (kotak amaran ralat Hantar).
+**Status sebelumnya**: gambar @52 selesai.
 **Status sebelumnya (17:00)**: `@51` LIVE; baki `d5939d5` belum deploy.
 **Status sebelumnya**: 🟢 **Hirisan B SIAP (2026-10-06 14:12): guru @50 LIVE, ujian peranti lulus ("semua lulus"; peranti = LAPTOP, disahkan master 14:14 — telefon/iPad belum diuji utk panel baharu), `panel-kelas` digabung ke `master` @38b9ed4, suite 866/0, DIPUSH origin (master @f3b6363, 14:15). Calon seterusnya: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi (keputusan master).**
 - T9 selesai: master push 20 fail -> migrasi x2 (true lalu false) -> Lucy create-deployment @50 -> list-versions sahkan -> uji peranti -> merge. Silap Lucy: `cd` ke folder memory -> `!` master "Project settings not found" (tiada apa naik); pulang ke folder projek + beri `cd /c/Users/...` eksplisit.
+
+**Status TERKINI (2026-10-07 00:40)**: 🟡 **guru `@56` LIVE — PDF iOS R4 (`b8573a7`, suite 959/0, 4/4 mutan). Tab kosong HILANG di semua iOS; satu klik hanya bila pop-up dibenarkan (Chrome iPad), Safari + web app masih DUA klik. Menunggu keputusan master: A (berhenti + label "PDF sedia — ketik untuk buka ↗") vs B (kongsi PDF DOMAIN awal, ubah #29, plan dahulu). PPD (`moe.gov.my`) tak boleh buka pautan DOMAIN — sudah begitu sekarang, masalah BERASINGAN; tanya master PPD terima OPR macam mana. master ahead 4 origin (belum push). Jalan balik `@55`.**
+
+### Sesi 2026-10-07 00:00 → 00:40 (PDF iOS dua klik → subagent opus → R4 → @56)
+- Master "Opr insaniah" (Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git: sepadan, master bersih). Master lapor PDF iPad/iPhone dibuka app Drive, klik Buka dua kali, pertama about:blank; minta subagent opus. Subagent (read-only): punca = pautan datang selepas klik (async) ⇒ gerak isyarat luput; syor luas regex R3. Master: Chrome pun kena ⇒ hipotesis tak cukup; Lucy baca `app.js.html:25,268`.
+- Master mahu SATU klik + tiada tab kosong. Dua peringkat dibentang; master "1 dulu" ⇒ R4 TDD (`b8573a7`): regex iOS + iPad Macintosh&&maxTouchPoints>1; window.open(URL) terus bila tab null; komen R3 salah dibetulkan. "Ya deploy" ⇒ `@56` (push 20 fail → pull sahkan 4 penanda → create-deployment → list-versions v56).
+- Ujian master (iPad): Chrome satu klik tapi perlu enable pop-up; web app + Safari tiada tab kosong, masih dua klik. Master tanya "kalau kongsi anyone selesai kan?" → jelaskan mekanisme + risiko gambar murid; master: "DOMAIN cikgu je, PPD moe.gov tak boleh" → sudah begitu sekarang, masalah berasingan.
+- Silap kecil Lucy: PowerShell Select-String exit-code 255 pada commit (commit tetap berjaya — semak `git log`). Tiada silap lain.
+- **Sambung:** keputusan A/B · jawapan PPD · uji iPhone + laptop `@56` (SEBUT peranti+pelayar) · push origin. Disimpan: opr-insaniah/MEMORY.md, auto-memory (project+index), relationship-memory, fail ini.
+
+### Sesi 2026-10-06 23:10 → 23:52 (@54 lulus → push → input Masa → @55)
+- Master "Sambung opr insaniah" → Lucy baca fail Lucy + MEMORY projek + git (sepadan, master bersih, ahead 2). Master "@54 lulus di ipad. Push" → suite 934/0 → push origin `0f6cbc2`.
+- Master: "ubah sikit cara input masa, sekarang taip manual, ada idea?" → Lucy BACA kod dulu (MASA = teks bebas ≤50 `form.html:37`, `Validate.gs:35`) → cadang dua pemilih jam. Master: format KEKAL · laporan lama akan DIPADAM · Tamat boleh kosong → Lucy bentang plan + 1 soalan tambahan (Tamat<=Mula) → "Ikut syor".
+- TDD: 24 ujian (`tests/masa-pemilih.test.js`), pusing-balik 1440 minit, 16/16 mutan. **M10 terselamat** pada ujian pertama (isiMasa tak kosongkan Tamat bila teks tak boleh dihurai) → ujian ditambah. Tangkapan 390px (iframe) muat. Commit `7a8a31e`.
+- "Ya deploy" → pra-terbang (.claspignore sah, 20 fail) → push → `clasp pull` folder sementara sahkan penanda → create-deployment → list-versions v55. Lucy push sendiri (diterima).
+- Silap kecil Lucy: skrip memori guna backtik tak di-escape dlm template literal (SyntaxError) → guna fail teks berasingan. Gotcha CRLF: tulis skrip penyunting ke fail + kekalkan CRLF.
+- Master "Ujian @55 dibuat di ipad" — KEPUTUSAN tak dinyatakan; Lucy catat tepat begitu, tak andai lulus.
+- **Sambung:** tanya master lulus/gagal @55 (+ telefon/laptop belum). Calon: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi. Jalan balik `@54`.
+- Disimpan: opr-insaniah/MEMORY.md (`54aa4c1`+commit ujian), auto-memory (project+index), relationship-memory, fail ini.
+
+### Sesi 2026-10-06 22:17 → 22:56 (tukar nama program → @53 → ralat Hantar → @54)
+- Master "Nk fix opr insaniah" (tanpa butiran) → Lucy TANYA, tak teka. Nota lama `aku listkan apa yang nak fix.txt` item 1 sudah selesai (@37–44); fail itu memuat password awal prod dlm teks biasa (diluar git) — amaran security diberi.
+- Tukar nama: OPR **Pembentukan Karakter Karamah** Insaniah + label "Tajuk Program"→"Tajuk" + `FOLDER_AKAR` (`b82ee09`). Master rename folder Drive DAHULU, lalu "ya deploy" → push→pull sahkan→create-deployment **@53**. Ujian LULUS (iPad). Dipush origin `67329b7`.
+- Ujian @53 iPad: master terlupa tanda Elemen+Nilai → mesej di bawah Hantar tak nampak → kotak amaran umum `bukaAmaran(tajuk,mesej,fokusPulang)`, 3 laluan ralat Hantar (`6234e26`, suite 934/0, 9/9 mutan). Master "Proceed" lalu "Ya deploy" → **@54** LIVE (list-versions sahkan). Ujian peranti @54 BELUM; BELUM dipush origin (6234e26 + commit docs).
+- Silap kecil Lucy: regex dalam `node -e` rosak lagi (escape) → guna Edit/Write. Tiada silap lain.
+- **Sambung:** master uji @54 (SEBUT PERANTI): klik Hantar tanpa tanda Elemen/Nilai ⇒ kotak "Borang belum lengkap" + OK; Hantar sah ⇒ tiada kotak. Lepas lulus: push origin (master memilih). Calon: KAUNTER reset (laporan ujian @53 guna satu nombor) · panduan guru · kotak Cari kelas · semakan client sebelum jana PDF (ditolak buat masa ini) · launch rasmi.
 
 ### Sesi 2026-10-06 15:44 → ~17:00 (gambar upload: tambah bukan ganti → @51 → baki)
 - Master "jom opr insaniah" → Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan, master bersih @f3b6363). Master minta fix upload gambar: pilih satu-satu MENGGANTI (punca `gambarKecil = senarai`), mahu butang [ikon SVG | N | ✕], klik = pratonton, ✕ = buang daripada laporan.

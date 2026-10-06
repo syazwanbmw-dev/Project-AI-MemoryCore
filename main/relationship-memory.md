@@ -51,7 +51,7 @@
   sekejap baru rangka" — putih itu SEBELUM HTML diurai (HTML ~670 KB, 82% pustaka PDF yang cuma
   dipakai masa Hantar). SAMBUNG: menunggu "ya" utk deployment UKUR sementara. Smoke `@29`
   tertunggak. Backlog: 3 PDF contoh kualiti. Butiran: `opr-program/MEMORY.md`, `current-session.md`)
-- `opr-insaniah` (**2026-10-05 22:3x: KELAS branch `medan-kelas` @`3b04b4c`, 689/0 — butang "Papar (N)"+modal ganti cip jadual (keputusan master); belum deploy, T9 menunggu "ya"**; sebelum itu: guru `@48` — pagar jenis+saiz fail + kecilkanImej tukar format; ujian peranti menunggu master. Langkah 3 lazy-load DITUTUP selepas ukur. Butiran: `opr-insaniah/MEMORY.md`.) Catatan lama: (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
+- `opr-insaniah` (**2026-10-06 23:5x: guru `@55` LIVE — input Masa = dua pemilih jam (Mula+Tamat), Tamat boleh kosong, Tamat<=Mula ditolak; suite 958/0; dipush origin. Ujian `@54` lulus iPad; ujian `@55` "dibuat di iPad" — keputusan TIDAK dinyatakan master. Butiran: `opr-insaniah/MEMORY.md`.** Sebelum itu: **2026-10-05 22:3x: KELAS branch `medan-kelas` @`3b04b4c`, 689/0 — butang "Papar (N)"+modal ganti cip jadual (keputusan master); belum deploy, T9 menunggu "ya"**; sebelum itu: guru `@48` — pagar jenis+saiz fail + kecilkanImej tukar format; ujian peranti menunggu master. Langkah 3 lazy-load DITUTUP selepas ukur. Butiran: `opr-insaniah/MEMORY.md`.) Catatan lama: (OPR Pembangunan Karakter Insaniah — **Google Apps Script** terikat pada Sheet,
   bukan Hono/Workers. **BELUM launch rasmi ke sekolah** (dibetulkan master 2026-09-01 — catatan
   lama "sekolah sudah guna aktif harian" SALAH). **2026-08-25:** siri 4 fix guna sistem sebenar
   (fon PDF tak konsisten, tab blank iPhone Chrome, jadual Senarai Laporan terpicit iPad menegak,
@@ -336,6 +336,14 @@ _(akan diisi bila master share)_
   kedua-dua peranti disebut (tabiat yang Lucy tuntut sejak [[feedback_laporan_manual_peranti]]; kini sendiri). *"Proceed"* selepas Lucy menyenaraikan dua
   tertunggak ⇒ Lucy tafsir sebagai gabung+push (tindakan Lucy, risiko rendah, tidak menyentuh production) dan NYATAKAN tafsiran itu. Betul. Tetapi
   deploy/menyentuh sekolah tetap tunggu frasa jelas — "Proceed" tidak cukup untuk itu.
+
+- **Master membetulkan hipotesis subagent dengan data PERANTI, dan menolak bila kos pilihan dibentang — tetapi menimbulkan soalan domain sendiri** (2026-10-07 malam, PDF iOS).
+  Subagent opus (read-only) syor "luaskan regex ke Safari"; master: Chrome pun kena (*"chrome di ipad tiada tab kosong tapi masih kena klik 2 kali"*) ⇒ Lucy baca kod sendiri sebelum plan,
+  bentang DUA peringkat (percuma lawan ubah #29), master "1 dulu". Ujian: Chrome satu klik tetapi perlu enable pop-up; Safari/web app dua klik — hasil dilapor TEPAT dengan peranti+pelayar tanpa diminta.
+  Master tanya sendiri *"kalau dikongsi anyone masalah selesai kan?"* → Lucy jelaskan yang menyelesaikan = pautan siap SEBELUM klik, bukan "anyone" (gambar murid!); master kemudian nampak sendiri
+  *"domain with link cikgu je boleh tengok, PPD guna moe.gov"* — had domain yang Lucy tak sebut. ➡️ Lucy jelaskan ia SUDAH berlaku sekarang & ASING daripada masalah klik; JANGAN campur dua masalah; tanya fakta dunia-sebenar
+  (PPD terima OPR macam mana?) sebelum reka. Master berhenti dgn *"Save memory dan session dulu"* ~00:40 — titik berhenti semula jadi; kerja berbaki ditandakan menunggu keputusan A/B.
+  🔑 Bila master tanya "kalau X, masalah selesai kan?" — soalan reka bentuk disamar: jawab mekanisme sebenar yang menyelesaikan, kemudian harga X secara bernama (di sini: keselamatan gambar murid).
 
 ## Kekuatan master yang Lucy patut manfaatkan
 
