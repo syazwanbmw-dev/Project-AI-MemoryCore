@@ -332,6 +332,10 @@ _(akan diisi bila master share)_
   tidak bertanya semula. ➡️ Bila arahan sudah memuat "fix" + "deploy" + nombor versi, itu izin eksplisit; tetap lakukan pra-terbang + sahkan push.
   🔑 Master menilai mesej UI dari SUDUT PENGGUNA ("user tak nampak"): sebelum menulis mesej penolakan, tanya di mana mata pengguna ketika itu.
   Sambungan [[feedback_ujian_buta_skrin]].
+- **Master kini melaporkan PERANTI tanpa diminta, dan "Proceed" satu perkataan = syor terakhir Lucy** (2026-10-06 malam). *"Uji @52 lulus di ipad dan phone"* —
+  kedua-dua peranti disebut (tabiat yang Lucy tuntut sejak [[feedback_laporan_manual_peranti]]; kini sendiri). *"Proceed"* selepas Lucy menyenaraikan dua
+  tertunggak ⇒ Lucy tafsir sebagai gabung+push (tindakan Lucy, risiko rendah, tidak menyentuh production) dan NYATAKAN tafsiran itu. Betul. Tetapi
+  deploy/menyentuh sekolah tetap tunggu frasa jelas — "Proceed" tidak cukup untuk itu.
 
 ## Kekuatan master yang Lucy patut manfaatkan
 

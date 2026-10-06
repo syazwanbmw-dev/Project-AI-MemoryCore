@@ -6,7 +6,7 @@
 ## Session Context
 **Session Type**: `opr-insaniah` — sesi 2026-10-05 22:41 → 2026-10-06 00:05: code-review `3b04b4c` → fix → T9 deploy → ujian peranti → gabung master. (Sesi lebih awal: lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status (terkini 2026-10-06 21:5x)**: 🟢 **Gambar DITAMBAH + butang pratonton/✕ + baki gambar-hantu + KOTAK AMARAN lebih-had: guru `@52` LIVE (`2773a70`, suite 923/0, `list-versions` sahkan). Ujian `@51` master (telefon) lulus kecuali penolakan gambar ke-3 disangka senyap → kotak amaran tengah skrin (OK menutup). Cabang `gambar-tambah` DIGABUNG ke master `93aaabb` + DIPUSH origin (22:1x, "Proceed"). Ujian peranti `@52` tertunggak (telefon, sebut peranti).** Butiran blok sesi di bawah.
+**Status (terkini 2026-10-06 21:5x)**: 🟢 **Gambar DITAMBAH + butang pratonton/✕ + baki gambar-hantu + KOTAK AMARAN lebih-had: guru `@52` LIVE (`2773a70`, suite 923/0, `list-versions` sahkan). Ujian `@51` master (telefon) lulus kecuali penolakan gambar ke-3 disangka senyap → kotak amaran tengah skrin (OK menutup). Cabang `gambar-tambah` DIGABUNG ke master `93aaabb` + DIPUSH origin (22:1x, "Proceed"). Ujian peranti `@52` LULUS di iPad + telefon (master 22:14). Fitur gambar SELESAI sepenuhnya, tiada tertunggak.** Butiran blok sesi di bawah.
 **Status sebelumnya (17:00)**: `@51` LIVE; baki `d5939d5` belum deploy.
 **Status sebelumnya**: 🟢 **Hirisan B SIAP (2026-10-06 14:12): guru @50 LIVE, ujian peranti lulus ("semua lulus"; peranti = LAPTOP, disahkan master 14:14 — telefon/iPad belum diuji utk panel baharu), `panel-kelas` digabung ke `master` @38b9ed4, suite 866/0, DIPUSH origin (master @f3b6363, 14:15). Calon seterusnya: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi (keputusan master).**
 - T9 selesai: master push 20 fail -> migrasi x2 (true lalu false) -> Lucy create-deployment @50 -> list-versions sahkan -> uji peranti -> merge. Silap Lucy: `cd` ke folder memory -> `!` master "Project settings not found" (tiada apa naik); pulang ke folder projek + beri `cd /c/Users/...` eksplisit.
@@ -27,6 +27,9 @@
 - 🔴 Pengajaran dicatat dlm `feedback_ujian_buta_skrin`: 906/0 + 15/15 mutan lulus kerana ujian menyemak TEKS wujud dlm `#formStatus`, bukan sama ada ia KELIHATAN; hanya master di telefon menemuinya. Tanya "di mana mata pengguna ketika ini?" bukan "adakah teks ditetapkan?".
 - Silap kecil Lucy: `node -e`/tangkapan <500px (artifak, diukur semula dgn iframe 390px). Cwd beralih ke folder memory beberapa kali (gotcha lama) — sentiasa `cd` eksplisit.
 - **Sambung:** master uji `@52` di telefon (SEBUT PERANTI): ke-3 ditolak ⇒ kotak + OK · 3 sekali gus ⇒ kotak · pilihan sah ⇒ tiada kotak · Batal semasa foto besar diproses ⇒ tiada gambar hantu. Lepas lulus: keputusan master gabung `gambar-tambah` → master + push origin. Calon lain: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi.
+
+- **22:10 "Proceed"** (tafsiran Lucy: syor terakhir = gabung+push): `gambar-tambah` → master `93aaabb` (--no-ff; `git merge -F -` tak diterima → guna `-m`), suite 923/0, dipush origin. **22:14 master: "Uji @52 lulus di ipad dan phone"** (kedua-dua peranti disebut tanpa diminta; butiran per-item tidak dilapor) → fitur gambar SELESAI, tiada tertunggak.
+- **Sambung (terkini):** tiada kerja gambar. Calon seterusnya (belum putus master): KAUNTER reset (padam baris ujian + fail Drive yatim dulu) · panduan guru · kotak Cari kelas · salin Escape/ID-pangkas ke `opr-program` · launch rasmi. Kandungan "Sambung" dlm blok ini yang menyebut ujian `@52`/gabung = SUDAH selesai.
 
 ### Sesi 2026-10-06 13:14 → 14:10 (Hirisan B: tangkapan -> pelarasan -> T9 bermula)
 - Master "sambung opr insaniah". Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan). Master minta buka folder tangkapan; soalan: "panel telefon 390 tak jadi panjang sangat ke?" -> Lucy BACA tangkapan sendiri (bukan agak): ya, ~3 skrin utk 18 kelas.
@@ -147,4 +150,4 @@
 - JANGAN deploy production / merge `main` tanpa izin jelas master (opr-insaniah: izin deploy kekal selagi BELUM ada guru — jangan pindah ke projek yg sudah ada guru).
 
 ---
-*Session updated: 2026-10-06 ~22:00 (opr-insaniah @52 LIVE: gambar tambah + pratonton + baki + kotak amaran lebih-had). Sebelum itu: 2026-10-06 ~17:00 (@51)*
+*Session updated: 2026-10-06 22:15 (opr-insaniah fitur gambar SELESAI: @52 LIVE, ujian iPad+telefon lulus, digabung master 93aaabb + dipush). Sebelum itu: 2026-10-06 ~22:00 (@52 LIVE)*
