@@ -16,6 +16,16 @@
 
 **Status TERKINI (2026-10-07 00:40)**: 🟡 **guru `@56` LIVE — PDF iOS R4 (`b8573a7`, suite 959/0, 4/4 mutan). Tab kosong HILANG di semua iOS; satu klik hanya bila pop-up dibenarkan (Chrome iPad), Safari + web app masih DUA klik. Menunggu keputusan master: A (berhenti + label "PDF sedia — ketik untuk buka ↗") vs B (kongsi PDF DOMAIN awal, ubah #29, plan dahulu). PPD (`moe.gov.my`) tak boleh buka pautan DOMAIN — sudah begitu sekarang, masalah BERASINGAN; tanya master PPD terima OPR macam mana. master ahead 4 origin (belum push). Jalan balik `@55`.**
 
+**Status TERKINI (2026-10-07 01:27)**: 🟢 **guru `@57` LIVE + digabung master (`71b2cdd`; origin `346153c`; suite 980/0). PDF ANYONE_WITH_LINK semasa cipta + PDF_URL dalam senarai + <a> terus. Ujian @57 lulus iPad Safari+Chrome+Android; PPD (moe.gov.my), iPhone, laptop BELUM. Jalan balik `@56`. Baki: baris amaran launch-checklist (belum diputus), KAUNTER reset, panduan guru, kotak Cari kelas, launch rasmi.**
+
+### Sesi 2026-10-07 00:46 → 01:27 (ANYONE_WITH_LINK → @57 → merge)
+- Master "Opr insaniah" → Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan; master ahead 5 bukan 4 — dibetulkan). Brief: A/B, PPD, uji iPhone/laptop, push.
+- Master: kongsi anyone-with-link "masalah selesai" → Lucy jelaskan ia selesaikan PPD bukan dua klik; baca `DriveService.gs` (kongsi MALAS semasa klik) → plan 6 langkah + HARGA (gambar murid) + langkah 0 (DELIMa). Master "Betul, pasang perkongsian semasa cipta".
+- TDD: `tests/kongsi-awal.test.js` (20; merah dahulu) → kod (`terap.js` skrip CRLF-selamat) → 980/0; 11 mutan (10 dibunuh; M11 setara). Jumpa sendiri: <a> togol kad telefon → guard + ujian; ujian lama 911 patahkan guard di dalam cabang → pindah sebelum cabang.
+- Cabang `kongsi-awal` `63e2d9b`. Master "Deploy and push" → clasp push + pull sahkan → TAHAN deploy → master run `migrasiKongsiPdf` ×2 (`dikongsi:5`) → create-deployment `@57` → push cabang. Master uji lulus → "Gabung master" → merge --no-ff + push.
+- Silap kecil Lucy: suite `node --test tests` (folder) gagal → guna glob `tests/*.test.js`; ralat laluan clasp tidak berlaku. Tiada silap lain.
+- **Sambung:** sahkan PPD buka pautan · iPhone+laptop · baris amaran launch-checklist (tanya master) · KAUNTER reset · panduan guru · launch rasmi. Disimpan: opr-insaniah/MEMORY.md, auto-memory (project+index), relationship-memory, fail ini.
+
 ### Sesi 2026-10-07 00:00 → 00:40 (PDF iOS dua klik → subagent opus → R4 → @56)
 - Master "Opr insaniah" (Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git: sepadan, master bersih). Master lapor PDF iPad/iPhone dibuka app Drive, klik Buka dua kali, pertama about:blank; minta subagent opus. Subagent (read-only): punca = pautan datang selepas klik (async) ⇒ gerak isyarat luput; syor luas regex R3. Master: Chrome pun kena ⇒ hipotesis tak cukup; Lucy baca `app.js.html:25,268`.
 - Master mahu SATU klik + tiada tab kosong. Dua peringkat dibentang; master "1 dulu" ⇒ R4 TDD (`b8573a7`): regex iOS + iPad Macintosh&&maxTouchPoints>1; window.open(URL) terus bila tab null; komen R3 salah dibetulkan. "Ya deploy" ⇒ `@56` (push 20 fail → pull sahkan 4 penanda → create-deployment → list-versions v56).

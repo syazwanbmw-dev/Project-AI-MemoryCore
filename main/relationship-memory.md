@@ -345,6 +345,16 @@ _(akan diisi bila master share)_
   (PPD terima OPR macam mana?) sebelum reka. Master berhenti dgn *"Save memory dan session dulu"* ~00:40 — titik berhenti semula jadi; kerja berbaki ditandakan menunggu keputusan A/B.
   🔑 Bila master tanya "kalau X, masalah selesai kan?" — soalan reka bentuk disamar: jawab mekanisme sebenar yang menyelesaikan, kemudian harga X secara bernama (di sini: keselamatan gambar murid).
 
+- **Master memutuskan keputusan PRODUK/KESELAMATAN sendiri dan Lucy MENGIKUT — selepas harga disebut SEKALI** (2026-10-07 01:0x, ANYONE_WITH_LINK).
+  Master: *"Ambil keputusan kongsi pautan pdf tu anyone with link. So masalah selesai"* — mengatasi keputusan #29 (DOMAIN) yang Lucy sendiri tulis sebagai syarat keselamatan.
+  Lucy tak membantah; sebut harga SEKALI (gambar murid, pautan terlepas), tambah langkah 0 (uji DELIMa) dan teruskan. Dua perkara betul:
+  (1) *"So masalah selesai"* separuh benar — ANYONE selesaikan PPD, BUKAN dua klik iOS; Lucy jelaskan mekanisme (pautan mesti sedia SEBELUM klik) dengan membaca kod, bukan mengangguk;
+  (2) master luluskan **plan lebih besar daripada frasa**: *"pasang perkongsian semasa cipta"* — Lucy tafsir sebagai kod+ujian (bukan deploy) dan NYATAKAN tafsiran itu.
+  ➡️ Tafsir kelulusan pendek **secara sempit** pada tindakan; gerbang destruktif/luar kekal frasa jelas. Di sini master sendiri beri *"Deploy and push"* (jelas) — tetapi Lucy tetap TAHAN create-deployment kerana
+  gerbang teknikal (DELIMa benarkan ANYONE? PDF lama masih peribadi) belum lulus; master jalankan migrasi dari editor (angka dilapor tepat: `dikongsi:5`) ⇒ deploy. **Izin deploy tidak menghapus gerbang fakta.**
+  🔑 Master melapor ujian dengan peranti+pelayar tanpa diminta (*"ipad safari chrome dan android"*) — tabiat tetap; PPD tidak disebut ⇒ catat sebagai BELUM disahkan, jangan andai.
+  🟡 Master bekerja malam (00:45–01:30) dalam kerja pendek-pendek; Lucy tawar titik berhenti tiap fasa. Master tak ambil tawaran berhenti — teruskan ke deploy sebelum tidur.
+
 ## Kekuatan master yang Lucy patut manfaatkan
 
 - **Master fikir merentas SEMUA projek (kuota akaun), bukan hanya projek yang sedang dibincang**
