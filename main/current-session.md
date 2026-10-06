@@ -6,7 +6,33 @@
 ## Session Context
 **Session Type**: `opr-insaniah` — sesi 2026-10-05 22:41 → 2026-10-06 00:05: code-review `3b04b4c` → fix → T9 deploy → ujian peranti → gabung master. (Sesi lebih awal: lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status**: 🟢 **Medan KELAS Hirisan A SIAP: guru `@49` LIVE, ujian peranti 7 item LULUS (master), `master` @`c5b28b7` (merge --no-ff `medan-kelas`, suite 691/0, dipush).** Tiada tertunggak untuk KELAS. Ujian peranti `@48` lama (5 item) tidak lagi relevan — `@49` menggantikan.
+**Status**: 🟡 **Hirisan B: KOD SIAP T1–T8 + semakan akhir + fix (cabang panel-kelas, suite 850/0), BELUM deploy. Menunggu master tengok tangkapan + "ya" T9. KELAS Hirisan A kekal SIAP (@49).**
+
+### Sesi 2026-10-06 10:10 → 12:45 (Hirisan B: EXECUTE plan, subagent-driven autonomous)
+- Master: "sambung opr insaniah, execute latest plan using subagent with autonomous execution". Cabang `panel-kelas` dari master f842747. T1–T8 siap (sonnet implementer + reviewer per task, opus semakan akhir). Suite 691 -> 850/0. TIADA push/clasp/deploy.
+- Fix round berlaku pada T1 (aksara tak kelihatan mentah), T3 (mojibake: PowerShell Get-Content/Set-Content utf8 gandakan pengekodan), T4 (orkestrasi tulis perlu catch + baca-semula selamat -> respons data:null MUAT_SEMULA_PANEL), T6 (ujian stub-DOM), T7 (bendera tahan-klik kekal sepanjang baca semula).
+- 🔴 Semakan akhir opus jumpa PUNCA data: nama kelas 4-1/01 jadi TARIKH dlm sel KELAS laporan -> Padam kira 0 guna. Fix e59da07: nama mesti ada HURUF. Turut: Logger.log ralat tulis, POLA_AKSARA_KAWALAN diluas, spec §6 #1 dijujurkan.
+- Silap Lucy sendiri: (1) arahan shell `cat >> fail` tanpa heredoc tersangkut menunggu stdin; (2) prompt re-review T7 terpotong/laluan salah — dihentikan & dihantar semula; (3) node -e dengan escape u+XXXX gagal parse (gotcha yang sama dicatat).
+- Gotcha alat dicatat: Write/Edit menormalkan escape u+XXXX jadi aksara mentah; sebut kepada implementer dlm dispatch.
+- Gerbang visual T7 ditangguh (ruling). Master WAJIB tengok %TEMP%opr-panel-kelaspanel-desktop/ipad/telefon-390.png sebelum T9.
+- **Sambung:** master tengok tangkapan + semak Sheet RUJUKAN (tiada nama tanpa huruf) -> "ya" deploy -> T9 (clasp push master dgn !, migrasiRujukanStatus() x2, create-deployment ke ID guru, ujian peranti 5 item, sebut PERANTI). Merge ke master = keputusan master.
+- Disimpan: opr-insaniah/MEMORY.md (109aef6), auto-memory (project+index), fail ini. Ledger: opr-insaniah/.superpowers/sdd/2026-10-06-panel-kelas/.
+
+### Sesi 2026-10-06 08:47 → 09:40 (Hirisan B: PLAN oleh subagent opus)
+- Master: "sambung opr insaniah, tulis plan guna subagent opus". Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan, master bersih @`8cd55f0`). Spec dianggap lulus (master minta plan terus).
+- Subagent opus (~28 min, 72 tool) tulis `docs/superpowers/plans/2026-10-06-panel-kelas.md` (3436 baris, 9 task, tiada TBD). Komit `2387009` (plan) + `5ea7a5a` (MEMORY projek), tempatan, TIADA push/kod/deploy.
+- Keputusan plan: §3.5 kotak `data-warisan`; Tukar Status bawah Lock; tulis baris format `@`; ALLOW 14→19 sah (spec tak silap). Lucy BELUM baca plan baris-demi-baris.
+- **Jawapan master 09:41:** 1 UBAH (tapis termasuk nyahaktif) · 2 paparan serta-merta lepas Tambah, tiada reload · 3 ok · 4 ok · 5 LANGKAU (diputus 09:42). **Revisi plan SIAP 09:5x (3920 baris, jangka 805 ujian); tunggu master baca + pilih kaedah.** Soalan asal: tapis dropdown aktif sahaja · muat semula utk nampak di borang · kotak Padam 2 butang · `INACTIVE` tangan dikira aktif · ujian peranti #5 (~34 klik) buat/langkau.
+- **Sambung:** master baca plan + jawab 5 soalan + pilih subagent-driven (disyor) / native → baru kod. T7 berhenti utk tangkapan; T9 deploy gerbang master (`clasp push` master dgn `!`, migrasiRujukanStatus ×2).
+- Disimpan: opr-insaniah/MEMORY.md, auto-memory (project+index), fail ini.
+
+### Sesi 2026-10-06 07:54 → 08:45 (Hirisan B panel admin KELAS: brainstorming → spec)
+- Master: "sambung opr insaniah, panel admin untuk rujukan tak silap, semak dulu". Lucy baca Lucy-fail + CLAUDE.md + MEMORY.md + git (sepadan, master bersih @`36f1bee`). Betulkan: panel RUJUKAN lama DIBATALKAN; yang tertunggak = panel KELAS (Hirisan B). Master sahkan.
+- `superpowers:brainstorming` (architectural). Soalan satu-satu: Q1 Edit laporan ber-kelas-nyahaktif → master: "laporan masih boleh diakses" (jawapan A). Master soal balas: "cikgu lain make a copy, nama kelas beza" → reka bentuk berubah (panel = cara sekolah baharu set kelas; Padam hanya bila 0 laporan guna). Q2 tambah satu-satu (B). Q3 lajur `STATUS` (Cara 1).
+- Bahagian 1–3 reka bentuk diluluskan ("Ok"/"Proceed"). Gotcha ditemui masa tulis spec: KELAS dipisah `;` → nama tak boleh ada `;`; tolak awalan `= + - @`.
+- Siap: spec `docs/superpowers/specs/2026-10-06-panel-kelas-design.md` (`4c770bd`), `MEMORY.md` projek (`8cd55f0`). TIADA kod/push/deploy.
+- **Sambung:** master baca spec → lulus → plan oleh subagent **opus** → master lulus plan + pilih kaedah → kod. ALLOW 14→19; ritual deploy tambah `migrasiRujukanStatus()` ×2; `clasp push` master jalankan dgn `!`.
+- Corak: master UBAH reka bentuk bila soalan datang dari perspektif pengguna lain (sekolah lain) — tanya "sekolah lain macam mana?" awal.
 
 ### Sesi 2026-10-05 22:41 → 2026-10-06 00:05 (review → deploy @49 → merge)
 - `/code-review 3b04b4c` (subagent): tiada bug pasti, 3 kelemahan rendah. Master "fix 1 dan 2": (1) ID tak dipangkas dua belah dlm `bukaModalKelasPapar` vs `selKelas()`; (2) modal Papar tiada Escape + fokus tak pulang. Isu 3 (overflow bertindih) dibiar. Komit `19b9a2d`, suite 691/0, 3 mutan dibunuh.
