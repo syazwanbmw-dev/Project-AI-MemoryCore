@@ -326,6 +326,13 @@ _(akan diisi bila master share)_
 - **Master bertanya soalan pengesahan fakta dalam bahasa ringkas — jawab dengan KOD, bukan ingatan** (2026-10-06): *"Max gambar bagi opr insaniah 2 je ya?"*
   → Lucy grep `PERATURAN_GAMBAR` dan petik `Validate.gs:31`, serta nyatakan client baca dari `SESI.peraturanGambar`. Sambungan [[feedback_dakwaan_melebihi_bukti]].
 
+- **Master menemui apa yang 906 ujian tak nampak — dengan MENGGUNA di telefon — dan melaporkannya jujur termasuk "lama baru perasan"** (2026-10-06 malam).
+  Penolakan gambar ke-3 betul tetapi mesejnya di bawah butang Hantar; master menyangka ia ditolak senyap. Dia terus memberi **penyelesaian konkrit**
+  (toast/kotak tengah skrin, tutup bila OK) dan **izin deploy `@52` dalam mesej yang sama** ("Fix, then deploy semula. Baru deploy @52") — jadi Lucy
+  tidak bertanya semula. ➡️ Bila arahan sudah memuat "fix" + "deploy" + nombor versi, itu izin eksplisit; tetap lakukan pra-terbang + sahkan push.
+  🔑 Master menilai mesej UI dari SUDUT PENGGUNA ("user tak nampak"): sebelum menulis mesej penolakan, tanya di mana mata pengguna ketika itu.
+  Sambungan [[feedback_ujian_buta_skrin]].
+
 ## Kekuatan master yang Lucy patut manfaatkan
 
 - **Master fikir merentas SEMUA projek (kuota akaun), bukan hanya projek yang sedang dibincang**

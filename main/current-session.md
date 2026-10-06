@@ -6,7 +6,8 @@
 ## Session Context
 **Session Type**: `opr-insaniah` — sesi 2026-10-05 22:41 → 2026-10-06 00:05: code-review `3b04b4c` → fix → T9 deploy → ujian peranti → gabung master. (Sesi lebih awal: lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
-**Status (terkini 2026-10-06 ~17:00)**: 🟢 **Gambar DITAMBAH + butang pratonton/✕: guru `@51` LIVE (`b1cb5a3`, suite 906/0). Baki "gambar hantu" dibaiki commit berasingan `d5939d5` (914/0, 8/8 mutan), BELUM deploy `@52`. Cabang `gambar-tambah` belum digabung/dipush. Ujian peranti `@51` tertunggak (master guna TELEFON).** Butiran blok sesi di bawah.
+**Status (terkini 2026-10-06 21:5x)**: 🟢 **Gambar DITAMBAH + butang pratonton/✕ + baki gambar-hantu + KOTAK AMARAN lebih-had: guru `@52` LIVE (`2773a70`, suite 923/0, `list-versions` sahkan). Ujian `@51` master (telefon) lulus kecuali penolakan gambar ke-3 disangka senyap → kotak amaran tengah skrin (OK menutup). Cabang `gambar-tambah` belum digabung/dipush. Ujian peranti `@52` tertunggak (telefon, sebut peranti).** Butiran blok sesi di bawah.
+**Status sebelumnya (17:00)**: `@51` LIVE; baki `d5939d5` belum deploy.
 **Status sebelumnya**: 🟢 **Hirisan B SIAP (2026-10-06 14:12): guru @50 LIVE, ujian peranti lulus ("semua lulus"; peranti = LAPTOP, disahkan master 14:14 — telefon/iPad belum diuji utk panel baharu), `panel-kelas` digabung ke `master` @38b9ed4, suite 866/0, DIPUSH origin (master @f3b6363, 14:15). Calon seterusnya: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi (keputusan master).**
 - T9 selesai: master push 20 fail -> migrasi x2 (true lalu false) -> Lucy create-deployment @50 -> list-versions sahkan -> uji peranti -> merge. Silap Lucy: `cd` ke folder memory -> `!` master "Project settings not found" (tiada apa naik); pulang ke folder projek + beri `cd /c/Users/...` eksplisit.
 
@@ -18,6 +19,14 @@
 - Baki "gambar hantu" (Batal semasa foto diproses) dibaiki `d5939d5`: `generasiGambar` + `gantiSemuaGambar()`. Satu kesilapan kecil Lucy: ujian sumber terlalu lebar (padan `gambarKecil = senarai` dlm gantiSemuaGambar) → disempitkan; `node -e` escape rosak lagi (gotcha lama) → guna Write.
 - Lucy tertinggal baris attribution pada commit pertama → `--amend` (belum push). Disimpan: opr-insaniah/MEMORY.md, auto-memory, relationship-memory, fail ini.
 - **Sambung:** master uji `@51` di telefon (+iPad), SEBUT PERANTI → "ya deploy" utk `@52` (baki; tertib: push → sahkan dgn pull → create-deployment) → keputusan master: gabung `gambar-tambah` ke master + push origin. Calon lain: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi.
+
+### Sesi 2026-10-06 21:43 → 22:0x (kotak amaran lebih-had → @52)
+- Master (selepas ujian `@51` di telefon): *"Cuma pilih gambar ketiga tu memang tolak dan label keluar maksimum gambar dua, tapi label tu makluman kat bawah button hantar dan user tak nampak… tolak senyap. Lama baru perasan. Mungkin kena buat toast di tengah skrin… tutup bila user klik button ok. Fix, then deploy semula. Baru deploy @52"* — izin deploy `@52` DIBERI dalam mesej yang sama (tiada tanya semula).
+- Lucy: `#tudungGambarAmaran` (alertdialog; OK / klik latar / Escape; TIADA auto-tutup; fokus pulang ke input; tatal dikunci). Mesej had TIDAK lagi ke `#formStatus`. 2 ujian lama (menyemak `#formStatus`) ditukar kerana ia menjaga tingkah laku yang master tolak; 10 ujian baharu; 11/11 mutan; suite 923/0. Tangkapan iframe 390px (Edge headless <500px potong = artifak lama).
+- Deploy `@52`: commit `2773a70` → `clasp push` (Lucy) → `clasp pull` ke folder sementara sahkan penanda → `create-deployment` → `list-versions` sahkan v52. Mengandungi baki gambar-hantu `d5939d5` juga.
+- 🔴 Pengajaran dicatat dlm `feedback_ujian_buta_skrin`: 906/0 + 15/15 mutan lulus kerana ujian menyemak TEKS wujud dlm `#formStatus`, bukan sama ada ia KELIHATAN; hanya master di telefon menemuinya. Tanya "di mana mata pengguna ketika ini?" bukan "adakah teks ditetapkan?".
+- Silap kecil Lucy: `node -e`/tangkapan <500px (artifak, diukur semula dgn iframe 390px). Cwd beralih ke folder memory beberapa kali (gotcha lama) — sentiasa `cd` eksplisit.
+- **Sambung:** master uji `@52` di telefon (SEBUT PERANTI): ke-3 ditolak ⇒ kotak + OK · 3 sekali gus ⇒ kotak · pilihan sah ⇒ tiada kotak · Batal semasa foto besar diproses ⇒ tiada gambar hantu. Lepas lulus: keputusan master gabung `gambar-tambah` → master + push origin. Calon lain: KAUNTER reset · panduan guru · kotak Cari kelas · launch rasmi.
 
 ### Sesi 2026-10-06 13:14 → 14:10 (Hirisan B: tangkapan -> pelarasan -> T9 bermula)
 - Master "sambung opr insaniah". Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan). Master minta buka folder tangkapan; soalan: "panel telefon 390 tak jadi panjang sangat ke?" -> Lucy BACA tangkapan sendiri (bukan agak): ya, ~3 skrin utk 18 kelas.
@@ -138,4 +147,4 @@
 - JANGAN deploy production / merge `main` tanpa izin jelas master (opr-insaniah: izin deploy kekal selagi BELUM ada guru — jangan pindah ke projek yg sudah ada guru).
 
 ---
-*Session updated: 2026-10-06 ~17:00 (opr-insaniah gambar tambah+pratonton @51 LIVE; baki d5939d5 belum deploy). Sebelum itu: 2026-10-05 22:35 (KELAS Papar)*
+*Session updated: 2026-10-06 ~22:00 (opr-insaniah @52 LIVE: gambar tambah + pratonton + baki + kotak amaran lebih-had). Sebelum itu: 2026-10-06 ~17:00 (@51)*
