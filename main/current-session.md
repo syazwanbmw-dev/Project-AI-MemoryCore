@@ -18,7 +18,17 @@
 
 **Status TERKINI (2026-10-07 01:27)**: 🟢 **guru `@57` LIVE + digabung master (`71b2cdd`; origin `346153c`; suite 980/0). PDF ANYONE_WITH_LINK semasa cipta + PDF_URL dalam senarai + <a> terus. Ujian @57 lulus iPad Safari+Chrome+Android; PPD (moe.gov.my), iPhone, laptop BELUM. Jalan balik `@56`. Baki: baris amaran launch-checklist (belum diputus), KAUNTER reset, panduan guru, kotak Cari kelas, launch rasmi.**
 
+**Status TERKINI (2026-10-07 10:3x)**: 🟢 **guru `@59` LIVE — butang kepala diseragamkan (`butang-konsisten` @`57d8537`, dipush origin; suite 996/0; 10/10 mutan). Ujian peranti `@59` BELUM. `pautan-panduan` (@58) + `butang-konsisten` belum digabung master. Jalan balik `@58`.** Butiran blok sesi 10:16 di bawah.
+
 **Status TERKINI (2026-10-07 10:0x)**: 🟢 **guru `@58` LIVE — butang "📖 Panduan" (pautan Drive, pemalar `PAUTAN_PANDUAN`); cabang `pautan-panduan` @`1a03698` dipush, BELUM digabung ke master; suite 988/0, 13/13 mutan. Ujian peranti `@58` BELUM (telefon utama; SEBUT peranti+pelayar). Jalan balik `@57`.** Master tiada iPhone (jangan minta). Butiran sesi 08:18 di bawah.
+
+### Sesi 2026-10-07 10:16 → ~10:35 (butang tak konsisten → @59)
+- Master "Opr insaniah. Nk fix button ni... Rujuk gambar" (screenshot telefon + carousel 9 slaid). Lucy baca fail Lucy + CLAUDE.md + git (cabang `pautan-panduan`), baca CSS `style.html`/`index.html`, bentang jadual punca + plan + 2 soalan bersyor. Master "Ok" = syor (skop sempit, emoji kekal).
+- Cabang `butang-konsisten`. TDD: `tests/butang-konsisten.test.js` (8, merah dahulu) → kod (skrip Node kekalkan CRLF) → 996/0. Perasan sendiri: `repeat(2,1fr)` ⇒ guru biasa dapat Panduan separuh lebar ⇒ `auto-fit minmax(140px,1fr)`. Mutasi: M7 selamat → ujian ditambah → 10/10 dibunuh.
+- Master (tengah kerja): simpan rujukan carousel merentas projek → auto-memory `reference_ui_buttons_carousel` + indeks. Tangkapan 390px (iframe; salah pilih blok skeleton dahulu → `lastIndexOf`) → `SendUserFile`. Master "Ya deploy. Save memory dan session".
+- Deploy `@59`: pra-terbang → push → pull sahkan penanda → create-deployment → list-versions v59 → push cabang origin. Komit `57d8537`.
+- Silap kecil Lucy: ujian regex diedit melalui `node -e` (escape rosak lagi → guna Edit); ujian awal tak liputi `.kepala-kanan` (ditangkap mutan M7); tangkapan pertama = skeleton.
+- **Sambung:** master uji `@59` (SEBUT peranti+pelayar; akaun admin DAN guru biasa) → "Gabung master". Calon: butang modal · ikon SVG · amaran pautan panduan · uji PPD.
 
 ### Sesi 2026-10-07 08:18 → ~10:10 (jawapan tertunggak → butang Panduan → @58)
 - Master "Jom sambung opr insaniah" → Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan, master == origin @346153c). Brief 7 tertunggak. Master jawab ikut nombor: PPD = share link/folder Drive dikongsi · tiada iPhone, laptop ok · baris amaran launch-checklist "proceed" · KAUNTER biar · panduan guru "letak di mana?" · Cari kelas & launch tangguh.
