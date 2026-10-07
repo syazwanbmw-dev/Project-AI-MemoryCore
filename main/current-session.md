@@ -18,6 +18,8 @@
 
 **Status TERKINI (2026-10-07 01:27)**: 🟢 **guru `@57` LIVE + digabung master (`71b2cdd`; origin `346153c`; suite 980/0). PDF ANYONE_WITH_LINK semasa cipta + PDF_URL dalam senarai + <a> terus. Ujian @57 lulus iPad Safari+Chrome+Android; PPD (moe.gov.my), iPhone, laptop BELUM. Jalan balik `@56`. Baki: baris amaran launch-checklist (belum diputus), KAUNTER reset, panduan guru, kotak Cari kelas, launch rasmi.**
 
+**Status TERKINI (2026-10-07 11:3x)**: 🟢 **@60 DIGABUNG ke master (`53ca059`, dipush origin, suite 1013/0); master lulus ujian peranti ("Lulus gabung master", peranti tak disebut). Tiada cabang tertunggak. Calon: ikon ✕ chip · uji PPD · KAUNTER reset · Cari kelas/launch tangguh.** Pengajaran: `is-ancestor` gagal senyap dlm rantaian `&&`; nama fail mesej komit di $TEMP mesti UNIK.
+
 **Status TERKINI (2026-10-07 11:2x)**: 🟢 **guru `@60` LIVE — butang modal seragam (tertib Batal|Padam), ikon emoji→SVG, amaran jangan-kongsi dalam panduan; cabang `butang-modal-svg` dipush origin; suite 1013/0. Ujian peranti `@60` BELUM (sebut peranti+pelayar). Belum digabung master (bawa pautan-panduan+butang-konsisten+butang-modal-svg). Jalan balik `@59`. Penjana PDF: `tools/jana-panduan.js`. Drive Manage versions = BROWSER sahaja.** Butiran: `opr-insaniah/MEMORY.md`.
 
 **Status sebelumnya (10:3x)**: 🟢 **guru `@59` LIVE — butang kepala diseragamkan (`butang-konsisten` @`57d8537`, dipush origin; suite 996/0; 10/10 mutan). Ujian peranti `@59` BELUM. `pautan-panduan` (@58) + `butang-konsisten` belum digabung master. Jalan balik `@58`.** Butiran blok sesi 10:16 di bawah.
