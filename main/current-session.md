@@ -18,6 +18,8 @@
 
 **Status TERKINI (2026-10-07 01:27)**: 🟢 **guru `@57` LIVE + digabung master (`71b2cdd`; origin `346153c`; suite 980/0). PDF ANYONE_WITH_LINK semasa cipta + PDF_URL dalam senarai + <a> terus. Ujian @57 lulus iPad Safari+Chrome+Android; PPD (moe.gov.my), iPhone, laptop BELUM. Jalan balik `@56`. Baki: baris amaran launch-checklist (belum diputus), KAUNTER reset, panduan guru, kotak Cari kelas, launch rasmi.**
 
+**Status TERKINI (2026-10-07 19:57)**: 🟡 Master: "1 kekal, 2 nanti aku buat. 3 ok" — `ANYONE_WITH_LINK` KEKAL (disahkan sedar; CLAUDE.md "Bersyarat" dijawab) · `USERS` guru + admin kedua = master buat sendiri · ujian akaun guru biasa = master akan uji (belum dilapor) · guru pertama/saluran sokongan tak dijawab. Belum release rasmi.
+
 **Status TERKINI (2026-10-07 19:5x)**: 🟡 Master tanya "Dah boleh release untuk cikgu guna kan?" — Lucy bentang SYARAT (bukan "ya"): (4) sahkan harga `ANYONE_WITH_LINK` (CLAUDE.md: timbang semula sebelum launch) · (5) `USERS` guru sebenar + admin kedua + Sheet tak dikongsi · (6) ujian akaun guru BIASA · (7) guru pertama/saluran sokongan · + iPad, PPD. 7 ancaman ✅ (XSS senarai diaudit hari ini). `docs/launch-checklist.md` dikemas kini. Master: "1 dah bersih (Sampah Drive). 2 ok. 3 ok nnti aku test."
 
 **Status TERKINI (2026-10-07 19:3x)**: 🟢 **@61 TERBUKTI** — tangkapan Sheet master: RUJUKAN 37 baris (14 NILAI baharu, tiada lama), OPR header sahaja, TETAPAN `KAUNTER_2026`=0 + `BERSIH_KIRA` kosong. Peranti ujian: laptop Chrome + Android Chrome (lulus). Belum: Sampah Drive dikosongkan, laporan `OPR-2026-0001`, iPad/iPhone.
