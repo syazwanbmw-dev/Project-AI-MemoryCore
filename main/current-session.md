@@ -18,9 +18,19 @@
 
 **Status TERKINI (2026-10-07 01:27)**: 🟢 **guru `@57` LIVE + digabung master (`71b2cdd`; origin `346153c`; suite 980/0). PDF ANYONE_WITH_LINK semasa cipta + PDF_URL dalam senarai + <a> terus. Ujian @57 lulus iPad Safari+Chrome+Android; PPD (moe.gov.my), iPhone, laptop BELUM. Jalan balik `@56`. Baki: baris amaran launch-checklist (belum diputus), KAUNTER reset, panduan guru, kotak Cari kelas, launch rasmi.**
 
-**Status TERKINI (2026-10-07 10:3x)**: 🟢 **guru `@59` LIVE — butang kepala diseragamkan (`butang-konsisten` @`57d8537`, dipush origin; suite 996/0; 10/10 mutan). Ujian peranti `@59` BELUM. `pautan-panduan` (@58) + `butang-konsisten` belum digabung master. Jalan balik `@58`.** Butiran blok sesi 10:16 di bawah.
+**Status TERKINI (2026-10-07 11:2x)**: 🟢 **guru `@60` LIVE — butang modal seragam (tertib Batal|Padam), ikon emoji→SVG, amaran jangan-kongsi dalam panduan; cabang `butang-modal-svg` dipush origin; suite 1013/0. Ujian peranti `@60` BELUM (sebut peranti+pelayar). Belum digabung master (bawa pautan-panduan+butang-konsisten+butang-modal-svg). Jalan balik `@59`. Penjana PDF: `tools/jana-panduan.js`. Drive Manage versions = BROWSER sahaja.** Butiran: `opr-insaniah/MEMORY.md`.
+
+**Status sebelumnya (10:3x)**: 🟢 **guru `@59` LIVE — butang kepala diseragamkan (`butang-konsisten` @`57d8537`, dipush origin; suite 996/0; 10/10 mutan). Ujian peranti `@59` BELUM. `pautan-panduan` (@58) + `butang-konsisten` belum digabung master. Jalan balik `@58`.** Butiran blok sesi 10:16 di bawah.
 
 **Status TERKINI (2026-10-07 10:0x)**: 🟢 **guru `@58` LIVE — butang "📖 Panduan" (pautan Drive, pemalar `PAUTAN_PANDUAN`); cabang `pautan-panduan` @`1a03698` dipush, BELUM digabung ke master; suite 988/0, 13/13 mutan. Ujian peranti `@58` BELUM (telefon utama; SEBUT peranti+pelayar). Jalan balik `@57`.** Master tiada iPhone (jangan minta). Butiran sesi 08:18 di bawah.
+
+### Sesi 2026-10-07 10:3x → 11:2x (butang modal + ikon SVG + amaran panduan → @60)
+- Master "Opr insaniah" lalu satu mesej tengah-giliran: seragamkan butang modal, emoji→SVG, baris amaran jangan-kongsi dalam panduan. Lucy baca fail Lucy+CLAUDE.md+MEMORY(sebahagian; fail 314KB)+git (sepadan), bentang plan + 3 soalan bersyor. Master: "1. Ya (Tutup=sekunder), 2. teks amaran ditulis sendiri, 3. ya (cabang baharu)".
+- Cabang `butang-modal-svg` dari `eb2166d`. TDD merah dahulu (`butang-modal.test.js` 9 + `ikon-svg.test.js` 3), kod via skrip Node CRLF-selamat, 18 mutan (13 modal + 5 ikon, 0 selamat). Tangkapan sebelum/selepas 9 bingkai 390px → `SendUserFile`. Master "Looks good".
+- Tiga komit berasingan dibina semula dari HEAD (modal → ikon → panduan), hash akhir disahkan SAMA. PDF panduan: penjana lama HILANG ⇒ kalibrasi fon via `pdftotext` + pdf.js (worker sebagai <script>); Calibri 12pt+jidar 10mm = 1 muka surat. Master: "Dah berjaya manage version melalui browser, app je tak boleh. Deploy dan save memory dan session"; sebelum itu "jangan lagi" (tahan deploy) + "simpan penjana ikut syor" ⇒ `tools/jana-panduan.js` + ujian.
+- Deploy `@60`: pra-terbang → `clasp push --force` (Lucy, diterima) → pull sementara sahkan penanda → create-deployment → list-versions v60 → commit-seal → push cabang origin.
+- Silap kecil Lucy: komit A tulis "18/18 mutan" (sebenarnya 13+5) → dibetulkan selepas mutasi diulang per fail; `node -e` rosakkan `d` lagi (gagal=-1 disangka "terselamat"); `cd` ke scratchpad ubah cwd. Tiada silap lain.
+- **Sambung:** master uji `@60` (SEBUT peranti+pelayar; admin DAN guru biasa; lihat Batal|Padam, Tutup putih, ikon) → "Gabung master" · calon: ikon ✕ teks pada chip · uji PPD · KAUNTER biar · Cari kelas/launch tangguh.
 
 ### Sesi 2026-10-07 10:16 → ~10:35 (butang tak konsisten → @59)
 - Master "Opr insaniah. Nk fix button ni... Rujuk gambar" (screenshot telefon + carousel 9 slaid). Lucy baca fail Lucy + CLAUDE.md + git (cabang `pautan-panduan`), baca CSS `style.html`/`index.html`, bentang jadual punca + plan + 2 soalan bersyor. Master "Ok" = syor (skop sempit, emoji kekal).
