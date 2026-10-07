@@ -18,6 +18,8 @@
 
 **Status TERKINI (2026-10-07 01:27)**: 🟢 **guru `@57` LIVE + digabung master (`71b2cdd`; origin `346153c`; suite 980/0). PDF ANYONE_WITH_LINK semasa cipta + PDF_URL dalam senarai + <a> terus. Ujian @57 lulus iPad Safari+Chrome+Android; PPD (moe.gov.my), iPhone, laptop BELUM. Jalan balik `@56`. Baki: baris amaran launch-checklist (belum diputus), KAUNTER reset, panduan guru, kotak Cari kelas, launch rasmi.**
 
+**Status TERKINI (2026-10-07 16:1x)**: 🟢 **guru `@61` LIVE** (list-versions 61; cabang `nilai-sebenar` @`eeec0ac` belum digabung master; jalan balik `@60`). Master "selesai 1 hingga 3. create deployment" — angka log TIDAK dilapor (tanya). Pra-deploy: pull dibanding git 20/21 sama (`appsscript.json` beza format+timezone = dijangka). Ujian peranti `@61` BELUM (sebut peranti+pelayar).
+
 **Status TERKINI (2026-10-07 12:4x)**: 🟡 **kod `@61` DISEDIAKAN — cabang `nilai-sebenar` @`765fae1` (dipush origin; belum digabung master); guru kekal `@60`; suite 1059/0. A: 14 nilai sebenar + `migrasiNilai()` · C: ikon SVG `✕` (cip Kelas + butang gambar) · B: `BersihService.gs` (padam SEMUA laporan + fail Drive yatim + reset KAUNTER, dua langkah). `create-deployment` MENUNGGU master di editor (pelayar): `migrasiNilai` ×2 → `kiraBersihLaporan` → `bersihkanSemuaLaporan` (≤60 min) → balas log.** Butiran blok sesi 12:07 di bawah.
 
 **Status TERKINI (2026-10-07 11:3x)**: 🟢 **@60 DIGABUNG ke master (`53ca059`, dipush origin, suite 1013/0); master lulus ujian peranti ("Lulus gabung master", peranti tak disebut). Tiada cabang tertunggak. Calon: ikon ✕ chip · uji PPD · KAUNTER reset · Cari kelas/launch tangguh.** Pengajaran: `is-ancestor` gagal senyap dlm rantaian `&&`; nama fail mesej komit di $TEMP mesti UNIK.
