@@ -18,6 +18,8 @@
 
 **Status TERKINI (2026-10-07 01:27)**: 🟢 **guru `@57` LIVE + digabung master (`71b2cdd`; origin `346153c`; suite 980/0). PDF ANYONE_WITH_LINK semasa cipta + PDF_URL dalam senarai + <a> terus. Ujian @57 lulus iPad Safari+Chrome+Android; PPD (moe.gov.my), iPhone, laptop BELUM. Jalan balik `@56`. Baki: baris amaran launch-checklist (belum diputus), KAUNTER reset, panduan guru, kotak Cari kelas, launch rasmi.**
 
+**Status TERKINI (2026-10-07 12:4x)**: 🟡 **kod `@61` DISEDIAKAN — cabang `nilai-sebenar` @`765fae1` (dipush origin; belum digabung master); guru kekal `@60`; suite 1059/0. A: 14 nilai sebenar + `migrasiNilai()` · C: ikon SVG `✕` (cip Kelas + butang gambar) · B: `BersihService.gs` (padam SEMUA laporan + fail Drive yatim + reset KAUNTER, dua langkah). `create-deployment` MENUNGGU master di editor (pelayar): `migrasiNilai` ×2 → `kiraBersihLaporan` → `bersihkanSemuaLaporan` (≤60 min) → balas log.** Butiran blok sesi 12:07 di bawah.
+
 **Status TERKINI (2026-10-07 11:3x)**: 🟢 **@60 DIGABUNG ke master (`53ca059`, dipush origin, suite 1013/0); master lulus ujian peranti ("Lulus gabung master", peranti tak disebut). Tiada cabang tertunggak. Calon: ikon ✕ chip · uji PPD · KAUNTER reset · Cari kelas/launch tangguh.** Pengajaran: `is-ancestor` gagal senyap dlm rantaian `&&`; nama fail mesej komit di $TEMP mesti UNIK.
 
 **Status TERKINI (2026-10-07 11:2x)**: 🟢 **guru `@60` LIVE — butang modal seragam (tertib Batal|Padam), ikon emoji→SVG, amaran jangan-kongsi dalam panduan; cabang `butang-modal-svg` dipush origin; suite 1013/0. Ujian peranti `@60` BELUM (sebut peranti+pelayar). Belum digabung master (bawa pautan-panduan+butang-konsisten+butang-modal-svg). Jalan balik `@59`. Penjana PDF: `tools/jana-panduan.js`. Drive Manage versions = BROWSER sahaja.** Butiran: `opr-insaniah/MEMORY.md`.
@@ -25,6 +27,15 @@
 **Status sebelumnya (10:3x)**: 🟢 **guru `@59` LIVE — butang kepala diseragamkan (`butang-konsisten` @`57d8537`, dipush origin; suite 996/0; 10/10 mutan). Ujian peranti `@59` BELUM. `pautan-panduan` (@58) + `butang-konsisten` belum digabung master. Jalan balik `@58`.** Butiran blok sesi 10:16 di bawah.
 
 **Status TERKINI (2026-10-07 10:0x)**: 🟢 **guru `@58` LIVE — butang "📖 Panduan" (pautan Drive, pemalar `PAUTAN_PANDUAN`); cabang `pautan-panduan` @`1a03698` dipush, BELUM digabung ke master; suite 988/0, 13/13 mutan. Ujian peranti `@58` BELUM (telefon utama; SEBUT peranti+pelayar). Jalan balik `@57`.** Master tiada iPhone (jangan minta). Butiran sesi 08:18 di bawah.
+
+### Sesi 2026-10-07 12:07 → ~12:45 (nilai sebenar + ikon SVG + padam laporan → kod @61 siap, deploy menunggu master)
+- Master "Opr insaniah" → Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan; master==origin `f5e9beb`, tiada cabang tertunggak). Brief: calon ikon ✕, PPD, KAUNTER, Cari kelas. Master: "1 tu pada cip apa. Aku nak tukar nilai tu, haritu kita main letak je" → Lucy baca `Setup.gs:63` (BENIH 12 NILAI) + `app.js.html:2303`; soalan bernombor (senarai betul / ELEMEN / laporan ujian). Master: *"1. Padam semua laporan, bersihkan juga gambar yatim dan fail yatim. 2 buat kerja svg. 3. senarai nilai sebenar (14)"*.
+- Plan 3 komit (A nilai / B bersih / C ikon) + 4 soalan (ejaan, padam, KAUNTER, fungsi vs sheet). Master "A tu selamat tak?" → jawab dgn kod (Validate.gs:43; laporan simpan TEKS) → "Proceed ikut syor". Cabang `nilai-sebenar`.
+- **A** `2d7d27a`: 14 nilai + `migrasiNilai()`/`rancangMigrasiNilai()`; 16 ujian, 14/14 mutan. **C** `56d28c5`: `IKON_TUTUP`; 39 ujian lama gagal pada mulanya (harness stub-DOM + pagar innerHTML) ⇒ diselaraskan (DIKETATKAN, bukan dilonggar); tangkapan 390px → saiz butang gambar 12→16px; 14 mutan. Master tanya "butang gambar bukan dah ada icon x?" → separa betul (ikon kiri SVG, ✕ kanan teks).
+- Master "Deploy a+c dulu dan terus b" → commit-seal (suite 1038/0, .claspignore sah, rahsia bersih) → `clasp push --force` → `npx clasp pull` folder sementara SAHKAN penanda → push cabang origin. `create-deployment` TAHAN: master mesti jalankan `migrasiNilai` ×2 di editor (pelayar) dahulu.
+- Master "Reset" (KAUNTER). **B** `765fae1`: `BersihService.gs` (kira+padam dua langkah, penanda `BERSIH_KIRA`, ≤60 min), `senaraiFailKerja_`, `kosongkanBarisOpr_`; ALLOW 21→23; 21 ujian, 24/24 mutan. Dua pusingan ketatkan ujian (M9/M10/M22/M24 terselamat; garis dasar gagal sekali). Push editor + cabang origin.
+- Silap kecil Lucy: (1) jawab "cip apa" tanpa semak butang gambar; (2) skrip penyunting separuh berjaya (anchor padan 2 tempat); (3) `node -e` rosak escape lagi; (4) `npx --prefix` gagal; (5) "dibunuh" palsu bila garis dasar gagal. Dicatat dlm opr-insaniah/MEMORY.md.
+- **Sambung:** master di editor (pelayar): `migrasiNilai` ×2 → `kiraBersihLaporan` → `bersihkanSemuaLaporan` (≤60 min) → balas log → Lucy `create-deployment` `@61` + `list-versions` → master uji peranti (SEBUT peranti+pelayar) → "Gabung master". Disimpan: opr-insaniah/MEMORY.md + CLAUDE.md, auto-memory (project), relationship-memory, fail ini.
 
 ### Sesi 2026-10-07 10:3x → 11:2x (butang modal + ikon SVG + amaran panduan → @60)
 - Master "Opr insaniah" lalu satu mesej tengah-giliran: seragamkan butang modal, emoji→SVG, baris amaran jangan-kongsi dalam panduan. Lucy baca fail Lucy+CLAUDE.md+MEMORY(sebahagian; fail 314KB)+git (sepadan), bentang plan + 3 soalan bersyor. Master: "1. Ya (Tutup=sekunder), 2. teks amaran ditulis sendiri, 3. ya (cabang baharu)".
@@ -222,4 +233,4 @@
 - JANGAN deploy production / merge `main` tanpa izin jelas master (opr-insaniah: izin deploy kekal selagi BELUM ada guru — jangan pindah ke projek yg sudah ada guru).
 
 ---
-*Session updated: 2026-10-06 22:15 (opr-insaniah fitur gambar SELESAI: @52 LIVE, ujian iPad+telefon lulus, digabung master 93aaabb + dipush). Sebelum itu: 2026-10-06 ~22:00 (@52 LIVE)*
+*Session updated: 2026-10-07 12:45 (opr-insaniah: kod @61 siap — nilai sebenar + ikon SVG + padam laporan; deploy menunggu master di editor). Sebelum itu: 2026-10-06 22:15 (fitur gambar SELESAI)*
