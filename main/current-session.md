@@ -18,6 +18,17 @@
 
 **Status TERKINI (2026-10-07 01:27)**: 🟢 **guru `@57` LIVE + digabung master (`71b2cdd`; origin `346153c`; suite 980/0). PDF ANYONE_WITH_LINK semasa cipta + PDF_URL dalam senarai + <a> terus. Ujian @57 lulus iPad Safari+Chrome+Android; PPD (moe.gov.my), iPhone, laptop BELUM. Jalan balik `@56`. Baki: baris amaran launch-checklist (belum diputus), KAUNTER reset, panduan guru, kotak Cari kelas, launch rasmi.**
 
+**Status TERKINI (2026-10-07 10:0x)**: 🟢 **guru `@58` LIVE — butang "📖 Panduan" (pautan Drive, pemalar `PAUTAN_PANDUAN`); cabang `pautan-panduan` @`1a03698` dipush, BELUM digabung ke master; suite 988/0, 13/13 mutan. Ujian peranti `@58` BELUM (telefon utama; SEBUT peranti+pelayar). Jalan balik `@57`.** Master tiada iPhone (jangan minta). Butiran sesi 08:18 di bawah.
+
+### Sesi 2026-10-07 08:18 → ~10:10 (jawapan tertunggak → butang Panduan → @58)
+- Master "Jom sambung opr insaniah" → Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan, master == origin @346153c). Brief 7 tertunggak. Master jawab ikut nombor: PPD = share link/folder Drive dikongsi · tiada iPhone, laptop ok · baris amaran launch-checklist "proceed" · KAUNTER biar · panduan guru "letak di mana?" · Cari kelas & launch tangguh.
+- Docs (master): launch-checklist (baris DOMAIN lapuk dibetulkan + amaran HARGA) `52ada17`; MEMORY `14619bf`; CLAUDE.md blok "Pautan Drive" ditulis semula `0f01d06` (drift ditemui semasa baca; master "Ya betulkan").
+- Panduan: Lucy bentang tiga laluan (PDF WhatsApp / pautan dalam app / repo public) → master pilih pautan dalam app. `superpowers:brainstorming` (bounded). Varian A (Tetapan admin) ditolak master ("rumit") → B pemalar. Cabang `pautan-panduan`: TDD `tests/pautan-panduan.test.js` (8 ujian, merah dahulu) → kod → suite 988/0 → 13/13 mutan (skrip mutasi + pulih bait) → `12f4c0a`.
+- `docs/panduan-guru.md` + PDF (Edge headless, 1 muka surat; fon dibesarkan 10→11.5pt selepas tengok tangkapan) `ef330c8`. Master remote ⇒ `SendUserFile` hantar PDF; master muat naik ke Drive + beri pautan; Lucy sahkan `curl` tanpa log masuk (200 + tajuk) → `PAUTAN_PANDUAN` `1a03698`.
+- "Ya deploy" → pra-terbang → push → pull sahkan 6 penanda → create-deployment `@58` → list-versions 58.
+- Silap kecil Lucy: `sed -i` Windows tukar Config.gs CRLF→LF (dipulih, diff 1 baris); rantaian `&&` dgn `grep -c`=0 berhenti senyap (dikesan sebab ujian tak keluar output). Varian A dibentang dahulu sebagai syor padahal B lebih KISS — master yang menegur.
+- **Sambung:** master uji `@58` (telefon): butang nampak (guru BIASA), ketik ⇒ PDF terbuka tanpa log masuk, sejajar dgn butang admin → "Gabung master" ⇒ merge --no-ff + push · amaran "jangan kongsi pautan" dalam panduan? · uji PPD, laptop · KAUNTER biar, Cari kelas/launch rasmi tangguh. Disimpan: opr-insaniah/MEMORY.md, auto-memory (project+index), relationship-memory, fail ini.
+
 ### Sesi 2026-10-07 00:46 → 01:27 (ANYONE_WITH_LINK → @57 → merge)
 - Master "Opr insaniah" → Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan; master ahead 5 bukan 4 — dibetulkan). Brief: A/B, PPD, uji iPhone/laptop, push.
 - Master: kongsi anyone-with-link "masalah selesai" → Lucy jelaskan ia selesaikan PPD bukan dua klik; baca `DriveService.gs` (kongsi MALAS semasa klik) → plan 6 langkah + HARGA (gambar murid) + langkah 0 (DELIMa). Master "Betul, pasang perkongsian semasa cipta".
