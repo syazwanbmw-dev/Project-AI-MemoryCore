@@ -18,6 +18,8 @@
 
 **Status TERKINI (2026-10-07 01:27)**: 🟢 **guru `@57` LIVE + digabung master (`71b2cdd`; origin `346153c`; suite 980/0). PDF ANYONE_WITH_LINK semasa cipta + PDF_URL dalam senarai + <a> terus. Ujian @57 lulus iPad Safari+Chrome+Android; PPD (moe.gov.my), iPhone, laptop BELUM. Jalan balik `@56`. Baki: baris amaran launch-checklist (belum diputus), KAUNTER reset, panduan guru, kotak Cari kelas, launch rasmi.**
 
+**Status TERKINI (2026-10-07 19:3x)**: 🟢 **@61 TERBUKTI** — tangkapan Sheet master: RUJUKAN 37 baris (14 NILAI baharu, tiada lama), OPR header sahaja, TETAPAN `KAUNTER_2026`=0 + `BERSIH_KIRA` kosong. Peranti ujian: laptop Chrome + Android Chrome (lulus). Belum: Sampah Drive dikosongkan, laporan `OPR-2026-0001`, iPad/iPhone.
+
 **Status TERKINI (2026-10-07 16:5x)**: 🟢 **@61 DIGABUNG ke master `c0b9723` (merge --no-ff, dipush origin, suite 1059/0).** Master "Lulus gabung master" — peranti tak disebut; angka log langkah editor 1–3 TIDAK dilapor. Cabang `nilai-sebenar` dibiar. Tiada kerja tertunggak utk @61. Calon: uji PPD · Cari kelas/launch tangguh.
 
 **Status TERKINI (2026-10-07 16:1x)**: 🟢 **guru `@61` LIVE** (list-versions 61; cabang `nilai-sebenar` @`eeec0ac` belum digabung master; jalan balik `@60`). Master "selesai 1 hingga 3. create deployment" — angka log TIDAK dilapor (tanya). Pra-deploy: pull dibanding git 20/21 sama (`appsscript.json` beza format+timezone = dijangka). Ujian peranti `@61` BELUM (sebut peranti+pelayar).
