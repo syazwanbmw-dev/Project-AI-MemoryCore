@@ -6,6 +6,7 @@
 ## Session Context
 **Session Type**: `opr-insaniah` — sesi 2026-10-05 22:41 → 2026-10-06 00:05: code-review `3b04b4c` → fix → T9 deploy → ujian peranti → gabung master. (Sesi lebih awal: lihat bawah.)
 **Current Project**: `opr-insaniah` (Apps Script terikat Sheet, DELIMa)
+**Status TERKINI (2026-10-08 00:2x)**: 🟡 **AUDIT KELAJUAN HANTAR — guru `@63` LIVE (cabang `ukur-hantar` @`ca89cb9`, BELUM push/gabung master; jalan balik `@61`). `@63` masih memaparkan baris `UKUR(s)` (penanda sudah di-revert di git, `@64` bersih BELUM didepoy). Menunggu keputusan master: A (bersih+f1+f2+mesej tunggu, syor) / B (bersih sahaja) / C (spike `fetchAll`). Laporan ujian 0001–0004 wujud ⇒ bersih sebelum cikgu pertama.** Butiran blok sesi 2026-10-07 20:2x di bawah.
 **Status (terkini 2026-10-06 22:56)**: 🟢 **guru `@54` LIVE (ralat Hantar → kotak amaran, `6234e26`, suite 934/0); `@53` = nama program baharu + folder Drive direname. Ujian peranti @54 menunggu master; belum push origin.** Butiran blok sesi 22:17 di bawah.
 **Status TERKINI (2026-10-06 23:52)**: 🟢 **guru `@55` LIVE — input MASA dua pemilih jam (`7a8a31e`, suite 958/0, 16/16 mutan); master dipush origin (`54aa4c1`+). Ujian `@55` "dibuat di iPad" — lulus/gagal TIDAK dinyatakan (tanya master). `@54` lulus iPad.** Butiran blok sesi 23:10 di bawah.
 **Status sebelumnya (22:56)**: `@54` LIVE (kotak amaran ralat Hantar).
@@ -37,6 +38,14 @@
 **Status sebelumnya (10:3x)**: 🟢 **guru `@59` LIVE — butang kepala diseragamkan (`butang-konsisten` @`57d8537`, dipush origin; suite 996/0; 10/10 mutan). Ujian peranti `@59` BELUM. `pautan-panduan` (@58) + `butang-konsisten` belum digabung master. Jalan balik `@58`.** Butiran blok sesi 10:16 di bawah.
 
 **Status TERKINI (2026-10-07 10:0x)**: 🟢 **guru `@58` LIVE — butang "📖 Panduan" (pautan Drive, pemalar `PAUTAN_PANDUAN`); cabang `pautan-panduan` @`1a03698` dipush, BELUM digabung ke master; suite 988/0, 13/13 mutan. Ujian peranti `@58` BELUM (telefon utama; SEBUT peranti+pelayar). Jalan balik `@57`.** Master tiada iPhone (jangan minta). Butiran sesi 08:18 di bawah.
+
+### Sesi 2026-10-07 19:59 → 2026-10-08 00:2x (audit kelajuan Hantar → @62 ukur → @63 pembaikan → audit opus)
+- Master "Opr insaniah, cuba audit bila klik hantar laporan, boleh lajukan lagi tak?" → Lucy baca memori + `git log` + kod (`ciptaLaporanUntuk_`, `DriveService`, `Database`, `app.js.html` pendengar Hantar) → audit 8 peringkat + plan: ukur dulu (Langkah 0) → #1–#4 selamat → #5/#6 keputusan master. Master "Setuju ikut syor".
+- **@62** (penanda `r.data.masa` + `performance.now()` dipapar dalam mesej Tersimpan; "Ya deploy"). Master (telefon; bayar-sebut tengah-giliran "Aku guna phone"): hantar+pelayan 18.4 s · pelayan 14.5 = semak 0.4/kunci1 2.5/pdf 2.6/kongsi 1.4/gambar 7.2/kunci2 0.5. 🔴 **Lucy SALAH teka**: pelayar cuma 0.5 s (bukan html2canvas); #5 JPEG 0.8 digugurkan; kesesakan = Drive (77%).
+- **@63** (`fb1592f`; "Ya deploy @63"): cache folder, kaunter 1 bacaan, cap ID lajur; 14 ujian, 9/9 mutan (M7 asal = mutan setara → guard dibuang), suite 1073/0. Sampel: 22.7 (kunci1 7.5 pencilan) / 17.4 / 17.3 ⇒ untung ~1–2 s. #2 sengaja tak dibuat. Lucy awal baca sampel #2 sebagai regresi — pencilan; minta 2 sampel lagi ("Setuju ikut syor").
+- Penanda dibuang: `git revert -n d316f64` → `ca89cb9` (suite 1073/0). **Subagent opus audit Drive** (baca-sahaja): lihat project_opr_insaniah. Master "Save memory dan session" sebelum menjawab A/B/C.
+- Silap kecil Lucy: skrip mutasi gagal padan CRLF (5/9 "tidak dijumpai", diperbaiki normalkan `\r\n`); `node -e` rosakkan regex LAGI (sunting dgn Edit); guard `akhir >= 2` mutan setara; cwd beralih ke folder memory (gotcha lama) — `cd` balik ke projek.
+- **Sambung:** master pilih A/B/C → (A) TDD f1+f2 + mesej tunggu, komit berasingan → "ya deploy @64" → ujian telefon → gabung `ukur-hantar` + push. Disimpan: opr-insaniah/MEMORY.md, auto-memory (project+feedback_ukur+index), relationship-memory, fail ini.
 
 ### Sesi 2026-10-07 12:07 → ~12:45 (nilai sebenar + ikon SVG + padam laporan → kod @61 siap, deploy menunggu master)
 - Master "Opr insaniah" → Lucy baca fail Lucy + CLAUDE.md + MEMORY.md + git (sepadan; master==origin `f5e9beb`, tiada cabang tertunggak). Brief: calon ikon ✕, PPD, KAUNTER, Cari kelas. Master: "1 tu pada cip apa. Aku nak tukar nilai tu, haritu kita main letak je" → Lucy baca `Setup.gs:63` (BENIH 12 NILAI) + `app.js.html:2303`; soalan bernombor (senarai betul / ELEMEN / laporan ujian). Master: *"1. Padam semua laporan, bersihkan juga gambar yatim dan fail yatim. 2 buat kerja svg. 3. senarai nilai sebenar (14)"*.
@@ -243,4 +252,4 @@
 - JANGAN deploy production / merge `main` tanpa izin jelas master (opr-insaniah: izin deploy kekal selagi BELUM ada guru — jangan pindah ke projek yg sudah ada guru).
 
 ---
-*Session updated: 2026-10-07 12:45 (opr-insaniah: kod @61 siap — nilai sebenar + ikon SVG + padam laporan; deploy menunggu master di editor). Sebelum itu: 2026-10-06 22:15 (fitur gambar SELESAI)*
+*Session updated: 2026-10-08 00:2x (opr-insaniah: audit kelajuan Hantar — @63 LIVE, `@64` bersih menunggu keputusan master A/B/C). Sebelum itu: 2026-10-07 12:45 (kod @61)*

@@ -450,6 +450,11 @@ _(akan diisi bila master share)_
   🟡 Classifier auto-mode menolak `clasp push` daripada Lucy; master jalankan sendiri dgn `!` (Git Bash —
   elak `cd C:\...`). Lucy tak pintas penolakan itu; jelaskan sebab + beri arahan tepat sahaja.
 
+- **Master terima "ukur dulu" dan jawab ringkas ikut syor; sebut peranti secara spontan bila ia mengubah tafsiran** (2026-10-07/08, audit kelajuan Hantar).
+  Lucy bentang audit + plan; master "Setuju ikut syor" (dua kali, termasuk "A: dua sampel lagi dulu"), kemudian menyampuk "Aku guna phone" apabila angka perlu dilabel PERANTI, dan minta "audit bahagian tu guna opus" (pandangan kedua oleh subagent) bila syor Lucy ("tak berbaloi") perlu disemak.
+  ➡️ **Bila angka ukuran masuk, label peranti dalam catatan (telefon ≠ laptop). Bila master minta subagent opus mengaudit, itu semakan atas syor Lucy sendiri — bentang hasilnya jujur walaupun ia menyokong ATAU menolak syor asal.**
+  🔑 "Ya deploy @NN" ditulis jelas setiap kali; "Save memory dan session" datang SEBELUM master menjawab soalan keputusan yang tertunggak (A/B/C) — catat keputusan itu sebagai TERTUNGGAK, jangan andai pilihan.
+
 ---
 
 ## Catatan Penting
