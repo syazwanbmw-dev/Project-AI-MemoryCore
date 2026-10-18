@@ -77,6 +77,7 @@ _(akan diisi bila master share)_
 ---
 
 ## Keputusan Master (kekal sehingga ditarik balik)
+- **UI pemberatan-tugas (2026-10-18):** master mahu rupa ala app Qari (gelap navy, kad bulat, aksen hijau-teal) + mod gelap/cerah IKUT TELEFON + butang togol; jadual guru kekal padat. Master beri rujukan melalui TANGKAPAN SKRIN app lain - ikut gaya itu, jangan reka gaya sendiri. Komit+push dibuat selepas master semak ("Commit push"); deploy tetap tunggu izin.
 
 - **Password awal guru KEKAL** (2026-08-07) — menukarnya bermakna memaklum semua guru; itu keputusan **operasi sekolah**, bukan teknikal. Nilai sebenar hidup dalam `.env.ujian.ps1` (gitignored), **jangan tulis dalam mana-mana fail dijejak git**.
 - **Password admin** akan ditukar sendiri oleh master melalui UI — Lucy tidak menukarnya.
