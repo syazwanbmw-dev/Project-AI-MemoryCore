@@ -49,6 +49,15 @@ auto-memory (`C:\Users\user\.claude\projects\C--Users-user\memory\`), jangan dup
 - **Keputusan master tertunggak (sistem memory):** folder `coding-projects/active/*.md` (LRU lama)
   — lupuskan atau kekal arkib? · Projek Aktif kini 11 (had 10) — turunkan `idme-pajsk-ext`?
   · repo `memory/` ahead 3 komit drpd origin (belum dipush).
+- **💡 Idea backlog (rentas projek) — "Grafik-sebagai-kod + semakan automatik"** (2026-10-30, dari video
+  YouTube Ariff Azman "I asked Claude to make an entire music video from only code", 2:32). Corak yang
+  dipaparkan: templat tetap dgn ruang kosong `{{…}}` → output boleh diulang (deterministik) → gerbang
+  semakan automatik (`overflow`, `contrast`, `must_say`, `slice --check`) → ulang sehingga semua hijau
+  baru hantar. Poster yang rosak sering nampak siap, jadi pemeriksa yang menangkapnya. Calon tapak:
+  `certificate-generator` (nama panjang terpotong? kontras?) · PDF `opr-insaniah`/`opr-program` (teks
+  melimpah, medan wajib ada). **Belum diputuskan/dirancang** — cadangan sahaja; tiada kod disentuh.
+  ⚠️ Dakwaan master "dibuat dgn Opus 5.5" TIDAK disahkan (tajuk hanya sebut "Claude"; deskripsi/komen
+  belum disemak). Fail sementara video+frame di scratchpad sesi, belum dipadam.
 
 ## ✅ Tiada tugasan terbuka
 
